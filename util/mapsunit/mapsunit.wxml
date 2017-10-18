@@ -1,0 +1,22 @@
+<import src="../../libs/weimport.wxml" />
+<view class="page">
+  <view class="page__hd">
+<map id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="{{scale}}" bindcontroltap="controltap" markers="{{markers}}" bindmarkertap="markertap"
+  controls="{{controls}}" show-location style="width: 100%; height: {{Height}}px;">
+  </map>
+  </view>
+  <view class="page__bd">
+    <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
+      <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+        <image class="weui-media-box__thumb" src="{{unitArray[sId].thumbnail}}" background-size="cover"></image>
+      </view>
+      <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+        <view class="weui-media-box__title">{{unitArray[sId].uName}}</view>
+        <view class="weui-media-box__desc">{{unitArray[sId].title}}</view>
+      </view>
+    </view>
+    <template is="s_industrytype" data="{{p:'主营业务',c:unitArray[sId].indType}}" />
+    <view>距离您现在的位置：{{unitArray[sId].distance}}米</view>
+  </view>
+
+</view>

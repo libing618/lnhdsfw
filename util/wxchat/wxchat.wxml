@@ -1,0 +1,37 @@
+<import src="../../libs/weimport.wxml"/>
+<view class="page">
+  <view class="page__bd">
+      <scroll-view scroll-y="true" style="left:5px; height:{{sysheight}}px; width:{{syswidth}}px ; border:2px solid #F00" >
+        <view class="weui-article">
+          <block wx:for="{{messages}}" wx:key="{{updatedAt}}" wx:for-item="mName">
+            <template is="artshow" data="{{artshow: 'mName'}}" />
+          </block>
+        </view>
+    </scroll-view>
+    <form bindsubmit="sendMsg">
+      <view class="page__ft">
+        <view class="weui-cell weui-cell_input weui-cell_vcode">
+          <view class="weui-cell__hd" bindtap="fMultimedia">
+            <image class="weui-grid__icon" src="../../../images/Multimedia.png"></image>
+            <input hidden="{{true}}" name="itype" value="{{itype}}"/>
+            <input hidden="{{true}}" name="inputmu" value="{{icont}}"/>
+          </view>
+          <view class="weui-cell__bd">
+            <input name="inputtext" value="{{itext}}" placeholder="请输入文字" />
+          </view>
+          <view class="weui-cell__ft">
+            <button class="weui-btn" formType="submit">＞</button>
+          </view>
+        </view>
+      </view>
+    </form>
+    <view class="weui-grids" hidden="{{enMultimedia}}">
+      <block wx:for="{{mgrids}}" wx:key="{{index}}">
+        <view class="weui-grid" id="'-'+{{index+1}}" hover-class="weui-grid_active" bindtap="iMultimedia">
+          <image class="weui-grid__icon" src="../../../images/{{index+1}}.png"></image>
+          <view class="weui-grid__label">{{item}}</view>
+        </view>
+      </block>
+    </view>
+  </view>
+</view>

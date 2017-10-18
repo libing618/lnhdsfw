@@ -1,0 +1,22 @@
+<import src="../../libs/weimport.wxml" />
+<view class="page">
+  <form class="page__hd" bindsubmit="fapdsct" bindreset="fapdReset">
+    <template is="i_producttype" data="{{...reqData[0]}}"></template>
+    <button class="weui-btn" style="display:inline-block" formType="submit">分类查找</button>
+    <button class="weui-btn" style="display:inline-block" formType="reset">全部</button>
+  </form>
+
+  <view class="page__bd">
+    <block wx:for="{{prodcts}}" wx:key="{{updatedAt}}">
+      <view hidden="{{item.proType!=proShow}}">
+        <navigator url="/page/vprocedure/vprocedure?pNo={{pNo}}&artId={{item.objectId}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view class="weui-cell__hd">
+                <image src="{{item.thumbnail}}" class="weui-thumb"></image>
+            </view>
+            <view class="weui-cell__bd">{{item.uName}}</view>
+            <view class="weui-cell__ft weui-cell__ft_in-access">{{item.title}}</view>
+        </navigator>
+      </view>
+    </block>
+  </view>
+</view>

@@ -1,0 +1,26 @@
+<import src="../../../libs/weimport.wxml"/>
+<import src="../../../libs/wedetail.wxml"/>
+<view class="page">
+  <view class="page__bd">
+  <view class="weui-tab">
+    <template is="tabsCk" data="{{ fLength , pageCk , tabs ,wWidth }}"/>
+  </view>
+    <block wx:for="{{atotal[pageCk]}}" wx:key="{{index}}" wx:for-item="ac" wx:for-index="i">
+      <view class="weui-cells" hidden="{{ac==0}}">
+        <view class="weui-cell weui-cell_access" hover-class="weui-cell_active" id="ac-{{i}}" bindtap="accheck">
+          <template is="{{ achecked==i ? 'selecticon1' : 'selecticon2'}}" />
+          <view class="weui-cell__bd">{{pClassName[i]}}审批流程</view>
+          <view class="weui-cell__ft weui-cell__ft_in-access">{{ac}}</view>
+        </view>
+        <view hidden="{{achecked!=i}}">
+          <block class="weui-cell" wx:for="{{ats[pageCk][i]}}" wx:key="{{index}}" wx:for-item="id">
+            <navigator url="/util/approve/approve?approveId={{id}}">
+              <view class="weui-cell__bd">发起人:{{pageData[id].unitName}} {{pageData[id].sponsorName}}</view>
+              <view class="weui-cell__ft">{{pageData[id].dIdear[0].un}}于{{pageData[id].dIdear[0].dt}} {{pageData[id].dIdear[0].di}}</view>
+            </navigator>
+          </block>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

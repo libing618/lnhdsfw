@@ -1,0 +1,21 @@
+var tapdv=require("apdv.wxs");
+var glist = function(svale){
+  if ( tapdv[svale].constructor == "Object" ) {
+    var apdb = [];
+    for (var m = k * 100; m < (k + 1) * 100; m++) {
+      if ( tapdv['s'+m].constructor == "Object" ) { apdb.push( m ) }
+    }
+    if (!apdb) { apdb.push(svale) }
+  }
+  return apdb;
+};
+var mDot = function(i,cArray){
+  return i==cArray.length-1 ? '' : '、'
+}
+
+module.exports = {
+  mgrids: ['产品', '图像', '音频', '视频', '位置', '文件', '大标题', '中标题', '小标题', '正文'],
+  mid: ['-1', '-2', '-3', '-4', '-5', '-6', 'h2', 'h3', 'h4', 'p'],
+  glist: glist,
+  mDot: mDot
+}

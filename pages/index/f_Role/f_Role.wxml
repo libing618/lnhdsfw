@@ -1,0 +1,18 @@
+<import src="../../../libs/weimport.wxml" />
+<wxs src="signmsg.wxs" module="tk" />
+<view class="page" id="approval-{{pNo}}">
+  <form bindsubmit="fSubmit">
+    <view class="page__bd" id="{{targetId}}">
+      <block wx:for="{{reqData}}" wx:key="index">
+        <template is="i_{{item.t}}" data="{{...item,n:index,c:vData[item.gname]}}"></template>
+      </block>
+    </view>
+    <scroll-view scroll-y="true" style="height:{{sysheight}}rpx;text-indent:2em" hover="true" hover-class="weui-hover" hover-stay-time="500">
+        <text>{{tk.tk}}</text>
+    </scroll-view>
+    <view class="weui-cell_switch"> <switch type="checkbox" checked="{{swcheck}}" bindchange="fswcheck"/>阅读并同意《电子商务服务平台使用条款》</view>
+    <view hidden="{{unEdit}}" class="page__ft" id="{{dObjectId}}">
+      <button class="weui-btn" id="fSave" formType="submit">提交</button>
+    </view>
+  </form>
+</view>

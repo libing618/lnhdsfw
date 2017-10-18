@@ -1,0 +1,25 @@
+<import src="../../libs/weimport.wxml" />
+<view class="page">
+    <view class="page__bd page__bd_spacing">
+        <swiper class="swiper_box" indicator-dots="true" autoplay="{{autoplay}}">
+            <block wx:for="{{images}}" wx:key="{{index}}">
+                <swiper-item>  
+                    <navigator url="../artview/artview?{{item.objectId}}">
+                        <image src="{{item.thumbnail}}" class="swimage"></image>
+                        <view class="swtext">{{item.arttitle}}</view>
+                    </navigator>
+                </swiper-item>
+            </block>
+        </swiper>
+			</view>
+
+			<view class="weui-grids" >
+					<block wx:for="{{grids}}" wx:key="{{index}}">
+							<navigator url="{{item.tourl}}" class="weui-grid" hover-class="weui-grid_active">
+									<image class="weui-grid__icon" src="{{item.mIcon}}"></image>
+									<view class="weui-grid__label">{{item.mName}}</view>
+							</navigator>
+					</block>
+			</view>
+  <template is="tabBar" data="{{isWorker,tabBar,pName}}" />
+</view>

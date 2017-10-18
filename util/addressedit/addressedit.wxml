@@ -1,0 +1,43 @@
+<view class="page">
+  <view class="page__bd">
+    <view class="page__title">选择区(县)</view>
+       <picker-view indicator-style="height: 40rpx;" style="width: 100%; height: 300rpx;" value="{{adcvalue}}" bindchange="faddclass">
+        <picker-view-column>
+            <view wx:for="{{adclist}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
+        </picker-view-column>
+        <picker-view-column>
+            <view wx:for="{{adclist[adcvalue[0]].st}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
+        </picker-view-column>
+        <picker-view-column>
+            <view wx:for="{{adclist[adcvalue[0]].st[adcvalue[1]].ct}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
+        </picker-view-column>
+      </picker-view>
+    <view hidden="{{asaddv}}">
+      <button class="page__title" bindtap="raddgroup">点此处选择村(社区)</button>
+      <picker-view indicator-style="height: 40rpx;" style="width: 100%; height: 300rpx;" value="{{adgvalue}}" bindchange="saddgroup">
+          <picker-view-column>
+              <view wx:for="{{adglist}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
+          </picker-view-column>
+          <picker-view-column>
+              <view wx:for="{{adglist[adgvalue[0]].cm}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
+          </picker-view-column>
+      </picker-view>
+    </view>
+  </view>
+  <form class="page__ft" bindsubmit="i_address">
+    <view class="weui-cells__title">详细地址:</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell">
+        <view class="weui-cell__bd">
+          <textarea class="weui-textarea" auto-height name="address1" value="{{address1}}" />
+        </view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">
+          <textarea class="weui-textarea" auto-height name="address2" value="{{address2}}" />
+        </view>
+      </view>
+    </view>
+    <button class="weui-btn" formType="submit" size="mini">确定</button>
+  </form>
+</view>

@@ -1,0 +1,13 @@
+<import src="../../libs/weimport.wxml" />
+<view class="page" id="approval-{{pNo}}">
+  <view class="page__bd page__ac_spacing">
+    <block wx:for="{{reqData}}" wx:key="index">
+      <template is="s_{{item.t}}" data="{{...item, c:viewData[item.gname]}}"></template>
+    </block>
+  </view>
+
+  <view wx:if="{{uEV}}" class="page__ft weui-footer_fixed-bottom">
+    <button class="weui-btn" style="display:inline-block" type="primary" size="mini" id="fModify" bindtap="fEditProcedure">修改并重新审批</button>
+    <button class="weui-btn" style="display:inline-block" type="primary" size="mini" id="fTemplate">以此为模板新建</button>
+  </view>
+</view>

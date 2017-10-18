@@ -1,0 +1,79 @@
+<import src="../../libs/weimport.wxml" />
+<import src="../../libs/wedetail.wxml"/>
+<wxs module="flowStepName">
+  var fsName = function(i,cArray){
+    return i==cArray.length-1 ? '' : '、'
+  }
+  module.exports.fsName=fsName;
+</wxs>
+<view class="page">
+  <view class="page__hd">
+    <view class="weui-cells__title">{{pBewrite}}</view>
+  </view>
+  <view class="page__bd">
+    <view class="weui-cell weui-cell_access" hover-class="weui-cell_active" id="ac-0" bindtap="accheck">
+      <template is="{{ achecked[0] ? 'selecticon1' : 'selecticon2'}}" />
+      <view class="weui-cell__bd">基本信息</view>
+      <icon class="weui-cell__ft weui-cell__ft_in-access" type="download"/>
+    </view>
+    <view wx:if="{{achecked[0]}}">
+      <view class="weui-cell" wx:for="{{biType}}" wx:key="{{index}}">
+        <view class="weui-cell__bd">{{item.p}}:</view>
+        <view class="weui-cell__ft">{{aValue[item.gname]}}</view>
+      </view>
+    </view>
+    <view class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+      <template is="{{ achecked[1] ? 'selecticon1' : 'selecticon2'}}" />
+      <view wx:if="{{enEdit && enApprove}}">
+        <navigator url="/pages/fprocedure/fprocedure?tgId={{aValue.objectId}}">
+          <view class="weui-cell__bd">审批内容（点击此处进行编辑）</view>
+        </navigator>
+      </view>
+      <view wx:else class="weui-cell__bd">审批内容:</view>
+      <icon class="weui-cell__ft weui-cell__ft_in-access" id="ac-1" bindtap="accheck" type="download"/>
+    </view>
+    <view wx:if="{{achecked[1]}}">
+      <view wx:if="{{afamilys}}">类别：{{afamilys[aValue.dObject.afamily]}}</view>
+      <block class="weui-cell" wx:for="{{bsType}}" wx:key="{{index}}">
+        <template is="s_{{item.t}}" data="{{ p: item.p, c: aValue.dObject[item.gname] }}" />
+      </block>
+    </view>
+    <view class="weui-cell weui-cell_access" hover-class="weui-cell_active" id="ac-2" bindtap="accheck">
+      <template is="{{ achecked[2] ? 'selecticon1' : 'selecticon2'}}" />
+      <view class="weui-cell__bd">流程记录</view>
+      <icon class="weui-cell__ft weui-cell__ft_in-access" type="download"/>
+    </view>
+    <view wx:if="{{achecked[2]}}">
+      <block wx:for="{{aValue.dIdear}}" wx:key="{{dt}}">
+        <view class="weui-cell">
+          <view class="weui-cell__hd">{{item.un}}:</view>
+          <view class="weui-cell__bd">{{item.dt}}:</view>
+          <view class="weui-cell__ft">{{item.di}}</view>
+        </view>
+        <text class="weui-cell">审批意见:{{item.dIdear}}</text>
+      </block>
+    </view>
+
+    <form wx:if="{{enApprove}}" class="page__bd" bindsubmit="fsave">
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-label">审批意见:</view>
+        <radio-group name="dResult" bindchange="resultChange">
+          <label style="flex-direction:row;" wx:for="{{uIdearArray}}" wx:key="{{index}}">
+            <radio value="{{index}}" checked="{{cResult==index}}"/>{{item}}
+          </label>
+        </radio-group>
+      </view>
+      <textarea class="weui-cell" name="dIdear" fixed="{{true}}" auto-height placeholder="请输入审批意见"/>
+      <view class="weui-cell">
+        <view class="weui-cell__hd">下一流程审批人:</view>
+        <view class="weui-cell__bd">
+          <view wx:if="{{aValue.cInstance==cmLength}}">流程结束</view>
+          <view wx:else><view wx:for="{{aValue.cManagers[aValue.cInstance]}}" wx:key="{{index}}"> {{aValue.cUserName[item]}}{{flowStepName.fsName(index,aValue.cManagers[aValue.cInstance])}}</view></view>
+        </view>
+      </view>
+      <view class="page__ft">
+        <button class="weui-btn" formType="submit" size="default">提交</button>
+      </view>
+    </form>
+  </view>
+</view>

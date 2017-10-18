@@ -1,0 +1,35 @@
+
+<template name="selecticon1">
+  <view class="weui-cell__hd">
+    <image src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAu0lEQVQ4je2TIQsCQRBGn1a5YlEQTGrTZtCg+Zjf+2m+JGK06SWTlhMUs5Y9XA7LrgYRv/KGWXjssLPwz7upAUhaAClQAF0zu0lqAAegGSKsO6aOTWDu6lmozBf62TnmoTJ4jtwBDFiZ2bY8lDQCJjHi70058gVIXK9tZidJLeAYKiwfJfF64wqjhFevt6nwx+LvYQqsK3s4BKYxwrvX65tZLqkH7ENv+OrrDSqMEi4dCyBzdQacY6QfzQP+wjJ6Lg0TtAAAAABJRU5ErkJggg==" style="margin-right: 5px;vertical-align: middle;width:20px; height: 20px;"></image>
+  </view>
+</template>
+
+<template name="selecticon2">
+  <view class="weui-cell__hd">
+    <image src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII=" style="margin-right: 5px;vertical-align: middle;width:20px; height: 20px;"></image>
+  </view>
+</template>
+
+<template name="-1">
+  <view class="weui-cell__hd">
+      <image src="{{c.thumbnail}}" class="weui-thumb"></image>
+  </view>
+  <view class="weui-cell__bd">{{c.uName}}</view>
+  <view class="weui-cell__ft weui-cell__ft_in-access">{{c.title}}</view>
+</template>
+<template name="-2">
+  <image src="{{c}}" mode="aspectFit"></image>
+</template>
+<template name="-3">
+  <audio src="{{c}}"></audio>
+</template>
+<template name="-4">
+  <video src="{{c}}"></video>
+</template>
+<template name="-5">
+  <map longitude="{{c.longitude}}" latitude="{{c.latitude}}" scale="14" show-location style="width: 100%; height: 300px;"></map>
+</template>
+<template name="-6">
+  <file src="{{c}}"></file>
+</template>

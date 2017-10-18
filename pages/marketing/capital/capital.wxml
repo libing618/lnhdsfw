@@ -1,0 +1,5 @@
+<view class="page">
+    <view style="display:block;padding:1px;">
+        <canvas canvas-id="pieCanvas" class="weui-canvas"> </canvas>
+    </view>  
+</view>

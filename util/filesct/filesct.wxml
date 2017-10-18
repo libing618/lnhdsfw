@@ -1,0 +1,11 @@
+<view class="page">
+  <radio-group  bindchange="sfChange">
+    <label wx:for="{{files}}">
+      <radio value="{{item.fName}}" checked="{{item.checked}}" class="weui-cell__hd"/>{{item.fName}}
+      <view class="weui-cell__bd" data-i="{{index}}" bindtap="openfile">
+          <image src="../../images/{{item.fType}}.png" class="weui-thumb"></image>
+      </view>
+      <view class="weui-cell__ft weui-cell__ft_in-access">{{item.fLen}}</view>
+    </label>
+  </radio-group>
+</view>
