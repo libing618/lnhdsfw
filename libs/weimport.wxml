@@ -109,7 +109,7 @@
 </template>
 
 <template name="s_arrsel">
-  <view class="weui-cell">{{p}}: {{alost[c]}}</view>
+  <view class="weui-cell">{{p}}: {{alist[c]}}</view>
 </template>
 
 <template name="i_arrsel">

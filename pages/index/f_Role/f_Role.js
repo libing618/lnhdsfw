@@ -17,23 +17,48 @@ var uniteditPage = {
     if (app.globalData.user.mobilePhoneVerified){       //注册用户才可以创建单位
       let reqData = require('../../../libs/procedureclass.js')[0].pSuccess;
       wx.setNavigationBarTitle({  title: app.uUnit.nick+'的信息',  })
-      new AV.Query.doCloudQuery('select dObject,cInstance from sengpi where unitId="' + app.uUnit.objectId + '" and dProcedure=0').then((datas) => {
-        if (datas.results.length > 0) {
-          var spdata = datas.results[0].toJSON();
-          var resPageData = {};
-          resPageData.targetId = spdata.objectId;
-          resPageData.dObjectId = spdata.dObjectId
-          resPageData.vData = spdata.dObject;
-          resPageData.unEdit = spdata.cInstance==0 ? false : true;        //页面在流程起点能提交和保存
-          resPageData.vData.aGeoPoint = new AV.GeoPoint(that.data.vData.aGeoPoint);
-          that.setData(resPageData) ;
-        } else {
-          weImp.initData(that,that.data.reqData, app.aData[0][app.uUnit.objectId]);
-        };
-      }).catch( console.error )
+      if (options.ruId) {
+        AV.Query('reqUnit').get(options.ruId).then(reqUnit=>{
+          let reqUnitData = reqUnit.toJSON();
+          let crUnit = new AV.ACL();
+          crUnit.setWriteAccess(AV.User.current(), true)     // 当前用户是该角色的创建者，因此具备对该角色的写权限
+          crUnit.setPublicReadAccess(true);
+          crUnit.setPublicWriteAccess(false);
+          let unitRole = new AV.Role(app.globalData.user.objectId,crUnit);   //用创建人的ID作ROLE的名称
+          unitRole.getUsers().add(AV.User.current());
+          unitRole.set('uName',reqUnitData.uName)
+          unitRole.set('afamily', reqUnitData.afamily);
+          unitRole.set('sUnit', reqUnitData.sUnit);
+          unitRole.set('unitUsers',[{"objectId":app.globalData.user.objectId, "userRolName":'admin', 'uName':app.globalData.user.uName, 'avatarUrl':app.globalData.user.avatarUrl,'nickName':app.globalData.user.nickName}] );
+          unitRole.save().then((res)=>{
+            app.uUnit = res.toJSON();
+            let rQuery = AV.Object.createWithoutData('userInit', '598353adfe88c200571b8636')  //设定菜单为applyAdmin
+            AV.User.current()
+              .set({ "unit": app.uUnit.objectId, "userRolName": 'admin', "userRol": rQuery })  // 设置并保存单位ID
+      				.save()
+      				.then(function(user) {
+                weImp.initData(that,that.data.reqData, app.aData[0][app.uUnit.objectId]);
+              }).catch((error) => { console.log(error)
+              wx.showToast({title: '修改用户单位信息出现问题,请重试。'})
+            });
+          }).catch(console.error);
+        })
+      } else {
+        new AV.Query.doCloudQuery('select dObject,cInstance from sengpi where unitId="' + app.uUnit.objectId + '" and dProcedure=0').then((datas) => {
+          if (datas.results.length > 0) {
+            var spdata = datas.results[0].toJSON();
+            var resPageData = {};
+            resPageData.targetId = spdata.objectId;
+            resPageData.dObjectId = spdata.dObjectId
+            resPageData.vData = spdata.dObject;
+            resPageData.unEdit = spdata.cInstance==0 ? false : true;        //页面在流程起点能提交和保存
+            resPageData.vData.aGeoPoint = new AV.GeoPoint(that.data.vData.aGeoPoint);
+            that.setData(resPageData) ;
+          } else {wx.showToast({title: '用户单位信息出现问题,请联系客服人员。'})}
+        }).catch( console.error )
+      };
     } else {
       wx.navigateTo({url:'pages/login/login'});
-
     }
   }
 };

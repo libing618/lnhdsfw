@@ -1,52 +1,34 @@
 const AV = require('../../../libs/leancloud-storage.js');
-const aList = require('../../../libs/procedureclass.js')[0].afamily;
+const unitFormat = require('../../../libs/procedureclass.js')[0];
 var app = getApp()
 Page({
   data:{
-    user: {},
+    user: app.globalData.user,
     sysheight: app.globalData.sysinfo.windowHeight-300,
     swcheck: true,
     iName: { gname: "uName", p: '真实姓名', t: "Name" },
     reqData: [
-      { gname: "afamily", p: '单位类型', t: "arrsel", alist:aList },
+      { gname: "afamily", p: '单位类型', t: "arrsel", alist:unitFormat.afamily },
       { gname:"uName", p:'单位名称', t:"h3" }
     ],
-    phonen: '',
-    vcoden: '',
-    cUnitInfo: '创建下级单位',
+    bsType: unitFormat.pSuccess,
+    afamilys: unitFormat.afamily,
+    aValue: app.uUnit,
     activeIndex: "0",
     crUnitDataId: '0'
 	},
 
   editenable: function(e) {                         //点击条目进入编辑或选择操作
-    if (e.currentTarget.id == '0'){
-      this.setData({activeIndex: "0" });
-      this.getLoginCode();
-    } else {
-      if (!app.globalData.user.mobilePhoneVerified){
-        this.setData({ activeIndex: "0", cUnitInfo: '创建或加入单位(必须验证手机号)' });
-      } else {
-        if (!app.globalData.user.uName) {
-          this.setData({ cUnitInfo: '创建或加入单位(必须输入姓名)' });
-        } else {
-          this.setData({ activeIndex: "1"})
-        }
-      }
-    }
+    this.setData({activeIndex: e.currentTarget.id });
   },
 
   onLoad: function () {
     var that = this;
     that.data.iName.c = app.globalData.user.uName;
-    if (app.globalData.user.unit!='0') {
-
-    }
     that.setData({		    		// 获得当前用户
       user: app.globalData.user,
       activeIndex: app.globalData.user.mobilePhoneVerified ? "1" : "0",
-
       cUnitInfo: that.data.cUnitInfo,
-      vc: app.uUnit,
       iName: that.data.iName
     })
   },
@@ -84,7 +66,7 @@ Page({
       if (results.length==0){                      //申请单位名称无重复
         let unitRole = AV.Object.extend('reqUnit')  //新建单位
         unitRole.set('uName',reqUnitData.uName)
-        unitRole.set('afamily', );
+        unitRole.set('afamily', reqUnitData.afamily);
         unitRole.set('sUnit', app.uUnit.objectId);
         unitRole.save().then((rest)=>{
           that.data.crUnitDataId = rest.id;

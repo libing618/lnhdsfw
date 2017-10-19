@@ -500,7 +500,7 @@ module.exports = {
               cUserName[app.globalData.user.objectId] = app.globalData.user.uName;
               let puRoles = approvalClass.puRoles;
               let suRoles = approvalClass.suRoles;
-              if (!app.uUnit.unitType && puRoles) {          //单位类型为企业且有本单位审批设置
+              if (app.uUnit.unitType>1 && puRoles) {          //单位类型为企业且有本单位审批设置
                 let pRolesNum = 0, pRoleUser;
                 for (let i=0;i<puRoles.length;i++){
                   pRoleUser = [];
