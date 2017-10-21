@@ -58,7 +58,7 @@ var uniteditPage = {
         }).catch( console.error )
       };
     } else {
-      wx.navigateTo({url:'pages/login/login'});
+      wx.navigateTo({url:'util/login/login'});
     }
   }
 };

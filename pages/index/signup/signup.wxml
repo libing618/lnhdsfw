@@ -6,12 +6,13 @@
         <image class="weui-media-box__thumb" src="{{user.avatarUrl}}" background-size="cover"></image>
     </view>
     <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-        <view class="weui-media-box__title">尊敬的{{user.nickName}}{{user.gender==1 ? "先生":"女士"}}</view>
+        <view class="weui-media-box__title">尊敬的{{user.uName}}{{user.gender==1 ? "先生":"女士"}}</view>
         <view class="weui-media-box__desc">请检查或输入您的姓名。</view>
     </view>
   </view>
-
-  <template is="i_Name" data="{{...iName}}"></template>
+  <navigator url="/utik/login/login">
+    <button class="weui-btn">修改信息</button>
+  </navigator>
   <view wx:if="{{user.emailVerified}}">
     <view id="0" class="weui-cells" hover="true" hover-class="weui-hover" hover-stay-time="500" bindtap="editenable">
       <icon class="weui-icon" type="{{user.userRolName=='admin' ? 'success' : 'warn'}}"/>单位信息:

@@ -9,7 +9,6 @@ Page({
     iName: { gname: "uName", p: '真实姓名', t: "Name" },
     phonen: '',
     vcoden: '',
-    cUnitInfo: '创建或加入单位',
     activemobile: true,
     rejectWxPhone: false,
     yzb: "验\u3000\u3000\u3000证"           //u3000在在js中插入全角空格，&#3000;这种形式在在wxml中不转义

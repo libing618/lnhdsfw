@@ -45,6 +45,7 @@
     "pages/customer/contactfriends/contactfriends",
     "pages/customer/accounting/accounting",
     "pages/customer/rcustomer/rcustomer",
+    "util/login/login",
     "util/wxchat/wxchat",
     "util/approve/approve",
     "util/addressedit/addressedit",
