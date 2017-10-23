@@ -2,7 +2,7 @@ module.exports = [
 {
   "pNo": 0,
   "pName": "单位名称和负责人",
-  "afamily": ['个体工农商户','电商服务点','工农商企业'],
+  "afamily": ['个体生产者','工农商企业','电商服务点','销售渠道'],
   "pSuccess": [
     {inclose:true, gname:"indType", p:'主营业务', t:"industrytype", apdclist:require('./apd1.js'), apdvalue:[0, 0, 0] },
     {gname:"nick", p:'单位简称',t:"h3" },
@@ -26,7 +26,7 @@ module.exports = [
 {
   "pNo": 1,
   "pName": "文章",
-  "afamily": ['信息共享','品牌建设','政策扶持','单位宣传','帮助问答'],
+  "afamily": ['商圈人脉','品牌建设','政策扶持','产品宣传','帮助问答','我的推介'],
   "pSuccess": [
     {gname:"uName", t:"h1", p:"名称" },
     {gname:"title",t:"h2", p:"标题" },

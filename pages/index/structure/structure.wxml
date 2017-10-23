@@ -34,7 +34,7 @@
     </block>
     <view class="page__hd">
       <view class="page__title"> 本岗位增加员工：</view>
-        <form wx:if="{{enableApply}}" bindsubmit="fSelApply">
+         <form wx:if="{{enableApply}}" bindsubmit="fSelApply">
           <view class="weui-cell weui-cell_input weui-cell_vcode">
               <view class="weui-cell__hd">
                   <view class="weui-label">手机号找人</view>
