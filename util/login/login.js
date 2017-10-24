@@ -32,13 +32,6 @@ Page({
   onLoad: function () {
     var that = this;
     that.data.iName.c = app.globalData.user.uName;
-    if (app.globalData.user.unit!='0') {
-      if (app.uUnit.name == app.globalData.user.objectId) {
-        that.data.cUnitInfo = '您创建的单位' + (app.globalData.user.emailVerified ? '' : '正在审批中')
-      } else {
-        that.data.cUnitInfo = '您工作的单位' + (app.globalData.user.emailVerified ? '' : '正在审批中')
-      }
-    }
     that.setData({		    		// 获得当前用户
       user: app.globalData.user,
       crUnitData: that.data.crUnitData,

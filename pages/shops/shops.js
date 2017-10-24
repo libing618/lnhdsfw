@@ -22,9 +22,9 @@ Page({
         mIcon: 'https://eqr6jmehq1rpgmny-10007535.file.myqcloud.com/1b2d1577ca9cbcefc06f.jpg',
         mName: '购物车'
     },{
-        tourl: '../member/index/index',
+        tourl: '/util/login/login',
         mIcon: 'https://eqr6jmehq1rpgmny-10007535.file.myqcloud.com/2c4093f310964d281bc0.jpg',
-        mName: '用户中心'
+        mName: '合伙推广'
     },{
         tourl: '../shop/shop',
         mIcon: 'https://e3sl2viw1q4ta7me-10007535.file.myqcloud.com/5daf25bdfefc82a9a0c4.png',

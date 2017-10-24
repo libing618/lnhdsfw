@@ -98,7 +98,7 @@ Page({
 				if (applyUser) {
 					that.setData(applyUser)
 				} else {
-					wx.showToast({'该用户没有注册'})
+					wx.showToast({title:'该用户没有注册'})
 				}
 			});
 		} else {
@@ -116,16 +116,15 @@ Page({
 		newUnitUsers.push({"objectId":that.data.applyUser.objectId, "userRolName":that.data.eRole, 'uName':that.data.applyUser.uName, 'avatarUrl':that.data.applyUser.avatarUrl,'nickName':that.data.applyUser.nickName});
 		new AV.Role(app.uUnit.name)
 			.getUsers.add(that.data.applyUser.objectId)
-			.set('unitUsers',newUnitUsers);
+			.set('unitUsers',newUnitUsers)
 			.save()
-			.then(()=>{
+		.then(()=>{
 				return that.data.eRole;
-			}).then((uSetRole)=>{
-				AV.Cloud.run( 'gRole',{ rHandle: app.uUnit.indType.indexOf(620406)>=0 ? 'bu' : 'au' , operation:that.data.applyUser.objectId , sRole: uSetRole } ).then( (cUser)=>{
-					app.uUnit.unitUsers = newUnitUsers;
-					that.setData({ uUnitUsers: app.uUnit.unitUsers });
-				})
-			})
+		}).then((uSetRole)=>{
+      AV.Cloud.run( 'gRole',{ rHandle: app.uUnit.indType.indexOf(620406)>=0 ? 'bu' : 'au' , operation:that.data.applyUser.objectId , sRole: uSetRole } ).then( (cUser)=>{
+        app.uUnit.unitUsers = newUnitUsers;
+        that.setData({ uUnitUsers: app.uUnit.unitUsers });
+      })
     }).catch(console.error);
   }
 })
