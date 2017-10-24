@@ -5,7 +5,7 @@
     <text>{{tk.tk}}</text>
   </scroll-view>
   <view class="weui-cell_switch"> <switch type="checkbox" checked="{{swcheck}}" bindchange="fswcheck"/>阅读并同意《电子商务服务平台使用条款》</view>
-  <view wx:if="{{user.userAuthorize==-1}}"
+  <view wx:if="{{user.userAuthorize==-1}}">
     <button open-type="getUserInfo" bindgetuserinfo="userInfoHandler">允许微信在本平台上登录</button>
   </view>
   <view wx:else>

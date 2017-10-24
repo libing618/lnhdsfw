@@ -3,7 +3,7 @@ const AV = require('../../libs/leancloud-storage.js');
 var app = getApp()
 Page({
   data:{
-    user: {},
+    user: app.globalData.user,
     sysheight: app.globalData.sysinfo.windowHeight-300,
     swcheck: true,
     iName: { gname: "uName", p: '真实姓名', t: "Name" },
@@ -22,7 +22,6 @@ Page({
         that.wxlogincode = (wxlogined.code) ? wxlogined.code : ''
       }
     });
-    return
   },
 
   editenable: function(e) {                         //点击条目进入编辑或选择操作
@@ -33,10 +32,6 @@ Page({
     var that = this;
     that.data.iName.c = app.globalData.user.uName;
     that.setData({		    		// 获得当前用户
-      user: app.globalData.user,
-      crUnitData: that.data.crUnitData,
-      cUnitInfo: that.data.cUnitInfo,
-      vc: app.uUnit,
       iName: that.data.iName
     })
   },
@@ -69,7 +64,14 @@ Page({
       that.getLoginCode();
     }
   },
-
+  userInfoHandler: function (e) {
+    var that = this;
+    app.openWxLogin(that.data.userAuthorize,-1).then( (mstate)=> {
+      app.logData.push([Date.now(), '用户授权' + app.globalData.sysinfo]);                      //用户授权时间记入日志
+      app.wmenu[0][0].mIcon = e.detail.userInfo.avatarUrl;      //把微信头像地址存入第一个菜单icon
+      that.setData({ user: app.globalData.user })
+    }).catch((error) => { console.log(error) });
+  },
   i_Name: function(e) {							//修改用户姓名
     if ( e.detail.value.uName ) {                  //结束输入后验证是否为空
 			AV.User.current()
