@@ -15,7 +15,9 @@ module.exports={
       "userAuthorize": -1,
       "authData": {},
       "mobilePhoneVerified": false,
-      "objectId": "0"},
+      "sjid": "0",
+      "objectId": "0"
+    },
     sysinfo: null
   },
   tabBar: [

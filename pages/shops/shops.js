@@ -12,7 +12,7 @@ Page({
     ],
     pName: 'shops',
     tabBar: app.tabBar,
-    isWorker: app.globalData.user.emailVerified,
+    isWorker: typeof app.globalData.user.userRolName == 'string',
     grids:  [
         {tourl: '../category/category',
         mIcon: 'https://eqr6jmehq1rpgmny-10007535.file.myqcloud.com/a18e62b4cdcac3f3dd07.jpg',
@@ -38,8 +38,8 @@ onShareAppMessage: function () {
       path: '/pages/index?id='+app.globalData.user.objectId
     }
   },
-  onLoad :function(cs){
+  onShow :function(){
       var that = this;
-
+      that.setData({ tabBar: app.tabBar })
   }
 })

@@ -4,7 +4,7 @@ var app = getApp()
 Page({
   data:{
     user: app.globalData.user,
-    sysheight: app.globalData.sysinfo.windowHeight-300,
+    sysheight: app.globalData.sysinfo.windowHeight-160,
     swcheck: true,
     iName: { gname: "uName", p: '真实姓名', t: "Name" },
     phonen: '',
@@ -33,7 +33,10 @@ Page({
     that.data.iName.c = app.globalData.user.uName;
     that.setData({		    		// 获得当前用户
       iName: that.data.iName
-    })
+    });
+    wx.setNavigationBarTitle({
+      title: app.globalData.user.userRolName ? '您已注册为平台合伙人' : '平台合伙人注册',
+    });
   },
 
 	fswcheck: function(e){
@@ -66,7 +69,7 @@ Page({
   },
   userInfoHandler: function (e) {
     var that = this;
-    app.openWxLogin(that.data.userAuthorize,-1).then( (mstate)=> {
+    app.openWxLogin(that.globalData.user.userAuthorize,0).then( (mstate)=> {
       app.logData.push([Date.now(), '用户授权' + app.globalData.sysinfo]);                      //用户授权时间记入日志
       app.wmenu[0][0].mIcon = e.detail.userInfo.avatarUrl;      //把微信头像地址存入第一个菜单icon
       that.setData({ user: app.globalData.user })
@@ -138,6 +141,26 @@ Page({
 			});
 			this.setData({vcoden : ''});
 		}
-  }
+  },
+
+  registeredPartner: function(e) {                         //创建单位并申请负责人岗位
+    var that = this;
+    if (app.globalData.user.uName) {
+		  var fSeatch = AV.Object.extend('partners');
+      let rQuery = AV.Object.createWithoutData('userInit', '590b402d02f3eb0056fc8c4e')  //设定菜单为sessionuser
+      AV.User.current()
+        .set({"sjid":app.globalData.user.sjid, "userRolName": 'sessionuser', "userRol": rQuery } )  // 设置并保存单位ID
+        .save()
+        .then(function(user) {
+          app.globalData.user = user.toJSON();
+          fSeatch.set({'mobilePhoneNumber':app.globalData.user.mobilePhoneNumber,"userId":app.globalData.user.objectId, 'uName':app.globalData.user.uName, 'avatarUrl':app.globalData.user.avatarUrl,'nickName':app.globalData.user.nickName})
+                 .save()
+                 .then( ()=>{that.setData({user : app.globalData.user});
+        });
+      }).catch((error) => { console.log(error) });
+		}else{
+			wx.showToast({ title: '新建单位时出现问题,请重试。', duration: 7500});
+		}
+	}
 
 })

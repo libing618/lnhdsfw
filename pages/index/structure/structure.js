@@ -94,7 +94,7 @@ Page({
 	fSelApply: function({detail:{value:{inputmpn}}}){
 		var that = this;
 		if ( inputmpn && /^1\d{10}$/.test(inputmpn) ) {
-			new AV.Query('shops').equalTo('mobilePhoneNumber',inputmpn).find().then(applyUser=>{
+			new AV.Query('partners').equalTo('mobilePhoneNumber',inputmpn).find().then(applyUser=>{
 				if (applyUser) {
 					that.setData(applyUser)
 				} else {
@@ -113,7 +113,7 @@ Page({
 	fManageApply: function (e) {
 		var that = this;
 		let newUnitUsers = app.uUnit.unitUsers;
-		newUnitUsers.push({"objectId":that.data.applyUser.objectId, "userRolName":that.data.eRole, 'uName':that.data.applyUser.uName, 'avatarUrl':that.data.applyUser.avatarUrl,'nickName':that.data.applyUser.nickName});
+		newUnitUsers.push({"objectId":that.data.applyUser.userId, 'mobilePhoneNumber':that.data.applyUser.mobilePhoneNumber,"userRolName":that.data.eRole, 'uName':that.data.applyUser.uName, 'avatarUrl':that.data.applyUser.avatarUrl,'nickName':that.data.applyUser.nickName});
 		new AV.Role(app.uUnit.name)
 			.getUsers.add(that.data.applyUser.objectId)
 			.set('unitUsers',newUnitUsers)

@@ -24,7 +24,6 @@
         <icon class="weui-icon" type="{{user.mobilePhoneVerified ? 'success' : 'warn'}}"/> 验证手机号{{user.mobilePhoneVerified ? '（可修改绑定手机号）' : '（无绑定手机号）'}}
     </view>
     <view class="weui-cells" hidden="{{activemobile}}">
-
         <view hidden="{{!swcheck}}">
           <button open-type="getPhoneNumber" bindgetphonenumber="gUserPhoneNumber">允许使用微信手机号</button>
             <form wx:if="{{rejectWxPhone}}" bindsubmit="getvcode">
@@ -54,6 +53,9 @@
                 </view>
             </form>
         </view>
+    </view>
+    <view wx:if="{{user.mobilePhoneVerified && !user.userRolName}}">
+      <button class="weui-btn" bindtap="registeredPartner">注册成为本平台的合伙人</button>
     </view>
   </view>
 </view>

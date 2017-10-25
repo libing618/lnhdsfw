@@ -6,10 +6,10 @@
 <template name="tabBar">
   <view wx:if="{{isWorker}}" class="weui-tabbar">
     <block wx:for="{{tabBar}}" wx:key="{{index}}" wx:for-item="tb">
-      <navigator url="/page/{{tb.pName}}/{{tb.pName}}" open-type="switchTab" hover-class="other-navigator-hover">
+      <navigator url="/pages/{{tb.pName}}/{{tb.pName}}" open-type="switchTab" hover-class="other-navigator-hover">
         <view id="tabar{{index}}" class="weui-tabbar__item {{pName==tb.pName ? 'weui-navbar__item.weui-bar__item_on' : ''}}">
           <view class="weui-tabbar__icon">
-            <img src="./images/icon_{{tb.pName}}.png"/>
+            <image src="../../images/icon_{{tb.pName}}.png"/>
           </view>
           <view wx:if="{{tb.sams>0}}">
             <span class="weui-badge" style="position: absolute;top: -.4em;right: 1em;">tb.sams</span>
@@ -91,7 +91,7 @@
 </template>
 
 <template name="i_Name">
-  <view class="weui-cells weui-cells_after-title">
+  <view class="weui-cells">
     <form bindsubmit="i_Name">
     <view class="weui-cell weui-cell_input weui-cell_vcode">
       <view class="weui-cell__hd">

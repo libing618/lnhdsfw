@@ -25,7 +25,7 @@ const realtime = new Realtime({
 App({
   globalData: require('globaldata.js').globalData,
   wmenu: [],
-  tabBar: [],
+  tabBar: require('globaldata.js').tabBar,
   mData: require('globaldata.js').mData,
   aData: new Array(sProcedure),                           //以objectId为key的数据记录
   oData: new Array(sOperation),                           //以objectId为key的数据记录
@@ -71,12 +71,9 @@ App({
           fail: function(err) { reject( {ec:4,ee:err.errMsg} ); }     //微信用户登录失败
         })
       } else {
-        new AV.Query('_User').include('userRol.updatedAt').select(['emailVerified','userRol.updatedAt']).get(that.globalData.user.objectId).then( (auser) =>{
+        new AV.Query('_User').include('userRol.updatedAt').select(['userRolName','userRol.updatedAt']).get(that.globalData.user.objectId).then( (auser) =>{
           let rUser = auser.toJSON();
-          let menuUpdate = 0;
-          if (rUser.emailVerified) {                       //此用户为员工,菜单在云端有定义
-            if (mUpdateTime != rUser.userRol.updatedAt) { menuUpdate = 2; }               //员工已登录但菜单权限发生变化
-          }
+          let menuUpdate = (rUser.userRolName) ? ((mUpdateTime != rUser.userRol.updatedAt) ? 2 : 0) : 0 ;                     //此用户为注册合伙人,菜单在云端是否发生变化
           wx.getUserInfo({
             withCredentials: false,
             success: function (wxuserinfo) {
@@ -102,20 +99,20 @@ App({
       return new Promise((resolve, reject) => {
         if ( readMenu>0 ){
           new AV.Query('_User').include(['userRol']).select(['userRol']).get(that.globalData.user.objectId).then((rolemenu)=> {
-            let rUser = rolemenu.toJSON();
-            that.wmenu = rUser.userRol.initVale;
-            wx.setStorage({ key: 'menudata', data: rUser.userRol });
+            let mUser = rolemenu.toJSON();
+            that.wmenu = mUser.userRol.initVale;
+            wx.setStorage({ key: 'menudata', data: mUser.userRol });
             resolve( readMenu )
           }).catch((error) => { reject({ ec: 5, ee: error }) })
         } else { resolve( readMenu ); }
       })
     }).then(function(sMenu){
-      if (rUser.emailVerified) {
-        that.tabBar = require('globaldata.js').tabBar;
+      if (that.globalData.user.userRolName) { that.tabBar = require('globaldata.js').tabBar }
+      if (that.globalData.user.emailVerified) {
         that.getRols(that.globalData.user.unit);
         that.imLogin(that.globalData.user.username);
       }
-      return wxappNumber;
+      return sMenu;
     }).catch((error) => { return error });
   },
 
@@ -253,6 +250,41 @@ App({
             compressed(res) {setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 2000);}
           })
         } else {
+          let lcuser = AV.User.current();           //读缓存登录信息
+          if (lcuser) {                            //有缓存登录信息，userAuthorize初始值-1为需要授权
+            that.globalData.user = lcuser.toJSON();
+            let mData = wx.getStorageSync('menudata');
+            var mUpdateTime = 0;
+            if (mData) {            //有菜单缓存则本手机正常使用中必有登录信息
+              that.wmenu = mData.initVale;
+              mUpdateTime = mData.updatedAt;
+              that.globalData.user.userAuthorize = 1;
+            } else {
+              that.globalData.user.userAuthorize = 0;
+            }
+            that.openWxLogin(that.globalData.user.userAuthorize, mUpdateTime).then((mstate) => {
+              if (mstate > 0) { that.wmenu[0][0].mIcon = that.globalData.user.avatarUrl };
+            }).catch(console.error);
+          } else {
+            wx.getNetworkType({
+              success: function (res) {
+                if (res.networkType != 'none') {                     //如果有网络
+                  wx.getSetting({
+                    success(res) {
+                      if (res.authSetting['scope.userInfo']) {                   //用户已经同意小程序使用用户信息
+                        that.openWxLogin(-1, 0).then((mstate) => {
+                          that.wmenu[0][0].mIcon = that.globalData.user.avatarUrl;
+                          that.logData.push([Date.now(), '系统初始化设备' + that.globalData.sysinfo]);                      //本机初始化时间记入日志
+                        }).catch((loginErr) => {
+                          that.logData.push([Date.now(), '系统初始化失败' + loginErr]);
+                        });
+                      }
+                    }
+                  });
+                }
+              }
+            });
+          };
           for (let i=0;i<sProcedure;i++){
             that.mData.procedures[i] = [];
             that.aData[i] = {};
@@ -269,41 +301,6 @@ App({
 
   onShow: function({path,query,scene,shareTicket,referrerInfo}){
     var that = this;
-    let lcuser = AV.User.current();           //读缓存登录信息
-    if (lcuser) {                            //有缓存登录信息，userAuthorize初始值-1为授权按钮
-      that.globalData.user = lcuser.toJSON();
-      let mData = wx.getStorageSync('menudata');
-      var mUpdateTime = '0';
-      if (mData) {            //有菜单缓存则本手机正常使用中必有登录信息
-        that.wmenu = mData.initVale;
-        mUpdateTime = mData.updatedAt;
-        that.globalData.user.userAuthorize = 1;
-      } else {
-        that.globalData.user.userAuthorize = 0;
-      }
-      that.openWxLogin(that.globalData.user.userAuthorize,mUpdateTime).then( (mstate)=> {
-        that.wmenu[0][0].mIcon = that.globalData.user.avatarUrl;
-      }).catch( console.error );
-    } else {
-      wx.getNetworkType({
-        success: function(res) {
-          if (res.networkType!='none') {                     //如果有网络
-            wx.getSetting({
-              success(res) {
-                if (res.authSetting['scope.userInfo']) {                   //用户已经同意小程序使用用户信息
-                  that.openWxLogin(-1, 0).then( (mstate)=> {
-                    that.wmenu[0][0].mIcon = that.globalData.user.avatarUrl;
-                    that.logData.push([Date.now(), '系统初始化设备' + that.globalData.sysinfo]);                      //本机初始化时间记入日志
-                  }).catch((loginErr) => {
-                    that.logData.push([Date.now(), '系统初始化失败' + loginErr]);
-                  });
-                }
-              }
-            });
-          }
-        }
-      });
-    };
     if (scene===1007 && path=='/pages/f_Role/f_Role'){
       wx.setStorageSync('proScene',{path,query,scene})
       wx.navigateTo({url:path+query})
