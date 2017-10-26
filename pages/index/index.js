@@ -5,6 +5,7 @@ Page({
     autoplay: true,
     pName: 'index',
     tabBar: app.tabBar,
+    isWorker: typeof app.globalData.user.userRolName == 'string',
     scrollTop : 0,
     scrollHeight: app.globalData.sysinfo.windowHeight-80,
     mPage: app.mData.prdct1,

@@ -5,6 +5,7 @@ Page({
   data:{
     pName: 'marketing',
     tabBar: app.tabBar,
+    isWorker: typeof app.globalData.user.userRolName == 'string',
     grids:[]
   },
   onLoad:function(options){

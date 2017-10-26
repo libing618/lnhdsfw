@@ -40,5 +40,5 @@
         </view>
       </view>
     </scroll-view>
-    <template is="tabBar" data="{{tabBar,pName}}" />
+    <template is="tabBar" data="{{isWorker,tabBar,pName}}" />
 </view>

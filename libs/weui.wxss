@@ -617,8 +617,8 @@ icon {
 }
 .weui-grid__icon {
   display: block;
-  width: 56rpx;
-  height: 56rpx;
+  width: 60rpx;
+  height: 60rpx;
   margin: 0 auto;
 }
 .weui-grid__label {
@@ -631,14 +631,22 @@ icon {
   text-overflow: ellipsis;
   overflow: hidden;
 }
-.weui-tabbar {
+.weui-tabbars {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  position: absolute;
   z-index: 500;
   bottom: 0;
-  width: 100%;
+  background-color: #F7F7FA;
+}
+.weui-tabbar {
+  position: relative;
+  float: left;
+  padding: 6rpx 2rpx;
+  width: 20%;
+  box-sizing: border-box;
+  border-right: 1rpx solid #D9D9D9;
+  border-bottom: 1rpx solid #D9D9D9;
   background-color: #F7F7FA;
 }
 .weui-tabbar__item {
@@ -654,8 +662,8 @@ icon {
 }
 .weui-tabbar__icon {
   display: inline-block;
-  width: 160rpx;
-  height: 160rpx;
+  width: 72rpx;
+  height: 72rpx;
 }
 .weui-tabbar__label {
   text-align: center;

@@ -4,7 +4,8 @@ Page({
   data:{
     mPage: app.mData.prdct3,
     pName: 'production',
-    tanbBar: app.tabBar,
+    tabBar: app.tabBar,
+    isWorker: typeof app.globalData.user.userRolName == 'string',
     pNo: 3,                       //流程的序号3为产品服务类信息
     pageData: {},
     fLength: 2,

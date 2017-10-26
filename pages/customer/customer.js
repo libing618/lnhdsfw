@@ -5,6 +5,7 @@ Page({
     grids:[],
     pName: 'customer',
     tabBar: app.tabBar,
+    isWorker: typeof app.globalData.user.userRolName == 'string',
     approvPending: [],
     text : '沟通开始：'
   },

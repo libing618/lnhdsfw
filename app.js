@@ -107,7 +107,7 @@ App({
         } else { resolve( readMenu ); }
       })
     }).then(function(sMenu){
-      if (that.globalData.user.userRolName) { that.tabBar = require('globaldata.js').tabBar }
+      if (typeof that.globalData.user.userRolName!='string') { that.tabBar = [] }
       if (that.globalData.user.emailVerified) {
         that.getRols(that.globalData.user.unit);
         that.imLogin(that.globalData.user.username);

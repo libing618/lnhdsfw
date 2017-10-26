@@ -13,20 +13,12 @@
 
   <view class="page__bd">
     <view class="weui-grids">
-      <view wx:if="{{userAuthorize==-2}}">
-        <text>欢迎使用创业服务平台</text>
-      </view>
-      <view wx:elif="{{userAuthorize==-1}}">
-        <button open-type="getUserInfo" bindgetuserinfo="userInfoHandler">允许微信在本平台上登录</button>
-      </view>
-      <view wx:else>
-        <block wx:for="{{grids}}" wx:key="{{index}}">
-          <navigator url="{{item.tourl}}" class="weui-grid" hover-class="weui-grid_active">
-            <image class="weui-grid__icon" src="{{item.mIcon}}"></image>
-            <view class="weui-grid__label">{{item.mName}}</view>
-          </navigator>
-        </block>
-      </view>
+      <block wx:for="{{grids}}" wx:key="{{index}}">
+        <navigator url="{{item.tourl}}" class="weui-grid" hover-class="weui-grid_active">
+          <image class="weui-grid__icon" src="{{item.mIcon}}"></image>
+          <view class="weui-grid__label">{{item.mName}}</view>
+        </navigator>
+      </block>
     </view>
     <view class="weui-tab">
       <view class="weui-navbar">
@@ -40,5 +32,5 @@
       <template is="tabPanel" data="{{ tPage: fLength ? mPage[pageCk] : mPage , pageData , pNo }}"/>
     </view>
   </view>
-  <template is="tabBar" data="{{tabBar,pName}}" />
+  <template is="tabBar" data="{{isWorker,tabBar,pName}}" />
 </view>
