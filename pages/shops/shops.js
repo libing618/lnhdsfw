@@ -40,6 +40,7 @@ onShareAppMessage: function () {
   },
   onShow :function(){
       var that = this;
+      app.tabBar[0].sams=2
       that.setData({ tabBar: app.tabBar })
   }
 })

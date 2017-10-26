@@ -6,16 +6,21 @@
 <template name="tabBar">
   <view wx:if="{{isWorker}}" class="weui-footer_fixed-bottom weui-tabbars">
     <block wx:for="{{tabBar}}" wx:key="{{index}}" wx:for-item="tb">
-      <view class="weui-tabbar">
-      <navigator url="/pages/{{tb.pName}}/{{tb.pName}}" open-type="redirectTo" hover-class="other-navigator-hover">
-        <view id="tabar{{index}}" class="weui-tabbar__item {{pName==tb.pName ? 'weui-navbar__item.weui-bar__item_on' : ''}}">
-            <image class="weui-tabbar__icon" src="../../images/icon_{{tb.pName}}.png"/>
+      <view wx:if="{{pName==tb.pName}}" class="weui-tabbar__item">
+        <image class="weui-tabbar__icon" src="../../images/{{tb.pName}}.png"/>
+        <view wx:if="{{tb.sams>0}}">
+          <span class="weui-badge" style="position: absolute;top: -.4em;right: 1em;">{{tb.sams}}</span>
+        </view>
+        <view class="weui-tabbar__label" style="color:red;">{{tb.cName}}</view>
+      </view>
+      <view wx:else class="weui-tabbar">
+        <navigator url="/pages/{{tb.pName}}/{{tb.pName}}" open-type="redirectTo" hover-class="other-navigator-hover">
+          <image class="weui-tabbar__icon" src="../../images/{{tb.pName}}.png"/>
           <view wx:if="{{tb.sams>0}}">
-            <span class="weui-badge" style="position: absolute;top: -.4em;right: 1em;">tb.sams</span>
+            <span class="weui-badge" style="position: absolute;top: -.4em;right: 1em;">{{tb.sams}}</span>
           </view>
           <view class="weui-tabbar__label">{{tb.cName}}</view>
-        </view>
-      </navigator>
+        </navigator>
       </view>
     </block>
   </view>

@@ -1,3 +1,4 @@
+<import src="../../libs/weimport.wxml" />
 <view class="page">
   <view class="page__hd">
     <view class="page__title">近期任务</view>
