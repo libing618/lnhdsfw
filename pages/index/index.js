@@ -11,7 +11,7 @@ Page({
     mPage: app.mData.prdct1,
     pNo: 1,                       //流程的序号1为文章类信息
     pageData: {},
-    tabs: ["品牌建设", "政策扶持", "我的商圈"],
+    tabs: ["品牌建设", "政策扶持", '商圈人脉'],
     pageCk: app.mData.pCk1,
     wWidth: app.globalData.sysinfo.windowWidth,
     grids: app.wmenu[0]

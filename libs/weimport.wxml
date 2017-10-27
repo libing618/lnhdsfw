@@ -11,7 +11,7 @@
         <view wx:if="{{tb.sams>0}}">
           <span class="weui-badge" style="position: absolute;top: -.4em;right: 1em;">{{tb.sams}}</span>
         </view>
-        <view class="weui-tabbar__label" style="color:red;">{{tb.cName}}</view>
+        <view class="weui-tabbar__label" style="color:green;">{{tb.cName}}</view>
       </view>
       <view wx:else class="weui-tabbar">
         <navigator url="/pages/{{tb.pName}}/{{tb.pName}}" open-type="redirectTo" hover-class="other-navigator-hover">
