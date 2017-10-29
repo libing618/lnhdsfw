@@ -1,22 +1,15 @@
 module.exports = [
 {
   "pNo": 0,
-  "pName": "单位名称和负责人",
-  "afamily": ['个体生产者','工农商企业','电商服务点','销售渠道'],
+  "pName": "扶贫单位销售渠道",
   "pSuccess": [
-    {inclose:true, gname:"indType", p:'主营业务', t:"industrytype", apdclist:require('./apd1.js'), apdvalue:[0, 0, 0] },
     {gname:"nick", p:'单位简称',t:"h3" },
     {gname: "title", p: '单位简介', t: "p"},
     {gname: "desc", p: '单位描述', t: "p"},
-    {gname: "thumbnail", p: '图片简介', t: "thumb" },
-    {gname: "aGeoPoint", p: '选择地理位置', t: "chooseAd" },
-    {gname: "address", p: '详细地址', t: "ed"},
-    {gname: "licenseNumber", p:'社会信用代码', t: "h3" },
-    {gname:"pPhoto", p:'申请人手持身份证的照片',t:"pic", e:'http://ady3cqpl0902fnph-10007535.file.myqcloud.com/667b99d135e2d8fa876d.jpg' },
-    {gname:"uPhoto", p:'单位营业执照或个人身份证背面的照片',t:"pic", e:'http://ady3cqpl0902fnph-10007535.file.myqcloud.com/80b1db6d2b4f0a1cc7cf.jpg' }
+    {gname: "thumbnail", p: '图片简介', t: "thumb" }
   ],
   "puRoles": [],
-  "pBewrite": "单位负责人提出岗位和单位设置或修改申请，提交单位或个人身份证明文件的照片，由电子商务服务公司进行审批。",
+  "pBewrite": "销售渠道负责人提出单位设置或修改申请，由平台公司进行审批。",
   "suRoles": [
     "32",
     "31"
@@ -47,7 +40,7 @@ module.exports = [
 },
 {
   "pNo": 2,
-  "pName": "固定资产登记",
+  "pName": "固定资产",
   "pSuccess": [
     {gname: "uName", p:'固定资产名称', t:"h3" },
     {inclose: true, gname:"assetType", p:'固定资产类别',t:"assettype", assclist:require('./ass1.js'), ascvalue:[0, 0, 0] },
@@ -134,7 +127,7 @@ module.exports = [
     {gname:"base_price", p:'小优惠价格', t:"dg" },
     {gname:"big_amount", p:'大优惠起点', t:"dg" },
     {gname:"big_price", p:'大优惠价格', t:"dg" },
-    {gname:"start_end", p:'供应', t:"sedate",inclose:true,endif:false },
+    {gname:"start_end", p:'供应期', t:"sedate",inclose:true,endif:false },
     {gname:"proportion", p:'占产品总量的比例', t:"dg" }
   ],
   "pBewrite": "产品条线提出产品设置或修改申请，由营销条线负责人进行审批。",
