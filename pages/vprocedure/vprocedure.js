@@ -12,7 +12,7 @@ Page({
     let cUnitName = app.globalData.user.emailVerified ? app.uUnit.uName : '体验用户';     //用户已通过单位和职位审核
     if (typeof options.pNo =='number' && typeof options.artId =='string') {             //检查参数
       let apNo = 'prdct'+options.pNo;
-      let pClass = require('../../libs/procedureclass.js')[options.pNo];
+      let pClass = require('../../model/procedureclass.js')[options.pNo];
       that.data.reqData=pClass.pSuccess.map( rField=>{
         switch (rField.t){
           case 'sproduct' :
@@ -45,7 +45,7 @@ Page({
         break;
       case 'fTemplate' :
         if (typeof that.data.viewData.afamily=='number') {url += '&artId='+that.data.viewData.afamily};
-        let proName=require('../libs/procedureclass.js')[that.data.pNo].pModle;
+        let proName=require('../model/procedureclass.js')[that.data.pNo].pModle;
         app.aData[that.data.pNo][proName] = that.data.viewData;
         break;
     };

@@ -1,13 +1,28 @@
-var tapdv=require("apdv.wxs");
-var glist = function(svale){
-  if ( tapdv[svale].constructor == "Object" ) {
-    var apdb = [];
+var tapdv=require("./apdv.wxs");
+var glist = function(clist,svale,sn){
+  var apdb1 = [];
+  var k = clist[svale[0]];
+  if (tapdv['s'+k]) {
     for (var m = k * 100; m < (k + 1) * 100; m++) {
-      if ( tapdv['s'+m].constructor == "Object" ) { apdb.push( m ) }
+      if (tapdv['s' + m]) { apdb1.push(m);}
     }
-    if (!apdb) { apdb.push(svale) }
+    if (apdb1.length==0) { apdb1.push(k) }
   }
-  return apdb;
+  if (sn>0) {
+    var apdb2 = [];
+    var l = apdb1[svale[1]];
+    if ( tapdv['s'+l] ) {
+      for (var n = l * 100; n < (l + 1) * 100; n++) {
+        if ( tapdv['s'+n] ) { apdb2.push( n ) }
+      }
+      if (apdb2.length == 0) { apdb2.push(l) }
+    }
+    if (sn==1) {
+      return apdb2;
+    } else { return apdb2[svale[2]] }
+  } else {
+    return apdb1;
+  }  
 };
 var mDot = function(i,cArray){
   return i==cArray.length-1 ? '' : '、'

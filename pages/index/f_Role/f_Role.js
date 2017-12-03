@@ -15,7 +15,7 @@ var uniteditPage = {
   onLoad: function(options) {
     var that = this;
     if (app.globalData.user.mobilePhoneVerified){       //注册用户才可以创建单位
-      let reqData = require('../../../libs/procedureclass.js')[0].pSuccess;
+      let reqData = require('../../../model/procedureclass.js')[0].pSuccess;
       wx.setNavigationBarTitle({  title: app.uUnit.nick+'的信息',  })
       if (options.ruId) {
         AV.Query('reqUnit').get(options.ruId).then(reqUnit=>{

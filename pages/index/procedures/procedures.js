@@ -15,7 +15,7 @@ Page({
   },
 
   onLoad:function(options){
-    let pClass = require('../../../libs/procedureclass.js');
+    let pClass = require('../../../model/procedureclass.js');
     pClass.forEach( procedure=> { this.data.pClassName.push(procedure.pName)} )
     var pLength = pClass.length;
     var ats = new Array(3);

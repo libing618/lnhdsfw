@@ -1,4 +1,3 @@
-
 <template name="selecticon1">
   <view class="weui-cell__hd">
     <image src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAu0lEQVQ4je2TIQsCQRBGn1a5YlEQTGrTZtCg+Zjf+2m+JGK06SWTlhMUs5Y9XA7LrgYRv/KGWXjssLPwz7upAUhaAClQAF0zu0lqAAegGSKsO6aOTWDu6lmozBf62TnmoTJ4jtwBDFiZ2bY8lDQCJjHi70058gVIXK9tZidJLeAYKiwfJfF64wqjhFevt6nwx+LvYQqsK3s4BKYxwrvX65tZLqkH7ENv+OrrDSqMEi4dCyBzdQacY6QfzQP+wjJ6Lg0TtAAAAABJRU5ErkJggg==" style="margin-right: 5px;vertical-align: middle;width:20px; height: 20px;"></image>

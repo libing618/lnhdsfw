@@ -17,7 +17,7 @@ Page({
 
   onLoad:function(options){
     let dProcedure = Number(app.procedures[options.approveId].dProcedure);
-    procedureClass = require('../../libs/procedureclass.js')[dProcedure];
+    procedureClass = require('../../model/procedureclass.js')[dProcedure];
     this.setData({
       bsType: procedureClass.pSuccess,      //流程内容格式
       pBewrite: procedureClass.pBewrite,     //流程说明

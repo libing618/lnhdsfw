@@ -31,7 +31,7 @@ var sPage = {
         } else { reject() };
       }
     }).then(ops=>{
-      var pClass = require('./libs/procedureclass.js')[ops.pNo];
+      var pClass = require('../../model/procedureclass.js')[ops.pNo];
       that.data.reqData = pClass.pSuccess;
       that.data.pNo = ops.pNo;
       let titleName = pClass.pName;
