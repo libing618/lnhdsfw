@@ -1,5 +1,5 @@
 const AV = require('../libs/leancloud-storage.js');
-const procedureclass = require('../libs/procedureclass.js');
+const procedureclass = require('../model/procedureclass.js');
 var app = getApp();
 function formatNumber(n) {
   n = n.toString()

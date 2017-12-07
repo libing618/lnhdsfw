@@ -52,7 +52,7 @@ Page({
     this.reqNumber = Number(options.reqNumber);
     let pages = getCurrentPages();                //获取当前页面路由栈的信息
     this.prevPage = pages[pages.length - 2];        //上个页面
-    this.reqProIsSuperior = typeof this.prevPage.data.reqData[this.reqNumber].indTypes == 'number' ? true : false ;
+    this.reqProIsSuperior = typeof this.prevPage.data.reqData[this.reqNumber].indTypes == 'number' ;
     if ( this.reqProIsSuperior ) {wx.showToast({title:'选择服务单位，请注意：选定后不能更改！'})}
   },
 
@@ -61,7 +61,7 @@ Page({
     wx.getLocation({
       type: 'wgs84',
       success: function(res){
-        let cadd = new AV.GeoPoint(that.reqProIsSuperior ? that.prevPage.data.reqData[5].c : { latitude: res.latitude, longitude: res.longitude });
+        let cadd = new AV.GeoPoint(that.reqProIsSuperior ? that.prevPage.data.vData.aGeoPoint : { latitude: res.latitude, longitude: res.longitude });
         var qGeo = new AV.Query('_Role');
         qGeo.withinKilometers('aGeoPoint', cadd, 20);
         var qType = new AV.Query('_Role');
@@ -84,7 +84,7 @@ Page({
               uM.iconPath=resJSON.unitType ? '/images/icon-personal.png' : '/images/icon-company.png';
               uMarkers.push(uM);
               badd = new AV.GeoPoint(resJSON.aGeoPoint);
-              resJSON.distance = badd.kilometersTo(cadd) * 1000;
+              resJSON.distance = parseInt(badd.kilometersTo(cadd) * 1000 +0.5);
               unitArray.push( resJSON );
             }
             that.data.controls[2].clickable = true;
@@ -123,10 +123,11 @@ Page({
         that.setData({ scale: that.data.scale==5 ? 5 : that.data.scale-1  })
         break;
       case 3:
-        that.prevPage.data.reqData[that.reqNumber].c = that.data.unitArray[that.data.sId].objectId;
-        that.prevPage.data.reqData[that.reqNumber].e = that.data.unitArray[that.data.sId].uName;
+       //that.prevPage.data.vData[that.reqNumber] = that.data.unitArray[that.data.sId].objectId;
+     //   that.prevPage.data.reqData[that.reqNumber].e = that.data.unitArray[that.data.sId].uName;
         let reqset = {};
-        reqset['reqData['+that.reqNumber+']'] = that.prevPage.data.reqData[that.reqNumber];
+        reqset['reqData[' + that.reqNumber + '].e'] = that.data.unitArray[that.data.sId].uName;
+        reqset['vData.' + that.prevPage.data.reqData[that.reqNumber].gname] = that.data.unitArray[that.data.sId].objectId;
         if (that.reqProIsSuperior) {
           app.uUnit.sUnit = that.data.unitArray[that.data.sId].objectId;
           app.sUnit = that.data.unitArray[that.data.sId];

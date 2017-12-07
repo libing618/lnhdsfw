@@ -10,6 +10,6 @@
     <button class="weui-btn" style="display:inline-block" type="default" size="mini" bindtap="freduce">缩小范围</button>
   </view>
   <view class="page__ac_spacing">
-    <canvas canvas-id="cei" disable-scroll="false" style='width:640rpx;height:544rpx;'/>
+    <canvas canvas-id="cei" disable-scroll="{{false}}" style="width:320px;height:272px;"/>
   </view>
 </view>

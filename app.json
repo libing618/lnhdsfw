@@ -6,7 +6,7 @@
     "pages/index/f_Role/f_Role",
     "pages/index/structure/structure",
     "pages/index/procedures/procedures",
-    "pages/index/communication/communication"
+    "pages/index/communication/communication",
     "pages/fprocedure/fprocedure",
     "pages/vprocedure/vprocedure",
     "pages/lprocedures/lprocedures",
@@ -21,7 +21,7 @@
     "pages/marketing/closerate/closerate",
     "pages/marketing/income/income",
     "pages/marketing/capital/capital",
-    "pages/marketing/activities/activities"
+    "pages/marketing/activities/activities",
     "pages/customer/customer",
     "pages/customer/addresslist/addresslist",
     "pages/customer/live/live",

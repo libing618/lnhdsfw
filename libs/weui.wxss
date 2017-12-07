@@ -158,6 +158,52 @@ icon {
   padding-top: 0;
   padding-bottom: 0;
 }
+.weui-tabbars {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  z-index: 500;
+  bottom: 0;
+  height: 110rpx;
+  border-top: 1rpx solid #D9D9D9;
+  border-bottom: 1rpx solid #D9D9D9;
+}
+.weui-tabbar {
+  position: relative;
+  float: left;
+  padding: 4rpx 2rpx 2rpx;
+  width: 140rpx;
+  text-align: center;
+  margin: auto;
+  line-height: 32rpx;
+  border-radius: 2rpx;
+  box-shadow: 0 0 0 8rpx #F6F6F6;
+  background-color: #F7F7FA;
+}
+.weui-tabbar__item {
+  position: relative;
+  float: left;
+  padding: 6rpx 2rpx 4rpx;
+  width: 140rpx;
+  text-align: center;
+  margin: auto;
+  line-height: 34rpx;
+  
+  border-radius: 2rpx;
+  box-shadow: 0 0 0 8rpx #E5E7EB;
+  background-color: #E5E7EB;
+}
+.weui-tabbar__icon {
+  display: inline-block;
+  width: 72rpx;
+  height: 72rpx;
+}
+.weui-tabbar__label {
+  text-align: center;
+  color: #3F3F3F;
+  font-size: 26rpx;
+  /* line-height: 0.8; */
+}
 .weui-label {
   width: 210rpx;
   word-wrap: break-word;

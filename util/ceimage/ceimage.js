@@ -1,4 +1,5 @@
 //图片选取及简单编辑模块 util/ceimage/ceimage.js
+const { File } = require('../../libs/leancloud-storage.js');
 var iScale=1 , cScale ,ds;
 var ctx = wx.createCanvasContext('cei');
 var app = getApp();
@@ -20,11 +21,11 @@ Page({
     let pages = getCurrentPages();                //获取当前页面路由栈的信息
     that.prevPage = pages[pages.length - 2];        //上个页面
     that.reqField = 'vData.' + options.reqName;
-    if (that.prevPage.data.selectd<0) {
-      var getSrc = that.prevPage.data.vData[options.reqName];
+    if (typeof that.prevPage.data.selectd=='number' && that.prevPage.data.selectd>=0) {
+      that.reqField += '[' + that.prevPage.data.selectd + '].c';              //详情部分的图片编辑
+      var getSrc = that.prevPage.data.vData[options.reqName][that.prevPage.data.selectd].c;
     } else {
-      that.reqField += '['+that.prevPage.data.selectd+'].c';
-      var getSrc = that.prevPage.data.vData[options.reqName][that.prevPage.data.selectd].c
+      var getSrc = that.prevPage.data.vData[options.reqName];
     };
     wx.getImageInfo({
       src: getSrc,
@@ -53,7 +54,7 @@ Page({
     }
     this.setData({ x: xm, y: ym });
     ctx.scale(ds*cScale / iScale, ds*cScale / iScale);
-    ctx.drawImage(this.data.iscr, (0 - xm) / cScale, (0 - ym) / cScale, 320, 272);
+    ctx.drawImage(this.data.iscr, 0 - xm/cScale/ds, 0 - ym/cScale/ds, 320, 272);
     ctx.draw();
   },
 
@@ -84,15 +85,13 @@ Page({
       destWidth: 640,
       destHeight: 544,
       success: function(resTem){
-        wx.saveFile({
-          tempFilePath: resTem.tempFilePath,
-          success: function (res) {
-            let reqset = {};
-            reqset[that.reqField] = res.savedFilePath;
-            that.prevPage.setData(reqset);
-            wx.navigateBack({ delta: 1 });
-          }
-        })
+        new File('file-name', {	blob: {	uri: resTem.tempFilePath, },
+        }).save().then(	resfile => {
+          let reqset = {};
+          reqset[that.reqField] = resfile.url();
+          that.prevPage.setData(reqset);
+          wx.navigateBack({ delta: 1 });
+        }).catch(console.error);
       }
     })
   }

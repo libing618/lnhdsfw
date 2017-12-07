@@ -43,7 +43,7 @@ module.exports = [
   "pName": "固定资产",
   "pSuccess": [
     {gname: "uName", p:'固定资产名称', t:"h3" },
-    {inclose: true, gname:"assetType", p:'固定资产类别',t:"assettype", assclist:require('./ass1.js'), ascvalue:[0, 0, 0] },
+    {inclose: true, gname:"assetType", p:'固定资产类别',t:"assettype", ascvalue:[0, 0, 0] },
     {gname:"title", p:'固定资产简介',t:"p" },
     {gname:"desc", p:'固定资产描述',t:"p", },
     {gname:"aGeoPoint", p:'地理位置',t:"chooseAd" },
