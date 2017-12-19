@@ -23,7 +23,6 @@ module.exports={
   tabBar: [
     {pName: 'shops',cName: '商城'},
     {pName: 'index',cName: '管理'},
-    {pName: 'production',cName: '生产'},
     {pName: 'marketing',cName: '营销'},
     {pName: 'customer',cName: '客服'}
   ],

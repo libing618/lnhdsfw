@@ -69,7 +69,7 @@ Page({
   },
   userInfoHandler: function (e) {
     var that = this;
-    app.openWxLogin(that.globalData.user.userAuthorize,0).then( (mstate)=> {
+    app.openWxLogin(app.globalData.user.userAuthorize,0).then( (mstate)=> {
       app.logData.push([Date.now(), '用户授权' + app.globalData.sysinfo]);                      //用户授权时间记入日志
       app.wmenu[0][0].mIcon = e.detail.userInfo.avatarUrl;      //把微信头像地址存入第一个菜单icon
       that.setData({ user: app.globalData.user })

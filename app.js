@@ -107,6 +107,7 @@ App({
         } else { resolve( readMenu ); }
       })
     }).then(function(sMenu){
+      that.wmenu[0][0].mIcon = that.globalData.user.avatarUrl;
       if (typeof that.globalData.user.userRolName!='string') { that.tabBar = [] }
       if (that.globalData.user.emailVerified) {
         that.getRols(that.globalData.user.unit);

@@ -17,7 +17,7 @@ Page({
 
   onLoad:function(options){
     let dProcedure = Number(app.procedures[options.approveId].dProcedure);
-    procedureClass = require('../../libs/procedureclass.js')[dProcedure];
+    let procedureClass = require('../../model/procedureclass.js')[dProcedure];
     this.setData({
       bsType: procedureClass.pSuccess,      //流程内容格式
       pBewrite: procedureClass.pBewrite,     //流程说明
@@ -64,9 +64,13 @@ Page({
           let sData = that.data.aValue.dObject;
           if (that.data.aValue.dProcedure == 0) {                    //是否单位审批流程
             sData.uState = rResultId;
-            AV.Cloud.run('setRole', { id: that.data.aValue.dObjectId, dObject: sData }).then(() => {
+            AV.Cloud.run('setRole', { id: that.data.aValue.unitId, dObject: sData }).then((qRoleSet) => {
               wx.showToast({ title: '设置单位信息', duration: 2000 });
+              console.log(qRoleSet);
               resolve(0);
+            }).catch( err=>{
+              console.log(err);
+              reject(err);
             })
           } else if (rResultId === 1){
             let sObject;
@@ -83,6 +87,7 @@ Page({
               resolve(sd.objectId);
             }).catch((error)=>{
               wx.showToast({ title: '审批内容发布出现错误'+error.error, duration: 2000 });
+              reject(error);
             })
           } else { resolve(0) };
         } else { resolve(0) }
@@ -96,6 +101,7 @@ Page({
         cApproval.set('cFlowStep', nInstace == that.data.cmLength ? ['流程结束'] : that.data.aValue.cManagers[nInstace]); //下一流程审批人
         cApproval.save().then(function () {
           wx.showToast({ title: '流程已提交,请查询结果。', duration: 2000 }) // 保存成功
+          setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 2000);
         })
       }).catch(console.error);
     } else {

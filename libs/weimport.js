@@ -15,10 +15,11 @@ const rdSet=function(n,rdg,rdn){
 };
 const mgrids = ['产品', '图像', '音频', '视频', '位置', '文件', '大标题', '中标题', '小标题', '正文'];
 const mid = ['-1', '-2', '-3', '-4', '-5', '-6', 'h2', 'h3', 'h4', 'p'];
-function getdate(date){
-  var year = date.getFullYear();
-  var month = date.getMonth() + 1;
-  var day = date.getDate();
+function getdate(idate){
+  let rdate = new Date(idate)
+  var year = rdate.getFullYear();
+  var month = rdate.getMonth() + 1;
+  var day = rdate.getDate();
   return year+'-'+( month<10 ? '0'+month : month)+'-'+( day<10 ? '0'+day : day)
 }
 function sFilePath(reqData,vData){
@@ -49,18 +50,18 @@ function sFilePath(reqData,vData){
   return filePaths;
 }
 module.exports = {
-  initData: function(that,reqFormat,aaData){
+  initData: function(that,aaData){
     let vifData = typeof aaData == 'undefined';
-    let vData = vifData ? {} : aaData;
+    if (!vifData) { that.data.vData = aaData };
     var lName='0';
-    for (let i=0;i<reqFormat.length;i++){
-      switch (reqFormat[i].t){
+    for (let i=0;i<that.data.reqData.length;i++){
+      switch (that.data.reqData[i].t){
         case 'chooseAd' :
-          if (vifData) { lName=reqFormat[i].gname };          //地理位置字段
+          if (vifData) { lName=that.data.reqData[i].gname };          //地理位置字段
           break;
         case 'eDetail' :
           if (vifData) {                      //详情字段
-            vData[reqFormat[i].gname]=[                     //内容部分定义：t为类型,e为文字或说明,c为媒体文件地址或内容
+            that.data.vData[that.data.reqData[i].gname]=[                     //内容部分定义：t为类型,e为文字或说明,c为媒体文件地址或内容
               { t: "h2", e: "大标题"},
               { t: "p" ,e: "正文简介"},
               { t: "h3", e: "中标题" },
@@ -83,15 +84,20 @@ module.exports = {
           };
           break;
         case 'sproduct' :                    //产品选择字段
-          reqFormat[i].mD = app.mData.prdct3;
-          reqFormat[i].ad = app.aData[3];
+          that.data.reqData[i].mD = app.mData.prdct3;
+          that.data.reqData[i].ad = app.aData[3];
           break;
         case 'producttype' :
-          if (! vifData) { reqFormat[i].apdclist = app.uUnit.indType; }
+          that.data.reqData[i].apdclist = app.uUnit.indType;
+          break;
+        case 'industrytype':
+          if (vifData) {that.data.vData[that.data.reqData[i].gname] = [] };
+          break;
+        case 'arrsel':
+          if (vifData) { that.data.vData[that.data.reqData[i].gname] = 0 };
           break;
         case 'sedate' :
-          reqFormat[i].sDate = getdate(new Date());
-          vData[reqFormat[i].gname] = [getdate(new Date()), getdate(new Date() + 86400000)]
+          if (vifData) {that.data.vData[that.data.reqData[i].gname] = [getdate(Date.now()), getdate(Date.now() + 864000000)] }
           break;
       }
     };
@@ -116,13 +122,13 @@ module.exports = {
         wx.getLocation({
           type: 'wgs84',
           success: function (res) {
-            vData[lName]  = new AV.GeoPoint(res.latitude,res.longitude);
-            that.setData({ reqData: reqFormat, vData: vData });
+            that.data.vData[lName]  = new AV.GeoPoint(res.latitude,res.longitude);
+            that.setData(that.data);
           }
         })
       }).catch(console.error)
     } else {
-      that.setData({ reqData: reqFormat, vData: vData });
+      that.setData( that.data );
     }
   },
 
@@ -133,17 +139,22 @@ module.exports = {
     });
   },
 
+  i_arrsel: function (e) {                         //选择类型
+    let n = parseInt(e.currentTarget.id.substring(3))      //数组下标
+    this.setData( vdSet(this.data.reqData[n].gname,e.detail.value) )
+  },
+
   i_industrytype: function (e) {                         //选择行业类型
     var that = this;
     let n = parseInt(e.currentTarget.id.substring(3))      //数组下标
     var id = e.currentTarget.id.substring(0,2);
     switch (id) {
-      case 'se' :                                   //按放大镜ICON打开选择框
+      case 'se' :                                   //按下载ICON打开选择框
         that.setData( rdSet(n, 'inclose', ! that.data.reqData[n].inclose) );
         break;
       case 'su' :                                   //按确定ICON确认选择
         let apdv = that.data.reqData[n].apdvalue;
-        that.data.vData[that.data.reqData[n].gname].push(that.data.reqData[n].apdclist[apdv[0]].st[apdv[1]].ct[apdv[2]]);
+        that.data.vData[that.data.reqData[n].gname].push(Number(e.currentTarget.dataset.sapdv));
         that.setData( vdSet(that.data.reqData[n].gname,that.data.vData[that.data.reqData[n].gname]) )
         break;
       case 'pa' :
@@ -206,16 +217,12 @@ module.exports = {
     let rSet = {};
     switch (id) {
       case 'ac' :
-        rSet = vdSet(that.data.reqData[n].gname, e.currentTarget.dataset.ei ? [that.data.vData[that.data.reqData[n].gname][0],e.detail.value]
-                                                      : [e.detail.value, that.data.vData[that.data.reqData[n].gname][1]] );
-        rSet['reqData['+n+'].inclose'] = true;
+        rSet = vdSet(that.data.reqData[n].gname, e.currentTarget.dataset.ei ? [that.data.vData[that.data.reqData[n].gname][0],e.detail.value] : [e.detail.value, that.data.vData[that.data.reqData[n].gname][1]] );
         break;
       case 'ds' :                             //选择开始日期
-        rSet['reqData['+n+'].inclose'] = false;
         rSet['reqData['+n+'].endif'] = false;
         break;
       case 'de' :                           //选择结束日期
-        rSet['reqData['+n+'].inclose'] = false;
         rSet['reqData['+n+'].endif'] = true;
         break;
     }
@@ -274,7 +281,7 @@ module.exports = {
     wx.chooseLocation({
       success: function (res) {
         that.setData({ 'vData.aGeoPoint':new AV.GeoPoint({ latitude: res.latitude, longitude: res.longitude}) });
-        if (that.data.vData[that.data.reqData[n+1].gname]=='') { that.setData(vdSet(that.data.reqData[n+1].gname,res.address)) }
+        if (!that.data.vData[that.data.reqData[n+1].gname]) { that.setData(vdSet(that.data.reqData[n+1].gname,res.address)) }
       }
     })
   },
@@ -409,7 +416,7 @@ module.exports = {
     let approvalID = parseInt(that.data.pNo);        //流程序号
     var approvalClass = require('./procedureclass.js')[approvalID];       //流程定义和数据结构
     var subData = e.detail.value;
-    if (that.data.vData.details.length>0){
+    if ( Array.isArray(that.data.vData.details) ){
       for (let i = 0; i < that.data.vData.details.length; i++) {
         that.data.vData.details[i].e = subData['ade' + i];
         that.data.vData.details[i].c = subData['adc' + i];
@@ -481,10 +488,10 @@ module.exports = {
                 } else { that.data.vData[sFileStr.na[0]][sFileStr.na[1]].c= sfile.url(); }
               })
               ).reduce(
-                (m, p) => m.then(v => AV.Promise.all([...v, p()])),
-                AV.Promise.resolve([])
+                (m, p) => m.then(v => Promise.all([...v, p()])),
+                Promise.resolve([])
               ).then(files => { resolve(files) } ).catch(console.error)
-            } else { resole([]) };
+            } else { resolve(['no files save']) };
           }).then( (sFiles) => {
             if (that.data.targetId=='0'){
               let nApproval = AV.Object.extend('sengpi');        //创建审批流程
@@ -495,8 +502,8 @@ module.exports = {
               fcApproval.set("sponsorName", app.globalData.user.uName);         //申请人
               fcApproval.set("unitId", app.uUnit.objectId);        //申请单位的ID
               fcApproval.set('dIdear', [{un:app.globalData.user.uName,dt:new Date(),di:'提交流程',dIdear:'发起审批流程'}]);       //流程处理意见
-              let managers = [[app.globalData.user.objectId]];
               let cUserName = {};
+              let cManagers = [[app.globalData.user.objectId]];
               cUserName[app.globalData.user.objectId] = app.globalData.user.uName;
               let puRoles = approvalClass.puRoles;
               let suRoles = approvalClass.suRoles;
@@ -512,13 +519,13 @@ module.exports = {
                   })
                   if (pRoleUser.length!=0) {
                     pRolesNum=pRolesNum+1;
-                    managers.push(pRoleUser);
+                    cManagers.push(pRoleUser);
                   }
                 };
                 if (pRolesNum==0 && app.globalData.user.userRolName!='admin') {
                   app.uUnit.unitUsers.forEach((pUser) => {
                     if (pUser.userRolName == 'admin') {
-                      managers.push([pUser.objectId]);
+                      cManagers.push([pUser.objectId]);
                       cUserName[pUser.objectId] = pUser.uName;
                     }
                   })
@@ -537,28 +544,34 @@ module.exports = {
                     });
                     if (sRoleUser.length != 0) {
                       sRolesNum=sRolesNum+1;
-                      managers.push(sRoleUser);
+                      cManagers.push(sRoleUser);
                     }
                   }
                 }
                 if (sRolesNum==0) {
                   app.sUnit.unitUsers.forEach((sUser) => {
                     if (sUser.userRolName == 'admin') {
-                      managers.push([sUser.objectId]);
+                      cManagers.push([sUser.objectId]);;
                       cUserName[sUser.objectId] = sUser.uName;
                     }
                   })
                 }
               }
-              fcApproval.set('cManagers', managers);             //处理人数组
+              let managers = [];
+              cManagers.forEach((manger) => { manger.forEach((mUser) => { managers.push(mUser) } ) });
+              fcApproval.set('cManagers', cManagers);             //处理人数组
+              fcApproval.set('cUserId', managers);             //处理人数组
               fcApproval.set('cUserName', cUserName);             //处理人姓名JSON
               fcApproval.set('cInstance',1);             //下一处理节点
-              fcApproval.set('cFlowStep', managers[1]);              //下一流程审批人
+              fcApproval.set('cFlowStep', cManagers[1]);              //下一流程审批人
               fcApproval.set('dObject', that.data.vData);            //流程审批内容
               var acl = new AV.ACL();      // 新建一个 ACL 实例
               acl.setRoleReadAccess(app.uUnit.objectId,true);
               acl.setRoleReadAccess(app.sUnit.objectId, true);
-              managers.forEach((manger) => { manger.forEach((mUser) => {acl.setWriteAccess(mUser, true);}) })
+              managers.forEach((mUser) => {
+                acl.setWriteAccess(mUser, true);
+                acl.setReadAccess(mUser, true);
+              })
               fcApproval.setACL(acl);         // 将 ACL 实例赋予fcApproval对象
               fcApproval.save().then((resTarget) => {
                 app.aData[resTarget.objectId] = fcApproval.toJSON();

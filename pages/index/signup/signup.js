@@ -1,5 +1,5 @@
 const AV = require('../../../libs/leancloud-storage.js');
-const unitFormat = require('../../../libs/procedureclass.js')[0];
+const unitFormat = require('../../../model/procedureclass.js')[0];
 var app = getApp()
 Page({
   data:{
