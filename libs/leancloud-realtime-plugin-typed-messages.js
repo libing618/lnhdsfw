@@ -487,7 +487,7 @@
     $export.B = 16;  // bind
     $export.W = 32;  // wrap
     $export.U = 64;  // safe
-    $export.R = 128; // real proto method for `library`
+    $export.R = 128; // real proto method for `library` 
     module.exports = $export;
     });
 
@@ -734,8 +734,8 @@
       /**
        * @constructs
        * @extends TypedMessage
-       * @param  {AV.File} file LeanCloud 瀛樺偍 SDK 涓殑 AV.File 瀹炰緥锛屼笖蹇呴』鏄凡缁忎繚瀛樺埌鏈嶅姟绔笂鐨� File 瀹炰緥
-       * 锛堝鏋滄槸鍒氬垰鍒涘缓鐨勶紝蹇呴』 save 鍚庢墠鑳界敤浜庡垱寤� FileMessage锛�
+       * @param  {AV.File} file LeanCloud 存储 SDK 中的 AV.File 实例，且必须是已经保存到服务端上的 File 实例
+       * （如果是刚刚创建的，必须 save 后才能用于创建 FileMessage）
        */
 
       __constructor: function __constructor(file) {
@@ -757,7 +757,7 @@
       },
 
       /**
-       * 鑾峰緱 file 瀵硅薄
+       * 获得 file 对象
        * @return {AV.File}
        */
       getFile: function getFile() {
@@ -798,7 +798,7 @@
     leancloudRealtime.messageField('_lcfile')(FileMessage);
 
     /**
-     * 鏋勯�犳柟娉曞弬鏁板悓 {@link FileMessage}
+     * 构造方法参数同 {@link FileMessage}
      * @class
      * @extends FileMessage
      */
@@ -814,7 +814,7 @@
     leancloudRealtime.messageType(-2)(ImageMessage);
 
     /**
-     * 鏋勯�犳柟娉曞弬鏁板悓 {@link FileMessage}
+     * 构造方法参数同 {@link FileMessage}
      * @class
      * @extends FileMessage
      */
@@ -830,7 +830,7 @@
     leancloudRealtime.messageType(-3)(AudioMessage);
 
     /**
-     * 鏋勯�犳柟娉曞弬鏁板悓 {@link FileMessage}
+     * 构造方法参数同 {@link FileMessage}
      * @class
      * @extends FileMessage
      */
@@ -849,7 +849,7 @@
       /**
        * @constructs
        * @extends TypedMessage
-       * @param  {AV.GeoPoint} geoPoint LeanCloud 瀛樺偍 SDK 涓殑 AV.GeoPoint 瀹炰緥
+       * @param  {AV.GeoPoint} geoPoint LeanCloud 存储 SDK 中的 AV.GeoPoint 实例
        */
 
       __constructor: function __constructor(geoPoint) {
@@ -865,7 +865,7 @@
       },
 
       /**
-       * 鑾峰緱 geoPoint 瀵硅薄
+       * 获得 geoPoint 对象
        * @return {AV.GeoPoint}
        */
       getLocation: function getLocation() {
@@ -895,7 +895,7 @@
     var name = "leancloud-realtime-plugin-typed-messages";
 
     /**
-     * TypedMessages 鎻掍欢锛屼娇鐢ㄥ悗鍙敮鎸佹帴鏀� LeanCloud 鎻愪緵鐨勫瘜濯掍綋绫诲瀷鐨勬秷鎭�
+     * TypedMessages 插件，使用后可支持接收 LeanCloud 提供的富媒体类型的消息
      * @example
      * var realtime = new Realtime({
      *   appId: appId,
@@ -917,3 +917,4 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
+//# sourceMappingURL=typed-messages.js.map
