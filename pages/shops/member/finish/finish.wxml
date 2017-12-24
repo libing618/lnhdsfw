@@ -1,0 +1,32 @@
+
+<view class="order-container">
+	<!-- 每个订单 -->
+	<view bindtap="showDetail" data-index="{{index}}" class="row" wx:for="{{orderlist}}" wx:key="index" value="{{index}}">
+		<!-- 商户信息 -->
+		<view class="shop">
+			<view class="summary">
+				<view class="title">订单号:{{item.tradeId}}</view>
+				<view class="status">
+					<block wx:if="{{item.status == 0 && item.isgive == 0}}">等待支付</block>
+					<block wx:elif="{{item.status == 1 && item.isgive == 0}}">待派送</block>
+					<block wx:elif="{{item.status == 2 && item.isgive == 0}}">派送中</block>
+					<block wx:elif="{{item.status == -1 && item.isgive == 0}}">已取消</block>
+          <block wx:elif="{{item.givestatus == -1 && item.isgive == 1}}">已退回</block>
+          <block wx:elif="{{item.givestatus == 1 && item.isgive == 1}}">待赠送</block>
+          <block wx:elif="{{item.givestatus == 2 && item.isgive == 1}}">待接收</block>
+          <block wx:elif="{{item.givestatus == 3 && item.isgive == 1}}">已接收</block>
+				</view>
+			</view>
+		</view>
+		<!-- 商品信息 -->
+    		<view class="goods">
+			<view class="address">购买商品：{{item.title}} </view>
+		</view>
+		<view class="goods"  >
+			<view wx:if="{{item.isgive == 0}}" class="address">{{item.address}} </view>
+      <button wx:if="{{item.givestatus == 1 && item.isgive == 1}}" class='button' open-type="share" bindtap='' data-index="{{index}}">赠送</button>
+      <view wx:if="{{item.givestatus != 1 && item.isgive == 1}}" class="address">礼物已经送出 </view>
+			<view class="total">{{item.amount}}</view>
+		</view>
+	</view>
+</view>

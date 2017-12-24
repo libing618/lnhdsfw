@@ -13,7 +13,7 @@ const sOperation = 2;     //本小程序中操作流程的类型数
 AV.init({
     appId: "kUsS8QFC8BLXbueQYwiYPfUF-gzGzoHsz",                    // 初始化存储 SDK
     appKey: "hCxPWp7TGfQWs6OShmL2uB1g"
-});
+}); 
 const realtime = new Realtime({
   appId: 'kUsS8QFC8BLXbueQYwiYPfUF-gzGzoHsz',                      // 初始化实时通讯 SDK
   appKey: "hCxPWp7TGfQWs6OShmL2uB1g",
@@ -26,6 +26,7 @@ App({
   globalData: require('globaldata.js').globalData,
   wmenu: [],
   tabBar: require('globaldata.js').tabBar,
+  shopMenu:require('globaldata.js').shopMenu,
   mData: require('globaldata.js').mData,
   aData: new Array(sProcedure),                           //以objectId为key的数据记录
   oData: new Array(sOperation),                           //以objectId为key的数据记录
@@ -101,6 +102,7 @@ App({
           new AV.Query('_User').include(['userRol']).select(['userRol']).get(that.globalData.user.objectId).then((rolemenu)=> {
             let mUser = rolemenu.toJSON();
             that.wmenu = mUser.userRol.initVale;
+            console.log(that.wmenu)
             wx.setStorage({ key: 'menudata', data: mUser.userRol });
             resolve( readMenu )
           }).catch((error) => { reject({ ec: 5, ee: error }) })

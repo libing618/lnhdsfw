@@ -1,0 +1,26 @@
+
+<view class="order-container">
+	<!-- 每个订单 -->
+	<view bindtap="showDetail" data-index="{{index}}" class="row" wx:for="{{orderlist}}" wx:key="">
+		<!-- 商户信息 -->
+		<view class="shop">
+			<view class="summary">
+				<view class="title">订单号:{{item.tradeId}}</view>
+				<view class="status">
+					<block wx:if="{{item.status == 0}}">等待支付</block>
+					<block wx:elif="{{item.status == 1}}">待派送</block>
+					<block wx:elif="{{item.status == 2}}">派送中</block>
+					<block wx:elif="{{item.status == -1}}">已取消</block>
+				</view>
+			</view>
+		</view>
+		<!-- 商品信息 -->
+    		<view class="goods">
+			<view class="address">购买商品：{{item.title}} </view>
+		</view>
+		<view class="goods">
+			<view class="address">{{item.address}} </view>
+			<view class="total">{{item.amount}}</view>
+		</view>
+	</view>
+</view>

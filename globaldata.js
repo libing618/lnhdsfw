@@ -26,6 +26,27 @@ module.exports={
     {pName: 'marketing',cName: '营销'},
     {pName: 'customer',cName: '客服'}
   ],
+  shopMenu:[
+      {tourl: '/pages/category/category',
+      mIcon: '../../images/icon_forum.png',
+      mName: '经典'
+      },{
+      tourl: '/pages/category/category',
+      mIcon: '../../images/icon_find.png',
+      mName: '牛货'
+      },{
+      tourl: '/pages/cart/cart',
+      mIcon: '../../images/icon_cart.png',
+      mName: '购物车'
+  },{
+      tourl: '/util/login/login',
+      mIcon: 'https://eqr6jmehq1rpgmny-10007535.file.myqcloud.com/2c4093f310964d281bc0.jpg',
+      mName: '合伙推广'
+  },{
+      tourl: '/pages/member/index/index',
+      mIcon: '../../images/icon_my.png',
+      mName: '我的'
+  }],
   mData: {
     pAt1 :[                                //缓存中已发布文章更新时间
       new Date(0),                          //最早更新时间

@@ -1,0 +1,10 @@
+<view class="cell">
+	<text>礼物:</text>
+	<text class="titles">{{titles}}</text>
+</view>
+<view class="cell">
+	<text>金额:</text>
+	<text class="amount">{{amount}}</text>
+</view>
+<button bindtap="confirmOrder">购买</button>
+<button bindtap="giveorder" open-type="share">赠送</button>

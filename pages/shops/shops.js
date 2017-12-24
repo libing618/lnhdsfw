@@ -13,23 +13,7 @@ Page({
     pName: 'shops',
     tabBar: app.tabBar,
     isWorker: typeof app.globalData.user.userRolName == 'string',
-    grids:  [
-        {tourl: '../category/category',
-        mIcon: 'https://eqr6jmehq1rpgmny-10007535.file.myqcloud.com/a18e62b4cdcac3f3dd07.jpg',
-        mName: '产品精选'
-    },{
-        tourl: '../cart/cart',
-        mIcon: 'https://eqr6jmehq1rpgmny-10007535.file.myqcloud.com/1b2d1577ca9cbcefc06f.jpg',
-        mName: '购物车'
-    },{
-        tourl: '/util/login/login',
-        mIcon: 'https://eqr6jmehq1rpgmny-10007535.file.myqcloud.com/2c4093f310964d281bc0.jpg',
-        mName: '合伙推广'
-    },{
-        tourl: '../shop/shop',
-        mIcon: 'https://e3sl2viw1q4ta7me-10007535.file.myqcloud.com/5daf25bdfefc82a9a0c4.png',
-        mName: '店铺保存'
-    }]
+    grids:  app.shopMenu
     },
 onShareAppMessage: function () {
     return {

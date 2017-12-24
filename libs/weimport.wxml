@@ -61,19 +61,25 @@
 </template>
 
 <template name="s_pics">
-  <view class="swiper_box">
+  <swiper class="swiper_box" indicator-dots="{{false}}" autoplay="{{true}}">
     <block wx:for="{{c}}" wx:key="{{index}}">
-      <image src="{{item.c}}" class="swimage"></image>
+      <swiper-item>
+          <image src="{{item}}" class="swimage"></image>
+        </swiper-item>
     </block>
-  </view>
+  </swiper>
 </template>
 
 <template name="i_pics">
-  <view class="swiper_box" bindtap="i_pics">
+  <view id="ac-{{n}}" bindtap="i_pics">
     <view class="swtext">{{p}}:</view>
-    <block wx:for="{{c}}" wx:key="{{index}}">
-      <image src="{{item.c}}" class="swimage"></image>
-    </block>
+    <swiper class="swiper_box" indicator-dots="{{false}}" autoplay="{{true}}">
+      <block wx:for="{{c}}" wx:key="{{index}}">
+        <swiper-item>
+          <image src="{{item}}" class="swimage"></image>
+        </swiper-item>
+      </block>
+    </swiper>
   </view>
 </template>
 
@@ -251,7 +257,7 @@
 <template name="i_eDetail">
   <view class="weui-article">
     <block wx:for="{{c}}" wx:key="{{index}}">
-      <view style="background-color:{{selectd==index ? '#999999' : '#F8F8F8'}};" class="weui-article__{{item.t}}" id="ad-{{index}}" catchlongtap="i_eDetail">
+      <view style="background-color:{{selectd==index ? '#999999' : '#F8F8F8'}};" class="weui-article__{{item.t}}" id="ad-{{index}}" catchlongpress="i_eDetail">
         <view wx:if="{{item.t<0}}">
           <template is="{{item.t}}" data="{{...item}}"></template>
           <input hidden="true" name="adc{{index}}" value="{{item.c}}"/>
@@ -299,8 +305,8 @@
 </template>
 
 <template name="i_vidio">
-  <view class="weui-article__-4" id="ac-{{n}}">
-    <view hidden="{{c}}" bindtap="i_vidio">{{p}}(点此处更换视频)</view>
+  <view class="weui-article__-4">
+    <view id="ac-{{n}}" bindtap="i_vidio">{{p}}(点此处更换视频)</view>
     <video src="{{c ? c : 'http://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400'}}" controls></video>
     <view hidden="true"><input name="{{gname}}" value="{{c}}"/></view>
   </view>
@@ -354,20 +360,20 @@
 <template name="i_producttype">
   <view class="weui-cell">
     <view class="weui-cell__hd">{{p}}:</view>
-    <view class="weui-cell__bd">{{ apdv['s'+ c ? c : wewxs.glist(apdclist,pdva,2)] }}</view>
-    <view hidden="true"><input name="{{gname}}" value="{{c ? c : wewxs.glist(apdclist,pdva,2)}}"/></view>
+    <view class="weui-cell__bd">{{ apdv['s'+ (c ? c : wewxs.glist(indlist,pdva,2))] }}</view>
+    <view hidden="true"><input name="{{gname}}" value="{{c ? c : wewxs.glist(indlist,pdva,2)}}"/></view>
     <icon class="weui-cell__ft" id="ac-{{n}}" bindtap="i_producttype" type="download" size="32"/>
   </view>
   <view hidden="{{inclose}}">
     <picker-view id="pa-{{n}}" indicator-style="height: 40rpx;" style="width: 100%; height: 300rpx;" value="{{pdva}}" bindchange="i_producttype">
         <picker-view-column>
-            <view wx:for="{{apdclist}}" wx:key="{{index}}" style="line-height: 36rpx">{{apdv['s'+item]}}</view>
+            <view wx:for="{{indlist}}" wx:key="{{index}}" style="line-height: 36rpx">{{apdv['s'+item]}}</view>
         </picker-view-column>
         <picker-view-column>
-            <view wx:for="{{wewxs.glist(apdclist,pdva,0)}}" wx:key="{{index}}" style="line-height: 36rpx">{{apdv['s'+item]}}</view>
+            <view wx:for="{{wewxs.glist(indlist,pdva,0)}}" wx:key="{{index}}" style="line-height: 36rpx">{{apdv['s'+item]}}</view>
         </picker-view-column>
         <picker-view-column>
-            <view wx:for="{{wewxs.glist(apdclist,pdva,1)}}" wx:key="{{index}}" style="line-height: 36rpx">{{apdv['s'+item]}}</view>
+            <view wx:for="{{wewxs.glist(indlist,pdva,1)}}" wx:key="{{index}}" style="line-height: 36rpx">{{apdv['s'+item]}}</view>
         </picker-view-column>
     </picker-view>
   </view>
@@ -465,8 +471,8 @@
       <view wx:for="{{p}}" wx:key="{{index}}"><view class="weui-table_th">item</view></view>
     </view>
     <view hidden="{{inclose}}">
-      <view wx:for="{{c}}" wx:key="{{index}}" wx:for-index="i" wx:for-item="c">
-        <block  wx:for="{{c[i]}}" wx:key="{{index}}">
+      <view wx:for="{{c}}" wx:key="{{index}}" wx:for-index="i" wx:for-item="ci">
+        <block  wx:for="{{ci[i]}}" wx:key="{{index}}">
           <view clase="weui-table_tr" class="weui-table_td {{i%2 ==0 ? 'weui-table_bw' : ''}}">item</view>
         </block>
       </view>

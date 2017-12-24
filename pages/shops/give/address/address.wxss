@@ -1,0 +1,33 @@
+.submit {
+	margin: 8px;
+}
+
+/*单元格*/
+.cell {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items:center;
+	margin: 4px;
+	border: 2rpx solid #eee;
+	line-height: 60rpx;
+}
+
+.cell:last-child {
+	border-bottom: 0;
+}
+
+/*label显示字符*/
+.cell text:first-child {
+	width: 70rpx;
+}
+
+/*请先填写地址*/
+.area_select {
+	width: 100%;
+}
+
+/*选择器*/
+picker {
+	width: 60%;
+}

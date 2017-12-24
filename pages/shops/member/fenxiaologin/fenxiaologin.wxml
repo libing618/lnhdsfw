@@ -1,0 +1,10 @@
+<view class="userinfo">
+	<image class="userinfo-avatar" src="{{user.avatarUrl}}" background-size="cover"></image>
+	<text class="userinfo-nickname">尊敬的{{user.nickName}}{{user.gender==1 ? "先生":"女士"}}</text>
+</view>
+<form bindsubmit="formSubmit">
+    <text bindtap="cascadePopup" class="shop_select">{{areaSelectedStr}}</text>
+	<input name="shopname" class="shop_input" placeholder="店铺名称" />
+	<input name="phone" class="shop_input" placeholder="手机号码" type="number"/>
+	<button formType="submit" type="primary">成为分销商</button>
+</form>

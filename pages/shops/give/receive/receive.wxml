@@ -1,0 +1,47 @@
+<view class="page__bd">
+<view class="weui-grids">
+<view wx:if="{{userAuthorize==-2}}">
+<text>欢迎使用创业服务平台</text>
+</view>
+<view wx:elif="{{userAuthorize==-1}}">
+<button open-type="getUserInfo" bindgetuserinfo="userInfoHandler">允许微信在本平台上登录</button>
+</view>
+<view wx:else>
+   <view class="page__bd">
+        <view class="weui-form-preview">
+            <view class="weui-form-preview__hd">
+                <view class="weui-form-preview__item">
+                    <view class="weui-form-preview__label">送礼人</view>
+                    <view class="weui-form-preview__value_in-hd">{{orderlist.nickname}}</view>
+                </view>
+            </view>
+            <view class="weui-form-preview__bd">
+                <view class="weui-form-preview__item">
+                    <view class="weui-form-preview__label">商品</view>
+                    <view class="weui-form-preview__value">{{orderlist.title}}</view>
+                </view>
+                <view class="weui-form-preview__item">
+                    <view class="weui-form-preview__label">订单号</view>
+                    <view class="weui-form-preview__value">{{orderlist.tradeId}}</view>
+                </view>
+                <view class="weui-form-preview__item">
+                    <view class="weui-form-preview__label">价格</view>
+                    <view class="weui-form-preview__value">{{orderlist.amount}}</view>
+                </view>
+                  <view class="weui-form-preview__item">
+                    <view class="weui-form-preview__label">提示</view>
+                    <view class="weui-form-preview__value">如24小时没有接受礼物则自动退回</view>
+                </view>
+            </view>
+            <view class="weui-form-preview__ft">
+                <view url="" class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active" >
+          <view wx:if="{{orderlist.givestatus == 2}}" bindtap="address">接受</view>
+					<view wx:elif="{{orderlist.givestatus == 3}}" bindtap="receive">已经接受</view>
+					<view wx:elif="{{orderlist.givestatus == -1}}" bindtap="back">已退回</view>
+                </view>
+            </view>
+            </view>
+        </view>
+</view>
+</view>
+</view>

@@ -1,0 +1,107 @@
+page {
+	background: #fff;
+}
+
+/*swiper images*/
+.images {
+	position: relative;
+	height:300px
+}
+
+.swiper-image {
+	width: 100%;
+	height:100%
+}
+
+/*contains title & price*/
+.summary {
+	display: flex; 
+	flex-direction: column; 
+	justify-content: space-between;
+	background: white;
+	margin: 20rpx 0;
+}
+
+/*goods title*/
+.title {
+	font-weight:bold;
+	font-size: 50rpx;
+	margin: 10rpx;
+	line-height: 46rpx;
+	border-bottom: 10px solid #fff;
+}
+
+/*正文*/
+.zhengwen{
+	font-size: 30rpx;
+	margin: 10rpx;
+	line-height: 46rpx;
+	text-indent: 2em; 
+}
+
+/*获得*/
+.huode{
+	font-weight:bold;
+	font-size: 40rpx;
+	margin: 10rpx;
+	border-bottom: 10px solid #fff;
+}
+/*goods price*/
+.price {
+	font-size: 50rpx;
+	color: #f60;
+	margin: 10rpx;
+	border-bottom: 40px solid #fff;
+}
+
+.detail image{
+	width: 100%;
+	height: 300rpx;
+}
+
+.footer {
+	background: #f9f9f9;
+	width: 100%;
+	display: flex; 
+	flex-direction: row; 
+	justify-content: space-between;
+	position: fixed;
+	bottom: 0;
+}
+
+.add-cart {
+	float: right;
+	border: 0;	
+	line-height: 100rpx;
+	text-align: center;
+	width: 350rpx;
+	height: 100rpx;
+	background-color: #f60;
+	color: white;
+	font-size: 36rpx;
+	border-radius: 0px;
+}
+
+/*购物车按钮、收藏等*/
+.opt-buttons {
+	width: 100%;
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: space-around;
+}
+
+/*cart*/
+.button-group {
+	display: flex;
+	flex-direction: column;
+}
+
+.button-image {
+	width: 60rpx;
+	height: 60rpx;
+}
+
+.button-text {
+	font-size: 24rpx;
+	line-height: 40rpx;
+}

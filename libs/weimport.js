@@ -1,6 +1,6 @@
 const AV = require('./leancloud-storage.js');
 var app = getApp();
-const nt = ['-1','-2','-6'];
+const nt = ['-1','-6'];
 const mdt = ['-2', '-3', '-4', '-6']
 const mdtn = ['pic','thumb','vidio','file']
 const vdSet=function(sname,sVal){
@@ -88,7 +88,8 @@ module.exports = {
           that.data.reqData[i].ad = app.aData[3];
           break;
         case 'producttype' :
-          that.data.reqData[i].apdclist = app.uUnit.indType;
+          that.data.reqData[i].indlist = app.uUnit.indType;
+          if (vifData) { that.data.vData[that.data.reqData[i].gname] = app.uUnit.indType[0] };
           break;
         case 'industrytype':
           if (vifData) {that.data.vData[that.data.reqData[i].gname] = [] };
@@ -141,7 +142,7 @@ module.exports = {
 
   i_arrsel: function (e) {                         //选择类型
     let n = parseInt(e.currentTarget.id.substring(3))      //数组下标
-    this.setData( vdSet(this.data.reqData[n].gname,e.detail.value) )
+    this.setData( vdSet(this.data.reqData[n].gname,Number(e.detail.value)) )
   },
 
   i_industrytype: function (e) {                         //选择行业类型
@@ -179,14 +180,15 @@ module.exports = {
     switch (id) {
       case 'ac' :
         that.setData( rdSet(n, 'inclose', ! that.data.reqData[n].inclose) );
-        that.setData( vdSet(that.data.reqData[n].gname,'') );
         break;
       case 'pa' :
         let aval = e.detail.value;
         if (that.data.reqData[n].ascvalue[0] == aval[0]) {
           if (that.data.reqData[n].ascvalue[1] != aval[1]){ aval[2] = 0 ; }
         } else { aval[1] = 0 ; aval[2] = 0 ; }
-        that.setData(rdSet(n, 'ascvalue',aval));
+        that.setData(rdSet(n, 'ascvalue',aval),()=>
+          {that.setData(vdSet(that.data.reqData[n].gname, Number(e.currentTarget.dataset.sassv)));}
+        );
         break;
     }
   },
@@ -198,13 +200,13 @@ module.exports = {
     switch (id) {
       case 'ac' :
         that.setData( rdSet(n, 'inclose', ! that.data.reqData[n].inclose) );
-        that.setData( vdSet(that.data.reqData[n].gname,'') )
+        if (!that.data.reqData[n].inclose) {that.setData(vdSet(that.data.reqData[n].gname,0 ))};
         break;
       case 'pa' :
         let aval = e.detail.value;
         if (that.data.reqData[n].pdva[0] == aval[0]) {
           if (that.data.reqData[n].pdva[1] != aval[1]){ aval[2] = 0 ; }
-        } else { aval[1] = 0 ; aval[2] = 0 ; }
+        } else { aval[1] = 0; aval[2] = 0; }
         that.setData(rdSet(n, 'pdva',aval));
         break;
     }
@@ -251,9 +253,8 @@ module.exports = {
       count: 9,                                     // 最多可以选择的图片张数，默认9
       sizeType: ['compressed'],         // original 原图，compressed 压缩图，默认二者都有
       sourceType: ['album', 'camera'],             // album 从相册选图，camera 使用相机，默认二者都有
-      success: function (restem) {                     // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-        let tfPaths = restem.tempFilePaths.map( tfPath=>{ return {c:tfPath}})
-        that.setData( vdSet(that.data.reqData[n].gname,tfPaths) );
+      success: function (restem) {                     // 返回选定照片的本地文件路径列表
+        that.setData(vdSet(that.data.reqData[n].gname, restem.tempFilePaths) );
       },
       fail: function () { wx.showToast({ title: '选取照片失败！' }) }
     })
@@ -292,9 +293,9 @@ module.exports = {
     wx.chooseVideo({
       sourceType: ['album', 'camera'],
       maxDuration: 60,
-      camera: ['front', 'back'],
+      camera: 'back',
       success: function (res) {
-        that.setData(vdSet(that.data.reqData[n].gname, res.tempFilePaths[0]));
+        that.setData(vdSet(that.data.reqData[n].gname, res.tempFilePath));
       },
       fail: function () { wx.showToast({ title: '选取视频失败！' }) }
     })
@@ -398,9 +399,6 @@ module.exports = {
           case '-1':
             nts = '/util/productsct/productsct';
             break;
-          case '-2':
-            nts = '/util/ceimage/ceimage';
-            break;
           case '-6':
             nts = '/util/filesct/filesct';
             break;
@@ -414,7 +412,7 @@ module.exports = {
   fSubmit: function (e) {
     var that = this;
     let approvalID = parseInt(that.data.pNo);        //流程序号
-    var approvalClass = require('./procedureclass.js')[approvalID];       //流程定义和数据结构
+    var approvalClass = require('../model/procedureclass.js')[approvalID];       //流程定义和数据结构
     var subData = e.detail.value;
     if ( Array.isArray(that.data.vData.details) ){
       for (let i = 0; i < that.data.vData.details.length; i++) {
@@ -576,11 +574,12 @@ module.exports = {
               fcApproval.save().then((resTarget) => {
                 app.aData[resTarget.objectId] = fcApproval.toJSON();
                 wx.showToast({title: '流程已提交,请查询审批结果。',duration:2000}) // 保存成功
-              })
+                setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 2000);
+              }).catch(wx.showToast({ title: '提交保存失败,请重试。', duration: 2000 })) // 保存失败
             } else {
               app.aData[that.data.targetId].dObject = that.data.vData;
+              wx.navigateBack({ delta: 1 });
             }
-            wx.navigateBack({delta:1});
           }).catch( console.error );
         }
       break;

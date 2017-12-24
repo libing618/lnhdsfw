@@ -1,0 +1,51 @@
+<swiper class="images" indicator-dots="true"
+autoplay="true" interval="5000" duration="1000" style="height:{{galleryHeight}}px;">
+<block wx:for="{{goods.images}}" wx:key="">
+  <swiper-item>
+    <image src="{{item}}" mode="aspectFill" class="swiper-image" bindtap="previewImage" data-current="{{index}}"/>
+</swiper-item>
+</block>
+</swiper>
+<view class="summary">
+	<text class="title">{{goods.title}}</text>
+    <view class='introduce'>
+      <text class="price">优惠价：￥ {{goods.price}}</text>
+      <text class="spec"> 库存：{{goods.inventory}}</text>
+    </view>
+</view>
+<view class="detail">
+	<image wx:for="{{goods.detail}}" src="{{item}}" wx:key="" mode="widthFix" bindtap="previewdetail" data-current="{{index}}"></image>
+</view>
+<view class="footer">
+    <view class="opt-buttons">
+        <view class="button-group" bindtap="showCart">
+            <image src="../../../images/icon_phonelogin.png" class="button-image" />
+            <text class="button-text">联系客服</text>
+        </view>
+    </view>
+    <button class="buy" bindtap="showModal">购买</button>
+      <view class="buy_screen" bindtap="hideModal" wx:if="{{buyshowModalStatus}}"></view>
+            <view animation="{{buyanimationData}}" class="buy_attr_box" wx:if="{{buyshowModalStatus}}">
+            <view class="close_icon" bindtap="hideModal">×</view>
+              <view class="buy_attr_content" >
+                <view class="buy_amount">{{amount}}元</view>
+                <view class='buy_standard' wx:for="{{standard}}" bindtap="buyprice" wx:key="" data-index="{{index}}">
+                  <scroll-view class="{{highlight[index]}}">{{item.standard}}</scroll-view>
+                </view>
+              </view>
+               <button class="buy_btn" bindtap="buy">确定购买</button>
+            </view> 
+                <button class="give" bindtap="giveshowModal">赠送</button>
+     <view class="drawer_screen" bindtap="givehideModal" wx:if="{{giveshowModalStatus}}"></view>
+            <view animation="{{giveanimationData}}" class="drawer_attr_box" wx:if="{{giveshowModalStatus}}">
+            <view class="close_icon" bindtap="hideModal">×</view>
+              <view class="drawer_attr_content" >
+                <view class="drawer_amount">{{amount}}元</view>
+                <view class='drawer_standard' wx:for="{{standard}}" bindtap="giveprice" wx:key="" data-index="{{index}}">
+                  <scroll-view class="{{highlight[index]}}">{{item.standard}}</scroll-view>
+                </view>
+              </view>
+               <button class="drawer_btn" bindtap="give">确定赠送</button>
+            </view>
+
+</view>

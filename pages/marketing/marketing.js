@@ -6,7 +6,7 @@ Page({
     pName: 'marketing',
     tabBar: app.tabBar,
     isWorker: typeof app.globalData.user.userRolName == 'string',
-    grids:[]
+    grids:app.wmenu[1]
   },
   onLoad:function(options){
     // 生命周期函数--监听页面加载

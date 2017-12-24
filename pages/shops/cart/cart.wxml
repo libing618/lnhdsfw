@@ -1,0 +1,41 @@
+<view class="container carts-list">
+    <view wx:for="{{carts}}" wx:key="index" class="carts-item" bindtap="showGoods" data-object-id="{{goodsList[index].objectId}}">
+    	<!-- 复选框图标 -->
+		<icon type="{{item.selected ? 'success_circle' : 'circle'}}" size="20" catchtap="bindCheckbox" data-index="{{index}}"/>
+		<view>
+		<!-- 缩略图 -->
+		  <image class="carts-image" src="{{goodsList[index].avatar}}" mode="aspectFill"/>
+		</view>
+      <view class="carts-text">
+      	<!-- 商品标题 -->
+        <text wx:if="{{item.isgive == 0}}" class="carts-title">{{goodsList[index].title}}</text>
+        <text wx:elif="{{item.isgive == 1}}" class="carts-title">{{goodsList[index].title}}券</text>
+        <text class="carts-title">规格：{{goodsList[index].standard}}</text>
+        <view class="carts-subtitle">
+        <!-- 价格 -->
+          <text class="carts-price">{{goodsList[index].price}}</text>
+          <!-- 数量加减 -->
+          <view>
+	          <view class="stepper">
+				<!-- 减号 -->
+				<text class="{{minusStatuses[index]}}" data-index="{{index}}" catchtap="bindMinus">-</text>
+				<!-- 数值 -->
+				<input type="number" data-index="{{index}}" bindchange="bindManual" value="{{item.quantity}}" />
+				<!-- 加号 -->
+				<text class="normal" data-index="{{index}}" catchtap="bindPlus">+</text>
+			  </view>
+		  </view>
+		  <image catchtap="deleteOne" data-object-id="{{item.objectId}}" class="delete" src="../../images/icon_delete.png" style="" mode="widthFix" />
+        </view>
+      </view>
+    </view>
+</view>
+<view class="carts-footer">
+	<view class="select-and-amount" bindtap="bindSelectAll">
+		<icon type="{{selectedAllStatus ? 'success_circle' : 'circle'}}" size="18"/>
+		<text>全选</text>
+		<text>{{total}}</text>
+	</view>
+	<!-- <view class="delete" bindtap="deleteAll">删除</view> -->
+	<view class="button" bindtap="bindCheckout">生成订单</view>
+</view>
