@@ -1,0 +1,39 @@
+<import src="../import/impedit.wxml" />
+<view class="page">
+  <view class="page__hd">己设置分销策略的产品</view>
+  <view class="page__bd">
+    <block wx:for="{{sPage}}" wx:key="{{index}}" wx:for-item="sp" wx:for-index="i">
+      <view class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+          <image class="weui-media-box__thumb" src="{{mData[sp].thumbnail}}" background-size="cover"></image>
+        </view>
+        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+          <view class="weui-media-box__title">{{mData[sp].uName}}</view>
+          <view class="weui-media-box__desc">渠道分成{{sData[sp].channel}}%　推广分成{{sData[sp].extension}}%</view>
+        </view>
+      </view>
+    </block>
+  </view>
+  <view class="page__hd">未设置分销策略的产品</view>
+  <view class="page__bd">
+    <block wx:for="{{mPage}}" wx:key="{{index}}" wx:for-item="mp" wx:for-index="i">
+      <view class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active" id="{{mp}}" bindtap="indexClick">
+        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+          <image class="weui-media-box__thumb" src="{{mData[mp].thumbnail}}" background-size="cover"></image>
+        </view>
+        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+          <view class="weui-media-box__title">{{mData[mp].uName}}</view>
+          <view class="weui-media-box__desc">{{mData[mp].title}}</view>
+        </view>
+      </view>
+    </block>
+    <view class="weui-cells" wx:if="{{iClicked}}">
+      <form bindsubmit="fSave">
+        <block wx:for="{{reqData}}" wx:key="index">
+          <template is="i_{{item.t}}" data="{{...item,c:vData[item.gname],n:index}}"></template>
+        </block>
+        <button class="weui-btn" formType="submit">新增(新增后不可修改！)</button>
+      </form>
+    </view>
+  </view>
+</view>

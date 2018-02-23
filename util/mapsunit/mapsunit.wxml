@@ -15,7 +15,7 @@
         <view class="weui-media-box__desc">{{unitArray[sId].title}}</view>
       </view>
     </view>
-    <template is="s_industrytype" data="{{p:'主营业务',c:unitArray[sId].indType}}" />
+    <template is="c_aslist" data="{{p:'主营业务',c:unitArray[sId].indType}}" />
     <view>距离您现在的位置：{{unitArray[sId].distance}}米</view>
   </view>
 

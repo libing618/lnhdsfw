@@ -20,12 +20,6 @@ module.exports={
     },
     sysinfo: null
   },
-  tabBar: [
-    {pName: 'shops',cName: '商城'},
-    {pName: 'index',cName: '管理'},
-    {pName: 'marketing',cName: '营销'},
-    {pName: 'customer',cName: '客服'}
-  ],
   shopMenu:[
       {tourl: '/pages/category/category',
       mIcon: '../../images/icon_forum.png',

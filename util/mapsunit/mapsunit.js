@@ -46,6 +46,7 @@ Page({
   },
   reqNumber: 0,
   reqProIsSuperior: false,
+  selIndtypes: [],         //选择单位的行业类型
   prevPage: {},
 
   onLoad: function (options) {
@@ -53,7 +54,10 @@ Page({
     let pages = getCurrentPages();                //获取当前页面路由栈的信息
     this.prevPage = pages[pages.length - 2];        //上个页面
     this.reqProIsSuperior = typeof this.prevPage.data.reqData[this.reqNumber].indTypes == 'number' ;
-    if ( this.reqProIsSuperior ) {wx.showToast({title:'选择服务单位，请注意：选定后不能更改！'})}
+    if ( this.reqProIsSuperior ) {
+      this.selIndtypes.push(this.prevPage.data.reqData[this.reqNumber].indTypes);
+      wx.showToast({title:'选择服务单位，请注意：选定后不能更改！',icon: 'none'});
+    } else {this.selIndtypes=this.prevPage.data.reqData[this.reqNumber].indTypes}
   },
 
   onReady: function () {
@@ -62,49 +66,51 @@ Page({
       type: 'wgs84',
       success: function(res){
         let cadd = new AV.GeoPoint(that.reqProIsSuperior ? that.prevPage.data.vData.aGeoPoint : { latitude: res.latitude, longitude: res.longitude });
-        var qGeo = new AV.Query('_Role');
-        qGeo.withinKilometers('aGeoPoint', cadd, 20);
-        var qType = new AV.Query('_Role');
-        if (that.reqProIsSuperior) {
-          qType.containsAll('indType', [that.prevPage.data.reqData[that.reqNumber].indTypes])
-        } else { qType.containedIn('indType', that.prevPage.data.reqData[that.reqNumber].indTypes) };
-        var query = AV.Query.and(qGeo,qType);
-        query.select(['uName','unitType','nick','title','aGeoPoint','indType','thumbnail','unitUsers'])
+        var query = new AV.Query('_Role');
+        query.withinKilometers('aGeoPoint', cadd, 200);
+        query.select(['uName','afamily','nick','title','aGeoPoint','indType','thumbnail','unitUsers'])
         query.find().then( (results)=> {
-          let rLength=results.length;
-          if (rLength) {
+          if (results) {
             let uM = {},unitArray=[],uMarkers=[]
-            let resJSON,badd;
-            for (let i=0;i<rLength;i++){
-              resJSON = results[i].toJSON();
-              uM.id=i;
-              uM.latitude=resJSON.aGeoPoint.latitude;
-              uM.longitude=resJSON.aGeoPoint.longitude;
-              uM.title=resJSON.nick;
-              uM.iconPath=resJSON.unitType ? '/images/icon-personal.png' : '/images/icon-company.png';
-              uMarkers.push(uM);
-              badd = new AV.GeoPoint(resJSON.aGeoPoint);
-              resJSON.distance = parseInt(badd.kilometersTo(cadd) * 1000 +0.5);
-              unitArray.push( resJSON );
-            }
-            that.data.controls[2].clickable = true;
-            that.setData({
-              latitude: res.latitude,
-              longitude: res.longitude,
-              markers: uMarkers,
-              circles: [{
+            let resJSON,badd,inInd;
+            results.forEach(result=>{
+              resJSON = result.toJSON();
+              inInd = true;     //先假设单位的类型在查找范围内
+              that.selIndtypes.forEach(indType=>{
+                if (resJSON.indType.indexOf(indTypes)>=0) {inInd=false}
+              })
+              if (inInd) {
+                uM.id=i;
+                uM.latitude=resJSON.aGeoPoint.latitude;
+                uM.longitude=resJSON.aGeoPoint.longitude;
+                uM.title=resJSON.nick;
+                uM.iconPath= resJSON.afamily<3 ? '/images/icon-personal.png' : '/images/icon-company.png'; //单位是个人还是企业
+                uMarkers.push(uM);
+                badd = new AV.GeoPoint(resJSON.aGeoPoint);
+                resJSON.distance = parseInt(badd.kilometersTo(cadd) * 1000 +0.5);
+                unitArray.push( resJSON );
+              }
+            });
+            if (uM){
+              that.data.controls[2].clickable = true;
+              that.setData({
                 latitude: res.latitude,
                 longitude: res.longitude,
-                color: '#FF0000DD',
-                fillColor: '#7cb5ec88',
-                radius: 3000,
-                strokeWidth: 1
-              }],
-              controls: that.data.controls,
-              unitArray: unitArray
-            })
+                markers: uMarkers,
+                circles: [{
+                  latitude: res.latitude,
+                  longitude: res.longitude,
+                  color: '#FF0000DD',
+                  fillColor: '#7cb5ec88',
+                  radius: 3000,
+                  strokeWidth: 1
+                }],
+                controls: that.data.controls,
+                unitArray: unitArray
+              })
+            }
           }
-        }).catch( (error)=> { console.log(error) });
+        }).catch( console.error );
       }
     })
   },
@@ -123,15 +129,13 @@ Page({
         that.setData({ scale: that.data.scale==5 ? 5 : that.data.scale-1  })
         break;
       case 3:
-       //that.prevPage.data.vData[that.reqNumber] = that.data.unitArray[that.data.sId].objectId;
-     //   that.prevPage.data.reqData[that.reqNumber].e = that.data.unitArray[that.data.sId].uName;
         let reqset = {};
         reqset['reqData[' + that.reqNumber + '].e'] = that.data.unitArray[that.data.sId].uName;
         reqset['vData.' + that.prevPage.data.reqData[that.reqNumber].gname] = that.data.unitArray[that.data.sId].objectId;
         if (that.reqProIsSuperior) {
-          app.uUnit.sUnit = that.data.unitArray[that.data.sId].objectId;
-          app.sUnit = that.data.unitArray[that.data.sId];
-          reqset['dObjectId'] = app.uUnit.objectId;
+          app.roleData.uUnit.sUnit = that.data.unitArray[that.data.sId].objectId;
+          app.roleData.sUnit = that.data.unitArray[that.data.sId];
+          reqset['dObjectId'] = app.roleData.uUnit.objectId;
         };
         that.prevPage.setData(reqset, callback=> { wx.navigateBack({ delta: 1 }) } );
         break;

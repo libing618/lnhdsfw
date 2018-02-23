@@ -11,39 +11,39 @@
     <view class="weui-cells__title">{{pBewrite}}</view>
   </view>
   <view class="page__bd">
-    <view class="weui-cell weui-cell_access" hover-class="weui-cell_active" id="ac-0" bindtap="accheck">
-      <template is="{{ achecked[0] ? 'selecticon1' : 'selecticon2'}}" />
+    <view class="weui-cell weui-cell_access" hover-class="weui-cell_active" id="ac-0" bindtap="aprvClick">
+      <template is="{{ aprvClicked[0] ? 'selecticon1' : 'selecticon2'}}" />
       <view class="weui-cell__bd">基本信息</view>
       <icon class="weui-cell__ft weui-cell__ft_in-access" type="download"/>
     </view>
-    <view wx:if="{{achecked[0]}}">
+    <view wx:if="{{aprvClicked[0]}}" class="weui-cells">
       <view class="weui-cell" wx:for="{{biType}}" wx:key="{{index}}">
-        <view class="weui-cell__bd">{{item.p}}:</view>
-        <view class="weui-cell__ft">{{aValue[item.gname]}}</view>
+        <view class="weui-cell__hd">{{item.p}}:</view>
+        <view class="weui-cell__bd">{{aValue[item.gname]}}</view>
       </view>
     </view>
     <view class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-      <template is="{{ achecked[1] ? 'selecticon1' : 'selecticon2'}}" />
+      <template is="{{ aprvClicked[1] ? 'selecticon1' : 'selecticon2'}}" />
       <view wx:if="{{enEdit && enApprove}}">
-        <navigator url="/pages/fprocedure/fprocedure?tgId={{aValue.objectId}}">
+        <navigator url="/inputedit/fprocedure/fprocedure?tgId={{aValue.objectId}}">
           <view class="weui-cell__bd">审批内容（点击此处进行编辑）</view>
         </navigator>
       </view>
       <view wx:else class="weui-cell__bd">审批内容:</view>
-      <icon class="weui-cell__ft weui-cell__ft_in-access" id="ac-1" bindtap="accheck" type="download"/>
+      <icon class="weui-cell__ft weui-cell__ft_in-access" id="ac-1" bindtap="aprvClick" type="download"/>
     </view>
-    <view wx:if="{{achecked[1]}}">
+    <view wx:if="{{aprvClicked[1]}}" class="page__bd_spacing">
       <view wx:if="{{afamilys}}">类别：{{afamilys[aValue.dObject.afamily]}}</view>
       <block class="weui-cell" wx:for="{{bsType}}" wx:key="{{index}}">
-        <template is="s_{{item.t}}" data="{{ p: item.p, c: aValue.dObject[item.gname] }}" />
+        <template is="s_{{item.t}}" data="{{ ...item, c: aValue.dObject[item.gname] }}" />
       </block>
     </view>
-    <view class="weui-cell weui-cell_access" hover-class="weui-cell_active" id="ac-2" bindtap="accheck">
-      <template is="{{ achecked[2] ? 'selecticon1' : 'selecticon2'}}" />
+    <view class="weui-cell weui-cell_access" hover-class="weui-cell_active" id="ac-2" bindtap="aprvClick">
+      <template is="{{ aprvClicked[2] ? 'selecticon1' : 'selecticon2'}}" />
       <view class="weui-cell__bd">流程记录</view>
       <icon class="weui-cell__ft weui-cell__ft_in-access" type="download"/>
     </view>
-    <view wx:if="{{achecked[2]}}">
+    <view wx:if="{{aprvClicked[2]}}" class="weui-cells">
       <block wx:for="{{aValue.dIdear}}" wx:key="{{dt}}">
         <view class="weui-cell">
           <view class="weui-cell__hd">{{item.un}}:</view>

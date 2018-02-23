@@ -1,70 +1,100 @@
 {
-  "pages":[
-    "pages/shops/shops",
-    "pages/shops/category/category",
-    "pages/shops/member/index/index",
-    "pages/shops/member/login/login",
-    "pages/shops/member/fenxiaologin/fenxiaologin",
-    "pages/shops/member/readorder/readorder",
-    "pages/shops/member/delivergoods/delivergoods",
-    "pages/shops/member/finish/finish",
-    "pages/shops/cart/cart",
-    "pages/shops/address/add/add",
-    "pages/shops/goods/list/list",
-    "pages/shops/goods/detail/detail",
-    "pages/shops/order/checkout/checkout",
-    "pages/shops/address/list/list",
-    "pages/shops/zhongchou/zhongchou",
-    "pages/shops/give/receive/receive",
-    "pages/shops/give/address/address",
-    "pages/index/index",
-    "pages/index/signup/signup",
-    "pages/index/f_Role/f_Role",
-    "pages/index/structure/structure",
-    "pages/index/procedures/procedures",
-    "pages/index/communication/communication",
-    "pages/fprocedure/fprocedure",
-    "pages/vprocedure/vprocedure",
-    "pages/lprocedures/lprocedures",
-    "pages/marketing/marketing",
-    "pages/marketing/goods/goods",
-    "pages/marketing/channel/channel",
-    "pages/marketing/coupon/coupon",
-    "pages/marketing/redpackets/redpackets",
-    "pages/marketing/membership/membership",
-    "pages/marketing/statement/statement",
-    "pages/marketing/storeflow/storeflow",
-    "pages/marketing/closerate/closerate",
-    "pages/marketing/income/income",
-    "pages/marketing/capital/capital",
-    "pages/marketing/activities/activities",
-    "pages/customer/customer",
-    "pages/customer/addresslist/addresslist",
-    "pages/customer/live/live",
-    "pages/customer/deal/deal",
-    "pages/customer/returns/returns",
-    "pages/customer/logistics/logistics",
-    "pages/customer/evaluate/evaluate",
-    "pages/customer/analyzing/analyzing",
-    "pages/customer/evaluation/evaluation",
-    "pages/customer/communication/communication",
-    "pages/customer/contactfriends/contactfriends",
-    "pages/customer/accounting/accounting",
-    "util/login/login",
+  "pages": [
+    "index/manage/manage",
+    "index/plan/plan",
+    "index/production/production",
+    "index/customer/customer",
     "util/wxchat/wxchat",
     "util/approve/approve",
-    "util/addressedit/addressedit",
-    "util/productsct/productsct",
+    "util/goodssct/goodssct",
     "util/mapsunit/mapsunit",
     "util/ceimage/ceimage",
     "util/filesct/filesct"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "创业服务平台",
-    "navigationBarTextStyle":"black",
+    "navigationBarTitleText": "推广平台",
+    "navigationBarTextStyle": "black",
     "backgroundColor": "#f8f8f8",
     "enablePullDownRefresh": true
-  }
+  },
+  "tabBar": {
+    "selectedColor": "#FF0033",
+    "list": [
+      {
+        "pagePath": "index/shops/shops",
+        "text": "商城",
+        "iconPath": "images/shops.png",
+        "selectedIconPath": "images/shops-1.png"
+      },
+      {
+        "pagePath": "index/manage/manage",
+        "text": "管理",
+        "iconPath": "images/index.png",
+        "selectedIconPath": "images/index-1.png"
+      },
+      {
+        "pagePath": "index/marketing/marketing",
+        "text": "营销",
+        "iconPath": "images/marketing.png",
+        "selectedIconPath": "images/marketing-1.png"
+      },
+      {
+        "pagePath": "index/customer/customer",
+        "text": "客服",
+        "iconPath": "images/customer.png",
+        "selectedIconPath": "images/customer-1.png"
+      }
+    ]
+  },
+  "subPackages": [
+    {
+      "root": "pages",
+      "pages": [
+        "manage/signup/signup",
+        "manage/structure/structure",
+        "manage/procedures/procedures",
+        "manage/rcustomer/rcustomer",
+        "manage/addresslist/addresslist",
+        "manage/workconnection/workconnection",
+        "vprocedure/vprocedure",
+        "lprocedures/lprocedures",
+        "production/material/material",
+        "production/process/process",
+        "production/storage/storage",
+        "production/stocks/stocks",
+        "production/live/live",
+        "production/capital/capital",
+        "customer/returns/returns",
+        "customer/logistics/logistics",
+        "customer/evaluate/evaluate",
+        "customer/communication/communication",
+        "customer/statement/statement"
+      ]
+    },
+    {
+      "root": "inputedit",
+      "pages": [
+        "import/addressedit",
+        "f_Role/f_Role",
+        "adjustment/adjustment",
+        "accounting/accounting",
+        "myshare/myshare",
+        "distributor/distributor",
+        "distribution/distribution",
+        "packing/packing",
+        "fprocedure/fprocedure",
+        "supply/supply",
+        "statistics/statistics"
+      ]
+    }
+  ],
+  "networkTimeout": {
+    "request": 10000,
+    "connectSocket": 10000,
+    "uploadFile": 10000,
+    "downloadFile": 10000
+  },
+  "debug": false
 }

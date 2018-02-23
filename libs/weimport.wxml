@@ -1,211 +1,162 @@
 <import src="wedetail.wxml" />
-<wxs src="apdv.wxs" module="apdv" />
-<wxs src="apdc.wxs" module="apdclist" />
-<wxs src="assv.wxs" module="assv" />
-<wxs src="assc.wxs" module="assclist" />
-<wxs src="weimport.wxs" module="wewxs" />
+<wxs module="mDot">
+  module.exports =
+    function(i,cArray){ return i==cArray.length-1 ? '' : '、' }
+ </wxs>
 
-<template name="tabBar">
-  <view wx:if="{{isWorker}}" class="weui-footer_fixed-bottom weui-tabbars">
-    <block wx:for="{{tabBar}}" wx:key="{{index}}" wx:for-item="tb">
-      <view wx:if="{{pName==tb.pName}}" class="weui-tabbar__item">
-        <image class="weui-tabbar__icon" src="../../images/{{tb.pName}}.png"/>
-        <view wx:if="{{tb.sams>0}}">
-          <span class="weui-badge" style="position: absolute;top: -.4em;right: 1em;">{{tb.sams}}</span>
-        </view>
-        <view class="weui-tabbar__label" style="color:green;">{{tb.cName}}</view>
+<template name="s_industrytype">
+<view class="weui-cell">
+  <view class="weui-cell__hd">{{p}}:</view>
+  <view class="weui-cell__bd">
+    <view wx:for="{{c.sName}}" wx:key="{{index}}">{{item}}{{mDot(index,c.sName)}}</view>
+  </view>
+</view>
+</template>
+
+<template name="s_listsel">
+  <view class="weui-cell">
+    <view class="weui-cell__hd">{{p}}:</view>
+    <view class="weui-cell__bd">{{aList[c]}}</view>
+  </view>
+</template>
+
+<template name="s_assettype">
+  <view class="weui-cell">
+    <view class="weui-cell__hd">{{p}}:</view>
+    <view class="weui-cell__bd">{{c.sName}}</view>
+  </view>
+</template>
+
+<template name="s_producttype">
+  <view class="weui-cell">
+    <view class="weui-cell__hd">{{p}}:</view>
+    <view class="weui-cell__bd">{{c.sName}}</view>
+  </view>
+</template>
+
+<template name="s_arrplus">
+  <view class="weui-cell">
+    <view class="weui-cell__hd">{{p}}:</view>
+    <view class="weui-cell__bd">{{c.sName}}</view>
+  </view>
+</template>
+
+<template name="s_sObject">
+  <view class="weui-cell">{{p}}:</view>
+  <view class="weui-cell" id="{{c}}">
+    <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
+      <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+        <image class="weui-media-box__thumb" src="{{slave.thumbnail}}" background-size="cover"></image>
       </view>
-      <view wx:else class="weui-tabbar">
-        <navigator url="/pages/{{tb.pName}}/{{tb.pName}}" open-type="redirectTo" hover-class="other-navigator-hover">
-          <image class="weui-tabbar__icon" src="../../images/{{tb.pName}}.png"/>
-          <view wx:if="{{tb.sams>0}}">
-            <span class="weui-badge" style="position: absolute;top: -.4em;right: 1em;">{{tb.sams}}</span>
-          </view>
-          <view class="weui-tabbar__label">{{tb.cName}}</view>
-        </navigator>
+      <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+        <view class="weui-media-box__title">{{slave.uName}}</view>
+        <view class="weui-media-box__desc">{{slave.title}}</view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<template name="s_sId">
+  <view class="weui-cell">{{p}}:</view>
+  <view class="weui-cell" id="{{c}}">
+    <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
+      <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+        <image class="weui-media-box__thumb" src="{{thumbnail}}" background-size="cover"></image>
+      </view>
+      <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+        <view class="weui-media-box__title">{{uName}}</view>
+        <view class="weui-media-box__desc">{{title}}</view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<template name="s_specsel">
+<wxs module="sstock">
+  module.exports = {
+    scale: function(spec,pkn){
+      var sc = (spec.payment+spec.delivering+spec.delivered)/pkn;
+      return sc.toFixed(0)
+    },
+    csupply: function(spec,pkn){
+      var cs = spec.canSupply/pkn-0.5;
+      return cs.toFixed(0)
+    }
+  }
+</wxs>
+  <view class="weui-cell">{{p}}:</view>
+  <view class="weui-cells">
+    <block wx:for="{{c}}" wx:key="{{index}}" wx:for-item="specsId">
+      <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
+        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+          <image class="weui-media-box__thumb" src="{{master[specsId].thumbnail}}" background-size="cover"></image>
+        </view>
+        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+          <view class="weui-media-box__title">{{slave[specsId].uName}}/{{master[specsId].package}}份装/{{master[specsId].price}}元</view>
+          <view class="weui-media-box__desc">{{master[specsId].title}}</view>
+          <view class="weui-media-box__desc">已售{{sstock.scale(slave[specsId],master[specsId].package)}},库存{{sstock.csupply(slave[specsId],maste[specsId].package)}}</view>
+        </view>
       </view>
     </block>
   </view>
 </template>
 
+<template name="s_dg">
+  <view class="weui-cell">
+    <view class="weui-cell__hd">{{p}}:</view>
+    <view class="weui-cell__bd">{{c}}</view>
+  </view>
+</template>
+
+<template name="s_fg">
+  <view class="weui-cell">
+    <view class="weui-cell__hd">{{p}}:</view>
+    <view class="weui-cell__bd">{{c}}</view>
+  </view>
+</template>
+
 <template name="s_p">
-  <view class="weui-cells__title">{{p}}:</view>
-  <view class="weui-cells weui-cells_after-title">
-    <view class="weui-cell">
-      <text>{{c}}</text>
-    </view>
-  </view>
-</template>
-
-<template name="i_p">
-  <view class="weui-cells__title">{{p}}</view>
-  <view class="weui-cells weui-cells_after-title">
-    <view class="weui-cell">
-      <view class="weui-cell__bd">
-        <textarea class="weui-textarea" name="{{gname}}" value="{{c}}" placeholder="请输入{{p}}" />
-      </view>
-    </view>
-  </view>
-</template>
-
-<template name="s_ap">
-  <view class="weui-article__p">
+<view class="weui-cell">
     <text>{{c}}</text>
-  </view>
-</template>
-
-<template name="i_ap">
-  <view class="weui-article__p">
-    <textarea class="weui-textarea" name="{{gname}}" value="{{c}}" placeholder="请输入{{p}}" />
-  </view>
+</view>
 </template>
 
 <template name="s_pics">
   <swiper class="swiper_box" indicator-dots="{{false}}" autoplay="{{true}}">
     <block wx:for="{{c}}" wx:key="{{index}}">
       <swiper-item>
-          <image src="{{item}}" class="swimage"></image>
-        </swiper-item>
+        <image src="{{item}}" class="swimage"></image>
+      </swiper-item>
     </block>
   </swiper>
 </template>
 
-<template name="i_pics">
-  <view id="ac-{{n}}" bindtap="i_pics">
-    <view class="swtext">{{p}}:</view>
-    <swiper class="swiper_box" indicator-dots="{{false}}" autoplay="{{true}}">
-      <block wx:for="{{c}}" wx:key="{{index}}">
-        <swiper-item>
-          <image src="{{item}}" class="swimage"></image>
-        </swiper-item>
-      </block>
-    </swiper>
-  </view>
-</template>
-
-<template name="i_insdata">
-  <view class="weui-footer_fixed-bottom weui-grids">
-    <block wx:for="{{wewxs.mgrids}}" wx:key="{{index}}">
-      <view class="weui-grid" id="{{wewxs.mid[index]}}" hover-class="weui-grid_active" bindtap="i_insdata">
-        <image class="weui-grid__icon" src="../../images/{{index+1}}.png"></image>
-        <view class="weui-grid__label">{{item}}</view>
-      </view>
-    </block>
-  </view>
-</template>
-
-<template name="s_Name">
-  <view class="weui-cells">
-    <view class="weui-cell__hd">
-      <view class="weui-label">{{p}}:</view>
-    </view>
+<template name="s_inScan">
+  <view class="weui-cell">
+    <view class="weui-cell__hd">{{p}}:</view>
     <view class="weui-cell__bd">{{c}}</view>
   </view>
-</template>
-
-<template name="i_Name">
-  <view class="weui-cells weui-cells_after-title">
-    <form bindsubmit="i_Name">
-    <view class="weui-cell weui-cell_input weui-cell_vcode">
-      <view class="weui-cell__hd">
-        <view class="weui-label">{{p}}:</view>
-      </view>
-      <view class="weui-cell__bd">
-        <input name="{{gname}}" value="{{c}}" class="weui-input" placeholder="请点击此处输入{{p}}" />
-      </view>
-      <view class="weui-cell__ft">
-        <button class="weui-vcode-btn" formType="submit">保   存</button>
-      </view>
-    </view>
-    </form>
-  </view>
-</template>
-
-<template name="s_arrsel">
-  <view class="weui-cell">{{p}}: {{alist[c]}}</view>
-</template>
-
-<template name="i_arrsel">
-  <picker id="ac-{{n}}" mode="selector" value="{{c}}" range="{{alist}}" bindchange="i_arrsel">
-  <view  class="weui-cell">
-    <view class="weui-cell__hd">{{p}}:</view>
-    <view class="weui-cell__bd" id="ds-{{n}}">{{alist[c]}}</view>
-  </view>
-  </picker>
-  <view hidden="true"><input name="{{gname}}" value="{{c}}"/></view>
 </template>
 
 <template name="s_h1">
   <view class="weui-article__h1">{{c}}</view>
 </template>
 
-<template name="i_h1">
-  <view class="weui-article__h1">
-    <input name="{{gname}}" value="{{c}}" class="weui-input" placeholder="请输入{{p}}" />
-  </view>
-</template>
-
 <template name="s_h2">
   <view class="weui-article__h2">{{c}}</view>
 </template>
 
-<template name="i_h2">
-  <view class="weui-article__h2">
-    <input name="{{gname}}" value="{{c}}" class="weui-input" placeholder="请输入大标题" />
-  </view>
-</template>
-
 <template name="s_h3">
   <view class="weui-cell">
-    <view class="weui-cell__bd">{{p}}:</view>
-    <view class="weui-cell__ft">{{c}}</view>
-  </view>
-</template>
-
-<template name="i_h3">
-  <view class="weui-cell weui-cell_input">
-    <view class="weui-cell__hd">
-        <view class="weui-label">{{p}}:</view>
-    </view>
-    <view class="weui-cell__bd">
-      <input name="{{gname}}" value="{{c}}" class="weui-input" placeholder="请输入{{p}}" />
-    </view>
+    <view class="weui-cell__hd">{{p}}:</view>
+    <view class="weui-cell__bd">{{c}}</view>
   </view>
 </template>
 
 <template name="s_h4">
   <view class="weui-cell" style="font-size: 24rpx;">
-    <view class="weui-cell__bd">{{p}}:</view>
-    <view class="weui-cell__ft">{{c}}</view>
-  </view>
-</template>
-
-<template name="i_h4">
-  <view class="weui-cell weui-cell_input" style="font-size: 24rpx;">
-    <view class="weui-cell__hd">
-        <view class="weui-label">{{p}}:</view>
-    </view>
-    <view class="weui-cell__bd">
-      <input name="{{gname}}" value="{{c}}" class="weui-input" placeholder="请输入{{p}}" />
-    </view>
-  </view>
-</template>
-
-<template name="s_dg">
-  <view class="weui-cell">
-    <view class="weui-cell__bd">{{p}}:</view>
-    <view class="weui-cell__ft">{{c}}</view>
-  </view>
-</template>
-
-<template name="i_dg">
-  <view class="weui-cell weui-cell_input">
-    <view class="weui-cell__hd">
-        <view class="weui-label">{{p}}:</view>
-    </view>
-    <view class="weui-cell__bd">
-      <input name="{{gname}}" value="{{c}}" class="weui-input" type="digit" />
-    </view>
+    <view class="weui-cell__hd">{{p}}:</view>
+    <view class="weui-cell__bd">{{c}}</view>
   </view>
 </template>
 
@@ -214,31 +165,9 @@
   <map longitude="{{c.longitude}}" latitude="{{c.latitude}}" scale="28" show-location style="width: 100%; height: 300px;"></map>
 </template>
 
-<template name="i_chooseAd">
-  <view id="ac-{{n}}" bindtap="i_chooseAd">
-  <view class="weui-label">{{p}}:</view>
-    <map longitude="{{c.longitude}}" latitude="{{c.latitude}}" scale="28" show-location style="width: 100%; height: 300px;"></map>
-  </view>
-</template>
-
 <template name="s_ed">
-  <view class="weui-cell__hd">
-    <view class="weui-label">{{p}}:</view>
-  </view>
-  <view class="weui-cell__bd">{{c}}</view>
-</template>
-
-<template name="i_ed">
-  <view class="weui-cell weui-cell_input">
-    <navigator url="/util/addressedit/addressedit?reqName={{gname}}">
-      <view class="weui-cell__hd">
-        <view class="weui-label">{{p}}(点此选择)</view>
-      </view>
-    </navigator>
-    <view class="weui-cell__bd">
-      <input disabled="true" name="{{gname}}" value="{{c}}" placeholder="请输入{{p}}"/>
-    </view>
-  </view>
+  <view class="weui-cell__hd">{{p}}:</view>
+  <view class="weui-cell__bd">{{c.sName}}</view>
 </template>
 
 <template name="s_eDetail">
@@ -248,26 +177,7 @@
         <view wx:if="{{item.t<0}}">
           <template is="{{item.t}}" data="{{...item}}"></template>
         </view>
-        <text>"{{item.e}}"</text>
-      </view>
-    </block>
-  </view>
-</template>
-
-<template name="i_eDetail">
-  <view class="weui-article">
-    <block wx:for="{{c}}" wx:key="{{index}}">
-      <view style="background-color:{{selectd==index ? '#999999' : '#F8F8F8'}};" class="weui-article__{{item.t}}" id="ad-{{index}}" catchlongpress="i_eDetail">
-        <view wx:if="{{item.t<0}}">
-          <template is="{{item.t}}" data="{{...item}}"></template>
-          <input hidden="true" name="adc{{index}}" value="{{item.c}}"/>
-        </view>
-        <view wx:if="{{item.t=='p'}}">
-            <textarea id="txid-{{index}}" name="ade{{index}}" auto-height="true" maxlength="-1" value="{{item.e}}" placeholder="点击此处输入正文"/>
-        </view>
-        <view wx:else>
-          <input id="txid-{{index}}" name="ade{{index}}" style="text-indent:2em;" value="{{item.e}}" placeholder="点击此处编辑"/>
-        </view>
+        <view wx:if="{{item.e}}">{{item.e}}</view>
       </view>
     </block>
   </view>
@@ -278,133 +188,23 @@
   <image src="{{c}}" style="width: 100%;" mode="aspectFit"></image>
 </template>
 
-<template name="i_pic">
-  <view class="weui-article__-2" id="ac-{{n}}" bindtap="i_pic">
-    <view>{{p}}:</view>
-    <image src="{{c ? c :e}}" style="width: 100%;" mode="aspectFit"></image>
-    <view hidden="true"><input name="{{gname}}" value="{{c}}"/></view>
-  </view>
-</template>
-
 <template name="s_thumb">
-  <view class="weui-article__-2">{{p}}:</view>
   <image src="{{c}}" style="width: 100%;" mode="aspectFit"></image>
-</template>
-
-<template name="i_thumb">
-  <view class="weui-article__-2" id="ac-{{n}}" bindtap="i_thumb">
-    <view hidden="{{c}}">{{p}}:</view>
-    <image src="{{c ? c : '/images/2.png'}}" style="width: 100%;" mode="aspectFit"></image>
-    <view hidden="true"><input name="{{gname}}" value="{{c}}"/></view>
-  </view>
 </template>
 
 <template name="s_vidio">
   <view class="weui-article__-4">{{p}}:</view>
-  <video src="{{c}}" controls></video>
-</template>
-
-<template name="i_vidio">
-  <view class="weui-article__-4">
-    <view id="ac-{{n}}" bindtap="i_vidio">{{p}}(点此处更换视频)</view>
-    <video src="{{c ? c : 'http://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400'}}" controls></video>
-    <view hidden="true"><input name="{{gname}}" value="{{c}}"/></view>
+  <view class="weui-picker">
+    <video controls="{{true}}" src="{{c}}"></video>
   </view>
 </template>
 
-<template name="s_industrytype">
-  <view class="weui-cell">
-    <view class="weui-cell__bd">{{p}}:</view>
-    <view class="weui-cell__ft">
-      <view wx:for="{{c}}" wx:key="{{index}}">{{ apdv['s'+item] }}{{wewxs.mDot(index,c)}}</view>
-    </view>
-  </view>
-</template>
-
-<template name="i_industrytype">
+<template name="s_arrList">
   <view class="weui-cell">
     <view class="weui-cell__hd">{{p}}:</view>
     <view class="weui-cell__bd">
-      <view wx:for="{{c}}" wx:key="{{index}}">
-        <view class="weui-cell_link" style='display: inline-block;' id="lj-{{n}}" data-id="{{index}}" bindtap="i_industrytype">{{ apdv['s'+item] }}{{wewxs.mDot(index,c)}}</view>
-      </view>
+      <view wx:for="{{c}}" wx:key="{{index}}">{{ item }}{{mDot(index,c)}}</view>
     </view>
-    <view class="weui-cell__ft"><icon id="se-{{n}}" bindtap="i_industrytype" type="download" size="32"/></view>
-  </view>
-  <view hidden="{{inclose}}">
-  <view class="weui-cell">
-    <view class="weui-cell__bd">{{apdv['s'+ apdclist[apdvalue[0]].st[apdvalue[1]].ct[apdvalue[2]]] }}</view>
-    <view class="weui-cell__ft"><icon id="su-{{n}}" data-sapdv="{{apdclist[apdvalue[0]].st[apdvalue[1]].ct[apdvalue[2]]}}" bindtap="i_industrytype" type="success" size="32"/></view>
-  </view>
-    <picker-view  id="pa-{{n}}" indicator-style="height: 40rpx;" style="width: 100%; height: 300rpx;" value="{{apdvalue}}" bindchange="i_industrytype">
-        <picker-view-column>
-            <view wx:for="{{apdclist}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
-        </picker-view-column>
-        <picker-view-column>
-            <view wx:for="{{apdclist[apdvalue[0]].st}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
-        </picker-view-column>
-        <picker-view-column>
-            <view wx:for="{{apdclist[apdvalue[0]].st[apdvalue[1]].ct}}" wx:key="{{index}}" style="line-height: 36rpx">{{apdv['s'+item]}}</view>
-        </picker-view-column>
-    </picker-view>
-  </view>
-</template>
-
-<template name="s_producttype">
-  <view class="weui-cell">
-    <view class="weui-cell__hd">{{p}}:</view>
-    <view class="weui-cell__ft">{{ apdv['s'+c] }} </view>
-  </view>
-</template>
-
-<template name="i_producttype">
-  <view class="weui-cell">
-    <view class="weui-cell__hd">{{p}}:</view>
-    <view class="weui-cell__bd">{{ apdv['s'+ (c ? c : wewxs.glist(indlist,pdva,2))] }}</view>
-    <view hidden="true"><input name="{{gname}}" value="{{c ? c : wewxs.glist(indlist,pdva,2)}}"/></view>
-    <icon class="weui-cell__ft" id="ac-{{n}}" bindtap="i_producttype" type="download" size="32"/>
-  </view>
-  <view hidden="{{inclose}}">
-    <picker-view id="pa-{{n}}" indicator-style="height: 40rpx;" style="width: 100%; height: 300rpx;" value="{{pdva}}" bindchange="i_producttype">
-        <picker-view-column>
-            <view wx:for="{{indlist}}" wx:key="{{index}}" style="line-height: 36rpx">{{apdv['s'+item]}}</view>
-        </picker-view-column>
-        <picker-view-column>
-            <view wx:for="{{wewxs.glist(indlist,pdva,0)}}" wx:key="{{index}}" style="line-height: 36rpx">{{apdv['s'+item]}}</view>
-        </picker-view-column>
-        <picker-view-column>
-            <view wx:for="{{wewxs.glist(indlist,pdva,1)}}" wx:key="{{index}}" style="line-height: 36rpx">{{apdv['s'+item]}}</view>
-        </picker-view-column>
-    </picker-view>
-  </view>
-</template>
-
-<template name="s_assettype">
-  <view class="weui-cell">
-    <view class="weui-cell__bd">{{p}}:</view>
-    <view class="weui-cell__ft">{{ assv['a'+c] }}</view>
-  </view>
-</template>
-
-<template name="i_assettype">
-  <view class="weui-cell">
-    <view class="weui-cell__hd">{{p}}:</view>
-    <view class="weui-cell__bd">{{assv['a'+ c ? c : assclist[ascvalue[0]].st[ascvalue[1]].ct[ascvalue[2]] ]}} </view>
-    <view hidden="true"><input name="{{gname}}" value="{{c ? c : assclist[ascvalue[0]].st[ascvalue[1]].ct[ascvalue[2]]}}" /></view>
-    <icon class="weui-cell__ft" id="ac-{{n}}" bindtap="i_assettype" type="download" size="32"/>
-  </view>
-  <view hidden="{{inclose}}">
-    <picker-view id="pa-{{n}}" indicator-style="height: 40rpx;" style="width: 100%; height: 300rpx;" value="{{ascvalue}}" bindchange="i_assettype">
-      <picker-view-column>
-          <view wx:for="{{assclist}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
-      </picker-view-column>
-      <picker-view-column>
-          <view wx:for="{{assclist[ascvalue[0]].st}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
-      </picker-view-column>
-      <picker-view-column>
-          <view wx:for="{{assclist[ascvalue[0]].st[ascvalue[1]].ct}}" wx:key="{{index}}" style="line-height: 36rpx">{{assv['a'+item]}}</view>
-      </picker-view-column>
-    </picker-view>
   </view>
 </template>
 
@@ -415,54 +215,15 @@
   </view>
 </template>
 
-<template name="i_sedate">
+<template name="s_sCargo">
   <view class="weui-cell">
     <view class="weui-cell__hd">{{p}}:</view>
-    <picker mode="date" id="ac-{{n}}" data-ei="{{endif}}" value="{{endif ? c[1] : c[0]}}" start="{{c[0]}}" end="2999-09-01" bindchange="i_sedate">
-      <view style='display: inline-block;' class="weui-cell__bd" id="ds-{{n}}" bindtap="i_sedate">开始日:{{c[0]}}　　</view>
-      <view style='display: inline-block;text-align: right;' id="de-{{n}}" bindtap="i_sedate">截止日:{{c[1]}}</view>
-    </picker>
-  </view>
-</template>
-
-<template name="s_sproduct">
-  <view class="weui-cell">
-    <view class="weui-cell__bd">{{p}}:</view>
-    <view class="weui-cell__ft">{{ ad[c].uName }}</view>
-  </view>
-</template>
-
-<template name="i_sproduct">
-  <view class="weui-cell">
-    <view class="weui-cell__hd">{{p}}:</view>
-    <view class="weui-cell__bd">{{ad[c ? c : mD[provalue[0]][provalue[1]] ]}} </view>
-    <view hidden="true"><input name="{{gname}}" value="{{c ? c : mD[provalue[0]][provalue[1]]}}" /></view>
-    <icon class="weui-cell__ft" id="ac-{{n}}" bindtap="i_sproduct" type="search" size="32"/>
-  </view>
-  <view hidden="{{inclose}}">
-    <picker-view id="pa-{{n}}" indicator-style="height: 40rpx;" style="width: 100%; height: 300rpx;" value="{{provalue}}" bindchange="i_sproduct">
-      <picker-view-column>
-          <view wx:for="{{['产品','服务']}}" wx:key="{{index}}" style="line-height: 36rpx">{{item}}</view>
-      </picker-view-column>
-      <picker-view-column>
-          <view wx:for="{{mD[provalue[0]]}}" wx:key="{{index}}" style="line-height: 36rpx">{{ad[item]}}</view>
-      </picker-view-column>
-    </picker-view>
+    <view class="weui-cell__bd">{{ ad[c].uName }}</view>
   </view>
 </template>
 
 <template name="s_MS">
   <view hidden="true">{{c}}</view>
-</template>
-
-<template name="i_MS">
-  <view hidden="true"><input name="{{gname}}" value="{{c}}"/></view>
-  <navigator url="/util/mapsunit/mapsunit?reqNumber={{n}}">
-    <view class="weui-cell weui-cell_input">
-      <view class="weui-cell__hd">{{p}}:</view>
-      <view class="weui-cell__ft">{{e}}</view>
-    </view>
-  </navigator>
 </template>
 
 <template name="s_table">
@@ -480,14 +241,15 @@
   </view>
 </template>
 
-<template name="i_table">
-  <view hidden="true"><input name="{{gname}}" value="{{c}}"/></view>
-  <view class="weui-cell weui-cell_input">
-    <navigator url="/util/mapsunit/mapsunit?reqName={{gname}}">
-      <view class="weui-cell__hd">{{p}}:</view>
-      <view class="weui-cell__ft">{{e}}</view>
+<template name="showgrids">
+<view class="weui-grids">
+  <block wx:for="{{grids}}" wx:key="{{index}}">
+    <navigator url="{{item.tourl}}" class="weui-grid" hover-class="weui-grid_active">
+      <image class="weui-grid__icon" src="{{item.mIcon}}" />
+      <view class="weui-grid__label">{{item.mName}}</view>
     </navigator>
-  </view>
+  </block>
+</view>
 </template>
 
 <template name="tabsCk">
@@ -504,53 +266,17 @@
 <template name="tabPanel">
 <view class="weui-tab__panel">
   <block wx:for="{{tPage}}" wx:key="{{index}}">
-    <navigator url="/page/vprocedure/vprocedure?pNo={{pNo}}&artId={{item.objectId}}">
+    <navigator url="/pages/vprocedure/vprocedure?pNo={{pNo}}&artId={{item}}&uId={{pageData[item].unitId}}">
       <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
         <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-          <image class="weui-media-box__thumb" src="{{pageData[item.objectId].thumbnail}}" background-size="cover"></image>
+          <image class="weui-media-box__thumb" src="{{pageData[item].thumbnail}}" background-size="cover"></image>
         </view>
         <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-          <view class="weui-media-box__title">{{pageData[item.objectId].uName}}</view>
-          <view class="weui-media-box__desc">{{pageData[item.objectId].title}}</view>
+          <view class="weui-media-box__title">{{pageData[item].uName}}</view>
+          <view class="weui-media-box__desc">{{pageData[item].title}}</view>
         </view>
       </view>
     </navigator>
   </block>
 </view>
-</template>
-
-<template name="i_ords">
-  <view class="weui-cell">产品:{{p.uName}} 规格：{{p.shelves.uName}}</view>
-  <form bindsubmit="fOrder">
-    <view class="weui-cell__hd">可供{{e.cant}}份 订{{p.quantity}}份</view>
-    <view class="weui-cell__ft">
-      <button class="weui-btn" type="primary" size="mini" formType="submit" id="{{oState}}">确认</button>
-    </view>
-    <input hidden="{{true}}" name="{{c}}" value="可供{{e.cant}}份,确认订{{p.quantity}}份" />
-  </form>
-</template>
-
-<template name="i_products">
-  <view class="weui-cell">规格：{{p.shelves.uName}} 订单:{{p.orders.uName}}</view>
-  <switch class="weui-cell__hd"/>
-  <view class="weui-cell__bd">订{{p.quantity}}份</view>
-  <view class="weui-cell__ft">出品包装号</view>
-  <input name="{{c}}" value="{{p.quantity}}" />
-</template>
-
-<template name="i_sivers">
-  <view class="weui-cell">订单:{{p.orders.uName}}
-  未出品规格：{{p.shelves.uName}}</view>
-  <switch class="weui-cell__hd"/>规格：{{p.shelves.uName}} 出品包装号
-  <view class="weui-cell__ft">运送单号：</view>
-  <input name="{{c}}" value="{{p.quantity}}" />
-</template>
-
-<template name="i_adds">
-  <view class="weui-cell">位置：
-  订单:{{p.orders.uName}}
-  运送单号：{{p.shelves.uName}}</view>
-  <switch class="weui-cell__hd"/>规格：{{p.shelves.uName}} 出品包装号
-  <view class="weui-cell__ft">扫码确认：</view>
-  <input name="{{c}}" value="{{p.quantity}}" />
 </template>

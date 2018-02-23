@@ -1,5 +1,6 @@
 //流程审批模块
 const AV = require('../../libs/leancloud-storage.js');
+const { readShowFormat } = require('../../model/initForm.js');
 var app=getApp()
 Page({
   data:{
@@ -12,32 +13,37 @@ Page({
     uIdearArray: ['通 过', '退回发起人 ','废 弃' ],
     cResult: -1,
     pBewrite: '',
-    achecked: [true,true,false]
+    aprvClicked: [true,true,false]
   },
 
   onLoad:function(options){
+    var that = this;
     let dProcedure = Number(app.procedures[options.approveId].dProcedure);
     let procedureClass = require('../../model/procedureclass.js')[dProcedure];
-    this.setData({
-      bsType: procedureClass.pSuccess,      //流程内容格式
-      pBewrite: procedureClass.pBewrite,     //流程说明
-      pModle: procedureClass.pModle,         //流程写入的数据表名
-      aValue: app.procedures[options.approveId],        //流程缓存
-      enEdit: app.uUnit.objectId==app.procedures[options.approveId].unitId,          //本单位的流程允许编辑
-      enApprove: app.procedures[options.approveId].cFlowStep.indexOf(app.globalData.user.objectId) >= 0,     //当前用户为流程处理人
-      afamilys: procedureClass.afamily,                              //流程内容分组
-      cmLength: app.procedures[options.approveId].cManagers.length    //流程审批节点长度
-    });
+    app.procedures[options.approveId].dObject.unitId = app.procedures[options.approveId].unitId;
+    readShowFormat(procedureClass.pSuccess,app.procedures[options.approveId].dObject).then(req=>{
+      that.setData({
+        bsType: req,      //流程内容格式
+        pBewrite: procedureClass.pBewrite,     //流程说明
+        pModel: procedureClass.pModel,         //流程写入的数据表名
+        aValue: app.procedures[options.approveId],        //流程缓存
+        enEdit: app.roleData.uUnit.objectId==app.procedures[options.approveId].unitId,          //本单位的流程允许编辑
+        enApprove: app.procedures[options.approveId].cFlowStep.indexOf(app.globalData.user.objectId) >= 0,     //当前用户为流程处理人
+        afamilys: procedureClass.afamily ? procedureClass.afamily : false,                              //流程内容分组
+        cmLength: app.procedures[options.approveId].cManagers.length    //流程审批节点长度
+      });
+    }).catch(console.error);
     wx.setNavigationBarTitle({
       title: procedureClass.pName     //将页面标题设置成流程名称
     })
   },
 
-  accheck: function(e){
+  aprvClick: function(e){
     let i = parseInt(e.currentTarget.id.substring(3))      //选择审批流程类型的数组下标
-    this.data.achecked[i] = ! this.data.achecked[i];
-    this.setData({ achecked: this.data.achecked })
+    this.data.aprvClicked[i] = ! this.data.aprvClicked[i];
+    this.setData({ aprvClicked: this.data.aprvClicked })
   },
+
   resultChange: function(e){
     var nInstace = Number(this.data.aValue.cInstance);
 	  switch (e.detail.value) {
@@ -53,12 +59,12 @@ Page({
     };
     this.setData({cResult:Number(e.detail.value), "aValue.cInstance":nInstace})
   },
+
   fsave:function(e) {                         //保存审批意见，流向下一节点
     var that = this;
     var nInstace = Number(that.data.aValue.cInstance);        //下一流程节点
     if (nInstace>=0) {
       var rResultId = Number(e.detail.value.dResult)+1;
-      var cApproval = AV.Object.createWithoutData('sengpi', that.data.aValue.objectId);
       return new Promise((resolve, reject) => {
         if ( nInstace==that.data.cmLength ){   //最后一个节点
           let sData = that.data.aValue.dObject;
@@ -75,10 +81,10 @@ Page({
           } else if (rResultId === 1){
             let sObject;
             if (that.data.aValue.dObjectId=='0'){
-              let dObject = AV.Object.extend(that.data.pModle);
+              let dObject = AV.Object.extend(that.data.pModel);
               sObject = new dObject();
             } else {
-              sObject = AV.Object.createWithoutData(that.data.pModle,that.data.aValue.dObjectId)
+              sObject = AV.Object.createWithoutData(that.data.pModel,that.data.aValue.dObjectId)
             }
             sData.unitId = that.data.aValue.unitId;
             sData.unitName = that.data.aValue.unitName;
@@ -92,6 +98,7 @@ Page({
           } else { resolve(0) };
         } else { resolve(0) }
       }).then((sObjectId)=>{
+        let cApproval = AV.Object.createWithoutData('sengpi', that.data.aValue.objectId);
         if (sObjectId) {cApproval.set('dObjectId',sObjectId);}
         cApproval.set('dResult', rResultId);                //流程处理结果
         let uIdear = that.data.aValue.dIdear;
@@ -105,7 +112,7 @@ Page({
         })
       }).catch(console.error);
     } else {
-      wx.showToast({title: '请进行审批处理！', duration: 2500, icon: 'loading'})
+      wx.showToast({title: '请进行审批处理', duration: 2500, icon: 'loading'})
     }
   },
 

@@ -47,7 +47,7 @@ Page({
       switch (sIndex){
         case '-1':             //选择产品
           wx.navigateTo({
-            url: '../productsct/productsct?reqName="chatPro"',
+            url: '../goodssct/goodssct?reqName="chatPro"',
             success: function(res){ resolve(that.data.vData.chatPro); },
             fail: function(err){ reject(err) }
           })

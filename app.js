@@ -102,7 +102,6 @@ App({
           new AV.Query('_User').include(['userRol']).select(['userRol']).get(that.globalData.user.objectId).then((rolemenu)=> {
             let mUser = rolemenu.toJSON();
             that.wmenu = mUser.userRol.initVale;
-            console.log(that.wmenu)
             wx.setStorage({ key: 'menudata', data: mUser.userRol });
             resolve( readMenu )
           }).catch((error) => { reject({ ec: 5, ee: error }) })

@@ -21,10 +21,12 @@
   <image src="{{c}}" mode="aspectFit"></image>
 </template>
 <template name="-3">
-  <audio src="{{c}}"></audio>
+  <audio src="{{c}}" controls></audio>
 </template>
 <template name="-4">
-  <video src="{{c}}"></video>
+  <view class="weui-picker">
+    <video controls="{{true}}" src="{{c}}"></video>
+  </view>
 </template>
 <template name="-5">
   <map longitude="{{c.longitude}}" latitude="{{c.latitude}}" scale="14" show-location style="width: 100%; height: 300px;"></map>
