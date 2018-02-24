@@ -6,6 +6,9 @@ function isAllData(pNo){
     case 1 :
       return true;
       break;
+    case 6 :
+      return true;
+      break;
     default :
       return false;
       break;

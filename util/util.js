@@ -17,7 +17,7 @@ module.exports = {
             wx.getUserInfo({ withCredentials: true,
             success: function(wxuserinfo) {
               if (wxuserinfo) {
-                AV.Cloud.run( 'wxLogin0',{ code:wxlogined.code, encryptedData:wxuserinfo.encryptedData, iv:wxuserinfo.iv } ).then( function(wxuid){
+                AV.Cloud.run( 'wxLogin2',{ code:wxlogined.code, encryptedData:wxuserinfo.encryptedData, iv:wxuserinfo.iv } ).then( function(wxuid){
                   let signuser = {};
                   signuser['uid'] = wxuid.uId;
                   AV.User.signUpOrlogInWithAuthData(signuser,'openWx').then((statuswx)=>{    //用户在云端注册登录
@@ -47,11 +47,11 @@ module.exports = {
     app.roleData = wx.getStorageSync('roleData') || app.roleData;
     return new AV.Query('userInit')
       .notEqualTo('updatedAt',new Date(app.roleData.wmenu.updatedAt))
-      .select(['manage', 'plan', 'production', 'customer'])
+      .select(['manage', 'marketing', 'customer'])
       .equalTo('objectId',app.globalData.user.userRol.objectId).find().then( fetchMenu =>{
       if (fetchMenu.length>0) {                          //菜单在云端有变化
         app.roleData.wmenu = fetchMenu[0].toJSON();
-        ['manage', 'plan', 'production', 'customer'].forEach(mname => { app.roleData.wmenu[mname] = app.roleData.wmenu[mname].filter(rn=>{return rn!=0}) })
+        ['manage', 'marketing', 'customer'].forEach(mname => { app.roleData.wmenu[mname] = app.roleData.wmenu[mname].filter(rn=>{return rn!=0}) })
         wx.setStorage({ key: 'roleData', data: app.roleData });
       };
       return wx.getUserInfo({        //检查客户信息
@@ -95,6 +95,14 @@ module.exports = {
         }).catch(console.error)
       };
       app.imLogin(app.globalData.user.username);
+    }).catch( console.error );
+  },
+
+  userInfoHandler: function (e) {
+    var that = this;
+    openWxLogin(that.data.userAuthorize).then( (mstate)=> {
+      app.logData.push([Date.now(), '用户授权' + app.globalData.sysinfo.toString()]);                      //用户授权时间记入日志
+      that.setData({ userAuthorize: 0, grids: iMenu('manage') })
     }).catch( console.error );
   },
 

@@ -20,62 +20,44 @@ module.exports={
     },
     sysinfo: null
   },
-  shopMenu:[
-      {tourl: '/pages/category/category',
-      mIcon: '../../images/icon_forum.png',
-      mName: '经典'
-      },{
-      tourl: '/pages/category/category',
-      mIcon: '../../images/icon_find.png',
-      mName: '牛货'
-      },{
-      tourl: '/pages/cart/cart',
-      mIcon: '../../images/icon_cart.png',
-      mName: '购物车'
-  },{
-      tourl: '/util/login/login',
-      mIcon: 'https://eqr6jmehq1rpgmny-10007535.file.myqcloud.com/2c4093f310964d281bc0.jpg',
-      mName: '合伙推广'
-  },{
-      tourl: '/pages/member/index/index',
-      mIcon: '../../images/icon_my.png',
-      mName: '我的'
-  }],
+  roleData:{
+    wmenu: {
+      manage:[],                         //用户未注册时的基础菜单
+      marketing:[],
+      customer:[],
+      updatedAt: 0
+    },
+    uUnit:{updatedAt: 0},                           //用户单位信息（若有）
+    sUnit:{updatedAt: 0}                           //上级单位信息（若有）
+  },
   mData: {
-    pAt1 :[                                //缓存中已发布文章更新时间
-      new Date(0),                          //最早更新时间
-      new Date(0)                          //目前记录时间
-    ],
-    pAt2 :[                                //缓存中已发布固定资产更新时间
-      new Date(0),                          //最早更新时间
-      new Date(0)                          //目前记录时间
-    ],
-    pAt3 :[                                //缓存中已发布产品服务更新时间
-      new Date(0),                          //最早更新时间
-      new Date(0)                          //目前记录时间
-    ],
-    pAt4 :[                                //缓存中已发布团购众筹更新时间
-      new Date(0),                          //最早更新时间
-      new Date(0)                          //目前记录时间
-    ],
+    pAt:{
+      "articles":[new Date(0),new Date(0)],            //缓存中已发布文章更新时间
+      asset:{},                                //缓存中已发布固定资产更新时间
+      product:{},                                //缓存中已发布产品更新时间
+      service:{},                                //缓存中已发布服务更新时间
+      cargo:{},                              //缓存中已发布成品更新时间
+      goods:{},                                //缓存中已发布商品更新时间
+      specs:{},                                //缓存中已发布规格更新时间
+      promotion:{},                               //缓存中已发布团购众筹更新时间
+      prodesign:{}                                //缓存中已发布生产计划更新时间
+    },
     proceduresAt:[                                //缓存中流程更新时间
       new Date(0),                          //最早更新时间
       new Date(0)                          //目前记录时间
     ],
-    prdct1: [[], [], [], [], [] ],              //已发布文章分类缓存数组
+    articles: [[], [], [], [], [], [], [], []],              //已发布文章分类缓存数组
     pCk1: 1,            //已发布文章分类阅读选中序号
-    pCk3: 1,            //已发布产品服务分类阅读选中序号
-    pCk4: 1,            //已发布产品服务分类阅读选中序号
-    prdct2: [],              //已发布固定资产缓存数组
-    prdct3: [[], []],              //已发布产品服务分类缓存数组
-    prdct4: [[], []],              //已发布团购众筹分类缓存数组
-    prdct5: [],              //已发布固定资产缓存数组
+    pCk8: 1,            //已发布团购众筹分类阅读选中序号
+    asset: [],              //已发布固定资产缓存数组
+    product: [],              //已发布产品分类缓存数组
+    service: [],              //已发布服务分类缓存数组
+    cargo: [],              //已发布成品分类缓存数组
+    goods: [],              //已发布商品分类缓存数组
+    specs: [],              //已发布规格分类缓存数组
+    promotion: [[],[], []],              //已发布团购众筹分类缓存数组
+    prodesign: [],              //已发布生产计划缓存数组
     procedures: [],              //流程分类缓存数组
     proceduresCk: -1,
-    oAt0:new Date(0),                                //缓存中已销售产品数据更新时间
-    oAt1:new Date(0),                                //缓存中客户评价数据更新时间
-    oCk0: 0,            //原料操作分类阅读选中序号
-    oped0: [],              //已销售产品缓存数组
-    oped1: [],              //已发布客户评价缓存数组
   }
 }
