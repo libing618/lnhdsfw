@@ -196,15 +196,7 @@ module.exports = {
     subscription.off('delete', remove)
     }
   },
-  iss_query: function() {
-    wx.getLocation({
-      type: 'wgs84',
-      success: function(res){
-        let cadd = new AV.GeoPoint(that.reqProIsSuperior ? that.prevPage.data.vData.aGeoPoint : { latitude: res.latitude, longitude: res.longitude });
-        var query = new AV.Query('_Role');
-      }
-    })
-  }
+
   indexClick: function(e){                           //选择打开的索引数组本身id
     this.setData({ iClicked: e.currentTarget.id });
   },
