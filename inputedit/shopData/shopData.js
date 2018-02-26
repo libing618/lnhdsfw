@@ -35,7 +35,7 @@ Page({
         };
       }
     }).then(ops=>{
-      var pClass = require('../../model/procedureclass.js')[ops.pNo];
+      var pClass = require('../../model/shopDatas')[ops.pNo];
       let titleName = '的'               //申请项目名称
       switch (typeof ops.pId){
         case 'number':           //传入参数为一位数字的代表该类型新建数据或读缓存数据

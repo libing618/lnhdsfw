@@ -159,7 +159,7 @@ App({
         };
       }
     });
-    let pClass = require('model/procedureclass.js');
+    let pClass = require('model/shopDatas.js');
     for (let i=0;i<pClass.length;i++){
       that.mData.procedures[i] = [];
       that.aData[pClass.pModel] = {};
