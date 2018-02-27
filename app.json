@@ -1,10 +1,11 @@
 {
   "pages": [
+    "index/shops/shops",
     "index/manage/manage",
-    "index/plan/plan",
-    "index/production/production",
+    "index/marketing/marketing",
     "index/customer/customer",
     "util/wxchat/wxchat",
+    "util/login/login",
     "util/approve/approve",
     "util/goodssct/goodssct",
     "util/mapsunit/mapsunit",
@@ -52,41 +53,40 @@
     {
       "root": "pages",
       "pages": [
-        "manage/signup/signup",
-        "manage/structure/structure",
-        "manage/procedures/procedures",
-        "manage/rcustomer/rcustomer",
-        "manage/addresslist/addresslist",
-        "manage/workconnection/workconnection",
+        "f_Role/f_Role",
         "vprocedure/vprocedure",
         "lprocedures/lprocedures",
-        "production/material/material",
-        "production/process/process",
-        "production/storage/storage",
-        "production/stocks/stocks",
-        "production/live/live",
-        "production/capital/capital",
-        "customer/returns/returns",
-        "customer/logistics/logistics",
-        "customer/evaluate/evaluate",
-        "customer/communication/communication",
-        "customer/statement/statement"
+        "shops/address/add/add",
+        "shops/cart/cart",
+        "shops/catecory/category",
+        "shops/give/address/address",
+        "shops/goods/list/list",
+        "shops/member/login/login",
+        "shops/order/give/give",
+        "shops/zhongchou"
       ]
     },
     {
       "root": "inputedit",
       "pages": [
         "import/addressedit",
-        "f_Role/f_Role",
-        "adjustment/adjustment",
-        "accounting/accounting",
-        "myshare/myshare",
-        "distributor/distributor",
-        "distribution/distribution",
-        "packing/packing",
-        "fprocedure/fprocedure",
-        "supply/supply",
-        "statistics/statistics"
+        "signup/signup",
+        "lshops/lshops",
+        "shopData/shopData",
+        "communication/communication",
+        "channel/channel",
+        "goods/goods",
+        "redpackets/redpackets",
+        "storeflow/storeflow",
+        "closerate/closerate",
+        "income/income",
+        "capital/capital",
+        "logistics/logistics",
+        "deal/deal",
+        "returns/returns"
+        "evaluate/evaluate",
+        "analyzing/analyzin",
+        "contactfriends/contactfriends"
       ]
     }
   ],
