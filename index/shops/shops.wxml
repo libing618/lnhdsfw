@@ -1,6 +1,6 @@
 <import src="../../libs/weimport.wxml" />
 <view class="page">
-  <view class="page__hd page__bd_spacing">
+  <view class="page__hd">
     <swiper class="swiper_box" indicator-dots="true" autoplay="{{autoplay}}">
       <block wx:for="{{images}}" wx:key="{{index}}">
         <swiper-item>

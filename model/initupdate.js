@@ -1,53 +1,55 @@
 const AV = require('../libs/leancloud-storage.js');
 const procedureclass = require('procedureclass.js');
 var app = getApp();
-function isAllData(pNo){
-  switch (pNo){
-    case 1 :
+function isAllData(cName){
+  switch (cName){
+    case 'articles' :
       return true;
       break;
-    case 6 :
+    case 'goods' :
       return true;
       break;
     default :
       return false;
       break;
   }
-}
-module.exports = {
-  appDataExist: function(dKey0,dKey1,dKey2){              //检查app.aData是否存在二三级的键值
-    let dExist = true;
-    if (typeof app.aData[dKey0] == 'undefined' ){ return false }
-    if (dKey1 in app.aData[dKey0]){
-      if (typeof dKey2 == 'string'){
-        if (!(dKey2 in app.aData[dKey0][dKey1])){
-          dExist = false;
-        }
+};
+function appDataExist(dKey0, dKey1, dKey2) {              //检查app.aData是否存在二三级的键值
+  let dExist = true;
+  if (typeof app.aData[dKey0] == 'undefined') { return false }
+  if (dKey1 in app.aData[dKey0]) {
+    if (typeof dKey2 == 'string') {
+      if (!(dKey2 in app.aData[dKey0][dKey1])) {
+        dExist = false;
       }
-    } else { dExist = false };
-    return dExist;
-  },
+    }
+  } else { dExist = false };
+  return dExist;
+};
+module.exports = {
+  appDataExist: appDataExist,
 
   isAllData: isAllData,
 
-  updateData: function (isDown, pNo, uId) {    //更新页面显示数据,isDown下拉刷新
+  updateData: function (isDown, pNo, uId, udcName) {    //更新页面显示数据,isDown下拉刷新,pNo类定义序号, uId单位Id, udcName类定义文件名
     return new Promise((resolve, reject) => {
+      let udClass = typeof udcName == 'string' ? require(udcName) : procedureclass;
       if (typeof pNo == 'string') {
-        procedureclass.forEach(pClass => { if (pClass.pModel == pNo) { pNo = pClass.pNo } });
+        udClass.forEach(pClass => { if (pClass.pModel == pNo) { pNo = pClass.pNo } });
       }
-      var cName = procedureclass[pNo].pModel;
-      let isAll = isAllData(pNo);            //是否读所有数据
-      let inFamily = typeof procedureclass[pNo].afamily != 'undefined';            //是否有分类数组
-      var umdata = [];
-      let updAt = app.mData.pAt[cName];
+      var cName = udClass[pNo].pModel;
+      let isAll = isAllData(cName);            //是否读所有数据
+      let inFamily = typeof udClass[pNo].afamily != 'undefined';            //是否有分类数组
+      var umdata ,updAt;
       var readProcedure = new AV.Query(cName);                                      //进行数据库初始化操作
       if (isAll) {
-        updAt = (typeof app.mData.pAt[cName] == 'undefined') ? [0, 0] : app.mData.pAt[cName];
-        umdata = app.mData[cName];
+        updAt = appDataExist(cName, 'pAt') ? app.aData[cName].pAt : [0, 0];
+        umdata = app.mData[cName] || [];
+        if (typeof app.aData[cName] == 'undefined') { app.aData[cName]={} };
       } else {
         var unitId = uId ? uId : app.roleData.uUnit.objectId;
         readProcedure.equalTo('unitId', unitId);                //除权限和文章类数据外只能查指定单位的数据
-        updAt = (typeof app.mData.pAt[cName][unitId] == 'undefined') ? [0, 0] : app.mData.pAt[cName][unitId];
+        updAt = appDataExist(cName, unitId, 'pAt') ? app.aData[cName][unitId].pAt : [0, 0];
         if (typeof app.mData[cName][unitId] == 'undefined') {       //添加以单位ID为Key的JSON初值
           let uaobj = {},upobj={},umobj={};
           if (typeof app.mData[cName] != 'undefined') { umobj=app.mData[cName] };
@@ -56,11 +58,8 @@ module.exports = {
           if (typeof app.aData[cName] != 'undefined') { uaobj=app.aData[cName] };
           uaobj[unitId] = {};
           app.aData[cName] = uaobj;
-          if (typeof app.mData.pAt[cName] != 'undefined') { upobj=app.mData.pAt[cName] };
-          upobj[unitId] = [0, 0];
-          app.mData.pAt[cName] = upobj;
         } else {
-          umdata = app.mData[cName][unitId];
+          umdata = app.mData[cName][unitId] || [];
         }
       };
       if (isDown) {
@@ -110,10 +109,10 @@ module.exports = {
         };
         if (isAll) {
           app.mData[cName] = umdata;
-          app.mData.pAt[cName] = updAt;
+          app.aData[cName].pAt = updAt;
         } else {
           app.mData[cName][unitId] = umdata;
-          app.mData.pAt[cName][unitId] = updAt;
+          app.aData[cName][unitId].pAt = updAt;
         };
         resolve(lena > 0);               //数据更新状态
       }).catch(error => {

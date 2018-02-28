@@ -145,6 +145,7 @@ App({
 
   onLaunch: function () {
     var that = this;            //调用应用实例的方法获取全局数据
+    wx.hideTabBar();
     wx.getSystemInfo({                     //读设备信息
       success: function(res) {
         that.globalData.sysinfo = res;
@@ -159,10 +160,9 @@ App({
         };
       }
     });
-    let pClass = require('model/shopDatas.js');
-    for (let i=0;i<pClass.length;i++){
-      that.mData.procedures[i] = [];
-      that.aData[pClass.pModel] = {};
+    let shopClass = require('./model/shopdatas');
+    for (let i = 0; i < shopClass.length; i++) {
+      that.mData.procedures[i] = []
     }
     that.aData = wx.getStorageSync('aData') || that.aData;              //读数据记录的缓存
     that.mData = wx.getStorageSync('mData') || that.mData;              //读数据管理的缓存
