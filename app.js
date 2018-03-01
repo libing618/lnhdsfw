@@ -29,7 +29,7 @@ App({
   shopMenu:require('globaldata.js').shopMenu,
   mData: require('globaldata.js').mData,
   aData: {},                           //以objectId为key的数据记录
-  iData: {},
+  configData: {},
   procedures: {},
   logData: [],                         //操作记录
   fwClient: {},                        //实时通信客户端实例
@@ -171,6 +171,12 @@ App({
 
   onShow: function({path,query,scene,shareTicket,referrerInfo}){
     var that = this;
+    new AV.Query('shopConfig').find().then(dConfig=>{
+      dConfig.forEach(conData=>{
+        cData = conData.toJSON();
+        that.configData[cData.cName] = {cfield:cData.cfield,fConfig:cData.fConfig}
+      })
+    })
     if (scene===1007 && path=='/pages/f_Role/f_Role'){
       wx.setStorageSync('proScene',{path,query,scene})
       wx.navigateTo({url:path+query})

@@ -2,17 +2,7 @@ const AV = require('../libs/leancloud-storage.js');
 const procedureclass = require('procedureclass.js');
 var app = getApp();
 function isAllData(cName){
-  switch (cName){
-    case 'articles' :
-      return true;
-      break;
-    case 'goods' :
-      return true;
-      break;
-    default :
-      return false;
-      break;
-  }
+  return typeof app.configData[cName]!='undefined';
 };
 function appDataExist(dKey0, dKey1, dKey2) {              //检查app.aData是否存在二三级的键值
   let dExist = true;
