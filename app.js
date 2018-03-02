@@ -171,16 +171,27 @@ App({
 
   onShow: function({path,query,scene,shareTicket,referrerInfo}){
     var that = this;
-    new AV.Query('shopConfig').find().then(dConfig=>{
-      dConfig.forEach(conData=>{
-        cData = conData.toJSON();
-        that.configData[cData.cName] = {cfield:cData.cfield,fConfig:cData.fConfig}
-      })
-    })
-    if (scene===1007 && path=='/pages/f_Role/f_Role'){
-      wx.setStorageSync('proScene',{path,query,scene})
-      wx.navigateTo({url:path+query})
-    }
+    that.configData = wx.getStorageSync('configData') || {};
+    wx.onNetworkStatusChange(res=>{
+      if (!res.isConnected) {
+        wx.showToast({title:'请检查网络！'});
+        if (typeof that.configData=='undefined'){setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 2000);}
+      } else {
+        return new AV.Query('shopConfig').find().then(dConfig=>{
+          dConfig.forEach(conData=>{
+            cData = conData.toJSON();
+            that.configData[cData.cName] = {cfield:cData.cfield,fConfig:cData.fConfig}
+          });
+          wx.setStorageSync('configData',that.configData);
+          return new AV.Query('_User').get(query.shangji);
+        }).then(sjData=>{
+          if (scene===1007 && path=='/pages/f_Role/f_Role'){
+            wx.setStorageSync('proScene',{path,query,scene})
+            wx.navigateTo({url:path+query})
+          }
+        }).catch(console.error);
+      }
+    });
   },
 
   onHide: function () {             //进入后台时缓存数据。
