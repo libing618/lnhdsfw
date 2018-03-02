@@ -172,6 +172,8 @@ App({
   onShow: function({path,query,scene,shareTicket,referrerInfo}){
     var that = this;
     that.configData = wx.getStorageSync('configData') || {};
+    let proScene = wx.getStorageSync('proScene') || {};
+    query.shangji = query.shangji ? query.shangji : (proScene.query.shangji ? proScene.query.shangji : '59f08fbb67f356004449a4a4')
     wx.onNetworkStatusChange(res=>{
       if (!res.isConnected) {
         wx.showToast({title:'请检查网络！'});
@@ -183,12 +185,13 @@ App({
             that.configData[cData.cName] = {cfield:cData.cfield,fConfig:cData.fConfig}
           });
           wx.setStorageSync('configData',that.configData);
-          return new AV.Query('_User').get(query.shangji);
+          return new AV.Query('_User').select(['goodsIndex']).get(query.shangji);
         }).then(sjData=>{
+          if ( sjData.get('goodsIndex')){that.configData.goodsIndex = sjData.get('goodsIndex') };
           if (scene===1007 && path=='/pages/f_Role/f_Role'){
-            wx.setStorageSync('proScene',{path,query,scene})
             wx.navigateTo({url:path+query})
-          }
+          };
+          wx.setStorageSync('proScene',{path,query,scene})
         }).catch(console.error);
       }
     });

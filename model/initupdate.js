@@ -31,14 +31,18 @@ module.exports = {
       let isAll = isAllData(cName);            //是否读所有数据
       let inFamily = typeof udClass[pNo].afamily != 'undefined';            //是否有分类数组
       var umdata ,updAt;
-      var readProcedure = new AV.Query(cName);                                      //进行数据库初始化操作
+      var reqCloud = 'select * from '+cName+' where ';                                      //进行数据库初始化操作
       if (isAll) {
         updAt = appDataExist(cName, 'pAt') ? app.aData[cName].pAt : [0, 0];
+        reqCloud += app.configData[cName].cfield + ' in ()';
+        let fConfig = app.configData[cName].fConfig;
+        let fcLength = fConfig.length()-1;
+        for(let i=0;i<=fcLength;i++){reqCloud +=fConfig[i]+(i==fcLength ? ')' : ',')};
         umdata = app.mData[cName] || [];
         if (typeof app.aData[cName] == 'undefined') { app.aData[cName]={} };
       } else {
         var unitId = uId ? uId : app.roleData.uUnit.objectId;
-        readProcedure.equalTo('unitId', unitId);                //除权限和文章类数据外只能查指定单位的数据
+        reqCloud+='unitId="' + unitId +'" ';                //除权限和文章类数据外只能查指定单位的数据
         updAt = appDataExist(cName, unitId, 'pAt') ? app.aData[cName][unitId].pAt : [0, 0];
         if (typeof app.mData[cName][unitId] == 'undefined') {       //添加以单位ID为Key的JSON初值
           let uaobj = {},upobj={},umobj={};
@@ -53,14 +57,14 @@ module.exports = {
         }
       };
       if (isDown) {
-        readProcedure.greaterThan('updatedAt', new Date(updAt[1]));          //查询本地最新时间后修改的记录
-        readProcedure.ascending('updatedAt');           //按更新时间升序排列
-        readProcedure.limit(1000);                      //取最大数量
+        reqCloud+='updatedAt>date('+updAt[1]+') ';          //查询本地最新时间后修改的记录
+        reqCloud+='limit 1000 ';                      //取最大数量
+        reqCloud+='order by +updatedAt';           //按更新时间升序排列
       } else {
-        readProcedure.lessThan('updatedAt', new Date(updAt[0]));          //查询最后更新时间前修改的记录
-        readProcedure.descending('updatedAt');           //按更新时间降序排列
+        reqCloud+='updatedAt<date('+updAt[0]+') ';          //查询最后更新时间前修改的记录
+        reqCloud+='order by +updatedAt';           //按更新时间降序排列
       };
-      readProcedure.find().then(results => {
+      new AV.Query.doCloudQuery(reqCloud).then(results => {
         var lena = results.length;
         if (lena > 0) {
           let aPlace = -1, aProcedure={};

@@ -82,11 +82,12 @@ module.exports = {
             app.roleData.uUnit = uRole.toJSON();
           }
           if (app.roleData.uUnit.sUnit != '0'){
-            return new AV.Query('_Role')
+            return new AV.Query('manufactor')
             .notEqualTo('updatedAt', new Date(app.roleData.sUnit.updatedAt))
-            .equalTo('objectId',app.roleData.uUnit.sUnit).first().then( sRole => {
+            .equalTo('unitId',app.roleData.uUnit.sUnit).first().then( sRole => {
               if (sRole) {
                 app.roleData.sUnit = sRole.toJSON();
+                app.roleData.sUnit.objectId = app.roleData.uUnit.sUnit;
                 wx.setStorage({ key: 'roleData', data: app.roleData });
               };
             }).catch(console.error)
