@@ -15,7 +15,7 @@ module.exports={
       "userAuthorize": -1,
       "authData": {},
       "mobilePhoneVerified": false,
-      "sjid": "0",
+      "sjid": "59f08fbb67f356004449a4a4",
       "objectId": "0"
     },
     sysinfo: null

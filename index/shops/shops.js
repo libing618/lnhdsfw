@@ -63,7 +63,7 @@ Page({
   },
 
   setSignup: function(){
-    if (app.globalData.user.emailVerified){
+    if (app.globalData.user.mobilePhoneVerified){
       fetchMenu().then(()=>{
         wx.showTabBar()
       }).catch((menuErr) => {

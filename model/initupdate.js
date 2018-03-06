@@ -1,8 +1,9 @@
 const AV = require('../libs/leancloud-storage.js');
 const procedureclass = require('procedureclass.js');
+const {formatTime} = require('../util/util');
 var app = getApp();
 function isAllData(cName){
-  return typeof app.configData[cName]!='undefined';
+  return ['articles','goods'].indexOf(cName)>=0;
 };
 function appDataExist(dKey0, dKey1, dKey2) {              //检查app.aData是否存在二三级的键值
   let dExist = true;
@@ -19,8 +20,6 @@ function appDataExist(dKey0, dKey1, dKey2) {              //检查app.aData是�
 module.exports = {
   appDataExist: appDataExist,
 
-  isAllData: isAllData,
-
   updateData: function (isDown, pNo, uId, udcName) {    //更新页面显示数据,isDown下拉刷新,pNo类定义序号, uId单位Id, udcName类定义文件名
     return new Promise((resolve, reject) => {
       let udClass = typeof udcName == 'string' ? require(udcName) : procedureclass;
@@ -29,21 +28,29 @@ module.exports = {
       }
       var cName = udClass[pNo].pModel;
       let isAll = isAllData(cName);            //是否读所有数据
+      let initTime = new Date(0).toISOString();
       let inFamily = typeof udClass[pNo].afamily != 'undefined';            //是否有分类数组
       var umdata ,updAt;
       var reqCloud = 'select * from '+cName+' where ';                                      //进行数据库初始化操作
       if (isAll) {
-        updAt = appDataExist(cName, 'pAt') ? app.aData[cName].pAt : [0, 0];
-        reqCloud += app.configData[cName].cfield + ' in ()';
+        updAt = appDataExist(cName, 'pAt') ? app.aData[cName].pAt : [initTime, initTime];
+        reqCloud += app.configData[cName].cfield + ' in (';
         let fConfig = app.configData[cName].fConfig;
-        let fcLength = fConfig.length()-1;
-        for(let i=0;i<=fcLength;i++){reqCloud +=fConfig[i]+(i==fcLength ? ')' : ',')};
+        let dataIsInt = typeof fConfig[0] == 'number';
+        let fcLength = fConfig.length-1;
+        for(let i=0;i<=fcLength;i++){
+          if (dataIsInt){
+            reqCloud += fConfig[i] + (i == fcLength ? ') ' : ',')
+          } else {
+            reqCloud += '"'+fConfig[i] + (i == fcLength ? '") ' : '",')
+          }
+        };
         umdata = app.mData[cName] || [];
         if (typeof app.aData[cName] == 'undefined') { app.aData[cName]={} };
       } else {
         var unitId = uId ? uId : app.roleData.uUnit.objectId;
         reqCloud+='unitId="' + unitId +'" ';                //除权限和文章类数据外只能查指定单位的数据
-        updAt = appDataExist(cName, unitId, 'pAt') ? app.aData[cName][unitId].pAt : [0, 0];
+        updAt = appDataExist(cName, unitId, 'pAt') ? app.aData[cName][unitId].pAt : [initTime, initTime];
         if (typeof app.mData[cName][unitId] == 'undefined') {       //添加以单位ID为Key的JSON初值
           let uaobj = {},upobj={},umobj={};
           if (typeof app.mData[cName] != 'undefined') { umobj=app.mData[cName] };
@@ -57,25 +64,25 @@ module.exports = {
         }
       };
       if (isDown) {
-        reqCloud+='updatedAt>date('+updAt[1]+') ';          //查询本地最新时间后修改的记录
+        reqCloud+='and updatedAt>date("'+updAt[1]+'") ';          //查询本地最新时间后修改的记录
         reqCloud+='limit 1000 ';                      //取最大数量
         reqCloud+='order by +updatedAt';           //按更新时间升序排列
       } else {
-        reqCloud+='updatedAt<date('+updAt[0]+') ';          //查询最后更新时间前修改的记录
-        reqCloud+='order by +updatedAt';           //按更新时间降序排列
+        reqCloud += 'and updatedAt<date("' +updAt[0]+'") ';          //查询最后更新时间前修改的记录
+        reqCloud+='order by -updatedAt';           //按更新时间降序排列
       };
-      new AV.Query.doCloudQuery(reqCloud).then(results => {
-        var lena = results.length;
+      new AV.Query.doCloudQuery(reqCloud).then(cqRes => {
+        var lena = cqRes.results.length;
         if (lena > 0) {
           let aPlace = -1, aProcedure={};
           if (isDown) {
-            updAt[1] = results[lena - 1].updatedAt;                          //更新本地最新时间
-            updAt[0] = results[0].updatedAt; //若本地记录时间为空，则更新本地最后更新时间
+            updAt[1] = cqRes.results[lena - 1].updatedAt;                          //更新本地最新时间
+            updAt[0] = cqRes.results[0].updatedAt; //若本地记录时间为空，则更新本地最后更新时间
           } else {
-            updAt[0] = results[lena - 1].updatedAt;          //更新本地最后更新时间
+            updAt[0] = cqRes.results[lena - 1].updatedAt;          //更新本地最后更新时间
           };
           for (let i = 0; i < lena; i++) {//arp.forEach(aProc => {
-            aProcedure = results[i].toJSON();
+            aProcedure = cqRes.results[i].toJSON();
             if (inFamily) {                         //存在afamily类别
               if (typeof umdata[aProcedure.afamily] == 'undefined') { umdata[aProcedure.afamily] = [] };
               if (isDown) {
@@ -110,9 +117,7 @@ module.exports = {
         };
         resolve(lena > 0);               //数据更新状态
       }).catch(error => {
-        wx.onNetworkStatusChange(res => {
-          if (!res.isConnected) { wx.showToast({ title: '请检查网络！' }) }
-        });
+        if (!that.netState) { wx.showToast({ title: '请检查网络！' }) }
       });
     }).catch(console.error);
   },

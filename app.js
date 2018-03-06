@@ -24,12 +24,13 @@ const realtime = new Realtime({
 App({
   globalData: require('globaldata.js').globalData,
   roleData: require('globaldata.js').roleData,
+  netState: true,
   wmenu: [],
   tabBar: require('globaldata.js').tabBar,
   shopMenu:require('globaldata.js').shopMenu,
-  mData: require('globaldata.js').mData,
-  aData: {},                           //以objectId为key的数据记录
-  configData: {},
+  mData: wx.getStorageSync('mData') || require('globaldata.js').mData,              //读数据管理的缓存
+  aData: wx.getStorageSync('aData') || {},                           //以objectId为key的数据记录
+  configData: wx.getStorageSync('configData') || {},
   procedures: {},
   logData: [],                         //操作记录
   fwClient: {},                        //实时通信客户端实例
@@ -145,7 +146,16 @@ App({
 
   onLaunch: function () {
     var that = this;            //调用应用实例的方法获取全局数据
-    wx.hideTabBar();
+    wx.getNetworkType({
+      success: function (res) {
+        if (res.networkType == 'none') {
+          that.netState = false;
+          wx.showToast({ title: '请检查网络！' });
+        } else {
+          that.netState = true;
+        }
+      }
+    });
     wx.getSystemInfo({                     //读设备信息
       success: function(res) {
         that.globalData.sysinfo = res;
@@ -162,39 +172,47 @@ App({
     });
     let shopClass = require('./model/shopdatas');
     for (let i = 0; i < shopClass.length; i++) {
-      that.mData.procedures[i] = []
+      that.procedures[i] = []
     }
-    that.aData = wx.getStorageSync('aData') || that.aData;              //读数据记录的缓存
-    that.mData = wx.getStorageSync('mData') || that.mData;              //读数据管理的缓存
     that.procedures = wx.getStorageSync('procedures') || that.procedures;              //读流程的缓存
-  },
-
-  onShow: function({path,query,scene,shareTicket,referrerInfo}){
-    var that = this;
-    that.configData = wx.getStorageSync('configData') || {};
-    let proScene = wx.getStorageSync('proScene') || {};
-    query.shangji = query.shangji ? query.shangji : (proScene.query.shangji ? proScene.query.shangji : '59f08fbb67f356004449a4a4')
-    wx.onNetworkStatusChange(res=>{
+    wx.onNetworkStatusChange(res => {
       if (!res.isConnected) {
-        wx.showToast({title:'请检查网络！'});
-        if (typeof that.configData=='undefined'){setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 2000);}
+        that.netState = false;
+        wx.showToast({ title: '请检查网络！' });
       } else {
-        return new AV.Query('shopConfig').find().then(dConfig=>{
-          dConfig.forEach(conData=>{
-            cData = conData.toJSON();
-            that.configData[cData.cName] = {cfield:cData.cfield,fConfig:cData.fConfig}
-          });
-          wx.setStorageSync('configData',that.configData);
-          return new AV.Query('_User').select(['goodsIndex']).get(query.shangji);
-        }).then(sjData=>{
-          if ( sjData.get('goodsIndex')){that.configData.goodsIndex = sjData.get('goodsIndex') };
-          if (scene===1007 && path=='/pages/f_Role/f_Role'){
-            wx.navigateTo({url:path+query})
-          };
-          wx.setStorageSync('proScene',{path,query,scene})
-        }).catch(console.error);
+        that.netState = true;
       }
     });
+  },
+
+  onShow: function ({ path, query, scene, shareTicket, referrerInfo }){
+    var that = this;
+    wx.hideTabBar();
+    let proSceneQuery = wx.getStorageSync('proSceneQuery') || { query:{sjId: that.globalData.user.sjid} };
+    let proConfig = wx.getStorageSync('configData') || {goods: { updatedAt: new Date(0).toISOString }};
+    return new Promise((resolve, reject) => {
+      if (that.netState){
+        return new AV.Query('shopConfig').find().then(dConfig => {
+          let cData;
+          dConfig.forEach(conData => {
+            cData = conData.toJSON();
+            that.configData[cData.cName] = { cfield: cData.cfield, fConfig: cData.fConfig }
+          });
+          if (that.configData.goods.updatedAt!=proConfig.goods.updatedAt){delete that.aData.goods};   //店铺签约厂家有变化则重新读商品数据
+          query.sjId = query ? (query.sjId ? query.sjId : proSceneQuery.query.sjId) : '59f08fbb67f356004449a4a4';
+          return new AV.Query('_User').select(['goodsIndex']).get(query.sjId);
+        }).then(sjData => {
+          if (sjData.get('goodsIndex')) { that.configData.goodsIndex = sjData.get('goodsIndex') };
+          if (scene === 1007 && path == '/pages/f_Role/f_Role') {
+            wx.navigateTo({ url: path + query })
+          };
+          wx.setStorage({ key: 'configData', data: that.configData });
+          wx.setStorage({key:'proSceneQuery', data:{ path, query, scene }})
+        }).catch(console.error);
+      } else {
+        if (typeof that.configData=='undefined'){setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 2000);}
+      };
+    }).catch(console.error)
   },
 
   onHide: function () {             //进入后台时缓存数据。
@@ -236,9 +254,6 @@ App({
 
   onError: function(msg) {
     this.logData.push([Date.now(), '系统错误:'+msg]);
-    wx.onNetworkStatusChange(res=>{
-      if (!res.isConnected) { wx.showToast({title:'请检查网络！'}) }
-    });
   }
 
 })
