@@ -5,17 +5,19 @@ var app = getApp();
 function isAllData(cName){
   return ['articles','goods'].indexOf(cName)>=0;
 };
-function appDataExist(dKey0, dKey1, dKey2) {              //检查app.aData是否存在二三级的键值
-  let dExist = true;
-  if (typeof app.aData[dKey0] == 'undefined') { return false }
-  if (dKey1 in app.aData[dKey0]) {
-    if (typeof dKey2 == 'string') {
-      if (!(dKey2 in app.aData[dKey0][dKey1])) {
-        dExist = false;
-      }
-    }
-  } else { dExist = false };
-  return dExist;
+function appDataExist(dKey0, dKey1) {              //检查app.aData是否存在二三级的键值
+  if (typeof app.mData.pAt[dKey0] == 'undefined') {
+    app.mData.pAt[dKey0] = [0,0];
+    return false
+  }
+  if (dKey1 in app.mData.pAt[dKey0]) {
+    return true;
+  } else {
+    let dExist = app.mData.pAt[dKey0];
+    dExist[dKey1] = [0,0];
+    app.mData.pAt[dKey0] = dExist;
+    return false;
+  };
 };
 module.exports = {
   appDataExist: appDataExist,

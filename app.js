@@ -25,13 +25,10 @@ App({
   globalData: require('globaldata.js').globalData,
   roleData: require('globaldata.js').roleData,
   netState: true,
-  wmenu: [],
-  tabBar: require('globaldata.js').tabBar,
-  shopMenu:require('globaldata.js').shopMenu,
   mData: wx.getStorageSync('mData') || require('globaldata.js').mData,              //读数据管理的缓存
   aData: wx.getStorageSync('aData') || {},                           //以objectId为key的数据记录
   configData: wx.getStorageSync('configData') || {},
-  procedures: {},
+  procedures: wx.getStorageSync('procedures') || {},              //读流程的缓存
   logData: [],                         //操作记录
   fwClient: {},                        //实时通信客户端实例
   fwCs: [],                           //客户端的对话实例
@@ -170,11 +167,6 @@ App({
         };
       }
     });
-    let shopClass = require('./model/shopdatas');
-    for (let i = 0; i < shopClass.length; i++) {
-      that.procedures[i] = []
-    }
-    that.procedures = wx.getStorageSync('procedures') || that.procedures;              //读流程的缓存
     wx.onNetworkStatusChange(res => {
       if (!res.isConnected) {
         that.netState = false;
@@ -188,8 +180,9 @@ App({
   onShow: function ({ path, query, scene, shareTicket, referrerInfo }){
     var that = this;
     wx.hideTabBar();
+    let initTime = new Date(0).toISOString();
     let proSceneQuery = wx.getStorageSync('proSceneQuery') || { query:{sjId: that.globalData.user.sjid} };
-    let proConfig = wx.getStorageSync('configData') || {goods: { updatedAt: new Date(0).toISOString }};
+    let proConfig = wx.getStorageSync('configData') || {goods: { updatedAt: initTime }};
     return new Promise((resolve, reject) => {
       if (that.netState){
         return new AV.Query('shopConfig').find().then(dConfig => {
@@ -198,7 +191,7 @@ App({
             cData = conData.toJSON();
             that.configData[cData.cName] = { cfield: cData.cfield, fConfig: cData.fConfig }
           });
-          if (that.configData.goods.updatedAt!=proConfig.goods.updatedAt){delete that.aData.goods};   //店铺签约厂家有变化则重新读商品数据
+          if (that.configData.goods.updatedAt!=proConfig.goods.updatedAt){ that.mData.pAt.goods=[initTime,initTime]};   //店铺签约厂家有变化则重新读商品数据
           query.sjId = query ? (query.sjId ? query.sjId : proSceneQuery.query.sjId) : '59f08fbb67f356004449a4a4';
           return new AV.Query('_User').select(['goodsIndex']).get(query.sjId);
         }).then(sjData => {
