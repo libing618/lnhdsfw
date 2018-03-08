@@ -1,9 +1,0 @@
-<import src="../../../libs/weimport.wxml"/>
-<view class="page">
-  <view wx:if="{{fLength}}" class="page__bd">
-    <template is="tabsCk" data="{{ fLength , pageCk , tabs ,wWidth }}"/>
-  </view>
-  <view class="page__bd">
-    <template is="tabPanel" data="{{ tPage: fLength ? mPage[pageCk] : mPage , pageData , pNo }}"/>
-  </view>
-</view>

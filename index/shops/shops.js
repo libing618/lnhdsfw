@@ -17,7 +17,7 @@ Page({
     scrollHeight: app.globalData.sysinfo.windowHeight-80,
     wWidth: app.globalData.sysinfo.windowWidth,
     mPage: app.mData.goods,
-    pNo: 6,                       //流程的序号6为商品信息
+    pNo: 'goods',                       //流程的序号6为商品信息
     pageData: app.aData.goods,
     grids: [
       {tourl: '/pages/category/category',
@@ -86,16 +86,16 @@ Page({
   },
 
   onReady: function(){
-    updateData(true,6).then(isupdated=>{ this.setPage(isupdated) });
+    updateData(true,'goods').then(isupdated=>{ this.setPage(isupdated) });
   },
 
   tabClick: tabClick,
 
   onPullDownRefresh:function(){
-    updateData(true,6).then(isupdated=>{ this.setPage(isupdated) });
+    updateData(true,'goods').then(isupdated=>{ this.setPage(isupdated) });
   },
   onReachBottom:function(){
-    updateData(false,6).then(isupdated=>{ this.setPage(isupdated) });
+    updateData(false,'goods').then(isupdated=>{ this.setPage(isupdated) });
   },
 
   onShareAppMessage: function () {

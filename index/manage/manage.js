@@ -7,45 +7,12 @@ Page({
     scrollTop : 0,
     scrollHeight: app.globalData.sysinfo.windowHeight-80,
     mPage: app.mData.articles,
-    pNo: 1,                       //流程的序号1为文章类信息
+    pNo: 'articles',                       //文章类信息
     pageData: app.aData.articles,
     tabs: ["厂商品牌", "产品宣传"],
-    userAuthorize: -2,              //中间部分-2显示欢迎词，-1为授权按钮,0为用户授权,1为用户已注册
     pageCk: app.mData.pCk1,
     wWidth: app.globalData.sysinfo.windowWidth,
     grids: []
-  },
-
-  onLoad: function () {
-    var that = this;
-    return Promise.resolve( AV.User.current()).then(lcuser => {           //读缓存登录信息
-      if (lcuser) {                //用户如已注册并在本机登录过,则有数据缓存，否则进行注册登录
-        app.globalData.user = lcuser.toJSON();
-        fetchMenu().then(()=>{ that.setData({ userAuthorize: 0, grids: iMenu('manage') }) });
-      } else {
-        wx.getSetting({
-          success(res) {
-            if (res.authSetting['scope.userInfo']) {                   //用户已经同意小程序使用用户信息
-              openWxLogin(that.data.userAuthorize).then( mstate=> {
-                app.logData.push([Date.now(), '系统初始化设备' + app.globalData.sysinfo.toString()]);                      //本机初始化时间记入日志
-                fetchMenu().then(()=>{
-                  that.setData({ userAuthorize: mstate, grids: iMenu('manage') })
-                }).catch((menuErr) => {
-                  app.logData.push([Date.now(), '菜单更新失败' + menuErr.toString()]);
-                });
-              }).catch((loginErr) => {
-                app.logData.push([Date.now(), '系统登录失败' + loginErr.toString()]);
-              });
-            } else {
-              that.setData({ userAuthorize:-1 });
-              wx.hideTabBar();           //未授权则关闭TabBar
-            }
-          }
-        })
-      }
-    }).catch((lcuErr) => {
-      app.logData.push([Date.now(), '注册用户状态错误失败' + lcuErr.toString()]);
-    })
   },
 
   setPage: function(iu){
@@ -58,7 +25,7 @@ Page({
   },
 
   onReady: function(){
-    updateData(true,1).then(isupdated=>{ this.setPage(isupdated) });        //更新缓存以后有变化的数据
+    updateData(true,'articles').then(isupdated=>{ this.setPage(isupdated) });        //更新缓存以后有变化的数据
   },
   userInfoHandler: function (e) {
     var that = this;
@@ -71,10 +38,10 @@ Page({
   tabClick: tabClick,
 
   onPullDownRefresh:function(){
-    updateData(true,1).then(isupdated=>{ this.setPage(isupdated) });
+    updateData(true,'articles').then(isupdated=>{ this.setPage(isupdated) });
   },
   onReachBottom:function(){
-    updateData(false,1).then(isupdated=>{ this.setPage(isupdated) });
+    updateData(false,'articles').then(isupdated=>{ this.setPage(isupdated) });
   },
   onShareAppMessage: function() {    // 用户点击右上角分享
     return {

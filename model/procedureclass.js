@@ -3,10 +3,10 @@
 //csc对应关系：arrsel数组选择，存储{code：选择值，sName:选择对应的值}
 //csc对应关系：objsel对象选择，存储gname对应数据表选择的ID值，显示slave对应uName:选择记录的名称，title:选择记录的简介，thumbnail:选择记录的缩略图}
 //csc对应关系：specsel对象选择，存储gname对应数据表选择的ID值，显示slave对应要素及carga要素
-//csc对应关系：idsel数组选择，存储gname对应数据表选择的ID值，显示选择对应的app.aData[gname][unitId].uName
+//csc对应关系：idsel数组选择，存储gname对应数据表选择的ID值，显示选择对应的app.aData[gname].uName
 //csc对应关系：t:"dg"为数据型,csc的digit代表2位小数点浮点数，number则为整数型
-module.exports = [
-{
+module.exports = {
+"manufactor":{
   "pNo": 0,
   "pName": "厂商信息",
   "pSuccess": [
@@ -30,7 +30,7 @@ module.exports = [
   ],
   "pModel": "manufactor"
 },
-{
+"articles":{
   "pNo": 1,
   "pName": "厂商文章",
   "afamily": ['商圈人脉','品牌建设','扶持优惠','产品宣传','常见问题'],
@@ -52,7 +52,7 @@ module.exports = [
   ],
   "pModel": "articles"
 },
-{
+"asset":{
   "pNo": 2,
   "pName": "厂商生产设备溯源",
   "pSuccess": [
@@ -72,7 +72,7 @@ module.exports = [
   ],
   "pModel": "asset"
 },
-{
+"product":{
   "pNo": 3,
   "pName": "产品",
   "pSuccess": [
@@ -99,7 +99,7 @@ module.exports = [
   ],
   "pModel": "product"
 },
-{
+"service":{
   "pNo": 4,
   "pName": "服务",
   "pSuccess": [
@@ -120,7 +120,7 @@ module.exports = [
   ],
   "pModel": "service"
 },
-{
+"cargo":{
   "pNo": 5,
   "pName": "成品",
   "pSuccess": [
@@ -140,21 +140,17 @@ module.exports = [
   ],
   "pModel": "cargo"
 },
-{
+"goods":{
   "pNo": 6,
   "pName": "商品",
   "pSuccess": [
-    {gname: "uName", p:'名称', t:"h2" },
-    {inclose: true, gname:"goodstype", p:'商品类别',t:"sObject",  csc:"objsel" },
-    {gname:"title", p:'简介',t:"h3" },
-    {gname:"desc", p:'描述',t:"p" },
-    {gname:"specstype", p:'规格类型', inclose:false,t:"listsel", aList:['单品','套餐']},
-    {gname:"thumbnail", p:'图片简介',t:"thumb" },
     {gname:"pics", p:'图片集',t:"pics"},
-    {gname:"tvidio", p:'视频简介',t: "vidio" },
-    {gname: "channel", p:'渠道分成比例%',t:"dg",itype:"digit",csc:"mCost"},
-    {gname: "extension", p:'推广分成比例%',t:"dg",itype:"digit",csc:"mCost"},
-    {gname: "mCost", p:'销售管理总占比', t: "fg"},
+    {gname:"uName", p:'名称', t:"h1" },
+    {gname:"title", p:'简介',t:"h2" },
+    {gname:"tvidio", p:'',t: "vidio" },
+    {gname:"desc", p:'',t:"p" },
+    {gname:"specstype", p:'规格类型', t:"listsel", aList:['单品','套餐']},
+    {gname:"specs", p:'规格',t:"specsel",csc:"specsel" },
     {gname:"details", p:'详情',t:"eDetail" }
   ],
   "pBewrite": "产品条线提出产品设置或修改申请，由产品条线负责人进行审批。",
@@ -165,7 +161,7 @@ module.exports = [
   "suRoles": ["12"],
   "pModel": "goods"
 },
-{
+"specs":{
   "pNo": 7,
   "pName": "商品规格",
   "pSuccess": [
@@ -185,7 +181,7 @@ module.exports = [
   ],
   "pModel": "specs"
 },
-{
+"promotion":{
   "pNo": 8,
   "pName": "众筹团购及促销",
   "afamily":['众筹','团购','促销'],
@@ -204,77 +200,66 @@ module.exports = [
   ],
   "pModel": "promotion"
 },
-{
-  "pNo": 9,
-  "pName": "原材料与包装",
+"_Role":{
+  "pName": "单位名称和负责人",
+  "afamily": ['产品制造人','物流服务人','电商服务站','生产厂家','电子商务企业'],
   "pSuccess": [
-    {gname:"uName", p:'材料名称', t:"h3" },
-    {gname:"title", p:'材料简述',t:"p" },
-    {gname:"dafamily", p:'材料类型',inclose:false,t:"listsel", aList:['自产原料','外购原料','包装'] },
-    {gname:"thumbnail", p:'图片',t: "thumb" },
-    {gname:"rawStocks", p:'原材料库存', t:"dg",csc:"number" }
+    {inclose:true, gname:"indType", p:'主营业务', t:"industrytype", csc:"aslist" },
+    {gname:"nick", p:'单位简称',t:"h2" },
+    {gname: "title", p:'单位简介', t:"h3"},
+    {gname: "desc", p: '单位描述', t: "p"},
+    {gname: "thumbnail", p: '图片简介', t: "thumb" },
+    {gname: "aGeoPoint", p: '选择地理位置', t: "chooseAd" },
+    {gname: "address", p: '地址', t: "ed"},
+    {gname: "sUnit", p: '服务单位', t: "MS", indTypes: 620406 },
+    {gname: "licenseNumber", p:'社会信用代码', t: "h3" }
   ],
-  "pBewrite": "产品条线提出产品设置或修改申请，由产品条线负责人进行审批。",
-  "puRoles": [
-    "11",
-    "10"
+  "puRoles": [],
+  "pBewrite": "单位负责人提出岗位和单位设置或修改申请，提交单位或个人身份证明文件的照片，由电子商务服务公司进行审批。",
+  "suRoles": [
+    "32",
+    "31"
   ],
-  "pModel": "material"
+  "pModel": "_Role"
 },
-{
-  "pNo": 10,
-  "pName": "成品内含原料及包装",
+"artshop":{
+  "pName": "店铺文章",
+  "afamily": ['产品课堂','营销课堂','我的推介','常见问题'],
   "pSuccess": [
-    {gname:"cargo", p:'成品', inclose: true,t:"sObject", csc:"objsel" },
-    {gname:"material", p:'材料(包装)', t:"sId",csc:"idsel" },
-    {gname:"dOutput", p:'内含数量', t:"dg",csc:"number" },
-    {gname:"price", p:'价格预算', t:"dg",csc:"digit"}
+    {gname:"uName", t:"h1", p:"名称" },
+    {gname:"title",t:"h2", p:"标题" },
+    {gname:"thumbnail", p: '上传用于缩略图的图片',t: "thumb" },
+    {gname:"desc", t:"p", p:"摘要" },
+    {gname:"details", p:'详情',t:"eDetail" }
   ],
-  "pBewrite": "产品条线提出产品设置或修改申请，由产品条线负责人进行审批。",
   "puRoles": [
-    "11",
-    "10"
+    "20",
+    "admin"
   ],
-  "pModel": "content"
+  "pBewrite": "编写各类文章，经单位领导审批后发布。个人编写的此类文章由所属服务机构审批。",
+  "suRoles": [
+    "21",
+    "20"
+  ],
+  "pModel": "artshop"
 },
-{
-  "pNo": 11,
-  "pName": "生产计划",
+"proUnit":{
+  "pName": "厂商签约",
   "pSuccess": [
-    {gname:"uName", p:'计划名称', t:"h3" },
-    {gname:"cargo", p:'成品', inclose: true,t:"sObject", csc:"objsel" },
-    {gname:"title", p:'计划简述',t:"h3" },
-    {gname:"dafamily", p:'计划周期',inclose:false,t:"listsel", aList:['3年','每年','半年','每季','每月','每日'] },
-    {gname:"thumbnail", p:'图片',t: "thumb" },
-    {gname:"dOutput", p:'计划产量', t:"dg",csc:"number" },
-    {gname:"rawStart", p:'原材料供应起点时间', t:"datetime" },
-    {gname:"packStart", p:'包装加工起点时间', t:"datetime" }
+    {gname:"uName", p:'厂商名称', t:"h2" },
+    {inclose:true, gname:"unitId", p:'厂商代码',t:"fd"},
+    {gname:"title", p:'厂商简介',t:"h3" },
+    {gname:"desc", p:'厂商描述',t:"p" },
+    {gname:"aGeoPoint", p:'地理位置',t:"chooseAd" },
+    {gname:"address", p: '详细地址', t: "ed"},
+    {gname:"thumbnail", p: '图片简介',t: "thumb" },
+    {gname:"fcode", p: '编号',t: "inScan"  }
   ],
-  "pBewrite": "产品条线提出产品设置或修改申请，由产品条线负责人进行审批。",
+  "pBewrite": "综合条线提出固定资产设置或修改申请，由条线负责人进行审批。",
   "puRoles": [
-    "11",
-    "10"
+    "32",
+    "31"
   ],
-  "pModel": "prodesign"
-},
-{
-  "pNo": 12,
-  "pName": "产品批发",
-  "pSuccess": [
-    {gname:"product", p:'产品', t:"sId", csc:"idsel" },
-    {gname:"uName", p:'批发品名称', t:"h2" },
-    {gname:"title", p:'批发品简介',t:"h4" },
-    {gname:"thumbnail", p:'图片简介',t: "thumb" },
-    {gname:"s_product", p:'外观尺寸重量', t:"arrplus", csc:"arrsel" },
-    {gname:"whole_price", p:'零售价', t:"dg",itype:"digit",csc:"digit" },
-    {gname:"wholeStock", p:'库存', t:"dg",itype:"number", csc:"canSupply"},
-    {gname: "canwholesale", p:'可供销售', t: "fg"}
-  ],
-  "pBewrite": "产品条线提出服务设置或修改申请，由产品条线负责人进行审批。",
-  "puRoles": [
-    "12",
-    "11"
-  ],
-  "pModel": "wholesale"
+  "pModel": "proUnit"
 }
-]
+}

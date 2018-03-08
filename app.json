@@ -53,7 +53,8 @@
     {
       "root": "pages",
       "pages": [
-        "f_Role/f_Role",
+        "signup/signup",
+        "lprocedures/lprocedures",
         "vprocedure/vprocedure",
         "shops/address/add/add",
         "shops/cart/cart",
@@ -69,8 +70,6 @@
       "root": "inputedit",
       "pages": [
         "import/addressedit",
-        "signup/signup",
-        "lshops/lshops",
         "shopData/shopData",
         "communication/communication",
         "channel/channel",

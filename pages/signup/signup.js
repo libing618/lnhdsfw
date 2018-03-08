@@ -1,5 +1,4 @@
 const AV = require('../../../libs/leancloud-storage.js');
-const unitFormat = require('../../../model/procedureclass.js')[0];
 var app = getApp()
 Page({
   data:{
@@ -75,7 +74,7 @@ Page({
     var that = this;
     return {
       title: app.uUnit.uName+'请您注册单位信息', // 分享标题
-      path: 'pages/index/f_Role/f_Role?ruId='+that.data.crUnitDataId // 分享路径
+      path: 'pages/signup/signup?ruId='+that.data.crUnitDataId // 分享路径
     }
   }
 

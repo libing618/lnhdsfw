@@ -1,6 +1,5 @@
 // 通用的内容编辑pages
 const wImpEdit = require('../import/impedit.js');
-const { appDataExist} = require('../../model/initupdate');
 const { initData } = require('../../model/initForm');
 var app = getApp()
 Page({
@@ -8,7 +7,6 @@ Page({
     selectd: -1,                       //详情项选中字段序号
     enMenu: 'none',                  //‘插入、删除、替换’菜单栏关闭
     enIns: true,                  //插入grid菜单组关闭
-    pNo: '',                       //流程
     targetId: '0',              //流程申请表的ID
     dObjectId: '0',             //已建数据的ID作为修改标志，0则为新建
     vData: {},
@@ -26,34 +24,27 @@ Page({
           resolve({pNo:app.procedures[options.tgId].dProcedure,pId:app.procedures[options.tgId].dObjectId});
         } else { reject() };
       } else {
-        let pno = Number(options.pNo);
         let artid = Number(options.artId);
-        if (isNaN(pno)) {
-          reject();
-        } else {
-          resolve({ pNo: pno, pId: isNaN(artid) ? options.artId : artid });
-        };
+        resolve({ pNo: options.pNo, pId: isNaN(artid) ? options.artId : artid });
       }
     }).then(ops=>{
-      var pClass = require('../../model/rocedureclass')[ops.pNo];
+      var pClass = require('../../model/procedureclass.js')[ops.pNo];
       let titleName = '的'               //申请项目名称
       switch (typeof ops.pId){
         case 'number':           //传入参数为一位数字的代表该类型新建数据或读缓存数据
           that.data.dObjectId = pClass.pModel + ops.pId;      //根据类型建缓存KEY
-          aaData = appDataExist(pClass.pModel, app.roleData.uUnit.objectId, that.data.dObjectId) ? app.aData[pClass.pModel][app.roleData.uUnit.objectId][pClass.pModel + ops.pId] : {};
           titleName += pClass.afamily[ops.pId]
           break;
         case 'string':                   //传入参数为已发布ID，重新编辑已发布的数据
           that.data.dObjectId = ops.pId;
-          if (typeof aaData == 'undefined') { aaData = appDataExist(pClass.pModel, app.roleData.uUnit.objectId, that.data.dObjectId) ? app.aData[pClass.pModel][app.roleData.uUnit.objectId][that.data.dObjectId] : {};}
           titleName += pClass.pName;
           break;
         case 'undefined':               //未提交或新建的数据KEY为审批流程pModel的值
           that.data.dObjectId = pClass.pModel;
-          aaData = appDataExist(pClass.pModel, app.roleData.uUnit.objectId, pClass.pModel) ? app.aData[pClass.pModel][app.roleData.uUnit.objectId][pClass.pModel] : require('../../test/goods0')[1]//{} ;
           titleName += pClass.pName;
           break;
       }
+      if (typeof aaData == 'undefined') { aaData = app.aData[ops.pNo][that.data.dObjectId] || {} }
       initData(pClass.pSuccess, aaData).then(({ reqData, vData, funcArr })=>{
         funcArr.forEach(functionName => {
           that[functionName] = wImpEdit[functionName];

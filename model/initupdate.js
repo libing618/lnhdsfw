@@ -1,20 +1,20 @@
 const AV = require('../libs/leancloud-storage.js');
 const procedureclass = require('procedureclass.js');
-const {formatTime} = require('../util/util');
+const initTime = new Date(0).toISOString();
 var app = getApp();
 function isAllData(cName){
   return ['articles','goods'].indexOf(cName)>=0;
 };
 function appDataExist(dKey0, dKey1) {              //检查app.aData是否存在二三级的键值
   if (typeof app.mData.pAt[dKey0] == 'undefined') {
-    app.mData.pAt[dKey0] = [0,0];
+    app.mData.pAt[dKey0] = [initTime,initTime];
     return false
   }
   if (dKey1 in app.mData.pAt[dKey0]) {
     return true;
   } else {
     let dExist = app.mData.pAt[dKey0];
-    dExist[dKey1] = [0,0];
+    dExist[dKey1] = [initTime,initTime];
     app.mData.pAt[dKey0] = dExist;
     return false;
   };
@@ -22,47 +22,33 @@ function appDataExist(dKey0, dKey1) {              //检查app.aData是否存在
 module.exports = {
   appDataExist: appDataExist,
 
-  updateData: function (isDown, pNo, uId, udcName) {    //更新页面显示数据,isDown下拉刷新,pNo类定义序号, uId单位Id, udcName类定义文件名
+  updateData: function (isDown, pNo, uId) {    //更新页面显示数据,isDown下拉刷新,pNo类定义序号, uId单位Id
     return new Promise((resolve, reject) => {
-      let udClass = typeof udcName == 'string' ? require(udcName) : procedureclass;
-      if (typeof pNo == 'string') {
-        udClass.forEach(pClass => { if (pClass.pModel == pNo) { pNo = pClass.pNo } });
-      }
-      var cName = udClass[pNo].pModel;
-      let isAll = isAllData(cName);            //是否读所有数据
-      let initTime = new Date(0).toISOString();
-      let inFamily = typeof udClass[pNo].afamily != 'undefined';            //是否有分类数组
-      var umdata ,updAt;
-      var reqCloud = 'select * from '+cName+' where ';                                      //进行数据库初始化操作
+      let isAll = isAllData(pNo);            //是否读所有数据
+      let inFamily = typeof procedureclass[pNo].afamily != 'undefined';            //是否有分类数组
+      var umdata=[] ,updAt;
+      var reqCloud = 'select * from '+pNo+' where ';                                      //进行数据库初始化操作
       if (isAll) {
-        updAt = appDataExist(cName, 'pAt') ? app.aData[cName].pAt : [initTime, initTime];
-        reqCloud += app.configData[cName].cfield + ' in (';
-        let fConfig = app.configData[cName].fConfig;
+        updAt = appDataExist(pNo) ? app.mData.pAt[pNo] : [initTime, initTime];
+        reqCloud += app.configData[pNo].cfield + ' in (';
+        let fConfig = app.configData[pNo].fConfig;
         let dataIsInt = typeof fConfig[0] == 'number';
         let fcLength = fConfig.length-1;
         for(let i=0;i<=fcLength;i++){
-          if (dataIsInt){
-            reqCloud += fConfig[i] + (i == fcLength ? ') ' : ',')
-          } else {
-            reqCloud += '"'+fConfig[i] + (i == fcLength ? '") ' : '",')
-          }
+          reqCloud += dataIsInt ? ( fConfig[i] + (i == fcLength ? ') ' : ',') ) : ( '"'+fConfig[i] + (i == fcLength ? '") ' : '",') )
         };
-        umdata = app.mData[cName] || [];
-        if (typeof app.aData[cName] == 'undefined') { app.aData[cName]={} };
+        umdata = app.mData[pNo] || [];
       } else {
         var unitId = uId ? uId : app.roleData.uUnit.objectId;
         reqCloud+='unitId="' + unitId +'" ';                //除权限和文章类数据外只能查指定单位的数据
-        updAt = appDataExist(cName, unitId, 'pAt') ? app.aData[cName][unitId].pAt : [initTime, initTime];
-        if (typeof app.mData[cName][unitId] == 'undefined') {       //添加以单位ID为Key的JSON初值
-          let uaobj = {},upobj={},umobj={};
-          if (typeof app.mData[cName] != 'undefined') { umobj=app.mData[cName] };
+        updAt = appDataExist(pNo, unitId) ? app.mData.pAt[pNo][unitId] : [initTime, initTime];
+        if (typeof app.mData[pNo][unitId] == 'undefined') {       //添加以单位ID为Key的JSON初值
+          let umobj={};
+          if (typeof app.mData[pNo] != 'undefined') { umobj=app.mData[pNo] };
           umobj[unitId] = [];
-          app.mData[cName] = umobj;
-          if (typeof app.aData[cName] != 'undefined') { uaobj=app.aData[cName] };
-          uaobj[unitId] = {};
-          app.aData[cName] = uaobj;
+          app.mData[pNo] = umobj;
         } else {
-          umdata = app.mData[cName][unitId] || [];
+          umdata = app.mData[pNo][unitId] || [];
         }
       };
       if (isDown) {
@@ -103,29 +89,21 @@ module.exports = {
                 umdata.push(aProcedure.objectId);                   //分类ID数组增加对应ID
               }
             };
-            if (isAll) {
-              app.aData[cName][aProcedure.objectId] = aProcedure;                        //将数据对象记录到本机
-            } else {
-              app.aData[cName][unitId][aProcedure.objectId] = aProcedure;
-            }
+            app.aData[pNo][aProcedure.objectId] = aProcedure;                        //将数据对象记录到本机
           };
         };
         if (isAll) {
-          app.mData[cName] = umdata;
-          app.aData[cName].pAt = updAt;
+          app.mData[pNo] = umdata;
+          app.mData.pAt[pNo] = updAt;
         } else {
-          app.mData[cName][unitId] = umdata;
-          app.aData[cName][unitId].pAt = updAt;
+          app.mData[pNo][unitId] = umdata;
+          app.mData.pAt[pNo][unitId] = updAt;
         };
         resolve(lena > 0);               //数据更新状态
       }).catch(error => {
         if (!that.netState) { wx.showToast({ title: '请检查网络！' }) }
       });
     }).catch(console.error);
-  },
-
-  className: function(pNo) {              //返回数据表名
-    return procedureclass[pNo].pModel
   },
 
   classInFamily: function(pNo) {              //判断数据表是否有分类控制

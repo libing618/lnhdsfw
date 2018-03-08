@@ -49,5 +49,6 @@ module.exports={
     procedures: {},              //流程分类缓存数组
     proceduresCk: -1,
     pAt:{}
-  }
+  },
+  aData:{"articles":{},"asset":{},"product":{},"service":{},"cargo":{},"goods":{},"specs":{},"promotion":{},"manufactor":{},"artshop":{},"proUnit":{}}
 }

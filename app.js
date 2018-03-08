@@ -196,7 +196,7 @@ App({
           return new AV.Query('_User').select(['goodsIndex']).get(query.sjId);
         }).then(sjData => {
           if (sjData.get('goodsIndex')) { that.configData.goodsIndex = sjData.get('goodsIndex') };
-          if (scene === 1007 && path == '/pages/f_Role/f_Role') {
+          if (scene === 1007 && path == '/pages/signup/signup') {
             wx.navigateTo({ url: path + query })
           };
           wx.setStorage({ key: 'configData', data: that.configData });
