@@ -1,5 +1,5 @@
 const { updateData } = require('../../model/initupdate');
-const {openWxLogin,fetchMenu,iMenu,tabClick} = require('../../util/util');
+const {tabClick} = require('../../util/util');
 var app = getApp()
 Page({
   data: {
@@ -12,7 +12,7 @@ Page({
     tabs: ["厂商品牌", "产品宣传"],
     pageCk: app.mData.pCk1,
     wWidth: app.globalData.sysinfo.windowWidth,
-    grids: []
+    grids: app.roleData.iMenu.manage
   },
 
   setPage: function(iu){
@@ -26,13 +26,6 @@ Page({
 
   onReady: function(){
     updateData(true,'articles').then(isupdated=>{ this.setPage(isupdated) });        //更新缓存以后有变化的数据
-  },
-  userInfoHandler: function (e) {
-    var that = this;
-    openWxLogin(that.data.userAuthorize).then( (mstate)=> {
-      app.logData.push([Date.now(), '用户授权' + app.globalData.sysinfo.toString()]);                      //用户授权时间记入日志
-      that.setData({ userAuthorize: 0, grids: iMenu('manage') })
-    }).catch( console.error );
   },
 
   tabClick: tabClick,

@@ -7,7 +7,15 @@ function formatNumber(n) {
 function exitPage(){
   wx.showToast({ title: '权限不足请检查', duration: 2500 });
   setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 2000);
-}
+};
+function iMenu(index){
+  let mValue = require('../libs/allmenu.js')[index];
+  let mArr = app.roleData.wmenu[index].map(rNumber=>{
+    return {tourl:mValue['N'+rNumber].tourl, mIcon:mValue['m'+rNumber],mName:mValue['N'+rNumber].mName}
+  });
+  if (index=='manage'){ mArr[0].mIcon=app.globalData.user.avatarUrl }      //把微信头像地址存入第一个菜单icon
+  return mArr;
+};
 module.exports = {
   openWxLogin: function(lStatus) {            //注册登录（本机登录状态）
     return new Promise((resolve, reject) => {
@@ -51,7 +59,10 @@ module.exports = {
       .equalTo('objectId',app.globalData.user.userRol.objectId).find().then( fetchMenu =>{
       if (fetchMenu.length>0) {                          //菜单在云端有变化
         app.roleData.wmenu = fetchMenu[0].toJSON();
-        ['manage', 'marketing', 'customer'].forEach(mname => { app.roleData.wmenu[mname] = app.roleData.wmenu[mname].filter(rn=>{return rn!=0}) })
+        ['manage', 'marketing', 'customer'].forEach(mname => {
+          app.roleData.wmenu[mname] = app.roleData.wmenu[mname].filter(rn=>{return rn!=0});
+          app.roleData.iMenu[mname] = iMenu(mname);
+        });
         wx.setStorage({ key: 'roleData', data: app.roleData });
       };
       return wx.getUserInfo({        //检查客户信息
@@ -103,17 +114,7 @@ module.exports = {
     var that = this;
     openWxLogin(that.data.userAuthorize).then( (mstate)=> {
       app.logData.push([Date.now(), '用户授权' + app.globalData.sysinfo.toString()]);                      //用户授权时间记入日志
-      that.setData({ userAuthorize: 0, grids: iMenu('manage') })
     }).catch( console.error );
-  },
-
-  iMenu: function(index){
-    let mValue = require('../libs/allmenu.js')[index];
-    let mArr = app.roleData.wmenu[index].map(rNumber=>{
-      return {tourl:mValue['N'+rNumber].tourl, mIcon:mValue['m'+rNumber],mName:mValue['N'+rNumber].mName}
-    });
-    if (index=='manage'){ mArr[0].mIcon=app.globalData.user.avatarUrl }      //把微信头像地址存入第一个菜单icon
-    return mArr;
   },
 
   checkRols: function(ouRole){
@@ -128,28 +129,6 @@ module.exports = {
         return false
       }
     }
-  },
-
-  cargoSum: function(fields){
-    return new Promise((resolve, reject) => {
-      let sLength = fields.length;
-      let fieldSum = new Array(sLength);
-      let mSum = {};
-      fieldSum.fill(0);         //定义汇总数组长度且填充为0
-      if (app.mData.product[app.roleData.uUnit.objectId]){
-        app.mData.product[app.roleData.uUnit.objectId].forEach(mId=>{
-          mSum[mId] = [];
-          for (let i = 0; i < sLength; i++) {mSum[mId].push(0)};
-          app.aData.product[app.roleData.uUnit.objectId][mId].cargo.forEach(aId=>{
-            for (let i=0;i<sLength;i++){
-              fieldSum[i] += app.aData.cargo[app.roleData.uUnit.objectId][aId][fields[i]];
-              mSum[mId][i] = mSum[mId][i]+app.aData.cargo[app.roleData.uUnit.objectId][aId][fields[i]];
-            }
-          })
-        })
-      }
-      resolve({rSum:fieldSum,mSum});
-    }).catch( console.error );
   },
 
   fetchRecord: function(requery,indexField,sumField) {                     //同步云端数据到本机

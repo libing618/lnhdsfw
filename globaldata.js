@@ -27,6 +27,7 @@ module.exports={
       customer:[],
       updatedAt: 0
     },
+    iMenu:{},
     uUnit:{updatedAt: 0},                           //用户单位信息（若有）
     sUnit:{updatedAt: 0}                           //上级单位信息（若有）
   },

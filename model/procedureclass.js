@@ -7,7 +7,6 @@
 //csc对应关系：t:"dg"为数据型,csc的digit代表2位小数点浮点数，number则为整数型
 module.exports = {
 "manufactor":{
-  "pNo": 0,
   "pName": "厂商信息",
   "pSuccess": [
     {gname:"uName", p:"厂商名称", t:"h1" },
@@ -31,7 +30,6 @@ module.exports = {
   "pModel": "manufactor"
 },
 "articles":{
-  "pNo": 1,
   "pName": "厂商文章",
   "afamily": ['商圈人脉','品牌建设','扶持优惠','产品宣传','常见问题'],
   "pSuccess": [
@@ -53,7 +51,6 @@ module.exports = {
   "pModel": "articles"
 },
 "asset":{
-  "pNo": 2,
   "pName": "厂商生产设备溯源",
   "pSuccess": [
     {gname:"uName", p:'固定资产名称', t:"h2" },
@@ -73,7 +70,6 @@ module.exports = {
   "pModel": "asset"
 },
 "product":{
-  "pNo": 3,
   "pName": "产品",
   "pSuccess": [
     {gname: "uName", p:'名称', t:"h2" },
@@ -100,7 +96,6 @@ module.exports = {
   "pModel": "product"
 },
 "service":{
-  "pNo": 4,
   "pName": "服务",
   "pSuccess": [
     {gname:"uName", p:'名称', t:"h2" },
@@ -121,7 +116,6 @@ module.exports = {
   "pModel": "service"
 },
 "cargo":{
-  "pNo": 5,
   "pName": "成品",
   "pSuccess": [
     {gname:"product", p:'产品', t:"sId", csc:"idsel" },
@@ -141,7 +135,6 @@ module.exports = {
   "pModel": "cargo"
 },
 "goods":{
-  "pNo": 6,
   "pName": "商品",
   "pSuccess": [
     {gname:"pics", p:'图片集',t:"pics"},
@@ -162,7 +155,6 @@ module.exports = {
   "pModel": "goods"
 },
 "specs":{
-  "pNo": 7,
   "pName": "商品规格",
   "pSuccess": [
     {gname:"goods", p:'商品', t:"sId", csc:"idsel" },
@@ -182,7 +174,6 @@ module.exports = {
   "pModel": "specs"
 },
 "promotion":{
-  "pNo": 8,
   "pName": "众筹团购及促销",
   "afamily":['众筹','团购','促销'],
   "pSuccess": [
@@ -200,31 +191,29 @@ module.exports = {
   ],
   "pModel": "promotion"
 },
-"_Role":{
-  "pName": "单位名称和负责人",
-  "afamily": ['产品制造人','物流服务人','电商服务站','生产厂家','电子商务企业'],
+"orderlist":{
+  "pName": "订单处理",
+  "oprocess": ['订单确认', '成品出货', '到货确认'],
   "pSuccess": [
-    {inclose:true, gname:"indType", p:'主营业务', t:"industrytype", csc:"aslist" },
-    {gname:"nick", p:'单位简称',t:"h2" },
-    {gname: "title", p:'单位简介', t:"h3"},
-    {gname: "desc", p: '单位描述', t: "p"},
-    {gname: "thumbnail", p: '图片简介', t: "thumb" },
-    {gname: "aGeoPoint", p: '选择地理位置', t: "chooseAd" },
-    {gname: "address", p: '地址', t: "ed"},
-    {gname: "sUnit", p: '服务单位', t: "MS", indTypes: 620406 },
-    {gname: "licenseNumber", p:'社会信用代码', t: "h3" }
+    {gname: "uName", p:'成品名称', t:"h3" },
+    {gname:"cargo", p:'成品',t:"sObject", csc:"objsel" },
+    { gname: "thumbnail", p: '图片', t: "thumb" },
+    { gname: "vUnit", p: '物流商', t: "h3", e: '单位名称' },
+    { gname: "signUser", p: '签收人', t: "h3", e: '签收人名称' }
   ],
-  "puRoles": [],
-  "pBewrite": "单位负责人提出岗位和单位设置或修改申请，提交单位或个人身份证明文件的照片，由电子商务服务公司进行审批。",
-  "suRoles": [
-    "32",
-    "31"
+  "pModel": "orderlist",
+  "oSuccess": [
+    { indexField: 'cargo', sumField: ['quantity']},
+    { indexField: 'address', sumField: ['deliverTotal'] },
+    { indexField: 'address', sumField: ['receiptTotal'] }
   ],
-  "pModel": "_Role"
+  "ouRoles": [1,1,3],
+  "oBewrite": "产品条线确认订单并出货,服务条线进行店铺确认。",
+  "oModel": "supplies"
 },
 "artshop":{
   "pName": "店铺文章",
-  "afamily": ['产品课堂','营销课堂','我的推介','常见问题'],
+  "afamily": ['产品课堂','营销课堂','店铺推介','常见问题'],
   "pSuccess": [
     {gname:"uName", t:"h1", p:"名称" },
     {gname:"title",t:"h2", p:"标题" },

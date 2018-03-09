@@ -102,7 +102,7 @@ Page({
     return {
       title: '乐农汇',
       desc: '扶贫济困，共享良品。',
-      path: '/index/shops?id='+app.globalData.user.objectId
+      path: '/index/shops/shops?sjId='+app.globalData.user.objectId
     }
   }
 })
