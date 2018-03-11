@@ -8,16 +8,8 @@ function exitPage(){
   wx.showToast({ title: '权限不足请检查', duration: 2500 });
   setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 2000);
 };
-function iMenu(index){
-  let mValue = require('../libs/allmenu.js')[index];
-  let mArr = app.roleData.wmenu[index].map(rNumber=>{
-    return {tourl:mValue['N'+rNumber].tourl, mIcon:mValue['m'+rNumber],mName:mValue['N'+rNumber].mName}
-  });
-  if (index=='manage'){ mArr[0].mIcon=app.globalData.user.avatarUrl }      //把微信头像地址存入第一个菜单icon
-  return mArr;
-};
 module.exports = {
-  openWxLogin: function(lStatus) {            //注册登录（本机登录状态）
+  openWxLogin: function() {            //注册登录
     return new Promise((resolve, reject) => {
       wx.login({
         success: function(wxlogined) {
@@ -25,11 +17,11 @@ module.exports = {
             wx.getUserInfo({ withCredentials: true,
             success: function(wxuserinfo) {
               if (wxuserinfo) {
-                AV.Cloud.run( 'wxLogin2',{ code:wxlogined.code, encryptedData:wxuserinfo.encryptedData, iv:wxuserinfo.iv } ).then( function(wxuid){
+                AV.Cloud.run( 'wxLogin0',{ code:wxlogined.code, encryptedData:wxuserinfo.encryptedData, iv:wxuserinfo.iv } ).then( function(wxuid){
                   let signuser = {};
                   signuser['uid'] = wxuid.uId;
                   AV.User.signUpOrlogInWithAuthData(signuser,'openWx').then((statuswx)=>{    //用户在云端注册登录
-                    if (lStatus==-2){
+                    if (statuswx.country){
                       app.globalData.user = statuswx.toJSON();
                       resolve(1);                        //客户已注册在本机初次登录成功
                     } else {                         //客户在本机授权登录则保存信息
@@ -52,38 +44,45 @@ module.exports = {
   },
 
   fetchMenu: function(){
-    app.roleData = wx.getStorageSync('roleData') || app.roleData;
-    return new AV.Query('userInit')
-      .notEqualTo('updatedAt',new Date(app.roleData.wmenu.updatedAt))
-      .select(['manage', 'marketing', 'customer'])
-      .equalTo('objectId',app.globalData.user.userRol.objectId).find().then( fetchMenu =>{
-      if (fetchMenu.length>0) {                          //菜单在云端有变化
-        app.roleData.wmenu = fetchMenu[0].toJSON();
-        ['manage', 'marketing', 'customer'].forEach(mname => {
-          app.roleData.wmenu[mname] = app.roleData.wmenu[mname].filter(rn=>{return rn!=0});
-          app.roleData.iMenu[mname] = iMenu(mname);
-        });
-        wx.setStorage({ key: 'roleData', data: app.roleData });
-      };
-      return wx.getUserInfo({        //检查客户信息
-        withCredentials: false,
-        success: function ({ userInfo }) {
-          if (userInfo) {
-            let updateInfo = false;
-            for (var iKey in userInfo){
-              if (userInfo[iKey] != app.globalData.user[iKey]) {             //客户信息有变化
-                updateInfo = true;
-                app.globalData.user[iKey] = userInfo[iKey];
+    return new Promise((resolve, reject) => {
+      if (app.globalData.user.mobilePhoneVerified) {
+        return new AV.Query('userInit')
+          .notEqualTo('updatedAt',new Date(app.roleData.wmenu.updatedAt))
+          .select(['manage', 'plan', 'production', 'customer'])
+          .equalTo('objectId',app.globalData.user.userRol.objectId).find().then( fetchMenu =>{
+          if (fetchMenu.length>0) {                          //菜单在云端有变化
+            app.roleData.wmenu = fetchMenu[0].toJSON();
+            ['manage', 'marketing', 'customer'].forEach(mname => {
+              app.roleData.wmenu[mname] = app.roleData.wmenu[mname].filter(rn=>{return rn!=0});
+            });
+            app.roleData.iMenu = require('../libs/allmenu.js').iMenu(app.roleData.wmenu);
+            app.roleData.iMenu.manage[0].mIcon = app.globalData.user.avatarUrl;     //把微信头像地址存入第一个菜单icon
+            wx.setStorage({ key: 'roleData', data: app.roleData });
+          };
+          return wx.getUserInfo({        //检查客户信息
+            withCredentials: false,
+            success: function ({ userInfo }) {
+              if (userInfo) {
+                let updateInfo = false;
+                for (var iKey in userInfo){
+                  if (userInfo[iKey] != app.globalData.user[iKey]) {             //客户信息有变化
+                    updateInfo = true;
+                    app.globalData.user[iKey] = userInfo[iKey];
+                    app.roleData.iMenu.manage[0].mIcon=app.globalData.user.avatarUrl;
+                  }
+                };
+                if (updateInfo){
+                  AV.User.become(AV.User.current().getSessionToken()).then((rLoginUser) => {
+                    rLoginUser.set(userInfo).save();
+                  })
+                }
               }
-            };
-            if (updateInfo){
-              AV.User.become(AV.User.current().getSessionToken()).then((rLoginUser) => {
-                rLoginUser.set(userInfo).save();
-              })
             }
-          }
-        }
-      });
+          });
+        })
+      } else {
+        app.roleData.iMenu = require('../libs/allmenu.js').iMenu(app.roleData.wmenu);
+      };
     }).then(()=>{
       if (app.globalData.user.unit != '0') {
         return new AV.Query('_Role')
@@ -93,12 +92,11 @@ module.exports = {
             app.roleData.uUnit = uRole.toJSON();
           }
           if (app.roleData.uUnit.sUnit != '0'){
-            return new AV.Query('manufactor')
+            return new AV.Query('_Role')
             .notEqualTo('updatedAt', new Date(app.roleData.sUnit.updatedAt))
-            .equalTo('unitId',app.roleData.uUnit.sUnit).first().then( sRole => {
+            .equalTo('objectId',app.roleData.uUnit.sUnit).first().then( sRole => {
               if (sRole) {
                 app.roleData.sUnit = sRole.toJSON();
-                app.roleData.sUnit.objectId = app.roleData.uUnit.sUnit;
                 wx.setStorage({ key: 'roleData', data: app.roleData });
               };
             }).catch(console.error)
@@ -107,7 +105,7 @@ module.exports = {
         }).catch(console.error)
       };
       app.imLogin(app.globalData.user.username);
-    }).catch( console.error );
+    }).catch(error=> {return error} );
   },
 
   userInfoHandler: function (e) {

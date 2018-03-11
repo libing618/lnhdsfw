@@ -21,11 +21,12 @@ const realtime = new Realtime({
   plugins: [TypedMessagesPlugin],                    // 注册富媒体消息插件
   pushOfflineMessages: true                          //使用离线消息通知方式
 });
+let lcUser = AV.User.current();
 App({
-  globalData: require('globaldata.js').globalData,
-  roleData: require('globaldata.js').roleData,
+  globalData: {user:lcUser.toJSON()} || require('globaldata').globalData,
+  roleData: require('globaldata').roleData,
   netState: true,
-  mData: wx.getStorageSync('mData') || require('globaldata.js').mData,              //读数据管理的缓存
+  mData: wx.getStorageSync('mData') || require('globaldata').mData,              //读数据管理的缓存
   aData: wx.getStorageSync('aData') || {},                           //以objectId为key的数据记录
   configData: wx.getStorageSync('configData') || {},
   procedures: wx.getStorageSync('procedures') || {},              //读流程的缓存

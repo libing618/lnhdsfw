@@ -191,6 +191,48 @@ module.exports = {
   ],
   "pModel": "promotion"
 },
+"artshop":{
+  "pName": "店铺文章",
+  "afamily": ['产品课堂','营销课堂','常见问题'],
+  "pSuccess": [
+    {gname:"uName", t:"h1", p:"名称" },
+    {gname:"title",t:"h2", p:"标题" },
+    {gname:"thumbnail", p: '上传用于缩略图的图片',t: "thumb" },
+    {gname:"desc", t:"p", p:"摘要" },
+    {gname:"details", p:'详情',t:"eDetail" }
+  ],
+  "puRoles": [
+    "20",
+    "admin"
+  ],
+  "pBewrite": "编写各类文章，经单位领导审批后发布。个人编写的此类文章由所属服务机构审批。",
+  "suRoles": [
+    "21",
+    "20"
+  ],
+  "pModel": "artshop"
+},
+"recommend":{
+  "pName": "推荐文章",
+  "pSuccess": [
+    {gname:"uName", t:"h1", p:"名称" },
+    {gname:"title",t:"h2", p:"标题" },
+    {gname:"userId", t:"h3", p:"作者", csc:"objsel" },
+    {gname:"thumbnail", p: '上传用于缩略图的图片',t: "thumb" },
+    {gname:"desc", t:"p", p:"摘要" },
+    {gname:"details", p:'详情',t:"eDetail" }
+  ],
+  "puRoles": [
+    "20",
+    "admin"
+  ],
+  "pBewrite": "编写推荐文章，经单位领导审批后发布。",
+  "suRoles": [
+    "21",
+    "20"
+  ],
+  "pModel": "artshop"
+},
 "orderlist":{
   "pName": "订单处理",
   "oprocess": ['订单确认', '成品出货', '到货确认'],
@@ -211,27 +253,7 @@ module.exports = {
   "oBewrite": "产品条线确认订单并出货,服务条线进行店铺确认。",
   "oModel": "supplies"
 },
-"artshop":{
-  "pName": "店铺文章",
-  "afamily": ['产品课堂','营销课堂','店铺推介','常见问题'],
-  "pSuccess": [
-    {gname:"uName", t:"h1", p:"名称" },
-    {gname:"title",t:"h2", p:"标题" },
-    {gname:"thumbnail", p: '上传用于缩略图的图片',t: "thumb" },
-    {gname:"desc", t:"p", p:"摘要" },
-    {gname:"details", p:'详情',t:"eDetail" }
-  ],
-  "puRoles": [
-    "20",
-    "admin"
-  ],
-  "pBewrite": "编写各类文章，经单位领导审批后发布。个人编写的此类文章由所属服务机构审批。",
-  "suRoles": [
-    "21",
-    "20"
-  ],
-  "pModel": "artshop"
-},
+
 "proUnit":{
   "pName": "厂商签约",
   "pSuccess": [

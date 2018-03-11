@@ -1,5 +1,5 @@
 const AV = require('../../libs/leancloud-storage.js');
-const { updateData, appDataExist } = require('../../model/initupdate');
+const { readAllData } = require('../../model/initupdate');
 const { integration } = require('../../model/initForm.js');
 const {openWxLogin,fetchMenu,tabClick} = require('../../util/util');
 var app = getApp()
@@ -37,15 +37,14 @@ Page({
 
   onLoad: function () {
     var that = this;
-    return Promise.resolve( AV.User.current()).then(lcuser => {           //读缓存登录信息
-      if (lcuser) {                //用户如已注册并在本机登录过,则有数据缓存，否则进行注册登录
-        app.globalData.user = lcuser.toJSON();
-        that.setSignup();
-      } else {
+    if (app.globalData.user.objectId != '0') {       //用户如已注册并在本机登录过,则ID不为0，否则进行注册登录
+      that.setSignup();
+    } else {
+      return Promise.resolve(
         wx.getSetting({
           success(res) {
             if (res.authSetting['scope.userInfo']) {                   //用户已经同意小程序使用用户信息
-              openWxLogin(that.data.userAuthorize).then( mstate=> {
+              openWxLogin().then( loginOk=> {
                 app.logData.push([Date.now(), '系统初始化设备' + app.globalData.sysinfo.toString()]);                      //本机初始化时间记入日志
                 that.setSignup();
               }).catch((loginErr) => {
@@ -86,16 +85,16 @@ Page({
   },
 
   onReady: function(){
-    updateData(true,'goods').then(isupdated=>{ this.setPage(isupdated) });
+    readAllData(true,'goods').then(isupdated=>{ this.setPage(isupdated) });
   },
 
   tabClick: tabClick,
 
   onPullDownRefresh:function(){
-    updateData(true,'goods').then(isupdated=>{ this.setPage(isupdated) });
+    readAllData(true,'goods').then(isupdated=>{ this.setPage(isupdated) });
   },
   onReachBottom:function(){
-    updateData(false,'goods').then(isupdated=>{ this.setPage(isupdated) });
+    readAllData(false,'goods').then(isupdated=>{ this.setPage(isupdated) });
   },
 
   onShareAppMessage: function () {
