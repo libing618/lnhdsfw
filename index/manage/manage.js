@@ -1,4 +1,4 @@
-const { updateData } = require('../../model/initupdate');
+const { readAllData } = require('../../model/initupdate');
 const {tabClick} = require('../../util/util');
 var app = getApp()
 Page({
@@ -25,16 +25,16 @@ Page({
   },
 
   onReady: function(){
-    updateData(true,'articles').then(isupdated=>{ this.setPage(isupdated) });        //更新缓存以后有变化的数据
+    readAllData(true,'articles').then(isupdated=>{ this.setPage(isupdated) });        //更新缓存以后有变化的数据
   },
 
   tabClick: tabClick,
 
   onPullDownRefresh:function(){
-    updateData(true,'articles').then(isupdated=>{ this.setPage(isupdated) });
+    readAllData(true,'articles').then(isupdated=>{ this.setPage(isupdated) });
   },
   onReachBottom:function(){
-    updateData(false,'articles').then(isupdated=>{ this.setPage(isupdated) });
+    readAllData(false,'articles').then(isupdated=>{ this.setPage(isupdated) });
   },
   onShareAppMessage: function() {    // 用户点击右上角分享
     return {

@@ -17,7 +17,7 @@ module.exports = {
             wx.getUserInfo({ withCredentials: true,
             success: function(wxuserinfo) {
               if (wxuserinfo) {
-                AV.Cloud.run( 'wxLogin0',{ code:wxlogined.code, encryptedData:wxuserinfo.encryptedData, iv:wxuserinfo.iv } ).then( function(wxuid){
+                AV.Cloud.run( 'wxLogin2',{ code:wxlogined.code, encryptedData:wxuserinfo.encryptedData, iv:wxuserinfo.iv } ).then( function(wxuid){
                   let signuser = {};
                   signuser['uid'] = wxuid.uId;
                   AV.User.signUpOrlogInWithAuthData(signuser,'openWx').then((statuswx)=>{    //用户在云端注册登录

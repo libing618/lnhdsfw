@@ -166,8 +166,8 @@ module.exports = {
   updateRoleData: function (isDown, pNo) {    //更新页面显示数据,isDown下拉刷新,pNo类定义
     return new Promise((resolve, reject) => {
       var umdata=[] ,updAt;
-      var readProcedure = new AV.Query(procedureclass[pNo].pModel);                                      //进行数据库初始化操作
-        readProcedure.equalTo(app.globalData.user.userRolName, app.globalData.user.objectId);                //除权限和文章类数据外只能查指定单位的数据
+      var urData = new AV.Query(procedureclass[pNo].pModel);                                      //进行数据库初始化操作
+        urData.equalTo(app.globalData.user.userRolName, app.globalData.user.objectId);                //除权限和文章类数据外只能查指定单位的数据
         updAt = appDataExist(pNo, app.globalData.user.objectId) ? app.mData.pAt[pNo][app.globalData.user.objectId] : [0, 0];
         if (typeof app.mData[pNo][app.globalData.user.objectId] == 'undefined') {       //添加以单位ID为Key的JSON初值
           let umobj={};
@@ -177,16 +177,15 @@ module.exports = {
         } else {
           umdata = app.mData[pNo][app.globalData.user.objectId] || [];
         }
-
       if (isDown) {
-        readProcedure.greaterThan('updatedAt', new Date(updAt[1]));          //查询本地最新时间后修改的记录
-        readProcedure.ascending('updatedAt');           //按更新时间升序排列
-        readProcedure.limit(1000);                      //取最大数量
+        urData.greaterThan('updatedAt', new Date(updAt[1]));          //查询本地最新时间后修改的记录
+        urData.ascending('updatedAt');           //按更新时间升序排列
+        urData.limit(1000);                      //取最大数量
       } else {
-        readProcedure.lessThan('updatedAt', new Date(updAt[0]));          //查询最后更新时间前修改的记录
-        readProcedure.descending('updatedAt');           //按更新时间降序排列
+        urData.lessThan('updatedAt', new Date(updAt[0]));          //查询最后更新时间前修改的记录
+        urData.descending('updatedAt');           //按更新时间降序排列
       };
-      readProcedure.find().then(results => {
+      urData.find().then(results => {
         var lena = results.length;
         if (lena > 0) {
           let aPlace = -1, aProcedure={};
