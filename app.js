@@ -72,16 +72,17 @@ App({
   },
 
   fetchMenu: function() {
+    var that = this;
     return new Promise((resolve, reject) => {
-      if (this.globalData.user.mobilePhoneVerified) {
+      if (that.globalData.user.mobilePhoneVerified) {
         return new AV.Query('userInit')
-          .notEqualTo('updatedAt', new Date(this.roleData.wmenu.updatedAt))
+          .notEqualTo('updatedAt', new Date(that.roleData.wmenu.updatedAt))
           .select(['manage', 'marketing', 'customer'])
-          .equalTo('objectId', this.globalData.user.userRol.objectId).find().then(fMenu => {
+          .equalTo('objectId', that.globalData.user.userRol.objectId).find().then(fMenu => {
             if (fMenu.length > 0) {                          //菜单在云端有变化
-              this.roleData.wmenu = fMenu[0].toJSON();
+              that.roleData.wmenu = fMenu[0].toJSON();
               ['manage', 'marketing', 'customer'].forEach(mname => {
-                this.roleData.wmenu[mname] = this.roleData.wmenu[mname].filter(rn => { return rn != 0 });
+                that.roleData.wmenu[mname] = that.roleData.wmenu[mname].filter(rn => { return rn != 0 });
               });
               resolve(true);
             } else {
@@ -93,19 +94,19 @@ App({
       };
     }).then(updateMenu => {
       return new Promise((resolve, reject) => {
-        this.roleData.iMenu = aimenu(this.roleData.wmenu);
+        if (hat.globalData.user.mobilePhoneVerified) {that.roleData.iMenu = aimenu(that.roleData.wmenu)};
         wx.getUserInfo({        //检查客户信息
           withCredentials: false,
           success: function ({ userInfo }) {
             if (userInfo) {
               let updateInfo = false;
               for (var iKey in userInfo) {
-                if (userInfo[iKey] != this.globalData.user[iKey]) {             //客户信息有变化
+                if (userInfo[iKey] != that.globalData.user[iKey]) {             //客户信息有变化
                   updateInfo = true;
-                  this.globalData.user[iKey] = userInfo[iKey];
+                  that.globalData.user[iKey] = userInfo[iKey];
                 }
               };
-              this.roleData.iMenu.manage[0].mIcon = this.globalData.user.avatarUrl;   //把微信头像地址存入第一个菜单icon
+              if (hat.globalData.user.mobilePhoneVerified) {that.roleData.iMenu.manage[0].mIcon = that.globalData.user.avatarUrl};   //把微信头像地址存入第一个菜单icon
               if (updateInfo) {
                 AV.User.become(AV.User.current().getSessionToken()).then((rLoginUser) => {
                   rLoginUser.set(userInfo).save().then(() => { resolve(true) });
@@ -118,28 +119,28 @@ App({
         });
       });
     }).then(uMenu => {
-      if (this.globalData.user.unit != '0') {
+      if (that.globalData.user.unit != '0') {
         return new AV.Query('_Role')
-          .notEqualTo('updatedAt', new Date(this.roleData.uUnit.updatedAt))
-          .equalTo('objectId', this.globalData.user.unit).first().then(uRole => {
+          .notEqualTo('updatedAt', new Date(that.roleData.uUnit.updatedAt))
+          .equalTo('objectId', that.globalData.user.unit).first().then(uRole => {
             if (uRole) {                          //本单位信息在云端有变化
-              this.roleData.uUnit = uRole.toJSON();
+              that.roleData.uUnit = uRole.toJSON();
               uMenu = true;
             };
-            if (this.roleData.uUnit.sUnit != '0') {
+            if (that.roleData.uUnit.sUnit != '0') {
               return new AV.Query('_Role')
-                .notEqualTo('updatedAt', new Date(this.roleData.sUnit.updatedAt))
-                .equalTo('objectId', this.roleData.uUnit.sUnit).first().then(sRole => {
+                .notEqualTo('updatedAt', new Date(that.roleData.sUnit.updatedAt))
+                .equalTo('objectId', that.roleData.uUnit.sUnit).first().then(sRole => {
                   if (sRole) {
-                    this.roleData.sUnit = sRole.toJSON();
+                    that.roleData.sUnit = sRole.toJSON();
                     uMenu = true;
                   };
                 }).catch(console.error)
             }
           }).catch(console.error)
       };
-      if (uMenu) { wx.setStorage({ key: 'roleData', data: this.roleData }); }
-      this.imLogin(this.globalData.user.username);
+      if (uMenu) { wx.setStorage({ key: 'roleData', data: that.roleData }); }
+      that.imLogin(that.globalData.user.username);
       return uMenu;
     }).catch(error => { return error });
   },
@@ -312,7 +313,7 @@ App({
     function initConfig(query){
       return new Promise((resolve, reject) => {
         let initTime = new Date(0).toISOString();
-        let proSceneQuery = wx.getStorageSync('proSceneQuery');
+        let proSceneQuery = wx.getStorageSync('proSceneQuery') || {query:{}};
         if (query){
           if (query.sjId){
             that.globalData.user.sjid = query.sjId;
@@ -322,7 +323,7 @@ App({
           }
         }
         if (typeof that.globalData.user.sjid == 'undefined') { that.globalData.user.sjid = '59f08fbb67f356004449a4a4' };
-        let proConfig = wx.getStorageSync('configData') || {articles:{ cfield:'afamily' , fConfig: [1,3]} ,goods:{ updatedAt: initTime }};
+        let proConfig = wx.getStorageSync('configData') || {goods:{ updatedAt: initTime }};
         if (that.netState) {
           new AV.Query('shopConfig').find().then(dConfig => {
             let cData;
@@ -349,6 +350,7 @@ App({
       };
       wx.setStorage({ key: 'proSceneQuery', data: { path, query, scene } })
       wx.setStorage({ key: 'configData', data: that.configData });
+      that.configData.articles = { cfield: 'afamily', fConfig: [1, 3] };
       if (path!=='index/shops/shops') {wx.navigateTo({ url: '../../'+path })}
     }).catch(console.error)
   },
