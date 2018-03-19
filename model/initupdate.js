@@ -218,10 +218,8 @@ module.exports = {
             app.aData[pNo][aProcedure.objectId] = aProcedure;                        //将数据对象记录到本机
           };
         };
-
-          app.mData[pNo][app.globalData.user.objectId] = umdata;
-          app.mData.pAt[pNo][app.globalData.user.objectId] = updAt;
-        };
+        app.mData[pNo][app.globalData.user.objectId] = umdata;
+        app.mData.pAt[pNo][app.globalData.user.objectId] = updAt;
         resolve(lena > 0);               //数据更新状态
       }).catch(error => {
         if (!that.netState) { wx.showToast({ title: '请检查网络！' }) }

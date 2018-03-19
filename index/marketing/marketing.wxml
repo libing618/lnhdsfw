@@ -5,14 +5,7 @@
         <view class="page__desc">发布宣传稿XX篇 新闻XX篇</view>
     </view>
     <view class="page__bd">
-        <view class="weui-grids">
-            <block wx:for="{{grids}}" wx:key="{{index}}">
-                <navigator url="{{item.tourl}}" class="weui-grid" hover-class="weui-grid_active">
-                    <image class="weui-grid__icon" src="{{item.mIcon}}" />
-                    <view class="weui-grid__label">{{item.mName}}</view>
-                </navigator>
-            </block>
-        </view>
+      <template is="showgrids" data="{{grids}}"/>
     </view>
     <view class="page__title">营销活动</view>
     <scroll-view class="article-scroll" scroll-y="true">
@@ -24,13 +17,6 @@
             </view>
           </view>
           <view class="weui-article__section">
-            <view class="weui-article__h3">分销渠道</view>
-            <view class="weui-article__p">
-                线下代理XX家, 线上商铺XX家，分销占比XX%。
-            </view>
-          </view>
-
-          <view class="weui-article__section">
             <view class="weui-article__h3">直销分析</view>
             <view class="weui-article__p">
                 会员卡XX张, 发优惠券XX张，发红包券XX张。
@@ -41,5 +27,7 @@
         </view>
       </view>
     </scroll-view>
-    <template is="tabBar" data="{{isWorker,tabBar,pName}}" />
+  <view class="weui-tab">
+    <template is="tabPanel" data="{{ tPage: mPage , pageData , pNo }}"/>
+  </view>
 </view>

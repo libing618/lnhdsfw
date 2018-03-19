@@ -1,7 +1,7 @@
 const AV = require('../../libs/leancloud-storage.js');
 const { readAllData } = require('../../model/initupdate');
 const { integration } = require('../../model/initForm.js');
-const {openWxLogin,fetchMenu,tabClick} = require('../../util/util');
+const {tabClick} = require('../../util/util');
 var app = getApp()
 Page({
   data: {
@@ -36,39 +36,7 @@ Page({
   },
 
   onLoad: function () {
-    var that = this;
-    if (app.globalData.user.objectId != '0') {       //用户如已注册并在本机登录过,则ID不为0，否则进行注册登录
-      that.setSignup();
-    } else {
-      return Promise.resolve(
-        wx.getSetting({
-          success(res) {
-            if (res.authSetting['scope.userInfo']) {                   //用户已经同意小程序使用用户信息
-              openWxLogin().then( loginOk=> {
-                app.logData.push([Date.now(), '系统初始化设备' + app.globalData.sysinfo.toString()]);                      //本机初始化时间记入日志
-                that.setSignup();
-              }).catch((loginErr) => {
-                app.logData.push([Date.now(), '系统登录失败' + loginErr.toString()]);
-              });
-            } else {
-              that.setSignup();
-            }
-          }
-        })
-      }
-    }).catch((lcuErr) => {
-      app.logData.push([Date.now(), '注册用户状态错误失败' + lcuErr.toString()]);
-    })
-  },
-
-  setSignup: function(){
-    if (app.globalData.user.mobilePhoneVerified){
-      fetchMenu().then(()=>{
-        wx.showTabBar()
-      }).catch((menuErr) => {
-        app.logData.push([Date.now(), '菜单更新失败' + menuErr.toString()]);
-      });
-    } else {
+    if (!app.globalData.user.mobilePhoneVerified){
       this.data.grids.push({tourl: '/util/login/login',mIcon: 'https://eqr6jmehq1rpgmny-10007535.file.myqcloud.com/2c4093f310964d281bc0.jpg',mName: '合伙推广'})
       this.setData({ grids:this.data.grids })
       wx.hideTabBar();           //未授权则关闭TabBar

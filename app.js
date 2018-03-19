@@ -7,11 +7,9 @@ const AudioMessage = require('./libs/leancloud-realtime-plugin-typed-messages.js
 const VideoMessage = require('./libs/leancloud-realtime-plugin-typed-messages.js').VideoMessage;
 const LocationMessage = require('./libs/leancloud-realtime-plugin-typed-messages.js').LocationMessage;
 const FileMessage = require('./libs/leancloud-realtime-plugin-typed-messages.js').FileMessage;
-const wxappNumber = 2;    //本小程序在开放平台中自定义的序号
-
 AV.init({
-    appId: "kUsS8QFC8BLXbueQYwiYPfUF-gzGzoHsz",                    // 初始化存储 SDK
-    appKey: "hCxPWp7TGfQWs6OShmL2uB1g"
+  appId: "kUsS8QFC8BLXbueQYwiYPfUF-gzGzoHsz",                    // 初始化存储 SDK
+  appKey: "hCxPWp7TGfQWs6OShmL2uB1g"
 });
 const realtime = new Realtime({
   appId: 'kUsS8QFC8BLXbueQYwiYPfUF-gzGzoHsz',                      // 初始化实时通讯 SDK
@@ -21,12 +19,15 @@ const realtime = new Realtime({
   plugins: [TypedMessagesPlugin],                    // 注册富媒体消息插件
   pushOfflineMessages: true                          //使用离线消息通知方式
 });
+const aimenu = require('./libs/allmenu.js').iMenu;
+const wxappNumber = 2;    //本小程序在开放平台中自定义的序号
 let lcUser = AV.User.current();
+
 App({
-  globalData: {user:lcUser.toJSON()} || require('globaldata').globalData,
-  roleData: require('globaldata').roleData,
+  globalData: lcUser ? {user:lcUser.toJSON()} : require('globaldata.js').globalData,
+  roleData: wx.getStorageSync('roleData') || require('globaldata.js').roleData,
   netState: true,
-  mData: wx.getStorageSync('mData') || require('globaldata').mData,              //读数据管理的缓存
+  mData: wx.getStorageSync('mData') || require('globaldata.js').mData,              //读数据管理的缓存
   aData: wx.getStorageSync('aData') || {},                           //以objectId为key的数据记录
   configData: wx.getStorageSync('configData') || {},
   procedures: wx.getStorageSync('procedures') || {},              //读流程的缓存
@@ -34,6 +35,114 @@ App({
   fwClient: {},                        //实时通信客户端实例
   fwCs: [],                           //客户端的对话实例
   urM: [],                           //未读信息
+  openWxLogin: function() {            //注册登录
+    return new Promise((resolve, reject) => {
+      wx.login({
+        success: function (wxlogined) {
+          if (wxlogined.code) {
+            wx.getUserInfo({
+              withCredentials: true,
+              success: function (wxuserinfo) {
+                if (wxuserinfo) {
+                  AV.Cloud.run('wxLogin2', { code: wxlogined.code, encryptedData: wxuserinfo.encryptedData, iv: wxuserinfo.iv }).then(function (wxuid) {
+                    let signuser = {};
+                    signuser['uid'] = wxuid.uId;
+                    AV.User.signUpOrlogInWithAuthData(signuser, 'openWx').then((statuswx) => {    //用户在云端注册登录
+                      if (statuswx.country) {
+                        this.globalData.user = statuswx.toJSON();
+                        resolve(1);                        //客户已注册在本机初次登录成功
+                      } else {                         //客户在本机授权登录则保存信息
+                        let newUser = wxuserinfo.userInfo;
+                        newUser['wxthis' + wxthisNumber] = wxuid.oId;         //客户第一次登录时将openid保存到数据库且客户端不可见
+                        statuswx.set(newUser).save().then((wxuser) => {
+                          this.globalData.user = wxuser.toJSON();
+                          resolve(0);                //客户在本机刚注册，无菜单权限
+                        }).catch(err => { reject({ ec: 0, ee: err }) });
+                      }
+                    }).catch((cerror) => { reject({ ec: 2, ee: cerror }) });    //客户端登录失败
+                  }).catch((error) => { reject({ ec: 1, ee: error }) });       //云端登录失败
+                }
+              }
+            })
+          } else { reject({ ec: 3, ee: '微信用户登录返回code失败！' }) };
+        },
+        fail: function (err) { reject({ ec: 4, ee: err.errMsg }); }     //微信用户登录失败
+      })
+    });
+  },
+
+  fetchMenu: function() {
+    return new Promise((resolve, reject) => {
+      if (this.globalData.user.mobilePhoneVerified) {
+        return new AV.Query('userInit')
+          .notEqualTo('updatedAt', new Date(this.roleData.wmenu.updatedAt))
+          .select(['manage', 'marketing', 'customer'])
+          .equalTo('objectId', this.globalData.user.userRol.objectId).find().then(fMenu => {
+            if (fMenu.length > 0) {                          //菜单在云端有变化
+              this.roleData.wmenu = fMenu[0].toJSON();
+              ['manage', 'marketing', 'customer'].forEach(mname => {
+                this.roleData.wmenu[mname] = this.roleData.wmenu[mname].filter(rn => { return rn != 0 });
+              });
+              resolve(true);
+            } else {
+              resolve(false);
+            };
+          })
+      } else {
+        resolve(false);
+      };
+    }).then(updateMenu => {
+      return new Promise((resolve, reject) => {
+        this.roleData.iMenu = aimenu(this.roleData.wmenu);
+        wx.getUserInfo({        //检查客户信息
+          withCredentials: false,
+          success: function ({ userInfo }) {
+            if (userInfo) {
+              let updateInfo = false;
+              for (var iKey in userInfo) {
+                if (userInfo[iKey] != this.globalData.user[iKey]) {             //客户信息有变化
+                  updateInfo = true;
+                  this.globalData.user[iKey] = userInfo[iKey];
+                }
+              };
+              this.roleData.iMenu.manage[0].mIcon = this.globalData.user.avatarUrl;   //把微信头像地址存入第一个菜单icon
+              if (updateInfo) {
+                AV.User.become(AV.User.current().getSessionToken()).then((rLoginUser) => {
+                  rLoginUser.set(userInfo).save().then(() => { resolve(true) });
+                })
+              } else {
+                resolve(updateMenu);
+              };
+            }
+          }
+        });
+      });
+    }).then(uMenu => {
+      if (this.globalData.user.unit != '0') {
+        return new AV.Query('_Role')
+          .notEqualTo('updatedAt', new Date(this.roleData.uUnit.updatedAt))
+          .equalTo('objectId', this.globalData.user.unit).first().then(uRole => {
+            if (uRole) {                          //本单位信息在云端有变化
+              this.roleData.uUnit = uRole.toJSON();
+              uMenu = true;
+            };
+            if (this.roleData.uUnit.sUnit != '0') {
+              return new AV.Query('_Role')
+                .notEqualTo('updatedAt', new Date(this.roleData.sUnit.updatedAt))
+                .equalTo('objectId', this.roleData.uUnit.sUnit).first().then(sRole => {
+                  if (sRole) {
+                    this.roleData.sUnit = sRole.toJSON();
+                    uMenu = true;
+                  };
+                }).catch(console.error)
+            }
+          }).catch(console.error)
+      };
+      if (uMenu) { wx.setStorage({ key: 'roleData', data: this.roleData }); }
+      this.imLogin(this.globalData.user.username);
+      return uMenu;
+    }).catch(error => { return error });
+  },
 
   imLogin: function(username){                               //实时通信客户端登录
     realtime.createIMClient(username+wxappNumber).then( (im)=> {
@@ -180,32 +289,67 @@ App({
 
   onShow: function ({ path, query, scene, shareTicket, referrerInfo }){
     var that = this;
-    wx.hideTabBar();
-    let initTime = new Date(0).toISOString();
-    let proSceneQuery = wx.getStorageSync('proSceneQuery') || { query:{sjId: that.globalData.user.sjid} };
-    let proConfig = wx.getStorageSync('configData') || {goods: { updatedAt: initTime }};
-    return new Promise((resolve, reject) => {
-      if (that.netState){
-        return new AV.Query('shopConfig').find().then(dConfig => {
-          let cData;
-          dConfig.forEach(conData => {
-            cData = conData.toJSON();
-            that.configData[cData.cName] = { cfield: cData.cfield, fConfig: cData.fConfig }
-          });
-          if (that.configData.goods.updatedAt!=proConfig.goods.updatedAt){ that.mData.pAt.goods=[initTime,initTime]};   //店铺签约厂家有变化则重新读商品数据
-          query.sjId = query ? (query.sjId ? query.sjId : proSceneQuery.query.sjId) : '59f08fbb67f356004449a4a4';
-          return new AV.Query('_User').select(['goodsIndex']).get(query.sjId);
-        }).then(sjData => {
-          if (sjData.get('goodsIndex')) { that.configData.goodsIndex = sjData.get('goodsIndex') };
-          if (scene === 1007 && path == '/pages/signup/signup') {
-            wx.navigateTo({ url: path + query })
-          };
-          wx.setStorage({ key: 'configData', data: that.configData });
-          wx.setStorage({key:'proSceneQuery', data:{ path, query, scene }})
-        }).catch(console.error);
-      } else {
-        if (typeof that.configData=='undefined'){setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 2000);}
+    function loginAndMenu() {
+      return new Promise((resolve, reject) =>{     //用户如已注册并在本机登录过,则有数据缓存，否则进行注册登录
+        if (that.globalData.user.objectId != '0'){
+          that.fetchMenu().then(() => { resolve(true) });
+        } else {
+          wx.getSetting({
+            success(res) {
+              if (res.authSetting['scope.userInfo']) {                   //用户已经同意小程序使用用户信息
+                that.openWxLogin().then(() => {
+                  that.fetchMenu().then(() => { resolve(true) });
+                }).catch((loginErr) => { reject('系统登录失败:' + loginErr.toString()) });
+              } else { resolve(false) }
+            }
+          })
+        }
+      }).catch(lcuErr => {
+        that.logData.push([Date.now(), lcuErr]);
+      })
+    };
+
+    function initConfig(query){
+      return new Promise((resolve, reject) => {
+        let initTime = new Date(0).toISOString();
+        let proSceneQuery = wx.getStorageSync('proSceneQuery');
+        if (query){
+          if (query.sjId){
+            that.globalData.user.sjid = query.sjId;
+            delete query.sjId;
+          } else {
+            if (proSceneQuery.query.sjId){ that.globalData.user.sjid = proSceneQuery.query.sjId };
+          }
+        }
+        if (typeof that.globalData.user.sjid == 'undefined') { that.globalData.user.sjid = '59f08fbb67f356004449a4a4' };
+        let proConfig = wx.getStorageSync('configData') || {articles:{ cfield:'afamily' , fConfig: [1,3]} ,goods:{ updatedAt: initTime }};
+        if (that.netState) {
+          new AV.Query('shopConfig').find().then(dConfig => {
+            let cData;
+            dConfig.forEach(conData => {
+              cData = conData.toJSON();
+              that.configData[cData.cName] = { cfield: cData.cfield, fConfig: cData.fConfig,updatedAt: cData.updatedAt}
+            });
+            if (that.configData.goods.updatedAt!=proConfig.goods.updatedAt){ that.mData.pAt.goods=[initTime,initTime]};   //店铺签约厂家有变化则重新读商品数据
+            return new AV.Query('_User').select('goodsIndex').get(that.globalData.user.sjid);
+         }).then(sjData => {
+           if (sjData.get('goodsIndex')) { that.configData.goodsIndex = sjData.get('goodsIndex') };
+           resolve(query.toString())
+         }).catch(console.error)
+        } else {
+          that.configData.goodsIndex = proConfig.goodsIndex;
+          resolve(query.toString())
+        };
+      })
+    };
+    return Promise.all([initConfig(query),loginAndMenu()]).then((nQuery,sTab) => {
+      if (that.globalData.user.mobilePhoneVerified) { wx.showTabBar() } else { wx.hideTabBar(); }
+      if (scene === 1007 && path == '/pages/signup/signup') {
+
       };
+      wx.setStorage({ key: 'proSceneQuery', data: { path, query, scene } })
+      wx.setStorage({ key: 'configData', data: that.configData });
+      if (path!=='index/shops/shops') {wx.navigateTo({ url: '../../'+path })}
     }).catch(console.error)
   },
 

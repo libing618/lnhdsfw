@@ -6,14 +6,7 @@
         <view class="page__desc">需要录制X篇产品介绍 X篇营销解读 X月X日直播已预约</view>
   </view>
   <view class="page__bd">
-      <view class="weui-grids">
-          <block wx:for="{{grids}}" wx:key="{{index}}">
-              <navigator url="{{item.tourl}}" class="weui-grid" hover-class="weui-grid_active">
-                  <image class="weui-grid__icon" src="{{item.mIcon}}" />
-                  <view class="weui-grid__label">{{item.mName}}</view>
-              </navigator>
-          </block>
-      </view>
+    <template is="showgrids" data="{{grids}}"/>
   </view>
   <scroll-view scroll-y="true" class="article-scroll">
     <view class="weui-article">
@@ -31,5 +24,7 @@
         </view>
     </view>
   </scroll-view>
-  <template is="tabBar" data="{{isWorker,tabBar,pName}}" />
+  <view class="weui-tab">
+    <template is="tabPanel" data="{{ tPage: mPage , pageData , pNo }}"/>
+  </view>
 </view>

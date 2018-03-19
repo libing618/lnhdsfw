@@ -31,7 +31,7 @@ module.exports = {
 },
 "articles":{
   "pName": "厂商文章",
-  "afamily": ['商圈人脉','品牌建设','扶持优惠','产品宣传','常见问题'],
+  "afamily": ['公告公示','品牌建设','扶持优惠','产品宣传','常见问题'],
   "pSuccess": [
     {gname:"uName", t:"h1", p:"名称" },
     {gname:"title",t:"h2", p:"标题" },

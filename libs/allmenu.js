@@ -1,4 +1,4 @@
-let allMenu={
+var allMenu={
 manage:{
   N100:{"tourl": "/pages/signup/signup", "mName": "我的信息" },
   N101:{"tourl": "/inputedit/communication/communication", "mName": "工作沟通" },
@@ -46,10 +46,10 @@ customer:{
 }
 module.exports = {
   iMenu: function(indexArr) {
-    let mArr = {}
+    let mArr = {};    
     ['manage', 'marketing', 'customer'].forEach(mname => {
       mArr[mname] = indexArr[mname].map(rNumber => {
-        return { tourl: mValue['N' + rNumber].tourl, mIcon: mValue['m' + rNumber], mName: mValue['N' + rNumber].mName }
+        return { tourl: allMenu[mname]['N' + rNumber].tourl, mIcon: allMenu[mname]['m' + rNumber], mName: allMenu[mname]['N' + rNumber].mName }
       })
     });
     return mArr;

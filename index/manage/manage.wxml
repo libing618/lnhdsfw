@@ -2,8 +2,8 @@
 <view class="page">
   <view class="page__hd">
     <swiper class="swiper_box" indicator-dots="{{false}}" autoplay="{{true}}">
-      <block wx:for="{{mPage[0]}}" wx:key="{{index}}">
-          <navigator url="/pages/vprocedure/vprocedure?pNo=1&artId={{item.objectId}}">
+      <block wx:for="{{mSwiper}}" wx:key="{{index}}">
+          <navigator url="/pages/vprocedure/vprocedure?pNo={{pNo}}&artId={{item.objectId}}">
             <image src="{{pageData[item].thumbnail}}" class="swimage"></image>
             <view class="swtext">{{pageData[item].title}}</view>
           </navigator>
@@ -12,24 +12,9 @@
   </view>
 
   <view class="page__bd">
-    <view wx:if="{{userAuthorize==-2}}">
-      <text>欢迎使用创业服务平台</text>
-    </view>
-    <view wx:elif="{{userAuthorize==-1}}">
-      <button open-type="getUserInfo" bindgetuserinfo="userInfoHandler">允许微信在本平台上登录</button>
-    </view>
-    <view wx:else>
-      <template is="showgrids" data="{{grids}}"/>
-    </view>
+    <template is="showgrids" data="{{grids}}"/>
     <view class="weui-tab">
-      <view class="weui-navbar">
-        <block wx:for="{{tabs}}" wx:key="{{index}}">
-          <view id="{{index+1}}" class="weui-navbar__item {{ pageCk==index+1 ? 'weui-bar__item_on' : ''}}" bindtap="tabClick">
-            <view class="weui-navbar__title">{{item}}</view>
-          </view>
-        </block>
-        <view class="weui-navbar__slider" style="left:{{wWidth/6-36}}px; transform: translateX(0px); -webkit-transform: translateX({{(pageCk-1)*wWidth/3}}px)"></view>
-      </view>
+      <template is="tabsCk" data="{{ fLength , pageCk , tabs ,wWidth }}"/>
       <template is="tabPanel" data="{{ tPage: fLength ? mPage[pageCk] : mPage , pageData , pNo }}"/>
     </view>
   </view>
