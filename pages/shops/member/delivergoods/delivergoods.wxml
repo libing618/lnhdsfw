@@ -16,16 +16,14 @@
           <block wx:elif="{{item.givestatus == 2 && item.isgive == 1}}">待接收</block>
           <block wx:elif="{{item.givestatus == 3 && item.isgive == 1}}">已接收</block>
 				</view>
-			</view>
+			</view> 
 		</view>
 		<!-- 商品信息 -->
     		<view class="goods">
 			<view class="address">购买商品：{{item.title}} </view>
 		</view>
 		<view class="goods"  >
-			<view wx:if="{{item.isgive == 0}}" class="address">{{item.address}} </view>
-      <button wx:if="{{item.givestatus == 1 && item.isgive == 1}}" class='button' open-type="share" bindtap='' data-index="{{index}}">赠送</button>
-      <view wx:if="{{item.givestatus != 1 && item.isgive == 1}}" class="address">礼物已经送出 </view>
+      <button  class='button'  bindtap='finish' data-index="{{index}}">确认收货</button>
 			<view class="total">{{item.amount}}</view>
 		</view>
 	</view>

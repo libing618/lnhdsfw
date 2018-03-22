@@ -20,21 +20,21 @@ Page({
     pNo: 'goods',                       //流程的序号6为商品信息
     pageData: app.aData.goods,
     grids: [
-      {tourl: '/pages/category/category',
+      {tourl: '/index/shops/shops',
       mIcon: '../../images/icon_forum.png',
       mName: '经典'},
-      {tourl: '/pages/category/category',
+      {tourl: '/pages/shops/category/category',
       mIcon: '../../images/icon_find.png',
       mName: '牛货'},
-      {tourl: '/pages/cart/cart',
+      {tourl: '/pages/shops/cart/cart',
       mIcon: '../../images/icon_cart.png',
       mName: '购物车'},
-      {tourl: '/pages/member/index/index',
+      {tourl: '/pages/shops/member/index/index',
       mIcon: '../../images/icon_my.png',
       mName: '我的'}
     ]
   },
-
+ 
   onLoad: function () {
     if (!app.globalData.user.mobilePhoneVerified){
       this.data.grids.push({tourl: '/util/login/login',mIcon: 'https://eqr6jmehq1rpgmny-10007535.file.myqcloud.com/2c4093f310964d281bc0.jpg',mName: '合伙推广'})
@@ -63,6 +63,30 @@ Page({
   },
   onReachBottom:function(){
     readAllData(false,'goods').then(isupdated=>{ this.setPage(isupdated) });
+  },
+
+  onShow: function (options) {
+    var that = this; 
+    that.loadzhongchou();
+  },
+
+  loadzhongchou: function () {
+    var that = this;
+    var query = new AV.Query('xs_Goods');
+    query.equalTo('isHot', true);
+    query.addAscending('priority');
+    query.find().then(function (goodsObjects) {
+      that.setData({
+        goods: goodsObjects
+      });
+    });
+  },
+  showDetail: function (e) {
+    var index = e.currentTarget.dataset.index;
+    var goodsId = this.data.goods[index].id;
+    wx.navigateTo({
+      url: "/pages/shops/goods/detail/detail?objectId=" + goodsId
+    });
   },
 
   onShareAppMessage: function () {

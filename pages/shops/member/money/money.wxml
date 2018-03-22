@@ -1,0 +1,6 @@
+<view class="page">
+  <image src="../../../../images/money.png" class="money"></image>
+  <view class="profit">我的收益</view>
+  <view class="income" >￥：{{profit.count}}元</view>
+</view>
+<button type="primary" > 提现 </button>

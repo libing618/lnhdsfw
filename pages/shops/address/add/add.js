@@ -24,15 +24,12 @@ Page({
 		address.set('mobile', mobile);
 		var that = this;
 		address.save().then(function (address) {
-			console.log(address);
 			that.setData({'address':address});
 			wx.showToast({
 				title: '添加成功'
 			});
-			// navi back
 			wx.navigateBack();
 		}, function (error) {
-			console.log(error);
 		});
 	},
 	data: {

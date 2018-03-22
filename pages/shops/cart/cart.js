@@ -9,7 +9,6 @@ Page({
     selectedAllStatus: false,
     total: ''
   },
-
   bindMinus: function (e) {
     var index = parseInt(e.currentTarget.dataset.index);
     var num = this.data.carts[index].get('quantity');
@@ -108,6 +107,7 @@ Page({
     var amount = this.data.total;
     if (amount != 0) {
       var cartIds = this.calcIds();
+      var goodsIds = this.goodsIds();
       var isgives = this.isgives();
       var titles = this.titles();
       var prices = this.prices();
@@ -121,6 +121,7 @@ Page({
         var time = new Date().getTime();
         var tradeId = random + "" + time + isgives[i]
         var cart = {
+          goodsId: goodsIds[i],
           cartId: cartIds[i],
           standard: standards[i],
           title: titles[i],
@@ -134,7 +135,7 @@ Page({
         cartObjects.push(cart);
       }
       wx.navigateTo({
-        url: '../../../../order/checkout/checkout?cartIds=' + cartIds + '&amount=' + this.data.total + '&cart=' + JSON.stringify(cartObjects) + '&titles=' + titles
+        url: '../../../../../order/checkout/checkout?cartIds=' + cartIds + '&amount=' + this.data.total + '&cart=' + JSON.stringify(cartObjects) + '&titles=' + titles
       });
     } else {
       wx.showModal({
@@ -208,15 +209,9 @@ Page({
     })
   },
   calcIds: function () {
-    // 遍历取出已勾选的cid
-    // var buys = [];
     var cartIds = [];
-    // var goodsIds = [];
     for (var i = 0; i < this.data.carts.length; i++) {
       if (this.data.carts[i].get('selected')) {
-        // 移动到Buy对象里去
-        // cartIds += ',';
-        //	cartIds.push(this.data.carts[i].get('objectId'));
         cartIds.push(this.data.carts[i].get('standard').id);
       }
     }
@@ -228,6 +223,27 @@ Page({
       })
     }
     return cartIds;
+
+  },
+
+  goodsIds: function () {
+    // 遍历取出已勾选的cid
+    // var buys = [];
+    var goodsIds = [];
+    // var goodsIds = [];
+    for (var i = 0; i < this.data.carts.length; i++) {
+      if (this.data.carts[i].get('selected')) {
+        goodsIds.push(this.data.carts[i].get('goods').id);
+      }
+    }
+    if (goodsIds.length <= 0) {
+      wx.showToast({
+        title: '请勾选商品',
+        icon: 'success',
+        duration: 1000
+      })
+    }
+    return goodsIds;
     //return goodsIds
 
   },
@@ -404,10 +420,8 @@ Page({
   showGoods: function (e) {
     // 点击购物车某件商品跳转到商品详情
     var objectId = e.currentTarget.dataset.objectId;
-    console.log(objectId)
     var query = new AV.Query('xs_goodsstandard');
     query.get(objectId).then(function (xs_goodsstandard) {
-      console.log(xs_goodsstandard)
       var id = xs_goodsstandard.attributes.goods.id
       wx.navigateTo({
         url: "../goods/detail/detail?objectId=" + id

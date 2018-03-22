@@ -17,18 +17,16 @@ Page({
     this.getstandard(standard);
   },
   getGoodsById: function (goodsId) {
+    console.log(goodsId)
     if (goodsId) {
       var that = this
       var query = new AV.Query('xs_Goods');
       // 生成商品对象
       query.get(goodsId).then(function (goods) {
-        // console.log(goods);
         that.setData({
           goods: goods
         });
-        // 成功获得实例
       }, function (error) {
-        // 异常处理
       });
     }
   },
@@ -40,29 +38,55 @@ Page({
     query.equalTo('goods', standard);
     query.descending('updatedAt');
     query.find().then(function (standard) {
-      console.log(standard)
       that.setData({
         standard: standard,
       });
     }).catch(function (error) {
     });
     var standard = that.data.standard;
-    console.log(standard)
   },
      
 
   onShow: function () {
     this.id()
+    this.sjid()
+    this.channelid()
+  },
+  channelid: function () {
+    var channel = AV.User.current().attributes.channelid
+    var channelid = app.channelid
+    if (channelid) {
+      if (channel) {} else {
+        this.setData({
+          channelid: channelid
+        })
+        const user = AV.User.current();
+        user.set({ channelid });
+        user.save();
+      }
+    }
+  },
+  sjid: function () {
+    var sj = AV.User.current().attributes.sjid
+    var sjid = app.sjid
+    if (sjid) {
+      if (sj) {} else {
+        this.setData({
+          sjid: sjid
+        })
+        const user = AV.User.current();
+        user.set({ sjid });
+        user.save();
+      }
+    }
   },
   id: function () {
     var that = this
     var id = app.goodsid
-    console.log(id)
     if (id) {
       var query = new AV.Query('xs_Goods');
       // 生成商品对象
       query.get(id).then(function (goods) {
-        // console.log(goods);
         that.setData({
           goods: goods
         });
@@ -73,15 +97,12 @@ Page({
     }
   },
   buy: function () {
-    console.log(87798987987)
     this.insertCartbuy(this.data.Standard);
   },
   give: function () {
-    console.log(454654564)
     this.insertCartgive(this.data.Standard);
   },
   insertCartgive: function (Standard) {
-console.log(0)
     var that = this;
     var user = AV.User.current();
     var query = new AV.Query('xs_cart');
@@ -96,11 +117,11 @@ console.log(0)
         cart.set('user', user);
         cart.set('quantity', 1);
         cart.set('standard', Standard);
+        cart.set('goods', Standard.attributes.goods);
         cart.set('isgive', "1");
         cart.save().then(function (cart) {
           that.showCartToast();
         }, function (error) {
-          console.log(error);
         });
       } else {
         // if exsit, get the cart self
@@ -112,7 +133,6 @@ console.log(0)
           that.showCartToast();
           return cart.save();
         }, function (error) {
-          console.log(error);
         });
       }
     }, function (error) {
@@ -120,7 +140,6 @@ console.log(0)
     });
   },
   insertCartbuy: function (Standard) {
-    console.log(1)
     var that = this;
     var user = AV.User.current();
     var query = new AV.Query('xs_cart');
@@ -134,11 +153,11 @@ console.log(0)
         cart.set('user', user);
         cart.set('quantity', 1);
         cart.set('standard', Standard);
+        cart.set('goods', Standard.attributes.goods);
         cart.set('isgive', "0");
         cart.save().then(function (cart) {
           that.showCartToast();
         }, function (error) {
-          console.log(error);
         });
       } else {
         // if exsit, get the cart self
@@ -150,7 +169,6 @@ console.log(0)
           that.showCartToast();
           return cart.save();
         }, function (error) {
-          console.log(error);
         });
       }
     }, function (error) {
@@ -179,10 +197,15 @@ console.log(0)
       urls: this.data.goods.get('detail') // 需要预览的图片http链接列表
     })
   },
-  showCart: function () {
+  callphone: function () {
     wx.makePhoneCall({
       phoneNumber: '13100073932' //仅为示例，并非真实的电话号码
     })
+  },
+  showCart: function () {
+    wx.navigateTo({
+      url: '../../cart/cart'
+    });
   },
   setHighlight: function (index) {
     var highlight = [];
@@ -203,8 +226,6 @@ console.log(0)
     query.get(standardId).then(function (standard) {
       var amount = standard.attributes.price;
       var code = standard.attributes.standard;
-      console.log(standard)
-      console.log(amount)
       that.setData({
         Standard: standard,
         amount: amount,
@@ -223,8 +244,6 @@ console.log(0)
     query.get(standardId).then(function (standard) {
       var amount = standard.attributes.price;
       var code = standard.attributes.standard;
-      console.log(standard)
-      console.log(amount)
       that.setData({
         Standard: standard,
         amount: amount,
@@ -317,12 +336,12 @@ console.log(0)
     }.bind(this), 200)
   },
   onShareAppMessage: function () {
+    var sjid = AV.User.current().id;
+    var channelid = AV.User.current().attributes.channelid
     // 用户点击右上角分享
     return {
-      title: '行者户外装备库', // 分享标题
-      path: '/pages/index/index?sjid=' + sjid + '&goodsid=' + goodsid // 分享路径
+      title: '分享的内容', // 分享标题
+      path: '/pages/index/index?sjid=' + sjid + '&goodsid=' + goodsid + '&channelid=' + channelid // 分享路径
     }
   }
-
-
 });

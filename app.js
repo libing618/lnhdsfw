@@ -152,7 +152,9 @@ App({
         conversations.map( (conversation)=> { that.fwCs.push(conversation); });
       });
       im.on('unreadmessagescountupdate', function unreadmessagescountupdate(conversations) { that.urM = conversations; });
-    });
+
+
+     });
   },
 
   sendM: function(sMessage,conversationId){
@@ -323,8 +325,8 @@ App({
             if (proSceneQuery.query.sjId){ that.globalData.user.sjid = proSceneQuery.query.sjId };
           }
         }
-        if (typeof that.globalData.user.sjid == 'undefined') { that.globalData.user.sjid = '59f08fbb67f356004449a4a4' };
-        let proConfig = wx.getStorageSync('configData') || {articles:{ cfield:'afamily' , fConfig: [1,3]} ,goods:{ updatedAt: initTime }};
+        if (!that.globalData.user.sjid) { that.globalData.user.sjid = '59f08fbb67f356004449a4a4' };
+        let proConfig = wx.getStorageSync('configData') || {articles:{ cfield:'afamily' , fConfig: [0,1,3]} ,goods:{ updatedAt: initTime }};
         if (that.netState) {
           new AV.Query('shopConfig').find().then(dConfig => {
             let cData;
