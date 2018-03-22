@@ -19,7 +19,7 @@ const realtime = new Realtime({
   plugins: [TypedMessagesPlugin],                    // 注册富媒体消息插件
   pushOfflineMessages: true                          //使用离线消息通知方式
 });
-const aimenu = require('./libs/allmenu.js').iMenu;
+
 const wxappNumber = 2;    //本小程序在开放平台中自定义的序号
 let lcUser = AV.User.current();
 
@@ -36,6 +36,7 @@ App({
   fwCs: [],                           //客户端的对话实例
   urM: [],                           //未读信息
   openWxLogin: function() {            //注册登录
+    var that = this;
     return new Promise((resolve, reject) => {
       wx.login({
         success: function (wxlogined) {
@@ -49,13 +50,13 @@ App({
                     signuser['uid'] = wxuid.uId;
                     AV.User.signUpOrlogInWithAuthData(signuser, 'openWx').then((statuswx) => {    //用户在云端注册登录
                       if (statuswx.country) {
-                        this.globalData.user = statuswx.toJSON();
+                        that.globalData.user = statuswx.toJSON();
                         resolve(1);                        //客户已注册在本机初次登录成功
                       } else {                         //客户在本机授权登录则保存信息
                         let newUser = wxuserinfo.userInfo;
-                        newUser['wxthis' + wxthisNumber] = wxuid.oId;         //客户第一次登录时将openid保存到数据库且客户端不可见
+                        newUser['wxthat' + wxthatNumber] = wxuid.oId;         //客户第一次登录时将openid保存到数据库且客户端不可见
                         statuswx.set(newUser).save().then((wxuser) => {
-                          this.globalData.user = wxuser.toJSON();
+                          that.globalData.user = wxuser.toJSON();
                           resolve(0);                //客户在本机刚注册，无菜单权限
                         }).catch(err => { reject({ ec: 0, ee: err }) });
                       }
@@ -94,7 +95,6 @@ App({
       };
     }).then(updateMenu => {
       return new Promise((resolve, reject) => {
-        if (hat.globalData.user.mobilePhoneVerified) {that.roleData.iMenu = aimenu(that.roleData.wmenu)};
         wx.getUserInfo({        //检查客户信息
           withCredentials: false,
           success: function ({ userInfo }) {
@@ -106,7 +106,6 @@ App({
                   that.globalData.user[iKey] = userInfo[iKey];
                 }
               };
-              if (hat.globalData.user.mobilePhoneVerified) {that.roleData.iMenu.manage[0].mIcon = that.globalData.user.avatarUrl};   //把微信头像地址存入第一个菜单icon
               if (updateInfo) {
                 AV.User.become(AV.User.current().getSessionToken()).then((rLoginUser) => {
                   rLoginUser.set(userInfo).save().then(() => { resolve(true) });
@@ -146,6 +145,7 @@ App({
   },
 
   imLogin: function(username){                               //实时通信客户端登录
+    var that = this;
     realtime.createIMClient(username+wxappNumber).then( (im)=> {
       that.fwClient = im;
       im.getQuery().containsMembers([username+wxappNumber]).find().then( (conversations)=> {  // 默认按每个对话的最后更新日期（收到最后一条消息的时间）倒序排列
@@ -156,6 +156,7 @@ App({
   },
 
   sendM: function(sMessage,conversationId){
+    var that = this;
     var sendMessage;
     switch (sMessage.mtype) {
       case -1:
@@ -188,11 +189,11 @@ App({
         return;
     };
     sendMessage.setAttributes({                                 //发送者呢称和头像
-      avatarUrl: this.globalData.user.avatarUrl,
-      nickName: this.globalData.user.nickName
+      avatarUrl: that.globalData.user.avatarUrl,
+      nickName: that.globalData.user.nickName
     });
     return new Promise((resolve, reject) => {
-      this.fwClient.getConversation(conversationId).then(function(conversation) {
+      that.fwClient.getConversation(conversationId).then(function(conversation) {
         conversation.send(sendMessage).then(function(){
           return resolve(true);
         });
@@ -356,7 +357,7 @@ App({
   },
 
   onHide: function () {             //进入后台时缓存数据。
-    var that=this;
+    var that = this;
     wx.getStorageInfo({             //查缓存的信息
       success: function(res) {
         if ( res.currentSize>(res.limitSize-512) ) {          //如缓存占用大于限制容量减512kb，将大数据量的缓存移除。

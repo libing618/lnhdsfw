@@ -45,13 +45,9 @@ customer:{
 }
 }
 module.exports = {
-  iMenu: function(indexArr) {
-    let mArr = {};    
-    ['manage', 'marketing', 'customer'].forEach(mname => {
-      mArr[mname] = indexArr[mname].map(rNumber => {
-        return { tourl: allMenu[mname]['N' + rNumber].tourl, mIcon: allMenu[mname]['m' + rNumber], mName: allMenu[mname]['N' + rNumber].mName }
-      })
-    });
-    return mArr;
+  iMenu: function(indexArr,mname) {
+    return indexArr.map(rNumber => {
+      return { tourl: allMenu[mname]['N' + rNumber].tourl, mIcon: allMenu[mname]['m' + rNumber], mName: allMenu[mname]['N' + rNumber].mName }
+    })
   }
 }

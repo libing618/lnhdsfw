@@ -1,7 +1,7 @@
 const { updateRoleData } = require('../../model/initupdate.js');
 const { integration,unitData } = require('../../model/initForm.js');
 const {indexClick} = require('../../util/util.js');
-
+const aimenu = require('../../libs/allmenu.js').iMenu;
 var app = getApp()
 Page({
   data:{
@@ -9,7 +9,7 @@ Page({
     pNo: "orderlist",                       //流程的序号5为成品信息
     pageData: unitData('cargo'),
     iClicked: '0',
-    grids:app.roleData.iMenu.customer
+    grids: []
   },
   onLoad:function(options){
     this.setPage(app.mData.orderlist[app.roleData.uUnit.objectId]);
@@ -47,7 +47,8 @@ Page({
     updateRoleData(true,'orderlist').then(isupdated=>{ this.setPage(isupdated) });
     wx.setNavigationBarTitle({
       title: app.globalData.user.emailVerified ? app.roleData.uUnit.uName+'的客户服务' : '用户体验客户服务',
-    })
+    });
+    this.setData({ grids: aimenu(app.roleData.wmenu.customer, 'customer')})
   },
 
   indexClick:indexClick,
