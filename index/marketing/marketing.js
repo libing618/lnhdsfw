@@ -1,7 +1,7 @@
 const { updateRoleData } = require('../../model/initupdate.js');
 const { integration,unitData } = require('../../model/initForm.js');
 const {indexClick} = require('../../util/util.js');
-
+const aimenu = require('../../libs/allmenu.js').iMenu;
 var app = getApp()
 Page({
   data:{
@@ -10,7 +10,7 @@ Page({
     pageData: {},
     iClicked: '0',
     mSum: {},
-    grids:app.roleData.iMenu.marketing
+    grids:[]
   },
   onLoad:function(options){
     this.setPage(app.mData.order[app.roleData.uUnit.objectId]);
@@ -45,11 +45,11 @@ Page({
   },
 
   onReady:function(){
-    var that = this;
     updateRoleData(true,'order').then(isupdated=>{this.setPage(isupdated)});
     wx.setNavigationBarTitle({
       title: app.globalData.user.emailVerified ? app.roleData.uUnit.uName+'的销售管理' : '用户体验销售管理',
     })
+    this.setData({grids: aimenu(app.roleData.wmenu.marketing, 'marketing')})
   },
 
   indexClick:indexClick,

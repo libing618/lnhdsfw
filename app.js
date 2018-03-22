@@ -19,7 +19,7 @@ const realtime = new Realtime({
   plugins: [TypedMessagesPlugin],                    // 注册富媒体消息插件
   pushOfflineMessages: true                          //使用离线消息通知方式
 });
-const aimenu = require('./libs/allmenu.js').iMenu;
+
 const wxappNumber = 2;    //本小程序在开放平台中自定义的序号
 let lcUser = AV.User.current();
 
@@ -36,6 +36,7 @@ App({
   fwCs: [],                           //客户端的对话实例
   urM: [],                           //未读信息
   openWxLogin: function() {            //注册登录
+    var that = this;
     return new Promise((resolve, reject) => {
       wx.login({
         success: function (wxlogined) {
@@ -49,13 +50,13 @@ App({
                     signuser['uid'] = wxuid.uId;
                     AV.User.signUpOrlogInWithAuthData(signuser, 'openWx').then((statuswx) => {    //用户在云端注册登录
                       if (statuswx.country) {
-                        this.globalData.user = statuswx.toJSON();
+                        that.globalData.user = statuswx.toJSON();
                         resolve(1);                        //客户已注册在本机初次登录成功
                       } else {                         //客户在本机授权登录则保存信息
                         let newUser = wxuserinfo.userInfo;
-                        newUser['wxthis' + wxthisNumber] = wxuid.oId;         //客户第一次登录时将openid保存到数据库且客户端不可见
+                        newUser['wxthat' + wxthatNumber] = wxuid.oId;         //客户第一次登录时将openid保存到数据库且客户端不可见
                         statuswx.set(newUser).save().then((wxuser) => {
-                          this.globalData.user = wxuser.toJSON();
+                          that.globalData.user = wxuser.toJSON();
                           resolve(0);                //客户在本机刚注册，无菜单权限
                         }).catch(err => { reject({ ec: 0, ee: err }) });
                       }
@@ -72,16 +73,17 @@ App({
   },
 
   fetchMenu: function() {
+    var that = this;
     return new Promise((resolve, reject) => {
-      if (this.globalData.user.mobilePhoneVerified) {
+      if (that.globalData.user.mobilePhoneVerified) {
         return new AV.Query('userInit')
-          .notEqualTo('updatedAt', new Date(this.roleData.wmenu.updatedAt))
+          .notEqualTo('updatedAt', new Date(that.roleData.wmenu.updatedAt))
           .select(['manage', 'marketing', 'customer'])
-          .equalTo('objectId', this.globalData.user.userRol.objectId).find().then(fMenu => {
+          .equalTo('objectId', that.globalData.user.userRol.objectId).find().then(fMenu => {
             if (fMenu.length > 0) {                          //菜单在云端有变化
-              this.roleData.wmenu = fMenu[0].toJSON();
+              that.roleData.wmenu = fMenu[0].toJSON();
               ['manage', 'marketing', 'customer'].forEach(mname => {
-                this.roleData.wmenu[mname] = this.roleData.wmenu[mname].filter(rn => { return rn != 0 });
+                that.roleData.wmenu[mname] = that.roleData.wmenu[mname].filter(rn => { return rn != 0 });
               });
               resolve(true);
             } else {
@@ -93,58 +95,57 @@ App({
       };
     }).then(updateMenu => {
       return new Promise((resolve, reject) => {
-        this.roleData.iMenu = aimenu(this.roleData.wmenu);
-        wx.getUserInfo({        //检查客户信息
-          withCredentials: false,
-          success: function ({ userInfo }) {
-            if (userInfo) {
-              let updateInfo = false;
-              for (var iKey in userInfo) {
-                if (userInfo[iKey] != this.globalData.user[iKey]) {             //客户信息有变化
-                  updateInfo = true;
-                  this.globalData.user[iKey] = userInfo[iKey];
-                }
-              };
-              this.roleData.iMenu.manage[0].mIcon = this.globalData.user.avatarUrl;   //把微信头像地址存入第一个菜单icon
-              if (updateInfo) {
-                AV.User.become(AV.User.current().getSessionToken()).then((rLoginUser) => {
-                  rLoginUser.set(userInfo).save().then(() => { resolve(true) });
-                })
-              } else {
-                resolve(updateMenu);
-              };
+          wx.getUserInfo({        //检查客户信息
+            withCredentials: false,
+            success: function ({ userInfo }) {
+              if (userInfo) {
+                let updateInfo = false;
+                for (var iKey in userInfo) {
+                  if (userInfo[iKey] != that.globalData.user[iKey]) {             //客户信息有变化
+                    updateInfo = true;
+                    that.globalData.user[iKey] = userInfo[iKey];
+                  }
+                };
+                if (updateInfo) {
+                  AV.User.become(AV.User.current().getSessionToken()).then((rLoginUser) => {
+                    rLoginUser.set(userInfo).save().then(() => { resolve(true) });
+                  })
+                } else {
+                  resolve(updateMenu);
+                };
+              }
             }
-          }
-        });
+          });
       });
     }).then(uMenu => {
-      if (this.globalData.user.unit != '0') {
+      if (that.globalData.user.unit != '0') {
         return new AV.Query('_Role')
-          .notEqualTo('updatedAt', new Date(this.roleData.uUnit.updatedAt))
-          .equalTo('objectId', this.globalData.user.unit).first().then(uRole => {
+          .notEqualTo('updatedAt', new Date(that.roleData.uUnit.updatedAt))
+          .equalTo('objectId', that.globalData.user.unit).first().then(uRole => {
             if (uRole) {                          //本单位信息在云端有变化
-              this.roleData.uUnit = uRole.toJSON();
+              that.roleData.uUnit = uRole.toJSON();
               uMenu = true;
             };
-            if (this.roleData.uUnit.sUnit != '0') {
+            if (that.roleData.uUnit.sUnit != '0') {
               return new AV.Query('_Role')
-                .notEqualTo('updatedAt', new Date(this.roleData.sUnit.updatedAt))
-                .equalTo('objectId', this.roleData.uUnit.sUnit).first().then(sRole => {
+                .notEqualTo('updatedAt', new Date(that.roleData.sUnit.updatedAt))
+                .equalTo('objectId', that.roleData.uUnit.sUnit).first().then(sRole => {
                   if (sRole) {
-                    this.roleData.sUnit = sRole.toJSON();
+                    that.roleData.sUnit = sRole.toJSON();
                     uMenu = true;
                   };
                 }).catch(console.error)
             }
           }).catch(console.error)
       };
-      if (uMenu) { wx.setStorage({ key: 'roleData', data: this.roleData }); }
-      this.imLogin(this.globalData.user.username);
+      if (uMenu) { wx.setStorage({ key: 'roleData', data: that.roleData }); }
+      that.imLogin(that.globalData.user.username);
       return uMenu;
     }).catch(error => { return error });
   },
 
   imLogin: function(username){                               //实时通信客户端登录
+    var that = this;
     realtime.createIMClient(username+wxappNumber).then( (im)=> {
       that.fwClient = im;
       im.getQuery().containsMembers([username+wxappNumber]).find().then( (conversations)=> {  // 默认按每个对话的最后更新日期（收到最后一条消息的时间）倒序排列
@@ -155,6 +156,7 @@ App({
   },
 
   sendM: function(sMessage,conversationId){
+    var that = this;
     var sendMessage;
     switch (sMessage.mtype) {
       case -1:
@@ -187,11 +189,11 @@ App({
         return;
     };
     sendMessage.setAttributes({                                 //发送者呢称和头像
-      avatarUrl: this.globalData.user.avatarUrl,
-      nickName: this.globalData.user.nickName
+      avatarUrl: that.globalData.user.avatarUrl,
+      nickName: that.globalData.user.nickName
     });
     return new Promise((resolve, reject) => {
-      this.fwClient.getConversation(conversationId).then(function(conversation) {
+      that.fwClient.getConversation(conversationId).then(function(conversation) {
         conversation.send(sendMessage).then(function(){
           return resolve(true);
         });
@@ -354,7 +356,7 @@ App({
   },
 
   onHide: function () {             //进入后台时缓存数据。
-    var that=this;
+    var that = this;
     wx.getStorageInfo({             //查缓存的信息
       success: function(res) {
         if ( res.currentSize>(res.limitSize-512) ) {          //如缓存占用大于限制容量减512kb，将大数据量的缓存移除。

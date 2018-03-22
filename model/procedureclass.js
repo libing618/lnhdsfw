@@ -233,6 +233,26 @@ module.exports = {
   ],
   "pModel": "artshop"
 },
+"order": {
+  "pName": "订单处理",
+  "oprocess": ['订单确认', '成品出货', '到货确认'],
+  "pSuccess": [
+    { gname: "uName", p: '成品名称', t: "h3" },
+    { gname: "cargo", p: '成品', t: "sObject", csc: "objsel" },
+    { gname: "thumbnail", p: '图片', t: "thumb" },
+    { gname: "vUnit", p: '物流商', t: "h3", e: '单位名称' },
+    { gname: "signUser", p: '签收人', t: "h3", e: '签收人名称' }
+  ],
+  "pModel": "Order",
+  "oSuccess": [
+    { indexField: 'cargo', sumField: ['quantity'] },
+    { indexField: 'address', sumField: ['deliverTotal'] },
+    { indexField: 'address', sumField: ['receiptTotal'] }
+  ],
+  "ouRoles": [1, 1, 3],
+  "oBewrite": "产品条线确认订单并出货,服务条线进行店铺确认。",
+  "oModel": "supplies"
+},
 "orderlist":{
   "pName": "订单处理",
   "oprocess": ['订单确认', '成品出货', '到货确认'],

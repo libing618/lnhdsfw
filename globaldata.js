@@ -47,9 +47,11 @@ module.exports={
     specs: [],              //已发布规格分类缓存数组
     promotion: [[],[], []],              //已发布团购众筹分类缓存数组
     prodesign: [],              //已发布生产计划缓存数组
+    order: [],
+    orderlist: [],
     procedures: {},              //流程分类缓存数组
     proceduresCk: -1,
     pAt:{}
   },
-  aData:{"articles":{},"asset":{},"product":{},"service":{},"cargo":{},"goods":{},"specs":{},"promotion":{},"manufactor":{},"artshop":{},"proUnit":{}}
+  aData:{"articles":{},"asset":{},"product":{},"service":{},"cargo":{},"goods":{},"specs":{},"promotion":{},"manufactor":{},"artshop":{},"proUnit":{},order:{},orderlist:{}}
 }
