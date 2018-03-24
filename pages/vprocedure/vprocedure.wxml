@@ -5,9 +5,50 @@
       <template is="s_{{item.t}}" data="{{...item, c:viewData[item.gname]}}"></template>
     </block>
   </view>
-
-  <view wx:if="{{uEV}}" class="page__ft weui-footer_fixed-bottom">
-    <button class="weui-btn" style="display:inline-block" type="primary" size="mini" id="fModify" bindtap="fEditProcedure">修改并重新审批</button>
-    <button class="weui-btn" style="display:inline-block" type="primary" size="mini" id="fTemplate">以此为模板新建</button>
+  <view wx:if="{{pno=='goods'}}">
+    <view class="page__ft weui-footer_fixed-bottom">
+      <view class="opt-buttons">
+        <view class="button-group" bindtap="callphone">
+          <image src="../../../../images/icon_phonelogin.png" class="button-image" />
+          <text class="button-text">联系客服</text>
+        </view>
+        <view class="button-group" bindtap="showCart">
+          <image src="../../../../images/icon_cart.png" class="button-image" />
+          <text class="button-text">购物车</text>
+        </view>
+      </view>
+    </view>
+    <button class="buy" bindtap="showModal">购买</button>
+    <button class="give" bindtap="giveshowModal">赠送</button>
+  </view>
+  <view wx:if="{{buyshowModalStatus}}" class="buy_screen" bindtap="hideModal"></view>
+    <view class="buy_attr_box"">
+      <view class="close_icon" bindtap="hideModal">×</view>
+      <view class="buy_attr_content" >
+        <view class="buy_amount">{{amount}}元</view>
+        <view class='buy_standard' wx:for="{{standard}}" bindtap="buyprice" wx:key="" data-index="{{index}}">
+          <scroll-view class="{{highlight[index]}}">{{item.standard}}</scroll-view>
+        </view>
+      </view>
+      <button class="buy_btn" bindtap="buy">确定购买</button>
+    </view>
+  </view>
+  <view wx:if="{{giveshowModalStatus}}" class="drawer_screen" bindtap="givehideModal"></view>
+    <view class="drawer_attr_box">
+      <view class="close_icon" bindtap="hideModal">×</view>
+      <view class="drawer_attr_content" >
+        <view class="drawer_amount">{{amount}}元</view>
+        <view class='drawer_standard' wx:for="{{standard}}" bindtap="giveprice" wx:key="" data-index="{{index}}">
+          <scroll-view class="{{highlight[index]}}">{{item.standard}}</scroll-view>
+        </view>
+      </view>
+      <button class="drawer_btn" bindtap="give">确定赠送</button>
+    </view>
+  </view>
+  <view wx:else>
+    <view wx:if="{{uEV}}" class="page__ft weui-footer_fixed-bottom">
+      <button class="weui-btn" style="display:inline-block" type="primary" size="mini" id="fModify" bindtap="fEditProcedure">修改并重新审批</button>
+      <button class="weui-btn" style="display:inline-block" type="primary" size="mini" id="fTemplate">以此为模板新建</button>
+    </view>
   </view>
 </view>
