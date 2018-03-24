@@ -1,0 +1,94 @@
+.container {
+    background-color: #F2f2f2;
+}
+
+/*轮播*/
+.swiper_box {
+  /*width: 100%;*/
+  height: 300rpx;
+}
+
+swiper.swiper {
+  height: 100%;
+}
+
+.swiper-item {
+  display: block;
+  height: 100%;
+}
+
+.slide-image {
+  height: 100%;
+  width: 100%;
+  display: inline-block;
+  overflow: hidden;
+}
+
+/* 关爱主题*/
+
+.container-goods {
+	background: white;
+}
+
+.container-goods .caption {
+	font-size: 32rpx;
+	width: 100%;
+	line-height: 60rpx;
+	text-indent: 20rpx;
+	padding: 10rpx;
+}
+
+.main-goods {
+/*	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	
+*/	border-top: 1px solid #eee;
+	background: white;
+	display: inline-block;
+}
+
+.main-goods .single-goods {
+	display: block;
+	float: left;
+	width: 50%;
+}
+
+.main-goods image {
+	width: 340rpx;
+	height: 340rpx;
+	display: block;
+	margin: 20rpx auto;
+}
+
+.main-goods .title {
+	width: 90%;
+	font-size: 28rpx;
+	margin: 10rpx auto;
+	height: 60rpx;
+	line-height: 32rpx;
+	overflow: hidden;
+  display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+}
+
+.main-goods .summary {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.main-goods .summary text {
+	font-size: 28rpx;
+	margin: 10rpx 20rpx;
+}
+
+.main-goods .summary .price {
+	color: red;
+  font-size: 32rpx;
+}
+
+.main-goods .summary .sale {
+	color: gray;
+}

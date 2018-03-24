@@ -40,7 +40,7 @@ Page({
 	tapGoods: function(e) {
 		var objectId = e.currentTarget.dataset.objectId;
 		wx.navigateTo({
-			url:"../../../../../detail/detail?objectId="+objectId
+			url:"../../../../../../detail/detail?objectId="+objectId
 		});
 	},
 	tapMainMenu: function(e) {
@@ -96,15 +96,27 @@ Page({
   },
   onShow: function () {
     this.sjid();
+    this.channelid();
   },
-
+  channelid: function () {
+    var channel = AV.User.current().attributes.channelid
+    var channelid = app.channelid
+    if (channelid) {
+      if (channel) {} else {
+        this.setData({
+          channelid: channelid
+        })
+        const user = AV.User.current();
+        user.set({ channelid });
+        user.save();
+      }
+    }
+  },
   sjid: function () {
     var sj = AV.User.current().attributes.sjid
-    console.log(AV.User.current())
     var sjid = app.sjid
-    console.log(sjid)
     if (sjid) {
-      if (sj != "") { console.log(0) } else {
+      if (sj) {} else {
         this.setData({
           sjid: sjid
         })
@@ -112,6 +124,15 @@ Page({
         user.set({ sjid });
         user.save();
       }
+    }
+  },
+  onShareAppMessage: function () {
+    var sjid = AV.User.current().id;
+    var channelid = AV.User.current().attributes.channelid
+    // 用户点击右上角分享
+    return {
+      title: '分享的内容', // 分享标题
+      path: '/pages/index/index?sjid=' + sjid + '&goodsid=' + goodsid + '&channelid=' + channelid // 分享路径
     }
   }
 });

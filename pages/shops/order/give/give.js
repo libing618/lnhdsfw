@@ -50,7 +50,6 @@ Page({
       var query = new AV.Query('cart');
       query.include('goods');
       query.get(cartIdArray[i]).then(function (cart) {
-        console.log(cart)
       }, function (error) {
 
       });
@@ -65,7 +64,6 @@ Page({
     var address = this.data.addressObjects[addressIndex];
     var amount = this.data.amount;
     var cart = this.data.cart
-    console.log(cart)
     wx.showToast({
       title: '正在创建订单',
       icon: 'loading',
@@ -80,7 +78,6 @@ Page({
         isgive: '1',
       }).then((data) => {
         wx.hideToast();
-        console.log(data)
  this.setData({
             orderid: data.id,
             tradeId: data.tradeId,
@@ -143,7 +140,6 @@ Page({
     })
     var addressIndex = this.data.addressIndex;
     var address = this.data.addressObjects[addressIndex];
-    console.log(address)
   },
   bindCreateNew: function () {
     var addressList = this.data.addressList;
@@ -168,7 +164,6 @@ Page({
     }).then(function () {
       var order = that.data.order;
       var length = order.length
-      console.log(length)
       if (length != '0') {
        that.give()
       }else {
@@ -207,7 +202,6 @@ Page({
         bind:'1'
       })
     }, function (error) {
-      console.log(error);
     })
     }else{
       wx.showModal({
@@ -219,9 +213,7 @@ Page({
    
     var give=this.data.give;
     var giveid =give.id;
-    console.log(giveid)
     var user = AV.User.current();
-    console.log(give)
     var sjid=user.id;
       if (res.from === 'button') {}
       return {

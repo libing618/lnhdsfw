@@ -1,0 +1,19 @@
+/* pages/shops/member/money/money.wxss */
+.page{
+  margin-left:250rpx 
+}
+.money{
+  width:300rpx;
+  height:300rpx;
+  overflow:hidden;
+  text-align: center;
+  display: table-cell;
+  vertical-align:middle;
+}
+.income{
+    font-size: 50rpx;
+}
+.profit{
+  margin-left:60rpx; 
+  font-size: 34rpx;
+}

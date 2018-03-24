@@ -18,9 +18,15 @@ autoplay="true" interval="5000" duration="1000" style="height:{{galleryHeight}}p
 </view>
 <view class="footer">
     <view class="opt-buttons">
-        <view class="button-group" bindtap="showCart">
-            <image src="../../../images/icon_phonelogin.png" class="button-image" />
+        <view class="button-group" bindtap="callphone">
+            <image src="../../../../images/icon_phonelogin.png" class="button-image" />
             <text class="button-text">联系客服</text>
+            
+        </view>
+         <view class="button-group" bindtap="showCart">
+            <image src="../../../../images/icon_cart.png" class="button-image" />
+            <text class="button-text">购物车</text>
+            
         </view>
     </view>
     <button class="buy" bindtap="showModal">购买</button>

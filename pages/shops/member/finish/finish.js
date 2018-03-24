@@ -29,7 +29,7 @@ Page({
   loadOrder: function () {
     var that = this;
     var query = new AV.Query('xs_orderlist');
-    query.notEqualTo('status', "2");
+    query.equalTo('status', "3");
     query.descending('createdAt');
     query.equalTo('user', AV.User.current());
     query.find().then(function (orderlist) {

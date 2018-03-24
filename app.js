@@ -95,27 +95,27 @@ App({
       };
     }).then(updateMenu => {
       return new Promise((resolve, reject) => {
-        wx.getUserInfo({        //检查客户信息
-          withCredentials: false,
-          success: function ({ userInfo }) {
-            if (userInfo) {
-              let updateInfo = false;
-              for (var iKey in userInfo) {
-                if (userInfo[iKey] != that.globalData.user[iKey]) {             //客户信息有变化
-                  updateInfo = true;
-                  that.globalData.user[iKey] = userInfo[iKey];
-                }
-              };
-              if (updateInfo) {
-                AV.User.become(AV.User.current().getSessionToken()).then((rLoginUser) => {
-                  rLoginUser.set(userInfo).save().then(() => { resolve(true) });
-                })
-              } else {
-                resolve(updateMenu);
-              };
+          wx.getUserInfo({        //检查客户信息
+            withCredentials: false,
+            success: function ({ userInfo }) {
+              if (userInfo) {
+                let updateInfo = false;
+                for (var iKey in userInfo) {
+                  if (userInfo[iKey] != that.globalData.user[iKey]) {             //客户信息有变化
+                    updateInfo = true;
+                    that.globalData.user[iKey] = userInfo[iKey];
+                  }
+                };
+                if (updateInfo) {
+                  AV.User.become(AV.User.current().getSessionToken()).then((rLoginUser) => {
+                    rLoginUser.set(userInfo).save().then(() => { resolve(true) });
+                  })
+                } else {
+                  resolve(updateMenu);
+                };
+              }
             }
-          }
-        });
+          });
       });
     }).then(uMenu => {
       if (that.globalData.user.unit != '0') {
@@ -152,7 +152,9 @@ App({
         conversations.map( (conversation)=> { that.fwCs.push(conversation); });
       });
       im.on('unreadmessagescountupdate', function unreadmessagescountupdate(conversations) { that.urM = conversations; });
-    });
+
+
+     });
   },
 
   sendM: function(sMessage,conversationId){
@@ -314,7 +316,7 @@ App({
     function initConfig(query){
       return new Promise((resolve, reject) => {
         let initTime = new Date(0).toISOString();
-        let proSceneQuery = wx.getStorageSync('proSceneQuery') || {query:{}};
+        let proSceneQuery = wx.getStorageSync('proSceneQuery');
         if (query){
           if (query.sjId){
             that.globalData.user.sjid = query.sjId;
@@ -323,8 +325,8 @@ App({
             if (proSceneQuery.query.sjId){ that.globalData.user.sjid = proSceneQuery.query.sjId };
           }
         }
-        if (typeof that.globalData.user.sjid == 'undefined') { that.globalData.user.sjid = '59f08fbb67f356004449a4a4' };
-        let proConfig = wx.getStorageSync('configData') || {goods:{ updatedAt: initTime }};
+        if (!that.globalData.user.sjid) { that.globalData.user.sjid = '59f08fbb67f356004449a4a4' };
+        let proConfig = wx.getStorageSync('configData') || {articles:{ cfield:'afamily' , fConfig: [0,1,3]} ,goods:{ updatedAt: initTime }};
         if (that.netState) {
           new AV.Query('shopConfig').find().then(dConfig => {
             let cData;
@@ -351,7 +353,6 @@ App({
       };
       wx.setStorage({ key: 'proSceneQuery', data: { path, query, scene } })
       wx.setStorage({ key: 'configData', data: that.configData });
-      that.configData.articles = { cfield: 'afamily', fConfig: [1, 3] };
       if (path!=='index/shops/shops') {wx.navigateTo({ url: '../../'+path })}
     }).catch(console.error)
   },

@@ -4,31 +4,35 @@
 </view>
 <view class="order-area">
 	<view bindtap="readorder" class="order" data-status="1">
-		<image src="../../../images/fahuo.png" />
+		<image src="../../../../images/fahuo.png" />
 		<text>待发货</text>
 	</view>
 	<view bindtap="delivergoods" class="order" data-status="2">
-		<image src="../../../images/delivergoods.png" />
+		<image src="../../../../images/delivergoods.png" />
 		<text>已发货</text>
 	</view>
 	<view bindtap="finish" class="order" data-status="3">
-		<image src="../../../images/finish.png" />
+		<image src="../../../../images/finish.png" />
 		<text>已完成</text>
 	</view>
 </view>
 <view bindtap="navigateToAddress" class="tableviewcell">
-	<image src="../../../images/icon_address.png" />
+	<image src="../../../../images/icon_address.png" />
 	<text>收货地址</text>
 </view>
 <!-- <view bindtap="phonelogin" class="tableviewcell">
-	<image src="../../../images/icon_phonelogin.png" />
+	<image src="../../../../images/icon_phonelogin.png" />
 	<text>手机注册</text>
 </view> -->
 <view bindtap="kefu" class="tableviewcell">
-	<image src="../../../images/icon_phonelogin.png" />
+	<image src="../../../../images/icon_phonelogin.png" />
 	<text>联系客服</text>
 </view>
+<view bindtap="money" class="tableviewcell">
+	<image src="../../../../images/icon_phonelogin.png" />
+	<text>提现</text>
+</view>
   <!-- <view bindtap="give" class="tableviewcell">
-	<image src="../../../images/icon_manage.png" />
+	<image src="../../../../images/icon_manage.png" />
 	<text>我的礼物</text> 
 </view>  -->

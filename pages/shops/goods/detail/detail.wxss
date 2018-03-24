@@ -50,9 +50,8 @@ page {
 
 /*详情图片底部边距*/
 .detail {
-	margin-bottom: 50px;
   width: 90%;
-  margin: 0 auto;
+  margin: 0 auto 100rpx auto;
 }
 
 .detail image{

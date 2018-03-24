@@ -1,4 +1,4 @@
-const AV = require('../../../../libs/leancloud-storage.js')
+const AV = require('../../../../libs/leancloud-storage.js');
 var app = getApp()
 Page({
   data: {
@@ -44,6 +44,11 @@ fenxiaologin:function(){
     wx.navigateTo({
       url: '../../member/give/give',
     });
+  },
+  money:function(){
+    wx.navigateTo({
+      url: '../../member/money/money',
+    })
   },
   kefu: function () {
     wx.makePhoneCall({

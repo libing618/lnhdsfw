@@ -8,6 +8,7 @@ Page({
   onShow: function () {
     this.loadOrder();
     this.sjid();
+    this.channelid();
   },
 
   sjid: function () {
@@ -16,7 +17,7 @@ Page({
     var sjid = app.sjid
     console.log(sjid)
     if (sjid) {
-      if (sj != "") { console.log(0) } else {
+      if (sj) { console.log(0) } else {
         this.setData({
           sjid: sjid
         })
@@ -26,10 +27,28 @@ Page({
       }
     }
   },
+
+  channelid: function () {
+    var channel = AV.User.current().attributes.channelid
+    console.log(AV.User.current())
+    var channelid = app.channelid
+    console.log(channelid)
+    if (channelid) {
+      if (channel) { console.log(0) } else {
+        this.setData({
+          channelid: channelid
+        })
+        const user = AV.User.current();
+        user.set({ channelid });
+        user.save();
+      }
+    }
+  },
+
   loadOrder: function () {
     var that = this;
     var query = new AV.Query('xs_orderlist');
-    query.notEqualTo('status', "0");
+    query.equalTo('status', "1");
     query.descending('createdAt');
     query.equalTo('user', AV.User.current());
     query.find().then(function (orderlist) {
@@ -53,6 +72,7 @@ Page({
   },
   onShareAppMessage: function (res) {
     var that = this
+    var channelid = AV.User.current().attributes.channelidv
     var orderlist = that.data.orderlist;
     var sjid = AV.User.current().id;
     if (res.from === 'button') { 
@@ -63,7 +83,7 @@ Page({
     return {
       imageUrl: '/images/give.jpg',
       title: '您有礼物到了，注意接收',
-      path: '/pages/give/receive/receive?givetradeId=' + tradeId + '&sjid=' +sjid,
+      path: '/pages/give/receive/receive?givetradeId=' + tradeId + '&sjid=' +sjid+'&channelid='+channelid,
       success: function (res) {
         if(res){
           orderlist[index].set('givestatus', '2');

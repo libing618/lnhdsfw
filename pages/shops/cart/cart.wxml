@@ -25,7 +25,7 @@
 				<text class="normal" data-index="{{index}}" catchtap="bindPlus">+</text>
 			  </view>
 		  </view>
-		  <image catchtap="deleteOne" data-object-id="{{item.objectId}}" class="delete" src="../../images/icon_delete.png" style="" mode="widthFix" />
+		  <image catchtap="deleteOne" data-object-id="{{item.objectId}}" class="delete" src="../../../images/icon_delete.png" style="" mode="widthFix" />
         </view>
       </view>
     </view>

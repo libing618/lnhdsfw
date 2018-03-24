@@ -16,6 +16,7 @@
   <view class="page__bd">
     <template is="showgrids" data="{{grids}}"/>
   </view>
+    
   <view class="weui-tab">
     <template is="tabPanel" data="{{ tPage: mPage , pageData , pNo }}"/>
   </view>
