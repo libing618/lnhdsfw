@@ -8,18 +8,18 @@
   <view wx:if="{{pno=='goods'}}">
     <view class="page__ft weui-footer_fixed-bottom">
       <view class="opt-buttons">
-        <view class="button-group" bindtap="callphone">
+        <navigator class="button-group" url="/pages/">
           <image src="../../../../images/icon_phonelogin.png" class="button-image" />
           <text class="button-text">联系客服</text>
-        </view>
-        <view class="button-group" bindtap="showCart">
+        </navigator>
+        <navigator class="button-group" url="/pages/shops/cart/cart">
           <image src="../../../../images/icon_cart.png" class="button-image" />
           <text class="button-text">购物车</text>
-        </view>
+        </navigator>
+        <button class="buy" bindtap="showModal">购买</button>
+        <button class="give" bindtap="giveshowModal">赠送</button>
       </view>
     </view>
-    <button class="buy" bindtap="showModal">购买</button>
-    <button class="give" bindtap="giveshowModal">赠送</button>
   </view>
   <view wx:if="{{buyshowModalStatus}}" class="buy_screen" bindtap="hideModal"></view>
     <view class="buy_attr_box"">
