@@ -1,5 +1,5 @@
-const { readAllData } = require('../../model/initupdate');
-const {tabClick} = require('../../util/util');
+const { readAllData } = require('../../util/util');
+const { tabClick } = require('../../model/initupdate');
 const aimenu = require('../../libs/allmenu.js').iMenu;
 var app = getApp()
 Page({
@@ -29,7 +29,7 @@ Page({
   },
 
   onReady: function(){
-    readAllData(true,'articles').then(isupdated=>{ this.setPage(isupdated) });        //更新缓存以后有变化的数据
+    readAllData(true,'articles',app).then(isupdated=>{ this.setPage(isupdated) });        //更新缓存以后有变化的数据
     this.grids = aimenu(app.roleData.wmenu.manage, 'manage')
     this.grids[0].mIcon = app.globalData.user.avatarUrl; //把微信头像地址存入第一个菜单icon
     this.setData({grids:this.grids})
@@ -38,16 +38,16 @@ Page({
   tabClick: tabClick,
 
   onPullDownRefresh:function(){
-    readAllData(true,'articles').then(isupdated=>{ this.setPage(isupdated) });
+    readAllData(true, 'articles', app).then(isupdated=>{ this.setPage(isupdated) });
   },
   onReachBottom:function(){
-    readAllData(false,'articles').then(isupdated=>{ this.setPage(isupdated) });
+    readAllData(false, 'articles', app).then(isupdated=>{ this.setPage(isupdated) });
   },
   onShareAppMessage: function() {    // 用户点击右上角分享
     return {
-      title: '侠客岛创业服务平台', // 分享标题
+      title: '创业服务平台', // 分享标题
       desc: '扶贫济困，共享良品。', // 分享描述
-      path: '/index/manage/manage' // 分享路径
+      path: '/index/shops/shops' // 分享路径
     }
   }
 })

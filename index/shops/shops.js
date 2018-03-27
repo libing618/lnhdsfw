@@ -1,7 +1,7 @@
 const AV = require('../../libs/leancloud-storage.js');
-const { readAllData } = require('../../model/initupdate');
+const { readAllData, initConfig, loginAndMenu} = require('../../util/util');
 const { integration } = require('../../model/initForm.js');
-const {tabClick} = require('../../util/util');
+const { tabClick } = require('../../model/initupdate');
 var app = getApp()
 Page({
   data: {
@@ -19,28 +19,26 @@ Page({
     mPage: app.mData.goods,
     pNo: 'goods',                       //流程的序号6为商品信息
     pageData: app.aData.goods,
-    grids: [
-      {tourl: '/index/shops/shops',
-      mIcon: '../../images/icon_forum.png',
-      mName: '经典'},
-      {tourl: '/pages/shops/category/category',
-      mIcon: '../../images/icon_find.png',
-      mName: '牛货'},
-      {tourl: '/pages/shops/cart/cart',
-      mIcon: '../../images/icon_cart.png',
-      mName: '购物车'},
-      {tourl: '/pages/shops/member/index/index',
-      mIcon: '../../images/icon_my.png',
-      mName: '我的'}
-    ]
+    grids: app.shopsGrids
   },
- 
+
   onLoad: function () {
-    if (!app.globalData.user.mobilePhoneVerified){
-      this.data.grids.push({tourl: '/util/login/login',mIcon: 'https://eqr6jmehq1rpgmny-10007535.file.myqcloud.com/2c4093f310964d281bc0.jpg',mName: '合伙推广'})
-      this.setData({ grids:this.data.grids })
-      wx.hideTabBar();           //未授权则关闭TabBar
-    }
+    return Promise.all([initConfig(app), loginAndMenu(app)]).then((nQuery, sTab) => {
+      if (app.globalData.user.mobilePhoneVerified) {
+        wx.showTabBar()
+      } else {
+        app.shopsGrids.push({ tourl: '/util/login/login', mIcon: 'https://eqr6jmehq1rpgmny-10007535.file.myqcloud.com/2c4093f310964d281bc0.jpg', mName: '合伙推广' })
+        wx.hideTabBar();
+      }
+      readAllData(true, 'goods', app).then(isupdated => {
+        this.setData({
+          grids: app.shopsGrids,
+          mPage: app.mData.goods,
+          pageData: app.aData.goods
+        })
+      });
+      wx.setStorage({ key: 'configData', data: app.configData });
+    });
   },
 
   setPage: function(iu){
@@ -53,16 +51,16 @@ Page({
   },
 
   onReady: function(){
-    readAllData(true,'goods').then(isupdated=>{ this.setPage(isupdated) });
+
   },
 
   tabClick: tabClick,
 
   onPullDownRefresh:function(){
-    readAllData(true,'goods').then(isupdated=>{ this.setPage(isupdated) });
+    readAllData(true,'goods',app).then(isupdated=>{ this.setPage(isupdated) });
   },
   onReachBottom:function(){
-    readAllData(false,'goods').then(isupdated=>{ this.setPage(isupdated) });
+    readAllData(false,'goods',app).then(isupdated=>{ this.setPage(isupdated) });
   },
 
   onShareAppMessage: function () {

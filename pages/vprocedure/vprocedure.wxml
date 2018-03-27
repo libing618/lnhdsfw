@@ -21,8 +21,8 @@
       </view>
     </view>
   </view>
-  <view wx:if="{{buyshowModalStatus}}" class="buy_screen" bindtap="hideModal"></view>
-    <view class="buy_attr_box"">
+  <view wx:if="{{buyshowModalStatus}}" class="buy_screen">
+    <view class="buy_attr_box">
       <view class="close_icon" bindtap="hideModal">×</view>
       <view class="buy_attr_content" >
         <view class="buy_amount">{{amount}}元</view>
@@ -33,7 +33,7 @@
       <button class="buy_btn" bindtap="buy">确定购买</button>
     </view>
   </view>
-  <view wx:if="{{giveshowModalStatus}}" class="drawer_screen" bindtap="givehideModal"></view>
+  <view wx:if="{{giveshowModalStatus}}" class="drawer_screen">
     <view class="drawer_attr_box">
       <view class="close_icon" bindtap="hideModal">×</view>
       <view class="drawer_attr_content" >
