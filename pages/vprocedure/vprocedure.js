@@ -9,7 +9,6 @@ Page({
     vData: {},
     reqData: []
   },
-
   inFamily:false,
 
   onLoad: function(options) {

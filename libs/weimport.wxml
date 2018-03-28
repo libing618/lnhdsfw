@@ -266,7 +266,7 @@
 <template name="tabPanel">
 <view class="weui-tab__panel">
   <block wx:for="{{tPage}}" wx:key="{{index}}">
-    <navigator url="/pages/vprocedure/vprocedure?pNo={{pNo}}&artId={{item}}&uId={{pageData[item].unitId}}">
+    <navigator url="/pages/vprocedure/vprocedure?pNo={{pNo}}&artId={{item}}">
       <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
         <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
           <image class="weui-media-box__thumb" src="{{pageData[item].thumbnail}}" background-size="cover"></image>

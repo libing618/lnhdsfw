@@ -7,22 +7,25 @@ function unitData(cName, uId) {
   if (app.mData[cName][unitId]) { app.mData[cName][unitId].forEach(cuId => { uData[cuId] = app.aData[cName][cuId] }) };
   return uData;
 };
+function allData(dataClass, unitId) {
+  updateData(true, dataClass, unitId).then(() => {
+    let readDown = Promise.resolve(updateData(false, dataClass, unitId)).then(notEnd => {
+      if (notEnd) {
+        return readDown();
+      } else {
+        return true;
+      }
+    });
+  });
+};
 function integration(masterClass, slaveClass, unitId) {    //整合选择数组(主表，从表，单位Id)
-  return new Promise((resolve, reject) => {
-    return Promise.all([updateData(true, masterClass, unitId), updateData(true, slaveClass, unitId)]).then(([uMaster, uSlave]) => {
-      let allslave = Promise.resolve(updateData(false, slaveClass, unitId)).then(notEnd => {
-        if (notEnd) {
-          return allslave();
-        } else {
-          app.mData[masterClass][unitId].forEach(masterId => {
-            if (typeof app.aData[masterClass][masterId] != 'undefined') {
-              app.aData[masterClass][masterId][slaveClass] = app.mData[slaveClass][unitId].filter(slaveId => { return app.aData[slaveClass][slaveId][masterClass] == masterId });
-            }
-          })
-        }
-        resolve(uMaster || uSlave)
-      });
+  return Promise.all([allData( masterClass, unitId), allData(slaveClass, unitId)]).then(([uMaster, uSlave]) => {
+    app.mData[masterClass][unitId].forEach(masterId => {
+      if (typeof app.aData[masterClass][masterId] != 'undefined') {
+        app.aData[masterClass][masterId][slaveClass] = app.mData[slaveClass][unitId].filter(slaveId => { return app.aData[slaveClass][slaveId][masterClass] == masterId });
+      }
     })
+    return (uMaster || uSlave)
   }).catch(console.error);
 };
 module.exports = {
@@ -31,7 +34,7 @@ module.exports = {
   integration: integration,
 
   readShowFormat: function (req, vData) {
-    var unitId = vData.unitId ? vData.unitId : app.roleData.uUnit.objectId;
+    var unitId = vData.unitId ? vData.unitId : app.roleData.uUnit.unitId;
     return new Promise((resolve, reject) => {
       let promArr = [];                   //定义一个Promise数组
       let setPromise = new Set();
@@ -56,7 +59,7 @@ module.exports = {
         };
         return reqField;
       })
-      setPromise.forEach(nPromise => { promArr.push(updateData(true, nPromise, unitId)) })
+      if (setPromise) { setPromise.forEach(nPromise => { promArr.push(updateData(true, nPromise, unitId)) }) };
       return Promise.all(promArr).then(() => {
         for (let i = 0; i < reqData.length; i++) {
           switch (reqData[i].t) {
@@ -66,7 +69,8 @@ module.exports = {
             case 'specsel':                    //规格选择字段
               reqData[i].master = {};
               reqData[i].slave = {};
-              vData.specs.forEach(specsId => {
+              app.aData.goods[vData.objectId].specs = app.mData.specs[unitId].filter(slaveId => { return app.aData.specs[slaveId].goods == vData.objectId });
+              app.aData.goods[vData.objectId].specs.forEach(specsId => {
                 reqData[i].master[specsId] = app.aData.specs[specsId];
                 reqData[i].slave[specsId] = app.aData.cargo[app.aData.specs[specsId].cargo];
               });
