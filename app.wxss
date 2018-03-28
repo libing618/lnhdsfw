@@ -43,6 +43,36 @@ page{
     text-align: left;
     font-size: 28rpx;
 }
+.summary {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	background: white;
+	margin: 20rpx 0;
+}
+
+.introduce{
+  display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.goods__title {
+	font-size: 40rpx;
+	margin: 10rpx;
+	line-height: 46rpx;
+}
+
+.goods__price {
+	color: #f60;
+	margin: 10rpx;
+  font-size: 34rpx;
+}
+
+.goods__spec {
+	margin: 10rpx;
+}
+
 .buy{
  	float: right;
 	border: 0;
@@ -56,7 +86,7 @@ page{
 	border-radius: 0px;
 }
 .give{
-   	float: right;
+  float: right;
 	border: 0;
 	line-height: 100rpx;
 	text-align: center;
@@ -92,8 +122,6 @@ page{
 	font-size: 24rpx;
 	line-height: 40rpx;
 }
-
-
 
 .drawer_screen {
   width: 100%;
@@ -186,22 +214,6 @@ page{
   bottom: 0;
   left: 0;
   z-index: 2000;
-  background: #fff;
-}
-
-.close_icon {
-  width: 25rpx;
-  height: 25rpx;
-  line-height: 20rpx;
-  font-size: 30rpx;
-  position: absolute;
-  right: 5rpx;
-  top:5rpx;
-  padding: 10rpx;
-  color: #ccc;
-  border: 1rpx solid #ccc;
-  border-radius: 50%;
-  text-align: center;
   background: #fff;
 }
 

@@ -39,6 +39,7 @@ App({
   globalData: lcUser ? {user:lcUser.toJSON()} : require('globaldata.js').globalData,
   roleData: wx.getStorageSync('roleData') || require('globaldata.js').roleData,
   sjid: '59f08fbb67f356004449a4a4',
+  shopId: '598daa452f301e0069f699d6',
   netState: onNet(),
   mData: wx.getStorageSync('mData') || require('globaldata.js').mData,              //读数据管理的缓存
   aData: wx.getStorageSync('aData') || require('globaldata.js').aData,                           //以objectId为key的数据记录

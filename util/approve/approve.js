@@ -68,17 +68,7 @@ Page({
       return new Promise((resolve, reject) => {
         if ( nInstace==that.data.cmLength ){   //最后一个节点
           let sData = that.data.aValue.dObject;
-          if (that.data.aValue.dProcedure == 0) {                    //是否单位审批流程
-            sData.uState = rResultId;
-            AV.Cloud.run('setRole', { id: that.data.aValue.unitId, dObject: sData }).then((qRoleSet) => {
-              wx.showToast({ title: '设置单位信息', duration: 2000 });
-              console.log(qRoleSet);
-              resolve(0);
-            }).catch( err=>{
-              console.log(err);
-              reject(err);
-            })
-          } else if (rResultId === 1){
+          if (rResultId === 1){
             let sObject;
             if (that.data.aValue.dObjectId=='0'){
               let dObject = AV.Object.extend(that.data.pModel);
@@ -86,8 +76,11 @@ Page({
             } else {
               sObject = AV.Object.createWithoutData(that.data.pModel,that.data.aValue.dObjectId)
             }
-            sData.unitId = that.data.aValue.unitId;
-            sData.unitName = that.data.aValue.unitName;
+            sData.shopId = app.shopId;
+            let shopRole = new AV.ACL();
+            shopRole.setPublicReadAccess(true);
+            shoptRole.setRoleWriteAccess(app.shopId,true);  //为单位角色设置写权限
+            sObject.setACL(shopRole);
             sObject.set(sData).save().then((sd)=>{
               wx.showToast({ title: '审批内容已发布', duration:2000 });
               resolve(sd.objectId);

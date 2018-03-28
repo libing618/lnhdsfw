@@ -21,7 +21,7 @@ Page({
     that.data.vData = app.aData[that.data.pno][options.artId];
     readShowFormat(pClass.pSuccess, that.data.vData).then(req=>{
       that.data.reqData=req;
-      that.data.enUpdate = that.data.vData.unitId==app.roleData.uUnit.objectId && typeof pClass.suRoles!='undefined';  //本单位信息且流程有上级审批的才允许修改
+      that.data.enUpdate = typeof that.data.vData.shopId!='undefined' && typeof pClass.suRoles!='undefined';  //有本店信息且流程有上级审批的才允许修改
       that.setData(that.data);
     });
     wx.setNavigationBarTitle({
