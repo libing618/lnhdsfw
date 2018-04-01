@@ -9,7 +9,6 @@ module.exports = {
 "manufactor":{
   "pName": "厂商信息",
   "pSuccess": [
-    {gname:"uName", p:"厂商名称", t:"h1" },
     {gname:"afamily", p:'厂商类型', inclose:false,t:"listsel", aList:['产品制造人','物流服务人','电商服务站','生产厂家','电子商务企业']},
     {inclose:true, gname:"indType", p:'主营业务', t:"industrytype", csc:"aslist" },
     {gname:"nick", p:'厂商简称',t:"h2" },
@@ -33,7 +32,6 @@ module.exports = {
   "pName": "厂商文章",
   "afamily": ['公告公示','品牌建设','扶持优惠','产品宣传','常见问题'],
   "pSuccess": [
-    {gname:"uName", t:"h1", p:"名称" },
     {gname:"title",t:"h2", p:"标题" },
     {gname:"thumbnail", p: '上传用于缩略图的图片',t: "thumb" },
     {gname:"desc", t:"p", p:"摘要" },
@@ -53,7 +51,6 @@ module.exports = {
 "asset":{
   "pName": "厂商生产设备溯源",
   "pSuccess": [
-    {gname:"uName", p:'固定资产名称', t:"h2" },
     {inclose:true, gname:"assetType", p:'固定资产类别',t:"assettype", csc:"arrsel"},
     {gname:"title", p:'固定资产简介',t:"h3" },
     {gname:"desc", p:'固定资产描述',t:"p" },
@@ -72,7 +69,6 @@ module.exports = {
 "product":{
   "pName": "产品",
   "pSuccess": [
-    {gname: "uName", p:'名称', t:"h2" },
     {inclose: true, gname:"protype", p:'产品类别',t:"producttype",  csc:"arrsel" },
     {gname:"title", p:'简介',t:"h4" },
     {gname:"thumbnail", p:'图片简介',t:"thumb" },
@@ -98,7 +94,6 @@ module.exports = {
 "service":{
   "pName": "服务",
   "pSuccess": [
-    {gname:"uName", p:'名称', t:"h2" },
     {gname:"serFamily", p:'服务类型', inclose: true, t:"producttype",  csc:"arrsel"},
     {gname:"title", p:'简介',t:"h4" },
     {gname:"aGeoPoint", p: '服务地位置', t: "chooseAd" },
@@ -119,7 +114,6 @@ module.exports = {
   "pName": "成品",
   "pSuccess": [
     {gname:"product", p:'产品', t:"sId", csc:"idsel" },
-    {gname:"uName", p:'成品名称', t:"h2" },
     {gname:"title", p:'成品简介',t:"h4" },
     {gname:"thumbnail", p:'图片简介',t: "thumb" },
     {gname:"s_product", p:'外观尺寸重量', t:"arrplus", csc:"arrsel" },
@@ -138,11 +132,10 @@ module.exports = {
   "pName": "商品",
   "pSuccess": [
     {gname:"pics", p:'图片集',t:"pics"},
-    {gname:"uName", p:'名称', t:"h1" },
     {gname:"title", p:'简介',t:"h2" },
     {gname:"tvidio", p:'',t: "vidio" },
     {gname:"desc", p:'',t:"p" },
-    {gname:"goodsprice", p:'价格', t:"price"},
+    // {gname:"goodsprice", p:'价格', t:"price"},
     {gname:"specs", p:'规格',t:"specsel",csc:"specsel" },
     {gname:"details", p:'详情',t:"eDetail" }
   ],

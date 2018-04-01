@@ -17,6 +17,7 @@
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "推广平台",
     "navigationBarTextStyle": "black",
+    "navigationStyle":"custom",
     "backgroundColor": "#f8f8f8",
     "enablePullDownRefresh": true
   },

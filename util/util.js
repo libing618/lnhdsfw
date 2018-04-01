@@ -49,7 +49,7 @@ function fetchMenu(app) {
     if (app.globalData.user.mobilePhoneVerified) {
       return new AV.Query('userInit')
         .notEqualTo('updatedAt', new Date(app.roleData.wmenu.updatedAt))
-        .select(['manage', 'plan', 'production', 'customer'])
+        .select(['manage', 'marketing', 'customer'])
         .equalTo('objectId', app.globalData.user.userRol.objectId).find().then(fetchMenu => {
           if (fetchMenu.length > 0) {                          //菜单在云端有变化
             app.roleData.wmenu = fetchMenu[0].toJSON();

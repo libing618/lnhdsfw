@@ -1,4 +1,8 @@
 <import src="../../libs/weimport.wxml" />
+
+<view class="navigationBar">
+  <view class="navigationBar__title">扶贫济困，共享良品</view>
+</view>
 <view class="page">
   <view class="page__hd">
     <swiper class="swiper_box" indicator-dots="true" autoplay="{{autoplay}}">

@@ -51,7 +51,7 @@ Page({
   },
 
   onReady: function(){
-
+    readAllData(true, 'goods', app).then(isupdated => { this.setPage(isupdated) });
   },
 
   tabClick: tabClick,

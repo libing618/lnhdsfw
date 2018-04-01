@@ -46,9 +46,6 @@ Page({
 
   onReady:function(){
     updateRoleData(true,'order').then(isupdated=>{this.setPage(isupdated)});
-    wx.setNavigationBarTitle({
-      title: app.globalData.user.emailVerified ? app.roleData.uUnit.uName+'的销售管理' : '用户体验销售管理',
-    })
     this.setData({grids: aimenu(app.roleData.wmenu.marketing, 'marketing')})
   },
 

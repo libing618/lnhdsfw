@@ -1,4 +1,10 @@
 <import src="../../libs/weimport.wxml" />
+<view class="navigationBar">
+  <navigator open-type="navigateBack" delta="1">
+    <view class="navigationBar__title">＜ {{vData.uName}}</view>
+  </navigator>
+  <view wx:if="{{pno=='goods'}}" class="navigationBar__price">￥ price元</view>
+</view>
 <view class="page" id="approval-{{pNo}}">
   <view class="page__bd page__ac_spacing">
     <block wx:for="{{reqData}}" wx:key="index">

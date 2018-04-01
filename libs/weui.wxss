@@ -434,11 +434,9 @@ icon {
   margin: 0 0 .2em;
 }
 .weui-article__-2 {
-  /* padding-top: 12rpx; */
   color: #236B8E;
   font-size: 24rpx;
   text-align: center;
-  /* margin: 0 0; .3em; */
 }
 .weui-article__-3 {
   font-size: 24rpx;
@@ -604,8 +602,7 @@ icon {
   font-size: 24rpx;
 }
 .weui-grids {
-  border-top: 1rpx solid #D9D9D9;
-  border-left: 1rpx solid #D9D9D9;
+  text-align: center;
   overflow: hidden;
 }
 .weui-grid {
@@ -614,8 +611,9 @@ icon {
   padding: 6rpx 2rpx;
   width: 20%;
   box-sizing: border-box;
-  border-right: 1rpx solid #D9D9D9;
-  border-bottom: 1rpx solid #D9D9D9;
+  border: 1rpx solid #D9D9D9;
+  /* border-right: 1rpx solid #D9D9D9;
+  border-bottom: 1rpx solid #D9D9D9; */
 }
 .weui-grid_active {
   background-color: #ECECEC;
@@ -828,9 +826,10 @@ icon {
   display: -webkit-flex;
   display: flex;
   position: absolute;
-  z-index: 500;
-  top: 0;
+  top:0;
   width: 100%;
+  height: 100rpx;
+  background-color: #F5F5F5;
   border-bottom: 1rpx solid #CCCCCC;
 }
 .weui-navbar__item {
@@ -859,8 +858,9 @@ icon {
   -webkit-transition: -webkit-transform .3s;
   transition: -webkit-transform .3s;
   transition: transform .3s;
-  /*transition: transform .3s, -webkit-transform .3s;*/
+  transition: transform .3s, -webkit-transform .3s;
 }
+
 .weui-navbar__title {
   display: inline-block;
   font-size: 30rpx;
@@ -878,7 +878,6 @@ icon {
 .weui-tab__panel {
   box-sizing: border-box;
   height: 100%;
-  padding-top: 100rpx;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -1008,7 +1007,7 @@ icon {
   width:100%;
   left:0;
   bottom:0;
-  z-index:5000;
+  z-index:500;
   -webkit-backface-visibility:hidden;
           backface-visibility:hidden;
   -webkit-transform:translate(0, 100%);

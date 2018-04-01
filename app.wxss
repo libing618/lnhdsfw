@@ -2,20 +2,46 @@
 @import 'libs/weui.wxss';
 
 page{
-    background-color: #FFFFFF;
-    font-size: 28rpx;
-    font-family: -apple-system-font,Helvetica Neue,Helvetica,sans-serif;
+  background-color: #FFFFFF;
+  font-size: 28rpx;
+  padding-top: 100rpx;
+    /* font-family: -apple-system-font,Helvetica Neue,Helvetica,sans-serif; */
 }
 .page__hd {
-    padding: 16rpx;
+  padding: 16rpx;
 }
-.page__top {
+.navigationBar {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
   position: fixed;
-  padding-top: 0;
-  text-align: center;
+  top:0;
+  z-index: 500;
+  width: 100%;
+  height: 100rpx;
+  background-color: #F5F5F5;
+  border-bottom: 1rpx solid #CCCCCC;
+}
+.navigationBar__title {
+  display: inline-block;
+  margin-top: 40rpx;
+  margin-left: 50rpx;
+  font-size: 30rpx;
+  width: 380rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+}
+.navigationBar__price {
+  display: inline-block;
+	color: #f60;
+  margin-top: 40rpx;
+	margin-left: 10rpx;
+  font-size: 34rpx;
 }
 .page__bd {
-    padding-bottom: 10rpx;
+  padding-bottom: 10rpx;
 }
 .page__bd_spacing {
     padding-left: 16rpx;

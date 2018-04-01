@@ -25,7 +25,7 @@ Page({
       that.setData(that.data);
     });
     wx.setNavigationBarTitle({
-      title: cUnitName+ '的' + (that.inFamily ? pClass.afamily[that.data.vData.afamily] : pClass.pName) ,
+      title: (that.inFamily ? pClass.afamily[that.data.vData.afamily] : pClass.pName) + '--' + that.data.vData.uName,
     })
   },
 
