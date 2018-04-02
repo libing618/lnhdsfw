@@ -1004,19 +1004,12 @@ icon {
 }
 
 .weui-picker{
-  position:fixed;
   width:100%;
   left:0;
   bottom:0;
-  z-index:5000;
-  -webkit-backface-visibility:hidden;
-          backface-visibility:hidden;
-  -webkit-transform:translate(0, 100%);
-          transform:translate(0, 100%);
-  -webkit-transition:-webkit-transform .3s;
-  transition:-webkit-transform .3s;
-  transition:transform .3s;
-  transition:transform .3s, -webkit-transform .3s;
+  background: #F5F5F5;
+  border: 4rpx solid #ccc;
+  border-radius: 10rpx;
 }
 .weui-picker__hd{
   display:-webkit-box;
