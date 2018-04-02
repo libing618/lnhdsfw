@@ -217,7 +217,7 @@
     </view>
     <view class="weui-cell__ft"><icon id="se-{{n}}" bindtap="f_aslist" type="{{inclose ? 'info' : 'success_no_circle'}}" size="20"/></view>
   </view>
-  <view hidden="{{inclose}}">
+  <view hidden="{{inclose}}" class="weui-picker">
   <view class="weui-cell">
     <view class="weui-cell__hd">选择类型：</view>
     <view class="weui-cell__bd">{{apdv['s'+apdclist[aVl[0]].st[aVl[1]].ct[aVl[2]]] }}</view>
@@ -245,7 +245,7 @@
       <button id="ac-{{n}}" data-ca="{{wewxs.glist(indlist,aVl,2)}}" data-sa="{{apdv['s'+wewxs.glist(indlist,aVl,2)]}}" size="mini" bindtap="f_arrsel">确定</button>
     </view>
   </view>
-  <view hidden="{{inclose}}">
+  <view hidden="{{inclose}}" class="weui-picker">
     <picker-view id="pa-{{n}}" class="weui-picker__view" indicator-class="weui-picker__indicator" mask-class="weui-picker__mask" value="{{aVl}}" bindchange="f_arrsel">
         <picker-view-column>
             <view wx:for="{{indlist}}" wx:key="{{index}}">{{apdv['s'+item]}}</view>
@@ -268,7 +268,7 @@
       <button id="ac-{{n}}" id="ac-{{n}}" data-ca="{{assclist[aVl[0]].st[aVl[1]].ct[aVl[2]]}}" data-sa="{{assv['s'+assclist[aVl[0]].st[aVl[1]].ct[aVl[2]]]}}" size="mini" bindtap="f_arrsel">确定</button>
     </view>
   </view>
-  <view hidden="{{inclose}}">
+  <view hidden="{{inclose}}" class="weui-picker">
     <picker-view id="pa-{{n}}" class="weui-picker__view" indicator-class="weui-picker__indicator" mask-class="weui-picker__mask" value="{{aVl}}" bindchange="f_arrsel">
       <picker-view-column>
           <view wx:for="{{assclist}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
@@ -291,7 +291,7 @@
       <button id="ac-{{n}}" data-ca="{{aVl[0]+''+aVl[1]+aVl[2]}}" data-sa="{{objects[sId].surface[aVl[0]]+objects[sId].size[aVl[1]]+objects[sId].weight[aVl[2]]}}" bindtap="f_arrsel" size="mini">确定</button>
     </view>
   </view>
-  <view hidden="{{inclose}}">
+  <view hidden="{{inclose}}" class="weui-picker">
     <picker-view id="pa-{{n}}" class="weui-picker__view" indicator-class="weui-picker__indicator" mask-class="weui-picker__mask" value="{{aVl}}" bindchange="f_arrsel">
         <picker-view-column>
           <view wx:for="{{objects[sId].surface}}" wx:key="{{index}}" style="line-height: 36rpx">{{item}}</view>
@@ -324,7 +324,7 @@
       <button id="ac-{{n}}" data-ca="{{objarr[osv[0]].slaveId[osv[1]]}}" bindtap="f_objsel" size="mini">确定</button>
     </view>
   </view>
-  <view hidden="{{inclose}}">
+  <view hidden="{{inclose}}" class="weui-picker">
     <picker-view id="pa-{{n}}" class="weui-picker__view"  indicator-class="weui-picker__indicator" mask-class="weui-picker__mask" value="{{osv}}" bindchange="f_objsel">
       <picker-view-column>
           <view wx:for="{{objarr}}" wx:key="{{index}}" style="line-height: 36rpx">{{master[item.masterId].uName}}</view>
