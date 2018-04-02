@@ -56,7 +56,7 @@ App({
       mName: '经典'
     },
     {
-      tourl: '/pages/shops/category/category',
+      tourl: '/pages/shops/goods/goods',
       mIcon: '../../images/icon_find.png',
       mName: '牛货'
     },
@@ -207,6 +207,7 @@ App({
 
   onShow: function (){
     var that = this;
+    wx.hideTabBar();
     wx.getSystemInfo({                     //读设备信息
       success: function (res) {
         that.globalData.sysinfo = res;

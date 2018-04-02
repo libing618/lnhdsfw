@@ -17,20 +17,17 @@ Page({
     scrollHeight: app.globalData.sysinfo.windowHeight-80,
     wWidth: app.globalData.sysinfo.windowWidth,
     mPage: app.mData.goods,
-    pNo: 'goods',                       //流程的序号6为商品信息
+    pNo: 'goods',                       //商品信息
     pageData: app.aData.goods,
     grids: app.shopsGrids
   },
 
   onLoad: function () {
-    return Promise.all([initConfig(app), loginAndMenu(app)]).then((nQuery, sTab) => {
-      if (app.globalData.user.mobilePhoneVerified) {
-        wx.showTabBar()
-      } else {
+    return Promise.all([initConfig(app), loginAndMenu(app)]).then(() => {
+      if (!app.globalData.user.mobilePhoneVerified) {
         app.shopsGrids.push({ tourl: '/util/login/login', mIcon: 'https://eqr6jmehq1rpgmny-10007535.file.myqcloud.com/2c4093f310964d281bc0.jpg', mName: '合伙推广' })
-        wx.hideTabBar();
       }
-      readAllData(true, 'goods', app).then(isupdated => {
+      readAllData(true, 'goods', app).then(() => {
         this.setData({
           grids: app.shopsGrids,
           mPage: app.mData.goods,
@@ -52,6 +49,9 @@ Page({
 
   onReady: function(){
     readAllData(true, 'goods', app).then(isupdated => { this.setPage(isupdated) });
+    if (app.globalData.user.mobilePhoneVerified) {
+      wx.showTabBar()
+    }
   },
 
   tabClick: tabClick,

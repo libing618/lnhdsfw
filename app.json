@@ -59,7 +59,7 @@
         "vprocedure/vprocedure",
         "shops/address/add/add",
         "shops/address/list/list",
-        "shops/category/category",
+        "shops/goods/goods",
         "shops/cart/cart",
         "shops/give//receive/receive",
         "shops/give/address/address",

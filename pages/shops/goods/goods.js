@@ -1,63 +1,70 @@
-const { updateData,classInFamily ,isAllData } = require('../../model/initupdate');
+const { updateData,classInFamily ,isAllData } = require('../../../model/initupdate');
+const {droneId,master,slave} = require('../../../libs/goodstype')
+const { readAllData } = require('../../../util/util');
 var app = getApp()
 Page ({
   data: {
     pNo: 'goods',                       //流程
     pMasterNo: -1,
     goodsIndex: app.configData.goodsIndex,
+    droneId: droneId,
+    master: master,
+    slave: slave,
     goodsPage: {},                 //页面管理数组
     pickSlaveId: '0',             //
     pageData: []
   },
 
   onLoad: function (ops) {        //传入参数为pNo,不得为空
-    var that = this;
-    that.artid = Number(ops.artId);
-    that.inFamily = classInFamily(ops.pNo);
-    that.isAll = isAllData(ops.pNo);
-    that.setData({
-      pNo: ops.pNo,
-      artId: isNaN(that.artid) ? ops.pNo : that.artid
-    });
-    that.setPage(true);
+    this.setPage(true);
   },
 
-  setPage: function(iu){     //有更新则重新传输页面数据
+  setPage: function(iu){
     if (iu){
-      if (this.isAll){
-        if (this.inFamily){
-          this.data.mPage = app.mData[this.data.pNo][this.artid] || []
-        } else {
-          this.data.mPage = app.mData[this.data.pNo] || []
-        }
-      } else {
-        if (this.inFamily){
-          this.data.mPage = app.mData[this.data.pNo][app.roleData.uUnit.objectId][this.artid] || []
-        } else {
-          this.data.mPage = app.mData[this.data.pNo][app.roleData.uUnit.objectId] || []
-        }
-      }
+      let gPage = {},slaveData;
+      droneId.forEach(ms=>{
+        ms.slaveId.forEach(sId=>{
+          slaveData = app.mData.goods.filter(goodsId=> {return app.aData.goods[goodsId].goodstype==sId});
+          if (slaveData.length>0) {gPage[sId]=slaveData}
+        })
+      })
       this.setData({
-        mPage: this.data.mPage,
-        pageData: app.aData[this.data.pNo]
+        goodsPage: gPage,
+        pageData:app.aData.goods
       })
     }
   },
 
   onReady: function(){
-    updateData(true,this.data.pNo).then(isupdated=>{ this.setPage(isupdated)});                       //更新缓存以后有变化的数据
+    readAllData(true, 'goods', app).then(isupdated => { this.setPage(isupdated) });
   },
-  onPullDownRefresh: function () {
-    updateData(true,this.data.pNo).then(isupdated=>{ this.setPage(isupdated)});
+
+  f_pickMaster: function(e){                           //选择打开的主数组下标
+    let masterNo = Number(e.currentTarget.id);
+    if (this.data.pMasterNo != masterNo){
+      this.setData({
+        pMasterNo: masterNo,
+        pickSlaveId: '0'
+      });
+    }
   },
-  onReachBottom: function () {
-    updateData(false,this.data.pNo).then(isupdated=>{ this.setPage(isupdated)});
+
+  f_pickSlave: function(e){                           //选择打开的从数组本身id
+    this.setData({ pickSlaveId: e.currentTarget.id });
   },
-  onShareAppMessage: function () {    // 用户点击右上角分享
+
+  onPullDownRefresh:function(){
+    readAllData(true,'goods',app).then(isupdated=>{ this.setPage(isupdated) });
+  },
+  onReachBottom:function(){
+    readAllData(false,'goods',app).then(isupdated=>{ this.setPage(isupdated) });
+  },
+
+  onShareAppMessage: function () {
     return {
-      title: '侠客岛创业服务平台', // 分享标题
-      desc: '扶贫济困，共享良品。', // 分享描述
-      path: '/index/manage/manage' // 分享路径
+      title: '乐农汇',
+      desc: '扶贫济困，共享良品。',
+      path: '/index/shops/shops?sjId='+app.globalData.user.objectId
     }
   }
 })

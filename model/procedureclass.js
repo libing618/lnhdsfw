@@ -135,7 +135,6 @@ module.exports = {
     {gname:"title", p:'简介',t:"h2" },
     {gname:"tvidio", p:'',t: "vidio" },
     {gname:"desc", p:'',t:"p" },
-    // {gname:"goodsprice", p:'价格', t:"price"},
     {gname:"specs", p:'规格',t:"specsel",csc:"specsel" },
     {gname:"details", p:'详情',t:"eDetail" }
   ],

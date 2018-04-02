@@ -1,28 +1,55 @@
-<import src="../../libs/weimport.wxml"/>
-
+<import src="../../../libs/weimport.wxml"/>
+<view class="navigationBar">
+  <navigator open-type="navigateBack" delta="1">
+    <view class="weui-navbar__item">＜ </view>
+    <view class="weui-search-bar">
+      <form bindsubmit="fSearch" class="weui-search-bar__form">
+        <input class="weui-search-bar__input" name="{{searchGoods}}" />
+        <button class="weui-icon-search_in-box" formType="submit">
+          <icon class="" type="search" size="15"/>
+        </button>
+      </form>
+    </view>
+  </navigator>
+</view>
 <view class="page" id="{{pNo}}">
-
   <view class="page__hd">
-  <view id="masterGroup" class="weui-grids">
-    <view wx:for="{{droneId}}" wx:key="{{index}}" wx:for-index="mNo">
-      <view class="weui-grid" hover-class="weui-grid_active" id="{{mNo}}" bindchange="f_pickMaster">
-        <image class="weui-grid__icon" src="{{master[item].thumbnail}}" />
-        <view class="weui-grid__label">{{master[item].uName}}</view>
+    <view id="masterGroup" class="weui-grids">
+      <view wx:for="{{droneId}}" wx:key="{{index}}" wx:for-index="mNo">
+        <view class="weui-grid" hover-class="weui-grid_active" id="{{mNo}}" bindtap="f_pickMaster">
+          <image class="weui-grid__icon" src="{{master[item.masterId].thumbnail}}" />
+          <view class="weui-grid__label">{{master[item.masterId].uName}}</view>
+        </view>
       </view>
     </view>
-    <view wx:for="{{droneId[pMasterNo].slaveId}}" wx:key="{{index}}" wx:for-item="slaveId">
-      <view class="weui-grid" hover-class="weui-grid_active" id="{{slaveId}}" bindchange="f_pickSlave">
-        <image class="weui-grid__icon" src="{{slave[item].thumbnail}}" />
-        <view class="weui-grid__label">{{slave[item].uName}}</view>
+    <view wx:if="{{pMasterNo>=0}}">
+      <template is="s_h3" data="{{ p: master[droneId[pMasterNo].masterId].uName , c:master[droneId[pMasterNo].masterId].title }}"/>
+      <view id="slaveGroup" class="weui-grids">
+        <view wx:for="{{droneId[pMasterNo].slaveId}}" wx:key="{{index}}" wx:for-item="slaveId">
+          <view class="weui-grid" hover-class="weui-grid_active" id="{{slaveId}}" bindtap="f_pickSlave">
+            <image class="weui-grid__icon" src="{{slave[slaveId].thumbnail}}" />
+            <view class="weui-grid__label">{{slave[slaveId].uName}}</view>
+          </view>
+        </view>
       </view>
     </view>
   </view>
   <view class="page__bd">
     <view wx:if="{{pMasterNo<0}}">
-      <template is="tabPanel" data="{{ tPage: oodsIndex , pageData , pNo }}"/>
+      <template is="tabPanel" data="{{ tPage: goodsIndex , pageData , pNo }}"/>
     </view>
-    <view wx:else id="{{pickSlaveId}}">
-      <template is="tabPanel" data="{{ tPage: goodsPage[pickSlaveId] , pageData , pNo }}"/>
+    <view wx:else>
+      <view wx:if="{{pickSlaveId!='0'}}">
+        <template is="tabPanel" data="{{ tPage: goodsPage[pickSlaveId] , pageData , pNo }}"/>
+      </view>
+      <view wx:else>
+        <view wx:for="{{droneId[pMasterNo].slaveId}}" wx:key="{{index}}" wx:for-item="sForId">
+          <view wx:if="{{goodsPage[sForId]}}">
+            <template is="s_h3" data="{{ p: slave[sForId].uName , c:slave[sForId].title }}"/>
+            <template is="tabPanel" data="{{ tPage: goodsPage[sForId] , pageData , pNo }}"/>
+          </view>
+        </view>
+      </view>
     </view>
   </view>
 </view>
