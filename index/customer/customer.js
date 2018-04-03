@@ -5,6 +5,7 @@ const aimenu = require('../../libs/allmenu.js').iMenu;
 var app = getApp()
 Page({
   data:{
+    tiringRoom: app.globalData.user.mobilePhoneVerified && app.configData.tiringRoom,
     mPage: app.mData.product[app.roleData.uUnit.objectId],
     pNo: "orderlist",                       //流程的序号5为成品信息
     pageData: unitData('cargo'),

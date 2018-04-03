@@ -55,7 +55,7 @@
   <view wx:else>
     <view wx:if="{{uEV}}" class="page__ft weui-footer_fixed-bottom">
       <button class="weui-btn" style="display:inline-block" type="primary" size="mini" id="fModify" bindtap="fEditProcedure">修改并重新审批</button>
-      <button class="weui-btn" style="display:inline-block" type="primary" size="mini" id="fTemplate">以此为模板新建</button>
+      <button class="weui-btn" style="display:inline-block" type="primary" size="mini" id="fTemplate" bindtap="fEditProcedure">以此为模板新建</button>
     </view>
   </view>
 </view>

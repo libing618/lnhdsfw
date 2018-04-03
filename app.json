@@ -1,6 +1,6 @@
 {
   "pages": [
-    "index/shops/shops",
+    "index/home/home",
     "index/manage/manage",
     "index/marketing/marketing",
     "index/customer/customer",
@@ -25,16 +25,16 @@
     "selectedColor": "#FF0033",
     "list": [
       {
-        "pagePath": "index/shops/shops",
+        "pagePath": "index/home/home",
         "text": "首页",
         "iconPath": "images/icon_component.png",
         "selectedIconPath": "images/icon_component_HL.png"
       },
       {
         "pagePath": "index/marketing/marketing",
-        "text": "分类",
-        "iconPath": "images/icon_forum.png",
-        "selectedIconPath": "images/icon_forum_HL.png"
+        "text": "商城",
+        "iconPath": "images/index.png",
+        "selectedIconPath": "images/index-1.png"
       },
       {
         "pagePath": "index/customer/customer",

@@ -115,27 +115,27 @@ function setTiringRoom(goTiringRoom){
     wx.setTabBarItem({
       index: 1,
       text: "营销",
-      iconPath: "images/icon_my.png",
-      selectedIconPath: "images/icon_my_HL.png"
+      iconPath: "images/icon_forum.png",
+      selectedIconPath: "images/icon_forum_HL.png"
     });
     wx.setTabBarItem({
       index: 2,
       text: "客服",
-      iconPath: "images/icon_component.png",
-      selectedIconPath: "images/icon_component_HL.png"
+      iconPath: "images/customer.png",
+      selectedIconPath: "images/customer-1.png"
     });
     wx.setTabBarItem({
       index: 3,
       text: "管理",
-      iconPath: "images/icon_my.png",
+      iconPath: "images/icon_manage.png",
       selectedIconPath: "images/icon_my_HL.png"
     });
   } else {
     wx.setTabBarItem({
       index: 1,
       text: "分类",
-      iconPath: "images/icon_forum.png",
-      selectedIconPath: "images/icon_forum_HL.png"
+      iconPath: "images/index.png",
+      selectedIconPath: "images/index-1.png"
     });
     wx.setTabBarItem({
       index: 2,
@@ -152,6 +152,7 @@ function setTiringRoom(goTiringRoom){
   }
 };
 module.exports = {
+  openWxLogin: openWxLogin,
   setTiringRoom:setTiringRoom,
   loginAndMenu: function(app) {
     return new Promise((resolve, reject) => {     //用户如已注册并在本机登录过,则有数据缓存，否则进行注册登录
@@ -192,7 +193,7 @@ module.exports = {
   initConfig: function(app) {
     return new Promise((resolve, reject) => {
       let initTime = new Date(0).toISOString();
-      let proConfig = wx.getStorageSync('configData') || { articles: { cfield: 'afamily', fConfig: [0, 1, 3] }, goods: { updatedAt: initTime } };
+      let proGoodsUpdate = app.configData.goods.updatedAt ;
       if (app.netState) {
         new AV.Query('shopConfig').find().then(dConfig => {
           let cData;
@@ -200,14 +201,13 @@ module.exports = {
             cData = conData.toJSON();
             app.configData[cData.cName] = { cfield: cData.cfield, fConfig: cData.fConfig, updatedAt: cData.updatedAt }
           });
-          if (app.configData.goods.updatedAt != proConfig.goods.updatedAt) { app.mData.pAt.goods = [initTime, initTime] };   //店铺签约厂家有变化则重新读商品数据
+          if (app.configData.goods.updatedAt != proGoodsUpdate) { app.mData.pAt.goods = [initTime, initTime] };   //店铺签约厂家有变化则重新读商品数据
           return new AV.Query('_User').select('goodsIndex').get(app.sjid);
         }).then(sjData => {
           if (sjData.get('goodsIndex')) { app.configData.goodsIndex = sjData.get('goodsIndex') };
           resolve(true)
         }).catch(console.error)
       } else {
-        app.configData.goodsIndex = proConfig.goodsIndex;
         resolve(true)
       };
     })

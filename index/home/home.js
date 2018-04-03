@@ -1,5 +1,5 @@
 const AV = require('../../libs/leancloud-storage.js');
-const { readAllData, initConfig, loginAndMenu ,setTiringRoom } = require('../../util/util');
+const { readAllData, initConfig, loginAndMenu,openWxLogin,setTiringRoom } = require('../../util/util');
 const { integration } = require('../../model/initForm.js');
 const { tabClick } = require('../../model/initupdate');
 var app = getApp()
@@ -16,6 +16,8 @@ Page({
     scrollTop : 0,
     scrollHeight: app.globalData.sysinfo.windowHeight-80,
     wWidth: app.globalData.sysinfo.windowWidth,
+    signuped: app.globalData.user.mobilePhoneVerified,
+    tiringRoom: app.configData.tiringRoom,
     mPage: app.mData.goods,
     pNo: 'goods',                       //商品信息
     pageData: app.aData.goods
@@ -23,8 +25,7 @@ Page({
 
   onLoad: function () {
     return Promise.all([initConfig(app), loginAndMenu(app)]).then(() => {
-setTiringRoom(app.globalData.user.mobilePhoneVerified && app.configData.tiringRoom)
-      
+      if (app.globalData.user.mobilePhoneVerified && app.configData.tiringRoom) { setTiringRoom(true) }
       wx.setStorage({ key: 'configData', data: app.configData });
     });
     this.setPage(true);
@@ -41,9 +42,23 @@ setTiringRoom(app.globalData.user.mobilePhoneVerified && app.configData.tiringRo
 
   onReady: function(){
     readAllData(true, 'goods', app).then(isupdated => { this.setPage(isupdated) });
-    if (app.globalData.user.mobilePhoneVerified) {
+  },
 
-    }
+  userInfoHandler: function (e) {
+    var that = this;
+    openWxLogin(app).then( (mstate)=> {
+      app.logData.push([Date.now(), '用户授权' + app.globalData.sysinfo.toString()]);                      //用户授权时间记入日志
+      that.setData({ unAuthorize: false })
+    }).catch( console.error );
+  },
+
+  changeTiring: function (e) {
+    var that = this;
+    if (app.globalData.user.mobilePhoneVerified) {
+      app.configData.tiringRoom = ! app.configData.tiringRoom;
+      setTiringRoom(app.configData.tiringRoom);
+      that.setData({ tiringRoom: app.configData.tiringRoom });
+    };
   },
 
   tabClick: tabClick,
@@ -59,7 +74,7 @@ setTiringRoom(app.globalData.user.mobilePhoneVerified && app.configData.tiringRo
     return {
       title: '乐农汇',
       desc: '扶贫济困，共享良品。',
-      path: '/index/shops/shops?sjId='+app.globalData.user.objectId
+      path: '/index/home/home?sjId='+app.globalData.user.objectId
     }
   }
 })

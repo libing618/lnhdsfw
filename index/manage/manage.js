@@ -5,6 +5,7 @@ var app = getApp()
 Page({
   data: {
     autoplay: true,
+    tiringRoom: app.globalData.user.mobilePhoneVerified && app.configData.tiringRoom,
     mSwiper: app.mData.articles[0],
     scrollTop : 0,
     scrollHeight: app.globalData.sysinfo.windowHeight-80,
@@ -47,7 +48,7 @@ Page({
     return {
       title: '创业服务平台', // 分享标题
       desc: '扶贫济困，共享良品。', // 分享描述
-      path: '/index/shops/shops' // 分享路径
+      path: '/index/home/home' // 分享路径
     }
   }
 })

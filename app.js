@@ -43,7 +43,7 @@ App({
   netState: onNet(),
   mData: wx.getStorageSync('mData') || require('globaldata.js').mData,              //读数据管理的缓存
   aData: wx.getStorageSync('aData') || require('globaldata.js').aData,                           //以objectId为key的数据记录
-  configData: wx.getStorageSync('configData') || {},
+  configData: wx.getStorageSync('configData') || require('globaldata.js').configData,
   procedures: wx.getStorageSync('procedures') || {},              //读流程的缓存
   logData: [],                         //操作记录
   fwClient: {},                        //实时通信客户端实例
@@ -161,15 +161,18 @@ App({
 
   onLaunch: function ({ path, query, scene, shareTicket, referrerInfo }) {
     var that = this;            //调用应用实例的方法获取全局数据
+    let noSj = true;
     if (query) {
       if (query.sjId) {
         that.sjid = query.sjId;
+        noSj = false;
       }
-    } else {
+    };
+    if (noSj) {
       let proSceneQuery = wx.getStorageSync('proSceneQuery');
       if (proSceneQuery) { if(proSceneQuery.query.sjId) {that.sjid = proSceneQuery.query.sjId} };
     }
-    if (path != 'index/shops/shops') {
+    if (path != 'index/home/home') {
       return Promise.all([initConfig(that), loginAndMenu(that)]).then(() => {
 
         wx.setStorage({ key: 'configData', data: that.configData });

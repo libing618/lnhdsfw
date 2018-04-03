@@ -31,6 +31,11 @@ module.exports={
     uUnit:{updatedAt: 0},                           //用户单位信息（若有）
     sUnit:{updatedAt: 0}                           //上级单位信息（若有）
   },
+  configData:{
+    articles: { cfield: 'afamily', fConfig: [0, 1, 3] },
+    goods: { updatedAt: new Date(0).toISOString() },
+    tiringRoom: false
+  },
   mData: {
     proceduresAt:[                                //缓存中流程更新时间
       new Date(0),                          //最早更新时间

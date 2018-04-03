@@ -2,6 +2,14 @@
 
 <view class="navigationBar">
   <view class="navigationBar__title">扶贫济困，共享良品</view>
+  <view wx:if="{{signuped}}">
+    <button  class="weui-btn" style="display:inline-block" type="primary" size="mini" bindtap="changeTiring">{{tiringRoom ? '退出' : '进入'}}管理界面</button>
+  </view>
+  <view wx:else>
+    <button open-type="getUserInfo" bindgetuserinfo="userInfoHandler">合伙人注册</button>
+  </view>
+
+
 </view>
 <view class="page">
   <view class="page__hd">
@@ -20,7 +28,7 @@
   <view class="page__bd">
     <template is="showgrids" data="{{grids}}"/>
   </view>
-    
+
   <view class="weui-tab">
     <template is="tabPanel" data="{{ tPage: mPage , pageData , pNo }}"/>
   </view>
