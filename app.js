@@ -49,28 +49,6 @@ App({
   fwClient: {},                        //实时通信客户端实例
   fwCs: [],                           //客户端的对话实例
   urM: [],                           //未读信息
-  shopsGrids: [
-    {
-      tourl: '/index/shops/shops',
-      mIcon: '../../images/icon_forum.png',
-      mName: '经典'
-    },
-    {
-      tourl: '/pages/shops/goods/goods',
-      mIcon: '../../images/icon_find.png',
-      mName: '牛货'
-    },
-    {
-      tourl: '/pages/shops/cart/cart',
-      mIcon: '../../images/icon_cart.png',
-      mName: '购物车'
-    },
-    {
-      tourl: '/pages/shops/member/index/index',
-      mIcon: '../../images/icon_my.png',
-      mName: '我的'
-    }
-  ],
 
   imLogin: function(username){                               //实时通信客户端登录
     var that = this;
@@ -193,12 +171,7 @@ App({
     }
     if (path != 'index/shops/shops') {
       return Promise.all([initConfig(that), loginAndMenu(that)]).then(() => {
-        if (that.globalData.user.mobilePhoneVerified) {
-          wx.showTabBar()
-        } else {
-          that.shopsGrids.push({ tourl: '/util/login/login', mIcon: 'https://eqr6jmehq1rpgmny-10007535.file.myqcloud.com/2c4093f310964d281bc0.jpg', mName: '合伙推广' })
-          wx.hideTabBar();
-        }
+
         wx.setStorage({ key: 'configData', data: that.configData });
       }).catch(console.error)
     }
@@ -207,7 +180,6 @@ App({
 
   onShow: function (){
     var that = this;
-    wx.hideTabBar();
     wx.getSystemInfo({                     //读设备信息
       success: function (res) {
         that.globalData.sysinfo = res;

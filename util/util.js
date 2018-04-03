@@ -110,8 +110,49 @@ function fetchMenu(app) {
     app.imLogin(app.globalData.user.username);
   }).catch(error => { return error });
 };
+function setTiringRoom(goTiringRoom){
+  if (goTiringRoom) {
+    wx.setTabBarItem({
+      index: 1,
+      text: "营销",
+      iconPath: "images/icon_my.png",
+      selectedIconPath: "images/icon_my_HL.png"
+    });
+    wx.setTabBarItem({
+      index: 2,
+      text: "客服",
+      iconPath: "images/icon_component.png",
+      selectedIconPath: "images/icon_component_HL.png"
+    });
+    wx.setTabBarItem({
+      index: 3,
+      text: "管理",
+      iconPath: "images/icon_my.png",
+      selectedIconPath: "images/icon_my_HL.png"
+    });
+  } else {
+    wx.setTabBarItem({
+      index: 1,
+      text: "分类",
+      iconPath: "images/icon_forum.png",
+      selectedIconPath: "images/icon_forum_HL.png"
+    });
+    wx.setTabBarItem({
+      index: 2,
+      text: "购物车",
+      iconPath: "images/icon_cart.png",
+      selectedIconPath: "images/icon_cart_HL.png"
+    });
+    wx.setTabBarItem({
+      index: 3,
+      text: "我的",
+      iconPath: "images/icon_my.png",
+      selectedIconPath: "images/icon_my_HL.png"
+    });
+  }
+};
 module.exports = {
-
+  setTiringRoom:setTiringRoom,
   loginAndMenu: function(app) {
     return new Promise((resolve, reject) => {     //用户如已注册并在本机登录过,则有数据缓存，否则进行注册登录
       if (app.globalData.user.objectId != '0') {

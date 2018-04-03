@@ -1,5 +1,5 @@
 const AV = require('../../libs/leancloud-storage.js');
-const { readAllData, initConfig, loginAndMenu} = require('../../util/util');
+const { readAllData, initConfig, loginAndMenu ,setTiringRoom } = require('../../util/util');
 const { integration } = require('../../model/initForm.js');
 const { tabClick } = require('../../model/initupdate');
 var app = getApp()
@@ -18,24 +18,16 @@ Page({
     wWidth: app.globalData.sysinfo.windowWidth,
     mPage: app.mData.goods,
     pNo: 'goods',                       //商品信息
-    pageData: app.aData.goods,
-    grids: app.shopsGrids
+    pageData: app.aData.goods
   },
 
   onLoad: function () {
     return Promise.all([initConfig(app), loginAndMenu(app)]).then(() => {
-      if (!app.globalData.user.mobilePhoneVerified) {
-        app.shopsGrids.push({ tourl: '/util/login/login', mIcon: 'https://eqr6jmehq1rpgmny-10007535.file.myqcloud.com/2c4093f310964d281bc0.jpg', mName: '合伙推广' })
-      }
-      readAllData(true, 'goods', app).then(() => {
-        this.setData({
-          grids: app.shopsGrids,
-          mPage: app.mData.goods,
-          pageData: app.aData.goods
-        })
-      });
+setTiringRoom(app.globalData.user.mobilePhoneVerified && app.configData.tiringRoom)
+      
       wx.setStorage({ key: 'configData', data: app.configData });
     });
+    this.setPage(true);
   },
 
   setPage: function(iu){
@@ -50,7 +42,7 @@ Page({
   onReady: function(){
     readAllData(true, 'goods', app).then(isupdated => { this.setPage(isupdated) });
     if (app.globalData.user.mobilePhoneVerified) {
-      wx.showTabBar()
+
     }
   },
 

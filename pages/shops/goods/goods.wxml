@@ -2,15 +2,17 @@
 <view class="navigationBar">
   <navigator open-type="navigateBack" delta="1">
     <view class="weui-navbar__item">＜ </view>
-    <view class="weui-search-bar">
-      <form bindsubmit="fSearch" class="weui-search-bar__form">
-        <input class="weui-search-bar__input" name="{{searchGoods}}" />
-        <button class="weui-icon-search_in-box" formType="submit">
-          <icon class="" type="search" size="15"/>
-        </button>
-      </form>
-    </view>
   </navigator>
+  <view class="weui-search-bar">
+    <form bindsubmit="fSearch" class="weui-search-bar__form">
+      <view class="weui-search-bar__box">
+        <input class="weui-search-bar__input" name="{{searchGoods}}" placeholder="搜索" />
+        <button class="weui-search-bar__cancel-btn" formType="submit">
+          <icon type="search" size="15"/>
+        </button>
+      </view>
+    </form>
+  </view>
 </view>
 <view class="page" id="{{pNo}}">
   <view class="page__hd">
