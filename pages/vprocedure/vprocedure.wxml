@@ -1,7 +1,7 @@
 <import src="../../libs/weimport.wxml" />
 <view class="navigationBar">
   <navigator open-type="navigateBack" delta="1">
-    <view class="navigationBar__title">＜ {{vData.uName}}</view>
+    <view class="navigationBar__column">＜ {{vData.uName}}</view>
   </navigator>
   <view wx:if="{{pno=='goods'}}" class="navigationBar__price">￥ price元</view>
 </view>

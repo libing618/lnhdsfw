@@ -1,18 +1,14 @@
 <import src="../../libs/weimport.wxml" />
 <view class="navigationBar">
-  <navigator open-type="navigateBack" delta="1">
-    <view class="weui-navbar__item">＜ </view>
-  </navigator>
-  <view class="weui-search-bar">
-    <form bindsubmit="fSearch" class="weui-search-bar__form">
-      <view class="weui-search-bar__box">
-        <input class="weui-search-bar__input" name="{{searchGoods}}" placeholder="搜索" />
-        <button class="weui-search-bar__cancel-btn" formType="submit">
-          <icon type="search" size="15"/>
-        </button>
-      </view>
-    </form>
-  </view>
+  <form bindsubmit="fSearch">
+    <view class="navigationBar__column"> 
+      <template is="navBarLogo" data="{{srcurl:'../../images/logo.png'}}"/>
+      <input class="weui-cell__bd" name="searchGoods" placeholder="搜索" />
+      <button class="weui-cell__ft weui-cell__ft_in-access" formType="submit">
+        <icon type="search" size="15"/>
+      </button>
+    </view>
+  </form>
 </view>
 <view class="page">
   <view class="page__hd">

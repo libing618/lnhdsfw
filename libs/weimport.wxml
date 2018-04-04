@@ -280,3 +280,17 @@
   </block>
 </view>
 </template>
+
+<template name="navBarReturn">
+  <view class="weui-cell__hd">
+    <navigator open-type="navigateBack" delta="1">
+      <image src="../images/return.png" class="navigationBar__icon"></image>
+    </navigator>
+  </view>
+</template>
+
+<template name="navBarLogo">
+  <view class="weui-cell__hd">
+    <image src="{{srcurl}}" class="navigationBar__icon"></image>
+  </view>
+</template>
