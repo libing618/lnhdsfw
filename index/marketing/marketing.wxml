@@ -1,33 +1,84 @@
 <import src="../../libs/weimport.wxml" />
+<view class="navigationBar">
+  <navigator open-type="navigateBack" delta="1">
+    <view class="weui-navbar__item">＜ </view>
+  </navigator>
+  <view class="weui-search-bar">
+    <form bindsubmit="fSearch" class="weui-search-bar__form">
+      <view class="weui-search-bar__box">
+        <input class="weui-search-bar__input" name="{{searchGoods}}" placeholder="搜索" />
+        <button class="weui-search-bar__cancel-btn" formType="submit">
+          <icon type="search" size="15"/>
+        </button>
+      </view>
+    </form>
+  </view>
+</view>
 <view class="page">
-    <view class="page__hd">
-        <view class="page__title">营销任务列表</view>
-        <view class="page__desc">发布宣传稿XX篇 新闻XX篇</view>
-    </view>
-    <view class="page__bd">
-      <template is="showgrids" data="{{grids}}"/>
-    </view>
-    <view class="page__title">营销活动</view>
-    <scroll-view class="article-scroll" scroll-y="true">
-      <view class="weui-article">
-          <view class="weui-article__section">
-            <view class="weui-article__h3">促销活动</view>
-            <view class="weui-article__p">
-                团购XX笔, 用券XX元，返红包XX元。
+  <view class="page__hd">
+    <view wx:if="{{tiringRoom}}">
+      <scroll-view class="article-scroll" scroll-y="true">
+        <view class="weui-article">
+            <view class="weui-article__section">
+              <view class="weui-article__h3">促销活动</view>
+              <view class="weui-article__p">
+                  团购XX笔, 用券XX元，返红包XX元。
+              </view>
             </view>
+            <view class="weui-article__section">
+              <view class="weui-article__h3">直销分析</view>
+              <view class="weui-article__p">
+                  会员卡XX张, 发优惠券XX张，发红包券XX张。
+                  一个月：访问量XX，成交率X%，销售收入XX元；
+                  本季度：访问量XX，成交率X%，销售收入XX元；
+                  上半年度：访问量XX，成交率X%，销售收入XX元；
+              </view>
           </view>
-          <view class="weui-article__section">
-            <view class="weui-article__h3">直销分析</view>
-            <view class="weui-article__p">
-                会员卡XX张, 发优惠券XX张，发红包券XX张。
-                一个月：访问量XX，成交率X%，销售收入XX元；
-                本季度：访问量XX，成交率X%，销售收入XX元；
-                上半年度：访问量XX，成交率X%，销售收入XX元；
-            </view>
+        </view>
+      </scroll-view>
+    </view>
+    <view wx:else>
+      <view id="masterGroup" class="weui-grids">
+        <view wx:for="{{droneId}}" wx:key="{{index}}" wx:for-index="mNo">
+          <view class="weui-grid" hover-class="weui-grid_active" id="{{mNo}}" bindtap="f_pickMaster">
+            <image class="weui-grid__icon" src="{{master[item.masterId].thumbnail}}" />
+            <view class="weui-grid__label">{{master[item.masterId].uName}}</view>
+          </view>
         </view>
       </view>
-    </scroll-view>
-  <view class="weui-tab">
-    <template is="tabPanel" data="{{ tPage: mPage , pageData , pNo }}"/>
+      <view wx:if="{{pMasterNo>=0}}">
+        <template is="s_h3" data="{{ p: master[droneId[pMasterNo].masterId].uName , c:master[droneId[pMasterNo].masterId].title }}"/>
+        <view id="slaveGroup" class="weui-grids">
+          <view wx:for="{{droneId[pMasterNo].slaveId}}" wx:key="{{index}}" wx:for-item="slaveId">
+            <view class="weui-grid" hover-class="weui-grid_active" id="{{slaveId}}" bindtap="f_pickSlave">
+              <image class="weui-grid__icon" src="{{slave[slaveId].thumbnail}}" />
+              <view class="weui-grid__label">{{slave[slaveId].uName}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="page__bd">
+    <view wx:if="{{tiringRoom}}">
+      <template is="showgrids" data="{{grids}}"/>
+    </view>
+    <view wx:else class="page__title">经典推荐</view>
+    <view wx:if="{{pMasterNo<0}}">
+      <template is="tabPanel" data="{{ tPage: goodsIndex , pageData , pNo }}"/>
+    </view>
+    <view wx:else>
+      <view wx:if="{{iClicked!='0'}}">
+        <template is="tabPanel" data="{{ tPage: goodsPage[iClicked] , pageData , pNo }}"/>
+      </view>
+      <view wx:else>
+        <view wx:for="{{droneId[pMasterNo].slaveId}}" wx:key="{{index}}" wx:for-item="sForId">
+          <view wx:if="{{goodsPage[sForId]}}">
+            <template is="s_h3" data="{{ p: slave[sForId].uName , c:slave[sForId].title }}"/>
+            <template is="tabPanel" data="{{ tPage: goodsPage[sForId] , pageData , pNo }}"/>
+          </view>
+        </view>
+      </view>
+    </view>
   </view>
 </view>

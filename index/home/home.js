@@ -1,7 +1,7 @@
 const AV = require('../../libs/leancloud-storage.js');
-const { readAllData, initConfig, loginAndMenu,openWxLogin,setTiringRoom } = require('../../util/util');
+const { initConfig, loginAndMenu,openWxLogin,setTiringRoom } = require('../../util/util');
 const { integration } = require('../../model/initForm.js');
-const { tabClick } = require('../../model/initupdate');
+const { readAllData, tabClick } = require('../../model/initupdate');
 var app = getApp()
 Page({
   data: {
@@ -14,9 +14,9 @@ Page({
     ],
     autoplay: true,
     scrollTop : 0,
-    scrollHeight: app.globalData.sysinfo.windowHeight-80,
-    wWidth: app.globalData.sysinfo.windowWidth,
-    signuped: app.globalData.user.mobilePhoneVerified,
+    scrollHeight: app.sysinfo.windowHeight-80,
+    wWidth: app.sysinfo.windowWidth,
+    signuped: app.roleData.user.mobilePhoneVerified,
     tiringRoom: app.configData.tiringRoom,
     mPage: app.mData.goods,
     pNo: 'goods',                       //商品信息
@@ -24,11 +24,25 @@ Page({
   },
 
   onLoad: function () {
-    return Promise.all([initConfig(app), loginAndMenu(app)]).then(() => {
-      if (app.globalData.user.mobilePhoneVerified && app.configData.tiringRoom) { setTiringRoom(true) }
-      wx.setStorage({ key: 'configData', data: app.configData });
-    });
-    this.setPage(true);
+    if (app.netState) {
+      let proGoodsUpdate = app.configData.goods.updatedAt ;
+      initConfig(app.configData).then(icData=>{
+        app.configData = icData;
+        loginAndMenu(AV.User.current(),app.roleData).then(rData=>{
+          app.roleData = rData;
+          if (app.configData.goods.updatedAt != proGoodsUpdate) { app.mData.pAt.goods = [new Date(0).toISOString(),new Date(0).toISOString()] };   //店铺签约厂家有变化则重新读商品数据
+          readAllData(true, 'goods').then(isupdated => {
+            this.setData({
+              signuped: app.roleData.user.mobilePhoneVerified,
+              tiringRoom: app.configData.tiringRoom,
+              mPage: app.mData.goods,
+              pageData: app.aData.goods
+            });
+          })
+        }),
+        wx.setStorage({ key: 'configData', data: app.configData });
+      }).catch(console.error)
+    }
   },
 
   setPage: function(iu){
@@ -40,22 +54,18 @@ Page({
     }
   },
 
-  onReady: function(){
-    readAllData(true, 'goods', app).then(isupdated => { this.setPage(isupdated) });
-  },
-
   userInfoHandler: function (e) {
     var that = this;
     openWxLogin(app).then( (mstate)=> {
-      app.logData.push([Date.now(), '用户授权' + app.globalData.sysinfo.toString()]);                      //用户授权时间记入日志
+      app.logData.push([Date.now(), '用户授权' + app.sysinfo.toString()]);                      //用户授权时间记入日志
       that.setData({ unAuthorize: false })
     }).catch( console.error );
   },
 
   changeTiring: function (e) {
     var that = this;
-    if (app.globalData.user.mobilePhoneVerified) {
-      app.configData.tiringRoom = ! app.configData.tiringRoom;
+    if (app.roleData.user.mobilePhoneVerified) {
+      app.configData.tiringRoom = ! that.data.tiringRoom;
       setTiringRoom(app.configData.tiringRoom);
       that.setData({ tiringRoom: app.configData.tiringRoom });
     };
@@ -64,17 +74,17 @@ Page({
   tabClick: tabClick,
 
   onPullDownRefresh:function(){
-    readAllData(true,'goods',app).then(isupdated=>{ this.setPage(isupdated) });
+    readAllData(true,'goods').then(isupdated=>{ this.setPage(isupdated) });
   },
   onReachBottom:function(){
-    readAllData(false,'goods',app).then(isupdated=>{ this.setPage(isupdated) });
+    readAllData(false,'goods').then(isupdated=>{ this.setPage(isupdated) });
   },
 
   onShareAppMessage: function () {
     return {
       title: '乐农汇',
       desc: '扶贫济困，共享良品。',
-      path: '/index/home/home?sjId='+app.globalData.user.objectId
+      path: '/index/home/home?sjId='+app.roleData.user.objectId
     }
   }
 })

@@ -5,8 +5,8 @@ var app = getApp()
 Page({
   onReady: function () {
     var that = this;
-    if (app.globalData.role.unit){                     //用户有所属单位
-      var income = wx.getStorageSync('income'+app.globalData.role.unit) || [];                  //产品成交率
+    if (app.roleData.role.unit){                     //用户有所属单位
+      var income = wx.getStorageSync('income'+app.roleData.role.unit) || [];                  //产品成交率
       new wxCharts({
         canvasId: 'pieCanvas',
         type: 'pie',
@@ -29,7 +29,7 @@ Page({
         width: 400,
         height: 300,
         dataLabel: true
-      });   
+      });
     }else
     {
       wx.showModal({
@@ -42,7 +42,7 @@ Page({
                 })
             }
         }
-      })        
+      })
     }
   },
 })

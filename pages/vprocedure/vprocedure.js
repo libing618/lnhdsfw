@@ -3,7 +3,7 @@ const { readShowFormat } = require('../../model/initForm.js');
 var app=getApp()
 Page({
   data:{
-    uEV: app.globalData.user.emailVerified,
+    uEV: app.roleData.user.emailVerified,
     enUpdate: false,
     pno:'goods',
     vData: {},
@@ -13,7 +13,7 @@ Page({
 
   onLoad: function(options) {
     var that = this ;
-    let cUnitName = app.globalData.user.emailVerified ? app.roleData.uUnit.uName : '体验用户';     //用户已通过单位和职位审核
+    let cUnitName = app.roleData.user.emailVerified ? app.roleData.uUnit.uName : '体验用户';     //用户已通过单位和职位审核
     that.data.pno = options.pNo;
     let artid = Number(options.artId);
     let pClass = require('../../model/procedureclass.js')[that.data.pno];

@@ -1,5 +1,5 @@
 module.exports={
-  globalData:{
+  roleData:{
     user: {                                     //用户的原始定义
       "userRolName": "0",
       "unit": "0",
@@ -18,22 +18,19 @@ module.exports={
       "sjid": "59f08fbb67f356004449a4a4",
       "objectId": "0"
     },
-    sysinfo: null
-  },
-  roleData:{
     wmenu: {
       manage:[],                         //用户未注册时的基础菜单
       marketing:[],
       customer:[],
       updatedAt: 0
     },
-    iMenu: { manage:[], marketing:[], customer:[] },
     uUnit:{updatedAt: 0},                           //用户单位信息（若有）
     sUnit:{updatedAt: 0}                           //上级单位信息（若有）
   },
   configData:{
     articles: { cfield: 'afamily', fConfig: [0, 1, 3] },
     goods: { updatedAt: new Date(0).toISOString() },
+    sjid: '59f08fbb67f356004449a4a4',
     tiringRoom: false
   },
   mData: {

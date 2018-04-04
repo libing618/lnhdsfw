@@ -3,7 +3,7 @@ const AV = require('../../libs/leancloud-storage.js');
 var app = getApp()
 Page({
   data: {
-    Height: app.globalData.sysinfo.windowHeight-300,
+    Height: app.sysinfo.windowHeight-300,
     scale: 13,
     latitude: "",
     longitude: "",
@@ -13,7 +13,7 @@ Page({
         iconPath: '/images/jia.png',
         position: {
           left: 84,
-          top: app.globalData.sysinfo.windowHeight - 332,
+          top: app.sysinfo.windowHeight - 332,
           width: 32,
           height: 32
         },
@@ -23,7 +23,7 @@ Page({
         iconPath: '/images/jian.png',
         position: {
           left: 284,
-          top: app.globalData.sysinfo.windowHeight - 332,
+          top: app.sysinfo.windowHeight - 332,
           width: 32,
           height: 32
         },
@@ -33,7 +33,7 @@ Page({
         iconPath: '/images/quedin.png',
         position: {
           left: 161,
-          top: app.globalData.sysinfo.windowHeight - 332,
+          top: app.sysinfo.windowHeight - 332,
           width: 78,
           height: 32
         },

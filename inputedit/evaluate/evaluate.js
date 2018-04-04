@@ -9,7 +9,7 @@ Page({
   },
   onLoad:function(options){          //参数oState为0客户评价1评价统计
     var that = this;
-    if (weutil.checkRols(app.globalData.user.userRolName,3)){  //检查用户操作权限
+    if (weutil.checkRols(app.roleData.user.userRolName,3)){  //检查用户操作权限
       that.setData({
         req: oClass.oSuccess[options.oState],
         oArray: weutil.arrClose(options.oState ? 'evaluate' : 'ordObjectId',app.mData.oped1),     //确定数组分类字段

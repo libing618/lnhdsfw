@@ -3,8 +3,8 @@ const AV = require('../../libs/leancloud-storage.js');
 var app = getApp()
 Page({
   data:{
-    user: app.globalData.user,
-    sysheight: app.globalData.sysinfo.windowHeight-160,
+    user: app.roleData.user,
+    sysheight: app.sysinfo.windowHeight-160,
     swcheck: true,
     iName: { gname: "uName", p: '真实姓名', t: "Name" },
     phonen: '',
@@ -30,12 +30,12 @@ Page({
 
   onLoad: function () {
     var that = this;
-    that.data.iName.c = app.globalData.user.uName;
+    that.data.iName.c = app.roleData.user.uName;
     that.setData({		    		// 获得当前用户
       iName: that.data.iName
     });
     wx.setNavigationBarTitle({
-      title: app.globalData.user.userRolName ? '您已注册为平台合伙人' : '平台合伙人注册',
+      title: app.roleData.user.userRolName ? '您已注册为平台合伙人' : '平台合伙人注册',
     });
   },
 
@@ -51,8 +51,8 @@ Page({
           wx.showToast({
             title: '微信绑定的手机号注册成功', duration: 2000
           })
-          app.globalData.user.mobilePhoneVerified = true;
-          that.setData({ 'user.mobilePhoneVerified':app.globalData.user.mobilePhoneVerified})
+          app.roleData.user.mobilePhoneVerified = true;
+          that.setData({ 'user.mobilePhoneVerified':app.roleData.user.mobilePhoneVerified})
         }).catch(console.error());
       } else {
         wx.showToast({
@@ -69,10 +69,10 @@ Page({
   },
   userInfoHandler: function (e) {
     var that = this;
-    app.openWxLogin(app.globalData.user.userAuthorize,0).then( (mstate)=> {
-      app.logData.push([Date.now(), '用户授权' + app.globalData.sysinfo]);                      //用户授权时间记入日志
+    app.openWxLogin(app.roleData.user.userAuthorize,0).then( (mstate)=> {
+      app.logData.push([Date.now(), '用户授权' + app.sysinfo]);                      //用户授权时间记入日志
       app.wmenu[0][0].mIcon = e.detail.userInfo.avatarUrl;      //把微信头像地址存入第一个菜单icon
-      that.setData({ user: app.globalData.user })
+      that.setData({ user: app.roleData.user })
     }).catch((error) => { console.log(error) });
   },
   i_Name: function(e) {							//修改用户姓名
@@ -81,7 +81,7 @@ Page({
         .set({ "uName": e.detail.value.uName })  // 设置并保存用户姓名
 				.save()
 				.then((user)=> {
-          app.globalData.user['uName'] = e.detail.value.uName;
+          app.roleData.user['uName'] = e.detail.value.uName;
           this.data.iName.c = e.detail.value.uName;
           this.setData({ iName: this.data.iName})
 			}).catch((error)=>{console.log(error)
@@ -122,16 +122,16 @@ Page({
 		if( vcode && /\d{6}$/.test(vcode) ) {           //结束输入后检查验证码格式
 			this.setData({vcoden : vcode})
 			AV.Cloud.run('vSmsCode',{mbn:this.data.phonen,mcode:this.data.vcoden}).then( (mVerfied) => {              // 用户填写收到的短信验证码
-				app.globalData.user.mobilePhoneNumber = this.data.phonen;
-				app.globalData.user.mobilePhoneVerified = true;
+				app.roleData.user.mobilePhoneNumber = this.data.phonen;
+				app.roleData.user.mobilePhoneVerified = true;
 				this.setData({
-					user: app.globalData.user,
+					user: app.roleData.user,
 					activemobile : false
 				});
 			}).catch( (error)=>{                 //验证失败将旧手机号保存（若有）
 				AV.User.current()
-					.set({ "mobilePhoneNumber": app.globalData.user.mobilePhoneVerified ? app.globalData.user.mobilePhoneNumber : "",
-                 "mobilePhoneVerified": app.globalData.user.mobilePhoneVerified ? true : false })
+					.set({ "mobilePhoneNumber": app.roleData.user.mobilePhoneVerified ? app.roleData.user.mobilePhoneNumber : "",
+                 "mobilePhoneVerified": app.roleData.user.mobilePhoneVerified ? true : false })
 					.save()
 			})
 		}else{
@@ -145,17 +145,17 @@ Page({
 
   registeredPartner: function(e) {                         //创建单位并申请负责人岗位
     var that = this;
-    if (app.globalData.user.uName) {
+    if (app.roleData.user.uName) {
 		  var fSeatch = AV.Object.extend('partners');
       let rQuery = AV.Object.createWithoutData('userInit', '590b402d02f3eb0056fc8c4e')  //设定菜单为sessionuser
       AV.User.current()
-        .set({"sjid":app.globalData.user.sjid, "userRolName": 'sessionuser', "userRol": rQuery } )  // 设置并保存单位ID
+        .set({"sjid":app.roleData.user.sjid, "userRolName": 'sessionuser', "userRol": rQuery } )  // 设置并保存单位ID
         .save()
         .then(function(user) {
-          app.globalData.user = user.toJSON();
-          fSeatch.set({'mobilePhoneNumber':app.globalData.user.mobilePhoneNumber,"userId":app.globalData.user.objectId, 'uName':app.globalData.user.uName, 'avatarUrl':app.globalData.user.avatarUrl,'nickName':app.globalData.user.nickName})
+          app.roleData.user = user.toJSON();
+          fSeatch.set({'mobilePhoneNumber':app.roleData.user.mobilePhoneNumber,"userId":app.roleData.user.objectId, 'uName':app.roleData.user.uName, 'avatarUrl':app.roleData.user.avatarUrl,'nickName':app.roleData.user.nickName})
                  .save()
-                 .then( ()=>{that.setData({user : app.globalData.user});
+                 .then( ()=>{that.setData({user : app.roleData.user});
         });
       }).catch((error) => { console.log(error) });
 		}else{

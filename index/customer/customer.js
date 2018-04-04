@@ -5,7 +5,7 @@ const aimenu = require('../../libs/allmenu.js').iMenu;
 var app = getApp()
 Page({
   data:{
-    tiringRoom: app.globalData.user.mobilePhoneVerified && app.configData.tiringRoom,
+    tiringRoom: app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom,
     mPage: app.mData.product[app.roleData.uUnit.objectId],
     pNo: "orderlist",                       //流程的序号5为成品信息
     pageData: unitData('cargo'),
@@ -23,11 +23,11 @@ Page({
       let fieldSum = new Array(sLength);
       let mSum = {};
       fieldSum.fill(0);         //定义汇总数组长度且填充为0
-      if (app.mData.orderlist[app.globalData.user.objectId]){
-        app.mData.orderlist[app.globalData.user.objectId].forEach(mId=>{
+      if (app.mData.orderlist[app.roleData.user.objectId]){
+        app.mData.orderlist[app.roleData.user.objectId].forEach(mId=>{
           mSum[mId] = [];
           for (let i = 0; i < sLength; i++) {mSum[mId].push(0)};
-          app.aData.orderlist[app.globalData.user.objectId][mId].cargo.forEach(aId=>{
+          app.aData.orderlist[app.roleData.user.objectId][mId].cargo.forEach(aId=>{
             for (let i=0;i<sLength;i++){
               fieldSum[i] += app.aData.cargo[aId][fields[i]];
               mSum[mId][i] = mSum[mId][i]+app.aData.cargo[aId][fields[i]];
@@ -36,7 +36,7 @@ Page({
         })
       }
       this.setData({
-        mPage:app.mData.orderlist[app.globalData.user.objectId],
+        mPage:app.mData.orderlist[app.roleData.user.objectId],
         pageData:app.aData.orderlist,
         pandect:fieldSum,
         mSum: mSum
@@ -46,9 +46,6 @@ Page({
 
   onReady:function(){
     updateRoleData(true,'orderlist').then(isupdated=>{ this.setPage(isupdated) });
-    wx.setNavigationBarTitle({
-      title: app.globalData.user.emailVerified ? app.roleData.uUnit.uName+'的客户服务' : '用户体验客户服务',
-    });
     this.setData({ grids: aimenu(app.roleData.wmenu.customer, 'customer')})
   },
 

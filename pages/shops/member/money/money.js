@@ -7,7 +7,7 @@ Page({
   onLoad: function () {
     var that = this;
     that.setData({		    		// 获得当前用户
-      user: app.globalData.user,
+      user: app.roleData.user,
     })
     var query = new AV.Query('xs_profit');
     query.equalTo('user', AV.User.current());

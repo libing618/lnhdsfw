@@ -20,7 +20,6 @@ const realtime = new Realtime({
   pushOfflineMessages: true                          //使用离线消息通知方式
 });
 const { initConfig, loginAndMenu } = require('./util/util');
-let lcUser = AV.User.current();
 function onNet(){
   return new Promise((resolve, reject) => {
     wx.getNetworkType({
@@ -35,10 +34,9 @@ function onNet(){
     });
   })
 };
+
 App({
-  globalData: lcUser ? {user:lcUser.toJSON()} : require('globaldata.js').globalData,
   roleData: wx.getStorageSync('roleData') || require('globaldata.js').roleData,
-  sjid: '59f08fbb67f356004449a4a4',
   shopId: '598daa452f301e0069f699d6',
   netState: onNet(),
   mData: wx.getStorageSync('mData') || require('globaldata.js').mData,              //读数据管理的缓存
@@ -95,8 +93,8 @@ App({
         return;
     };
     sendMessage.setAttributes({                                 //发送者呢称和头像
-      avatarUrl: that.globalData.user.avatarUrl,
-      nickName: that.globalData.user.nickName
+      avatarUrl: that.roleData.user.avatarUrl,
+      nickName: that.roleData.user.nickName
     });
     return new Promise((resolve, reject) => {
       that.fwClient.getConversation(conversationId).then(function(conversation) {
@@ -161,20 +159,17 @@ App({
 
   onLaunch: function ({ path, query, scene, shareTicket, referrerInfo }) {
     var that = this;            //调用应用实例的方法获取全局数据
-    let noSj = true;
     if (query) {
       if (query.sjId) {
-        that.sjid = query.sjId;
-        noSj = false;
+        that.configData.sjid = query.sjId;
       }
     };
-    if (noSj) {
-      let proSceneQuery = wx.getStorageSync('proSceneQuery');
-      if (proSceneQuery) { if(proSceneQuery.query.sjId) {that.sjid = proSceneQuery.query.sjId} };
-    }
-    if (path != 'index/home/home') {
-      return Promise.all([initConfig(that), loginAndMenu(that)]).then(() => {
-
+    if (path != 'index/home/home' && that.netState) {
+      let proGoodsUpdate = that.configData.goods.updatedAt ;
+      return Promise.all([
+        initConfig(that.configData).then(icData=>{that.configData = icData}),
+        loginAndMenu(AV.User.current(),that.roleData).then(rData=>{that.roleData = rData})]).then(() => {
+        if (that.configData.goods.updatedAt != proGoodsUpdate) { that.mData.pAt.goods = [new Date(0).toISOString(),new Date(0).toISOString()] };   //店铺签约厂家有变化则重新读商品数据
         wx.setStorage({ key: 'configData', data: that.configData });
       }).catch(console.error)
     }
@@ -185,7 +180,7 @@ App({
     var that = this;
     wx.getSystemInfo({                     //读设备信息
       success: function (res) {
-        that.globalData.sysinfo = res;
+        that.sysinfo = res;
         let sdkvc = res.SDKVersion.split('.');
         let sdkVersion = parseFloat(sdkvc[0] + '.' + sdkvc[1] + sdkvc[2]);
         if (sdkVersion < 1.9) {
@@ -232,7 +227,7 @@ App({
           }else{
             let loguser = AV.Object.extend('userlog');       //有网络则上传操作日志
             let userlog = new loguser();
-            userlog.set('userObjectId',that.globalData.user.objectId);
+            userlog.set('userObjectId',that.roleData.user.objectId);
             userlog.set('workRecord',logData);
             userlog.save().then( resok =>{
               wx.removeStorageSync('loguser');              //上传成功清空日志缓存

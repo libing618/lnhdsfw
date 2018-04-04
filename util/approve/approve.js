@@ -28,7 +28,7 @@ Page({
         pModel: procedureClass.pModel,         //流程写入的数据表名
         aValue: app.procedures[options.approveId],        //流程缓存
         enEdit: app.roleData.uUnit.objectId==app.procedures[options.approveId].unitId,          //本单位的流程允许编辑
-        enApprove: app.procedures[options.approveId].cFlowStep.indexOf(app.globalData.user.objectId) >= 0,     //当前用户为流程处理人
+        enApprove: app.procedures[options.approveId].cFlowStep.indexOf(app.roleData.user.objectId) >= 0,     //当前用户为流程处理人
         afamilys: procedureClass.afamily ? procedureClass.afamily : false,                              //流程内容分组
         cmLength: app.procedures[options.approveId].cManagers.length    //流程审批节点长度
       });
@@ -95,7 +95,7 @@ Page({
         if (sObjectId) {cApproval.set('dObjectId',sObjectId);}
         cApproval.set('dResult', rResultId);                //流程处理结果
         let uIdear = that.data.aValue.dIdear;
-        uIdear.unshift({ un: app.globalData.user.uName, dt: new Date(), di:that.data.uIdearArray[rResultId-1] , dIdear:e.detail.value.dIdear })
+        uIdear.unshift({ un: app.roleData.user.uName, dt: new Date(), di:that.data.uIdearArray[rResultId-1] , dIdear:e.detail.value.dIdear })
         cApproval.set('dIdear', uIdear);       //流程处理意见
         cApproval.set('cInstance', nInstace);             //下一处理节点
         cApproval.set('cFlowStep', nInstace == that.data.cmLength ? ['流程结束'] : that.data.aValue.cManagers[nInstace]); //下一流程审批人

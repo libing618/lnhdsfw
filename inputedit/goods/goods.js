@@ -17,7 +17,7 @@ Page({
   },
   onLoad:function(options){
     var that = this;
-    if (app.globalData.user.userRolName=='admin' && app.uUnit.seriaNumber>=0) {
+    if (app.roleData.user.userRolName=='admin' && app.uUnit.seriaNumber>=0) {
       new AV.Query('goods').equalTo('seriaNumber',app.uUnit.seriaNumber).find(goods=>{
         if (shops.length>0){
           that.setData({pageDate:goods});

@@ -2,7 +2,7 @@ const AV = require('../../../../libs/leancloud-storage.js');
 const { User } = require('../../../../libs/leancloud-storage.js');
 var app = getApp()
 var minTime = 0
-var currentTime = minTime 
+var currentTime = minTime
 Page({
 	data:{
     choice: ['美国', '中国', '巴西', '日本'],
@@ -19,7 +19,7 @@ Page({
 
   onLoad:function(){
     this.setData({		    		// 获得当前用户
-      user: app.globalData.user,
+      user: app.roleData.user,
     })
   },
 
@@ -47,7 +47,7 @@ Page({
 				content: '请重新输入正确的手机号'
 			});
 			});
-			
+
 		}else
 		 {
 			wx.showModal({
@@ -55,7 +55,7 @@ Page({
 				content: '请重新输入手机号'
 			});
 		 }
-		 
+
 	  })
 	},
 
@@ -76,7 +76,7 @@ Page({
 	getvcode: function(e) {							//向服务器请求验证码
 		var sphone = this.data.phonen;
 		var interval = null;
-		if(currentTime <= 0){  
+		if(currentTime <= 0){
 		AV.Cloud.run('weinit',{mbn:sphone}).then(function (data){     //
 			console.log(sphone)
 			console.log(result)
@@ -88,16 +88,16 @@ Page({
 			})
 		var that = this
 		currentTime = 60
-		interval = setInterval(function(){  
-			 currentTime-- 
-			 that.setData({  
-				 time : currentTime  
-				 }) 
-		}, 1000) 
-		 }else{	
+		interval = setInterval(function(){
+			 currentTime--
+			 that.setData({
+				 time : currentTime
+				 })
+		}, 1000)
+		 }else{
 			 wx.showModal({
 				title: '短信已发到您的手机，请'+currentTime+'s后重试!',
-			});	 
+			});
 		}
 	},
 
@@ -122,7 +122,7 @@ Page({
 
    company: function (e) {
      var choice = this.data.choice
-     var company = choice[e.detail.value]; 
+     var company = choice[e.detail.value];
      this.setData({
        company: company
      })

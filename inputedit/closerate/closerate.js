@@ -5,8 +5,8 @@ var app = getApp()
 Page({
   onReady: function () {
     var that = this;
-    if (app.globalData.role.unit){                     //用户有所属单位
-      var closerate = wx.getStorageSync('closerate'+app.globalData.role.unit) || [];                  //产品成交率
+    if (app.roleData.role.unit){                     //用户有所属单位
+      var closerate = wx.getStorageSync('closerate'+app.roleData.role.unit) || [];                  //产品成交率
       new wxCharts({
         canvasId: 'columnCanvas',
         type: 'column',
@@ -25,7 +25,7 @@ Page({
         },
         width: 400,
         height: 300
-      });   
+      });
     }else
     {
       wx.showModal({
@@ -38,7 +38,7 @@ Page({
                 })
             }
         }
-      })        
+      })
     }
   },
 })

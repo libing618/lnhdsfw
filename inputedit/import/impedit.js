@@ -22,8 +22,8 @@ function getdate(idate) {
 };
 function setRole(puRoles,suRoles){
   let cUserName = {};
-  let cManagers = [[app.globalData.user.objectId]];
-  cUserName[app.globalData.user.objectId] = app.globalData.user.uName;
+  let cManagers = [[app.roleData.user.objectId]];
+  cUserName[app.roleData.user.objectId] = app.roleData.user.uName;
   if (app.roleData.uUnit.afamily > 2 && puRoles) {          //单位类型为企业且有本单位审批设置
     let pRolesNum = 0, pRoleUser;
     for (let i = 0; i < puRoles.length; i++) {
@@ -39,7 +39,7 @@ function setRole(puRoles,suRoles){
         cManagers.push(pRoleUser);
       }
     };
-    if (pRolesNum == 0 && app.globalData.user.userRolName != 'admin') {
+    if (pRolesNum == 0 && app.roleData.user.userRolName != 'admin') {
       app.roleData.uUnit.unitUsers.forEach((pUser) => {
         if (pUser.userRolName == 'admin') {
           cManagers.push([pUser.objectId]);
@@ -641,9 +641,9 @@ module.exports = {
                 fcApproval.set('dProcedure', approvalID);                //流程类型
                 fcApproval.set('dResult', 0);                //流程处理结果0为提交
                 fcApproval.set("unitName", app.roleData.uUnit.uName);                 //申请单位
-                fcApproval.set("sponsorName", app.globalData.user.uName);         //申请人
+                fcApproval.set("sponsorName", app.roleData.user.uName);         //申请人
                 fcApproval.set("unitId", app.roleData.uUnit.objectId);        //申请单位的ID
-                fcApproval.set('dIdear', [{ un: app.globalData.user.uName, dt: new Date(), di: '提交流程', dIdear: '发起审批流程' }]);       //流程处理意见
+                fcApproval.set('dIdear', [{ un: app.roleData.user.uName, dt: new Date(), di: '提交流程', dIdear: '发起审批流程' }]);       //流程处理意见
                 fcApproval.set('cManagers', approvalRole.cManagers);             //处理人数组
                 fcApproval.set('cUserName', approvalRole.cUserName);             //处理人姓名JSON
                 fcApproval.set('cInstance', 1);             //下一处理节点

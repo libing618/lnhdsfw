@@ -61,7 +61,6 @@
         "shops/address/list/list",
         "shops/goods/goods",
         "shops/cart/cart",
-        "shops/give//receive/receive",
         "shops/give/address/address",
         "shops/goods/list/list",
         "shops/goods/detail/detail",

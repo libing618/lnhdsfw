@@ -5,9 +5,9 @@ var app = getApp()
 Page({
   onReady: function () {
     var that = this;
-    if (app.globalData.role.unit){                     //用户有所属单位
-      var goodslog = wx.getStorageSync('goodslog'+app.globalData.role.unit) || [];                 //产品访问量
-      var artlog = wx.getStorageSync('artlog'+app.globalData.role.unit) || [];                  //文章访问量
+    if (app.roleData.role.unit){                     //用户有所属单位
+      var goodslog = wx.getStorageSync('goodslog'+app.roleData.role.unit) || [];                 //产品访问量
+      var artlog = wx.getStorageSync('artlog'+app.roleData.role.unit) || [];                  //文章访问量
       new wxCharts({
         canvasId: 'lineCanvas',
         type: 'line',
@@ -34,7 +34,7 @@ Page({
         },
         width: 400,
         height: 300
-      });   
+      });
     }else
     {
       wx.showModal({
@@ -47,7 +47,7 @@ Page({
                 })
             }
         }
-      })        
+      })
     }
   },
 })

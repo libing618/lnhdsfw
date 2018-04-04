@@ -6,7 +6,7 @@ Page({
   },
     agree:false,
     formSubmit: function(e) {
-         // user 
+         // user
 		var user = AV.User.current();
         // 店铺名称
 		var shopname = e.detail.value.shopname;
@@ -23,18 +23,18 @@ Page({
 				icon:'success'
 			});
 			// navi back
-		
+
 		}, function (error) {
 			console.log(error);
 		});
 	},
 
-    
+
 
     onLoad: function () {
         this.setagree();
         this.setData({		    		// 获得当前用户
-          user: app.globalData.user,
+          user: app.roleData.user,
         })
     },
     	setagree: function () {

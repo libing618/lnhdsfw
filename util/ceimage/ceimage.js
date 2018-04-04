@@ -5,7 +5,7 @@ var ctx = wx.createCanvasContext('cei');
 var app = getApp();
 Page({
   data: {
-    xImage: app.globalData.sysinfo.windowWidth,
+    xImage: app.sysinfo.windowWidth,
     yImage: 0,
     iscr: '',
     xOff: 320,

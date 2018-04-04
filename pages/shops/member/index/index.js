@@ -7,7 +7,7 @@ Page({
   },
   onLoad:function(){
   this.setData({		    		// 获得当前用户
-    user: app.globalData.user,
+    user: app.roleData.user,
   })
   },
 	navigateToAddress: function () {

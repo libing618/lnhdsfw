@@ -17,7 +17,7 @@ Page({
   onLoad: function (options) {        //传入参数为tgId或pNo/artId,不得为空
     var that = this;
     let aaData;
-    that.data.uEV = app.globalData.user.emailVerified;            //用户已通过单位和职位审核
+    that.data.uEV = app.roleData.user.emailVerified;            //用户已通过单位和职位审核
     return new Promise((resolve, reject) => {
       if (typeof options.tgId == 'string') {                   //传入参数含审批流程ID，则为编辑审批中的数据
         if (app.procedures[options.tgId].length>0) {
@@ -66,7 +66,7 @@ Page({
         that.data.reqData = reqData;
         that.data.vData = vData;
         that.setData(that.data);
-        titleName = (typeof options.tgId == 'string') ? app.procedures[that.data.targetId].unitName : (app.globalData.user.emailVerified ? app.roleData.uUnit.nick : '体验用户') + titleName;
+        titleName = (typeof options.tgId == 'string') ? app.procedures[that.data.targetId].unitName : (app.roleData.user.emailVerified ? app.roleData.uUnit.nick : '体验用户') + titleName;
         wx.setNavigationBarTitle({ title: titleName });
       })
     }).catch((error)=>{

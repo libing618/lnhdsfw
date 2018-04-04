@@ -2,8 +2,8 @@
 var app = getApp()
 Page({
   data:{
-    sysheight:app.globalData.sysinfo.windowHeight-60,
-    syswidth:app.globalData.sysinfo.windowWidth-10,
+    sysheight:app.sysinfo.windowHeight-60,
+    syswidth:app.sysinfo.windowWidth-10,
     enMultimedia: true,
     selectd: -1,
     vData: {},
@@ -13,7 +13,7 @@ Page({
   onLoad:function(options){
     var that = this;
     that.setData({		    		// 获得当前用户
-      user: app.globalData.user,
+      user: app.roleData.user,
       messages : app.getM('58e53adbb1acfc0056ba3897'),
     })
     wx.setNavigationBarTitle({title:conversation.name});

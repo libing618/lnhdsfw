@@ -1,6 +1,5 @@
-const { updateData,classInFamily ,isAllData } = require('../../../model/initupdate');
+const { readAllData,updateData,classInFamily ,isAllData } = require('../../../model/initupdate');
 const {droneId,master,slave} = require('../../../libs/goodstype')
-const { readAllData } = require('../../../util/util');
 var app = getApp()
 Page ({
   data: {
@@ -36,7 +35,7 @@ Page ({
   },
 
   onReady: function(){
-    readAllData(true, 'goods', app).then(isupdated => { this.setPage(isupdated) });
+    readAllData(true, 'goods').then(isupdated => { this.setPage(isupdated) });
   },
 
   f_pickMaster: function(e){                           //选择打开的主数组下标
@@ -54,17 +53,17 @@ Page ({
   },
 
   onPullDownRefresh:function(){
-    readAllData(true,'goods',app).then(isupdated=>{ this.setPage(isupdated) });
+    readAllData(true,'goods').then(isupdated=>{ this.setPage(isupdated) });
   },
   onReachBottom:function(){
-    readAllData(false,'goods',app).then(isupdated=>{ this.setPage(isupdated) });
+    readAllData(false,'goods').then(isupdated=>{ this.setPage(isupdated) });
   },
 
   onShareAppMessage: function () {
     return {
       title: '乐农汇',
       desc: '扶贫济困，共享良品。',
-      path: '/index/home/home?sjId='+app.globalData.user.objectId
+      path: '/index/home/home?sjId='+app.roleData.user.objectId
     }
   }
 })
