@@ -20,7 +20,7 @@ Page({
         title: app.uUnit.nick+'的'+ options.oState ? '评价统计' : '客户评价'
       })
     } else {
-      wx.showToast({ title: '权限不足，请检查！', duration: 2500 });
+      wx.showToast({ title: '权限不足请检查！', duration: 2500 });
       setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 2000);
     };
   },

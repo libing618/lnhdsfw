@@ -56,9 +56,12 @@ Page({
 
   userInfoHandler: function (e) {
     var that = this;
-    openWxLogin(app).then( (mstate)=> {
-      app.logData.push([Date.now(), '用户授权' + app.sysinfo.toString()]);                      //用户授权时间记入日志
-      that.setData({ unAuthorize: false })
+    app.roleData.user.sjid = app.configData.sjid;
+    app.roleData.user.channelid = app.configData.channelid;
+    openWxLogin(app.roleData).then( mstate=> {
+      app.roleData = mstate;
+      app.logData.push([Date.now(), '用户授权' + app.sysinfo.toString()]);                //用户授权时间记入日志
+      wx.navigateTo({url:'/util/signup/signup?type=promoter'});                //进行推广合伙人注册
     }).catch( console.error );
   },
 
@@ -84,7 +87,7 @@ Page({
     return {
       title: '乐农汇',
       desc: '扶贫济困，共享良品。',
-      path: '/index/home/home?sjId='+app.roleData.user.objectId
+      path: '/index/home/home?sjid='+app.roleData.user.objectId
     }
   }
 })

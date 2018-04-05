@@ -28,6 +28,8 @@ function openWxLogin(roleData) {            //注册登录（本机登录状态�
                     } else {                         //客户在本机授权登录则保存信息
                       let newUser = wxuserinfo.userInfo;
                       newUser['wxapp' + wxappNumber] = wxuid.oId;         //客户第一次登录时将openid保存到数据库且客户端不可见
+                      newUser.sjid = roleData.user.sjid;
+                      newUser.channelid = roleData.user.userRolName=='0' ? roleData.user.channelid : statuswx.id;
                       statuswx.set(newUser).save().then((wxuser) => {
                         roleData.user = wxuser.toJSON();
                         resolve(roleData);                //客户在本机刚注册，无菜单权限
@@ -195,9 +197,10 @@ module.exports = {
           cData = conData.toJSON();
           configData[cData.cName] = { cfield: cData.cfield, fConfig: cData.fConfig, updatedAt: cData.updatedAt }
         });
-        return new AV.Query('_User').select('goodsIndex').get(configData.sjid);
+        return new AV.Query('_User').select(['goodsIndex','channelid']).get(configData.sjid);
       }).then(sjData => {
         if (sjData.get('goodsIndex')) { configData.goodsIndex = sjData.get('goodsIndex') };
+        configData.channelid = sjData.get('channelid');
         resolve(configData)
       })
     }).catch(console.error)

@@ -159,9 +159,10 @@ App({
 
   onLaunch: function ({ path, query, scene, shareTicket, referrerInfo }) {
     var that = this;            //调用应用实例的方法获取全局数据
-    if (query) {
-      if (query.sjId) {
-        that.configData.sjid = query.sjId;
+    let configQuery = query ? query : wx.getStorageSync('proSceneQuery').query;
+    if (configQuery) {
+      for (let qKey in query) {
+        that.configData[qKey] = query[qKey];
       }
     };
     if (path != 'index/home/home' && that.netState) {
@@ -170,6 +171,20 @@ App({
         initConfig(that.configData).then(icData=>{that.configData = icData}),
         loginAndMenu(AV.User.current(),that.roleData).then(rData=>{that.roleData = rData})]).then(() => {
         if (that.configData.goods.updatedAt != proGoodsUpdate) { that.mData.pAt.goods = [new Date(0).toISOString(),new Date(0).toISOString()] };   //店铺签约厂家有变化则重新读商品数据
+        if (that.roleData.user.objectId=='0' && path=='util/singup/signup'){
+          wx.authorize({    //请用户授权登录本平台
+            scope: 'scope.userInfo',
+            success() {          // 用户同意小程序使用用户信息
+              that.roleData.userRolName = query.type;
+              opepWxLogin(that.roleData).then(resLogin=>{
+                that.roleData=resLogin;
+              })
+            },
+            fail: () => {
+              path = 'index/home/home';
+            }
+          })
+        }
         wx.setStorage({ key: 'configData', data: that.configData });
       }).catch(console.error)
     }

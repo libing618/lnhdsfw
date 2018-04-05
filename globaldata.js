@@ -4,7 +4,7 @@ module.exports={
       "userRolName": "0",
       "unit": "0",
       "city": "Taiyuan",
-      "uName": "0",
+      "uName": "",
       "emailVerified": false,
       "nickName": "游客",
       "language": "zh_CN",
@@ -16,6 +16,7 @@ module.exports={
       "authData": {},
       "mobilePhoneVerified": false,
       "sjid": "59f08fbb67f356004449a4a4",
+      "channelid": "59f08fbb67f356004449a4a4",
       "objectId": "0"
     },
     wmenu: {
@@ -31,6 +32,7 @@ module.exports={
     articles: { cfield: 'afamily', fConfig: [0, 1, 3] },
     goods: { updatedAt: new Date(0).toISOString() },
     sjid: '59f08fbb67f356004449a4a4',
+    channelid: "59f08fbb67f356004449a4a4",
     tiringRoom: false
   },
   mData: {

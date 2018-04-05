@@ -5,7 +5,7 @@
     "index/marketing/marketing",
     "index/customer/customer",
     "util/wxchat/wxchat",
-    "util/login/login",
+    "util/signup/signup",
     "util/approve/approve",
     "util/goodssct/goodssct",
     "util/mapsunit/mapsunit",
@@ -54,7 +54,6 @@
     {
       "root": "pages",
       "pages": [
-        "signup/signup",
         "lprocedures/lprocedures",
         "vprocedure/vprocedure",
         "shops/address/add/add",

@@ -85,7 +85,7 @@ Page({
               wx.showToast({ title: '审批内容已发布', duration:2000 });
               resolve(sd.objectId);
             }).catch((error)=>{
-              wx.showToast({ title: '审批内容发布出现错误'+error.error, duration: 2000 });
+              wx.showToast({ title: '审批内容发布出现错误'+error.error, icon:'none', duration: 2000 });
               reject(error);
             })
           } else { resolve(0) };
@@ -100,7 +100,7 @@ Page({
         cApproval.set('cInstance', nInstace);             //下一处理节点
         cApproval.set('cFlowStep', nInstace == that.data.cmLength ? ['流程结束'] : that.data.aValue.cManagers[nInstace]); //下一流程审批人
         cApproval.save().then(function () {
-          wx.showToast({ title: '流程已提交,请查询结果。', duration: 2000 }) // 保存成功
+          wx.showToast({ title: '流程已提交,请查询结果。', icon:'none', duration: 2000 }) // 保存成功
           setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 2000);
         })
       }).catch(console.error);

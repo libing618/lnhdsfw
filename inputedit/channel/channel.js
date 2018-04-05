@@ -44,7 +44,7 @@ Page({
         })
       }).catch(console.error);
     } else {
-      wx.showToast({ title: '权限不足，请检查！', duration: 2500 });
+      wx.showToast({ title: '权限不足请检查！', duration: 2500 });
       setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 2000);
     };
   },

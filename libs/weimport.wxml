@@ -284,13 +284,13 @@
 <template name="navBarReturn">
   <view class="weui-cell__hd">
     <navigator open-type="navigateBack" delta="1">
-      <image src="../images/return.png" class="navigationBar__icon"></image>
+      <image src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgEAYAAAAj6qa3AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAAAAAAAA+UO7fwAAAAlwSFlzAAAASAAAAEgARslrPgAAAmVJREFUaN7tmDFoE1Ech98lYkBrkKoNFsRAivJe4IbSli5imuKgUAdtHTRIcWhpCaVL00ItpukNIa2gDkl0ShchRzbXgta1Q0UDWZpFEe17iRTvriI0+buYDi2PUsjlP/R+y8FBju/7hsvdEeIMZwAAhLhc2BxI4m63WRb32a/VVfO3WGOPlpexuVok7nLti5ucMwawfyyLDNNTKWzO1ov/P1oxXmUBw/gDP+A6+P3Y3M0T3xDd9HUuJxM34+Iy3bAsAwQEIRTC5m65uKlWhoL3BgawuZskrihmD+9kndmsI35ixP3iLXuSyTjiMvFI5Q3Tw2Fs7qaJW+tCY3o67Yg74gfEk9vtzDM4iM193ClS8dviJi1ms6RACsqDsTHpBRLETf6aJhhKP7zgHFtIOhXukqvVattEx/OS2tcnDdD4OyMfyCdyfnwcm7tZU7xKD6Q5P1u/9LUU8vka5w+/jn6EL1Dc2sIGbtVOHTzRdsZ3odS+smKlhUpzHg88hjUlpWmyCyjdyhwJVKvkO7lIApub2ELSJYggbGeHPD3m7ywvv0JfzcxIb4KfeZ7pe3vWMM8zfXQU29O2Wdf4EO2PxaQhfvIiG67XDcHD1Ds5ic2LHsLs4nmmR6PYvPghIuIc/TY1hc1rX4gbfD54enb2yBAvRZR2TU9j89o2A7aBQjwuDdH49JUWKs3Nz2Pz4odYF1pQWVjA5rVtZgdntLC4eFQI8524QyeSSWxeJ4TtIW7xOKstLUkDlPl79qxW2x2pFIJzvb3YvPaFUPkIfZhInLgHqEMhIjzPdE2zLCGYLn/ddubM3v0DCAM+S2JUsysAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTgtMDQtMDRUMjM6NDg6MzUrMDg6MDAYyqMUAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE4LTA0LTA0VDIzOjQ4OjM1KzA4OjAwaZcbqAAAAFp0RVh0c3ZnOmJhc2UtdXJpAGZpbGU6Ly8vaG9tZS9hZG1pbi9pY29uLWZvbnQvdG1wL2ljb25fdmx1dGtwbTZ6bGk2MGY2ci8lRTglQkYlOTQlRTUlOUIlOUUuc3ZnKxLORAAAAABJRU5ErkJggg==" class="navigationBar__icon"></image>
     </navigator>
   </view>
 </template>
 
 <template name="navBarLogo">
   <view class="weui-cell__hd">
-    <image src="{{srcurl}}" class="navigationBar__icon"></image>
+    <image src="../../images/logo.png" class="navigationBar__icon"></image>
   </view>
 </template>

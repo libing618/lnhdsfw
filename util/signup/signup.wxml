@@ -1,0 +1,35 @@
+<import src="../../libs/weimport.wxml" />
+<wxs src="signmsg.wxs" module="tk" />
+<view class="page">
+  <view class="page__hd">
+    <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
+      <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+        <image class="weui-media-box__thumb" src="{{user.avatarUrl}}" background-size="cover"></image>
+      </view>
+      <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+        <view class="weui-media-box__title">尊敬的{{user.nickName}}{{user.gender==1 ? "先生":"女士"}}</view>
+        <view class="weui-media-box__desc">
+          <view class="weui-cell weui-cell_input">
+            <view class="weui-cell__hd">
+                <view class="weui-label">请检查您的姓名:</view>
+            </view>
+            <view class="weui-cell__bd">
+              <input value="{{iName}}" class="weui-input" placeholder="请输入姓名" bindinput="i_Name"/>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="page__bd">
+    <scroll-view scroll-y="true" style="height:{{sysheight}}rpx;text-indent:2em" hover="true" hover-class="weui-hover" hover-stay-time="500">
+      <text>{{tk[userType]}}</text>
+    </scroll-view>
+    <view class="weui-cell_switch">
+      <switch type="checkbox" checked="{{swcheck}}" bindchange="fswcheck"/>阅读并同意《电子商务服务平台使用条款》
+    </view>
+  </view>
+  <view class="page__ft">
+    <button disabled="{{!(iName && swcheck)}}" open-type="getPhoneNumber" bindgetphonenumber="gUserPhoneNumber">使用微信手机号注册成为本平台的合伙人</button>
+  </view>
+</view>

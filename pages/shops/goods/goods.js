@@ -63,7 +63,7 @@ Page ({
     return {
       title: '乐农汇',
       desc: '扶贫济困，共享良品。',
-      path: '/index/home/home?sjId='+app.roleData.user.objectId
+      path: '/index/home/home?sjid='+app.roleData.user.objectId
     }
   }
 })
