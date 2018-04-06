@@ -5,6 +5,7 @@ Page({
   data: {
     autoplay: true,
     tiringRoom: app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom,
+    user: app.roleData.user,
     mSwiper: app.mData.articles[0],
     scrollTop : 0,
     scrollHeight: app.sysinfo.windowHeight-80,

@@ -1,6 +1,6 @@
 var allMenu={
 manage:{
-  N100:{"tourl": "/pages/signup/signup", "mName": "我的信息" },
+  N100:{"tourl": "/pages/shopData/shopData", "mName": "我的店铺" },
   N101:{"tourl": "/inputedit/communication/communication", "mName": "工作沟通" },
   N102:{"tourl": "/pages/lprocedures/lprocedures?pNo=artshop&artId=1",  "mName": "产品课堂" },
   N103:{"tourl": "/pages/lprocedures/lprocedures?pNo=artshop&artId=2", "mName": "营销课堂" },
@@ -12,7 +12,7 @@ manage:{
 "m104": "../../images/iconfont-abook.png"
 },
 marketing:{
-  N200:{"tourl": "/inputedit/channel/channel", "mName": "我的店铺" },
+  N200:{"tourl": "/inputedit/channel/channel", "mName": "生产厂家" },
   N201:{"tourl": "/inputedit/goods/goods", "mName": "我的货架" },
   N202:{"tourl": "/inputedit/redpackets/redpackets", "mName": "红包券" },
   N203:{"tourl": "/pages/lprocedures/lprocedures?pNo=artshop&artId=3", "mName": "我的推介" },

@@ -1,4 +1,10 @@
 <import src="../../libs/weimport.wxml" />
+<view class="navigationBar">
+  <view class="navigationBar__column">
+    <template is="navBarLogo"/>
+    <view class="weui-cell__bd">{{tiringRoom ? '乐农汇的服务管理' : '购物车及订单管理'}}</view>
+  </view>
+</view>
 <view class="page">
   <view class="page__hd">
     <view class="page__title">近期任务</view>

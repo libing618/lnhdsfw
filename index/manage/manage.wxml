@@ -1,6 +1,11 @@
 <import src="../../libs/weimport.wxml" />
 <view class="navigationBar">
-  <view class="navigationBar__column">店铺管理</view>
+  <view class="navigationBar__column">
+    <view class="weui-cell__hd">
+      <image src="{{tiringRoom ? '../../images/logo.png' : user.avatarUrl}}" class="navigationBar__icon"></image>
+    </view>
+    <view class="weui-cell__bd">{{tiringRoom ? '乐农汇的店铺管理' : user.nickName+'的信息'}}</view>
+  </view>
 </view>
 <view class="page">
   <view class="page__hd">
