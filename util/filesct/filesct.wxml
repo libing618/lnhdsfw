@@ -1,3 +1,5 @@
+<import src="../../import/impedit.wxml"/>
+<template is="navBarReturn" data="{{...navBarTitle}}"/>
 <view class="page">
   <radio-group  bindchange="sfChange">
     <label wx:for="{{files}}">

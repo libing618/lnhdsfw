@@ -14,9 +14,23 @@ Page({
     pageData: app.aData.articles,
     fLength:2,
     tabs: ["厂商品牌", "产品宣传"],
-    pageCk: app.mData.pCk1,
+    pageCk: app.mData.pCkarticles,
     wWidth: app.sysinfo.windowWidth,
     grids: []
+  },
+
+  onShow: function (options) {
+    this.data.tiringRoom = app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom
+    if (this.data.tiringRoom) {
+      this.data.grids = aimenu(app.roleData.wmenu.manage, 'manage')
+      this.data.grids[0].mIcon = app.roleData.user.avatarUrl; //把微信头像地址存入第一个菜单icon
+    }
+    this.setData({
+      tiringRoom: this.data.tiringRoom,
+      user: app.roleData.user,
+      grids: this.data.grids
+    })
+    this.setPage(app.mData.articles);
   },
 
   setPage: function(iu){
@@ -31,9 +45,6 @@ Page({
 
   onReady: function(){
     readAllData(true,'articles').then(isupdated=>{ this.setPage(isupdated) });        //更新缓存以后有变化的数据
-    this.grids = aimenu(app.roleData.wmenu.manage, 'manage')
-    this.grids[0].mIcon = app.roleData.user.avatarUrl; //把微信头像地址存入第一个菜单icon
-    this.setData({grids:this.grids})
   },
 
   tabClick: tabClick,

@@ -1,3 +1,5 @@
+<import src="../../libs/weimport.wxml"/>
+<template is="navBarReturn" data="{{...navBarTitle}}"/>
 <view class="page">
 <movable-area style="height:{{yImage}}px;width: 750rpx; ">
   <image  style="width:{{xImage}}px; height:{{yImage}}px;" mode="scaleToFill" src="{{iscr}}"></image>

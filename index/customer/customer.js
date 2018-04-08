@@ -6,14 +6,18 @@ var app = getApp()
 Page({
   data:{
     tiringRoom: app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom,
-    mPage: app.mData.product[app.roleData.uUnit.objectId],
-    pNo: "orderlist",                       //流程的序号5为成品信息
-    pageData: unitData('cargo'),
+    mPage: app.mData.orderlist[app.roleData.shopId],
+    pNo: "orderlist",                       //订单信息
+    pageData: {},
     iClicked: '0',
     grids: []
   },
-  onLoad:function(options){
-    this.setPage(app.mData.orderlist[app.roleData.uUnit.objectId]);
+  onShow:function(options){
+    this.setData({
+      tiringRoom: app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom,
+      grids: (app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom) ? aimenu(app.roleData.wmenu.customer, 'customer') : []
+    })
+    this.setPage(app.mData.orderlist[app.roleData.shopId]);
   },
 
   setPage: function(iu){
@@ -46,7 +50,6 @@ Page({
 
   onReady:function(){
     updateRoleData(true,'orderlist').then(isupdated=>{ this.setPage(isupdated) });
-    this.setData({ grids: aimenu(app.roleData.wmenu.customer, 'customer')})
   },
 
   indexClick:indexClick,

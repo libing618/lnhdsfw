@@ -1,5 +1,11 @@
 <import src="../../libs/weimport.wxml" />
-<view class="navigationBar">
+<view wx:if="{{tiringRoom}}" class="navigationBar">
+  <view class="navigationBar__column">
+    <template is="navBarLogo"/>
+    <view class="weui-cell__bd">乐农汇的营销管理</view>
+  </view>
+</view>
+<view wx:else class="navigationBar">
   <form bindsubmit="fSearch">
     <view class="navigationBar__column"> 
       <template is="navBarLogo" data="{{srcurl:'../../images/logo.png'}}"/>

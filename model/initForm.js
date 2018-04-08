@@ -1,9 +1,8 @@
 const AV = require('../libs/leancloud-storage.js');
 const { updateData } = require('initupdate');
 var app = getApp();
-function unitData(cName, uId) {
+function unitData(cName, unitId) {
   let uData = {};
-  let unitId = uId ? uId : app.roleData.uUnit.objectId;
   if (app.mData[cName][unitId]) { app.mData[cName][unitId].forEach(cuId => { uData[cuId] = app.aData[cName][cuId] }) };
   return uData;
 };
@@ -34,15 +33,12 @@ module.exports = {
   integration: integration,
 
   readShowFormat: function (req, vData) {
-    var unitId = vData.unitId ? vData.unitId : app.roleData.uUnit.unitId;
+    var unitId = vData.unitId
     return new Promise((resolve, reject) => {
       let promArr = [];                   //定义一个Promise数组
       let setPromise = new Set();
       var reqData = req.map(reqField => {
         switch (reqField.t) {
-          case 'MS':
-            reqField.e = app.roleData.sUnit.uName;
-            break;
           case 'sObject':
             if (reqField.gname == 'goodstype') {
               reqField.slave = require('../libs/goodstype').slave[vData.goodstype];
@@ -91,15 +87,12 @@ module.exports = {
     let vDataKeys = Object.keys(vData);            //数据对象是否为空
     let vifData = (vDataKeys.length == 0);
     var funcArr = [];
-    let unitId = vData.unitId ? vData.unitId : app.roleData.uUnit.objectId;  //数据中没有单位代码则用使用人的单位代码
+    let unitId = vData.unitId;  //单位代码
     return new Promise((resolve, reject) => {
       let promArr = [];               //定义一个Promise数组
       let setPromise = new Set();
       var reqData = req.map(reqField => {
         switch (reqField.t) {
-          case 'MS':
-            reqField.e = vifData ? '点击选择服务单位' : app.roleData.sUnit.uName;
-            break;
           case 'sObject':
             reqField.osv = [0, 0];
             if (reqField.gname == 'goodstype') {
@@ -118,9 +111,6 @@ module.exports = {
             break;
           case 'arrplus':
             setPromise.add('product');
-            break;
-          case 'producttype':
-            reqField.indlist = app.roleData.uUnit.indType.code;
             break;
         };
         if (vifData) {

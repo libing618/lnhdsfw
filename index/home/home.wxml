@@ -6,10 +6,10 @@
     <view class="weui-cell__bd">扶贫济困，共享良品</view>
     <view class="weui-cell__ft weui-cell__ft_in-access">
       <view wx:if="{{signuped}}">
-        <button class="weui-btn" style="display:inline-block" size="mini" bindtap="changeTiring">{{tiringRoom ? '退出' : '进入'}}管理界面</button>
+        <button class="weui-btn" style="top:6rpx" size="mini" bindtap="changeTiring">{{tiringRoom ? '退出' : '进入'}}管理界面</button>
       </view>
       <view wx:else>
-        <button style="display:inline-block" size="mini" open-type="getUserInfo" bindgetuserinfo="userInfoHandler">合伙人注册</button>
+        <button style="top:6rpx" size="mini" open-type="getUserInfo" bindgetuserinfo="userInfoHandler">合伙人注册</button>
       </view>
     </view>
   </view>

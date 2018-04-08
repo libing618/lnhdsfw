@@ -1,5 +1,5 @@
 // 通用的内容编辑pages
-const wImpEdit = require('../import/impedit.js');
+const wImpEdit = require('../../import/impedit.js');
 const { initData } = require('../../model/initForm');
 var app = getApp()
 Page({
@@ -57,8 +57,6 @@ Page({
         that.data.reqData = reqData;
         that.data.vData = vData;
         that.setData(that.data);
-        titleName = (typeof options.tgId == 'string') ? app.procedures[that.data.targetId].unitName : (app.roleData.user.emailVerified ? app.roleData.uUnit.nick : '体验用户') + titleName;
-        wx.setNavigationBarTitle({ title: titleName });
       })
     }).catch((error)=>{
       console.log(error)

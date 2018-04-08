@@ -1,6 +1,6 @@
 var allMenu={
 manage:{
-  N100:{"tourl": "/pages/shopData/shopData", "mName": "我的店铺" },
+  N100: { "tourl": "/inputedit/shopData/shopData", "mName": "我的店铺" },
   N101:{"tourl": "/inputedit/communication/communication", "mName": "工作沟通" },
   N102:{"tourl": "/pages/lprocedures/lprocedures?pNo=artshop&artId=1",  "mName": "产品课堂" },
   N103:{"tourl": "/pages/lprocedures/lprocedures?pNo=artshop&artId=2", "mName": "营销课堂" },

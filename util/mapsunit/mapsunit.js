@@ -132,11 +132,6 @@ Page({
         let reqset = {};
         reqset['reqData[' + that.reqNumber + '].e'] = that.data.unitArray[that.data.sId].uName;
         reqset['vData.' + that.prevPage.data.reqData[that.reqNumber].gname] = that.data.unitArray[that.data.sId].objectId;
-        if (that.reqProIsSuperior) {
-          app.roleData.uUnit.sUnit = that.data.unitArray[that.data.sId].objectId;
-          app.roleData.sUnit = that.data.unitArray[that.data.sId];
-          reqset['dObjectId'] = app.roleData.uUnit.objectId;
-        };
         that.prevPage.setData(reqset, callback=> { wx.navigateBack({ delta: 1 }) } );
         break;
     }

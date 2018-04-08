@@ -27,7 +27,7 @@ Page({
         pBewrite: procedureClass.pBewrite,     //流程说明
         pModel: procedureClass.pModel,         //流程写入的数据表名
         aValue: app.procedures[options.approveId],        //流程缓存
-        enEdit: app.roleData.uUnit.objectId==app.procedures[options.approveId].unitId,          //本单位的流程允许编辑
+        enEdit: app.roleData.user.userRolName=='admin',          //本单位的流程允许编辑
         enApprove: app.procedures[options.approveId].cFlowStep.indexOf(app.roleData.user.objectId) >= 0,     //当前用户为流程处理人
         afamilys: procedureClass.afamily ? procedureClass.afamily : false,                              //流程内容分组
         cmLength: app.procedures[options.approveId].cManagers.length    //流程审批节点长度
@@ -76,10 +76,10 @@ Page({
             } else {
               sObject = AV.Object.createWithoutData(that.data.pModel,that.data.aValue.dObjectId)
             }
-            sData.shopId = app.shopId;
+            sData.shopId = app.roleData.shopId;
             let shopRole = new AV.ACL();
             shopRole.setPublicReadAccess(true);
-            shoptRole.setRoleWriteAccess(app.shopId,true);  //为单位角色设置写权限
+            shoptRole.setRoleWriteAccess(app.roleData.shopId,true);  //为单位角色设置写权限
             sObject.setACL(shopRole);
             sObject.set(sData).save().then((sd)=>{
               wx.showToast({ title: '审批内容已发布', duration:2000 });

@@ -6,6 +6,7 @@
   }
   module.exports.fsName=fsName;
 </wxs>
+<template is="navBarReturn" data="{{...navBarTitle}}"/>
 <view class="page">
   <view class="page__hd">
     <view class="weui-cells__title">{{pBewrite}}</view>

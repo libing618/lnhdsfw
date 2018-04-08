@@ -22,10 +22,6 @@ module.exports = {
   ],
   "puRoles": [],
   "pBewrite": "单位负责人提出岗位和单位设置或修改申请，提交单位或个人身份证明文件的照片，由电子商务服务公司进行审批。",
-  "suRoles": [
-    "32",
-    "31"
-  ],
   "pModel": "manufactor"
 },
 "articles":{
@@ -42,10 +38,6 @@ module.exports = {
     "admin"
   ],
   "pBewrite": "编写各类文章，经单位领导审批后发布。个人编写的此类文章由所属服务机构审批。",
-  "suRoles": [
-    "21",
-    "20"
-  ],
   "pModel": "articles"
 },
 "asset":{
@@ -143,7 +135,6 @@ module.exports = {
     "12",
     "11"
   ],
-  "suRoles": ["12"],
   "pModel": "goods"
 },
 "specs":{
@@ -198,10 +189,6 @@ module.exports = {
     "admin"
   ],
   "pBewrite": "编写各类文章，经单位领导审批后发布。个人编写的此类文章由所属服务机构审批。",
-  "suRoles": [
-    "21",
-    "20"
-  ],
   "pModel": "artshop"
 },
 "recommend":{
@@ -219,10 +206,6 @@ module.exports = {
     "admin"
   ],
   "pBewrite": "编写推荐文章，经单位领导审批后发布。",
-  "suRoles": [
-    "21",
-    "20"
-  ],
   "pModel": "artshop"
 },
 "order": {

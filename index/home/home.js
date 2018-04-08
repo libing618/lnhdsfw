@@ -17,7 +17,7 @@ Page({
     scrollHeight: app.sysinfo.windowHeight-80,
     wWidth: app.sysinfo.windowWidth,
     signuped: app.roleData.user.mobilePhoneVerified,
-    tiringRoom: app.configData.tiringRoom,
+    tiringRoom: false,//app.configData.tiringRoom,
     mPage: app.mData.goods,
     pNo: 'goods',                       //商品信息
     pageData: app.aData.goods

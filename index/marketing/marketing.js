@@ -19,8 +19,12 @@ Page({
     mSum: {},
     grids:[]
   },
-  onLoad:function(options){
-    if (app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom){ this.setData({grids: aimenu(app.roleData.wmenu.marketing, 'marketing')}) }
+  onShow:function(options){
+    this.setData({
+      tiringRoom: app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom,
+      goodsIndex: app.configData.goodsIndex,
+      grids: (app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom) ? aimenu(app.roleData.wmenu.marketing, 'marketing') : []
+    })
     this.setPage(app.mData.goods);
   },
 

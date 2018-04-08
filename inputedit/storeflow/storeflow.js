@@ -1,6 +1,6 @@
 //流量分析
-const AV = require('../../../libs/leancloud-storage.js');
-var wxCharts = require('../../../libs/wxcharts-min.js');
+const AV = require('../../libs/leancloud-storage.js');
+var wxCharts = require('../../libs/wxcharts-min.js');
 var app = getApp()
 Page({
   onReady: function () {

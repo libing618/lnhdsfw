@@ -108,7 +108,7 @@ module.exports = {
         updAt = appDataExist(pNo) ? app.mData.pAt[pNo] : [0, 0];
         umdata = app.mData[pNo] || [];
       } else {
-        var unitId = uId ? uId : app.roleData.uUnit.objectId;
+        var unitId = uId
         readProcedure.equalTo('unitId', unitId);                //除权限和文章类数据外只能查指定单位的数据
         updAt = appDataExist(pNo, unitId) ? app.mData.pAt[pNo][unitId] : [0, 0];
         if (typeof app.mData[pNo][unitId] == 'undefined') {       //添加以单位ID为Key的JSON初值

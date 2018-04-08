@@ -1,5 +1,5 @@
 // pages/customer/evaluate/evaluate.js客户评价及统计
-const weutil = require('../../../util/util.js');
+const weutil = require('../../util/util.js');
 var app = getApp();
 Page({
   data:{
@@ -16,9 +16,7 @@ Page({
         pageData: app.oData[1],
         mPage: app.mData.oped1
       });
-      wx.setNavigationBarTitle({
-        title: app.uUnit.nick+'的'+ options.oState ? '评价统计' : '客户评价'
-      })
+
     } else {
       wx.showToast({ title: '权限不足请检查！', duration: 2500 });
       setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 2000);

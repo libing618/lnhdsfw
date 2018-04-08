@@ -1,6 +1,6 @@
-//店铺管理
-const AV = require('../../../libs/leancloud-storage.js');
-const weutil = require('../../../util/util.js');
+//签约厂家
+const AV = require('../../libs/leancloud-storage.js');
+const weutil = require('../../util/util.js');
 var app = getApp()
 Page({
   data:{
@@ -13,35 +13,19 @@ Page({
       {gname: "aGeoPoint", p: '选择地理位置', t: "chooseAd" },
       {gname: "address", p: '详细地址', t: "ed"}
     ],
-    shops: app.uUnit.shops
+
   },
   onLoad:function(options){
     var that = this;
-    if (app.roleData.user.userRolName=='admin' && app.uUnit.seriaNumber>=0) {
-      new AV.Query('shops').equalTo('seriaNumber',app.uUnit.seriaNumber).find(shops=>{
-        if (shops.length>0){
-          that.setData({pageDate:shops});
-          return weutil.arrClose('unitId',shops);
-        } else {
-          let newShop={unitId:app.uUnit.objectId,uName:app.uUnit.uName,nick:app.uUnit.nick,title:app.uUnit.title,seriaNumber:app.uUnit.seriaNumber,desc:app.uUnit.desc,thumbnail:app.uUnit.thumbnail,aGeoPoint:app.uUnit.aGeoPoint,address:app.uUnit.address};
-          let nShops = [];
-          for (let i=0;i<app.uUnit.shops.length;i++){
-            newShop.shopNumber = i;
-            nShops.app(newShop)
-          }
-          that.setData({pageDate:nShops});
-          return [app.uUnit.objectId];
-        }
-      }).then((mIdArr)=>{
-        new AV.Query('manufactor').equalTo('bState',true).find(manufactors=>{
-          if (manufactors){
-            let mfData = [];
-            manufactors.forEach(manufactor=>{
-              if (mIdArr.indexOf(manufactor.unitId)<0) {mfData.push(manufactor.toJSON())}
-            })
-            if (!mfData) { that.setData({mfData:mfData}) }
-          };
-        })
+    if (app.roleData.user.userRolName=='admin') {
+      new AV.Query('manufactor').equalTo('bState',true).find(manufactors=>{
+        if (manufactors){
+          let mfData = [];
+          manufactors.forEach(manufactor=>{
+            if (mIdArr.indexOf(manufactor.unitId)<0) {mfData.push(manufactor.toJSON())}
+          })
+          if (!mfData) { that.setData({mfData:mfData}) }
+        };
       }).catch(console.error);
     } else {
       wx.showToast({ title: '权限不足请检查！', duration: 2500 });

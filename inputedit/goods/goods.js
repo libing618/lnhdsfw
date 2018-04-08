@@ -1,6 +1,6 @@
 // 店铺货架
-const AV = require('../../../libs/leancloud-storage.js');
-const weutil = require('../../../util/util.js');
+const AV = require('../../libs/leancloud-storage.js');
+const weutil = require('../../util/util.js');
 var app = getApp()
 Page({
   data:{
@@ -12,28 +12,12 @@ Page({
       {gname:"thumbnail", p:'图片简介',t:"thumb" },
       {gname:"pics", p:'图片集',t:"pics"},
       {gname:"tvidio", p:'视频简介',t: "vidio" }
-    ],
-    shops: app.uUnit.shops
+    ]
   },
   onLoad:function(options){
     var that = this;
-    if (app.roleData.user.userRolName=='admin' && app.uUnit.seriaNumber>=0) {
-      new AV.Query('goods').equalTo('seriaNumber',app.uUnit.seriaNumber).find(goods=>{
-        if (shops.length>0){
-          that.setData({pageDate:goods});
-          return weutil.arrClose('unitId',goods);
-        };
-      }).then((mIdArr)=>{
-        new AV.Query('product').equalTo('unitId',shopsarr).find(products=>{
-          if (products){
-            let mfData = [];
-            products.forEach(product=>{
-              if (mIdArr.indexOf(product.unitId)<0) {mfData.push(product.toJSON())}
-            })
-            if (!mfData) { that.setData({mfData:mfData}) }
-          };
-        })
-      }).catch(console.error);
+    if (app.roleData.user.userRolName=='admin') {
+
     } else {
       wx.showToast({ title: '权限不足请检查！', duration: 2500 });
       setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 2000);

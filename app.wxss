@@ -50,12 +50,12 @@ page{
   padding-bottom: 10rpx;
 }
 .page__bd_spacing {
-    padding-left: 16rpx;
-    padding-right: 16rpx;
+  padding-left: 16rpx;
+  padding-right: 16rpx;
 }
 .page__ac_spacing {
-    padding-left: 40rpx;
-    padding-right: 40rpx;
+  padding-left: 40rpx;
+  padding-right: 40rpx;
 }
 
 .page__ft{

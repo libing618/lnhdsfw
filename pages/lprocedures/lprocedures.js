@@ -30,12 +30,6 @@ Page ({
         } else {
           this.data.mPage = app.mData[this.data.pNo] || []
         }
-      } else {
-        if (this.inFamily){
-          this.data.mPage = app.mData[this.data.pNo][app.roleData.uUnit.objectId][this.artid] || []
-        } else {
-          this.data.mPage = app.mData[this.data.pNo][app.roleData.uUnit.objectId] || []
-        }
       }
       this.setData({
         mPage: this.data.mPage,

@@ -25,8 +25,8 @@ module.exports={
       customer:[],
       updatedAt: 0
     },
-    uUnit:{updatedAt: 0},                           //用户单位信息（若有）
-    sUnit:{updatedAt: 0}                           //上级单位信息（若有）
+    shopId: '598daa452f301e0069f699d6',
+    shopName: '山西乐农汇电子商务有限公司'
   },
   configData:{
     articles: { cfield: 'afamily', fConfig: [0, 1, 3] },

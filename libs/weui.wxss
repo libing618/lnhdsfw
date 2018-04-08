@@ -395,7 +395,7 @@ icon {
   margin-bottom: 1.5em;
 }
 .article-scroll {
-  height:1000rpx;
+  height:300rpx;
   color:black;
     /*background-color: lightblue;*/
 }

@@ -30,7 +30,13 @@ function openWxLogin(roleData) {            //注册登录（本机登录状态�
                       newUser['wxapp' + wxappNumber] = wxuid.oId;         //客户第一次登录时将openid保存到数据库且客户端不可见
                       newUser.sjid = roleData.user.sjid;
                       newUser.channelid = roleData.user.userRolName=='0' ? roleData.user.channelid : statuswx.id;
-                      statuswx.set(newUser).save().then((wxuser) => {
+                      let mReqACL = new AV.ACL();
+                      mReqACL.setPublicReadAccess(true);
+                      mReqACL.setRoleWriteAccess(roleData.shopId,true);
+                      mReqACL.setRoleReadAccess(roleData.shopId,true);
+                      statuswx.set(newUser);
+                      statuswx.setACL(mReqACL);
+                      statuswx.save().then((wxuser) => {
                         roleData.user = wxuser.toJSON();
                         resolve(roleData);                //客户在本机刚注册，无菜单权限
                       }).catch(err => { reject({ ec: 0, ee: err }) });
@@ -52,7 +58,7 @@ function fetchMenu(roleData) {
     new AV.Query('userInit')
     .notEqualTo('updatedAt', new Date(roleData.wmenu.updatedAt))
     .select(menuKeys)
-    .equalTo('objectId', roleData.user.userRol.objectId)
+    .equalTo('initName', roleData.user.userRolName)
     .find().then(fetchMenu => {
       if (fetchMenu.length > 0) {                          //菜单在云端有变化
         roleData.wmenu = fetchMenu[0].toJSON();
@@ -73,36 +79,15 @@ function fetchMenu(roleData) {
             };
             if (updateInfo) {
               AV.User.become(AV.User.current().getSessionToken()).then((rLoginUser) => {
-                rLoginUser.set(userInfo).save().then(() => { resolve(true) });
+                rLoginUser.set(userInfo).save().then(() => { resolve(roleData) });
               })
             } else {
-              resolve(false);
+              resolve(roleData);
             };
           }
-        }
+        },
+        fail: () => { resolve(roleData) }
       });
-    });
-  }).then(uMenu => {
-    return new Promise((resolve, reject) => {
-      if (roleData.user.unit != '0') {
-        return new AV.Query('_Role')
-          .notEqualTo('updatedAt', new Date(roleData.uUnit.updatedAt))
-          .equalTo('objectId', roleData.user.unit).first().then(uRole => {
-            if (uRole) {                          //本单位信息在云端有变化
-              roleData.uUnit = uRole.toJSON();
-            };
-            if (roleData.uUnit.sUnit != '0') {
-              return new AV.Query('_Role')
-                .notEqualTo('updatedAt', new Date(roleData.sUnit.updatedAt))
-                .equalTo('objectId', roleData.uUnit.sUnit).first().then(sRole => {
-                  if (sRole) {
-                    roleData.sUnit = sRole.toJSON();
-                  };
-                  resolve(roleData);
-                }).catch(console.error)
-            } else { resolve(roleData) }
-          }).catch(console.error)
-      } else { resolve(roleData) };
     });
   }).catch(console.error);
 };
@@ -155,7 +140,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       if (lcUser) {roleData.user=lcUser.toJSON()};
       if (roleData.user.objectId != '0') {             //用户如已注册并在本机登录过,则有数据缓存，否则进行注册登录
-        if (roleData.user.mobilePhoneVerified) {
+        if (roleData.user.emailVerified) {
           fetchMenu(roleData).then(rfmData => { resolve(rfmData) });
         } else { resolve(roleData) };
       } else {
@@ -163,7 +148,7 @@ module.exports = {
           success:(res)=> {
             if (res.authSetting['scope.userInfo']) {                   //用户已经同意小程序使用用户信息
               openWxLogin(roleData).then(rlgData => {
-                if (rlgData.user.mobilePhoneVerified) {
+                if (rlgData.user.emailVerified) {
                   fetchMenu(rlgData).then(rfmData => { resolve(rfmData) });
                 } else { resolve(rlgData) }
               }).catch((loginErr) => { reject('系统登录失败:' + loginErr.toString()) });

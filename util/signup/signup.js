@@ -28,10 +28,23 @@ Page({
       wx.showToast({ title: '请授权微信登录', duration: 2500 });
       setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 2000);
     } else {
+      let usertype=ops.type,nbTitle;
+      switch (ops.type) {
+        case 'promoter':
+          nbTitle = '注册成为推广合伙人';
+          break;
+        case 'channel':
+          nbTitle = '注册成为渠道合伙人';
+          break;
+        default:
+          usertype = 'partner';
+          nbTitle = '注册成为事业合伙人';
+      }
       that.setData({		    		// 获得当前用户channelid
         iName: app.roleData.user.uName,
-        navBarTitle:
-        userType: (ops.type =='promoter' || ops.type =='channel') ? ops.type : 'partner'
+        useRol: ops.type,
+        navBarTitle: nbTitle,
+        userType: usertype
       });
     }
   },
@@ -49,7 +62,7 @@ Page({
           encryptedData: e.detail.encryptedData,
           iv: e.detail.iv,
           uName: that.data.iName,
-          userRolName: that.data.userType
+          userRolName: that.data.userRol
         };
         AV.Cloud.run('gPN', lcCloudReq).then(()=> {
           wx.showToast({
