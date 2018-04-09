@@ -93,7 +93,7 @@ function fetchMenu(roleData) {
 };
 
 function setTiringRoom(goTiringRoom){
-  if (goTiringRoom) {
+  if (goTiringRoom && typeof goTiringRoom == 'boolean') {
     wx.setTabBarItem({
       index: 1,
       text: "营销",

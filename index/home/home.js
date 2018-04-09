@@ -43,6 +43,7 @@ Page({
         wx.setStorage({ key: 'configData', data: app.configData });
       }).catch(console.error)
     }
+    setTiringRoom(false);
   },
 
   setPage: function(iu){
