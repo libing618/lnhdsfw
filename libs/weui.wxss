@@ -842,7 +842,7 @@ icon {
   text-align: center;
   font-size: 0;
 }
-.weui-navbar__item.weui-bar__item_on {
+.weui-bar__item_on {
   color: #1AAD19;
 }
 .weui-navbar__slider {

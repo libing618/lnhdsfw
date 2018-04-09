@@ -10,8 +10,8 @@
     <view class="navigationBar__column">
       <template is="navBarLogo" data="{{srcurl:'../../images/logo.png'}}"/>
       <view class="navSearchBar__form">
-      <input class="navSearchBar__item" name="searchGoods" placeholder="搜索" />
-      <button class="navigationBar__btn" formType="submit">
+      <input class="navSearchBar__input" name="searchGoods" placeholder="搜索" />
+      <button class="navigationBar__btn_icon" formType="submit">
         <icon class="weui-icon-radio" type="search" size="18"/>
       </button>
       </view>

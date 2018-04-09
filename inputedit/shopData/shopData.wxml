@@ -2,14 +2,12 @@
 <view class="navigationBar">
   <view class="navigationBar__column">
     <template is="navBackIcon"/>
-    <view class="weui-cell__bd">
-      <block wx:for="{{navTabs}}" wx:key="{{index}}">
-        <view id="{{index}}" class="navigationBar__item {{ pageCk==index ? 'weui-bar__item_on' : ''}}" bindtap="tabClick">
-          <view class="navigationBar__title">{{item}}</view>
-        </view>
-      </block>
-      <view class="weui-navbar__slider" style="left:{{(wWidth/fLength-72)/2}}px; transform: translateX(0px); -webkit-transform: translateX({{pageCk*wWidth/fLength}}px)"></view>
-    </view>
+    <block wx:for="{{navTabs}}" wx:key="{{index}}">
+      <view id="{{index}}" class="navigationBar__item {{ pageCk==index ? 'weui-bar__item_on' : ''}}" bindtap="tabClick">
+        <view class="navigationBar__title">{{item}}</view>
+      </view>
+    </block>
+    <view class="weui-navbar__slider" style="left:{{230/fLength+36}}rpx; transform: translateX(0rpx); -webkit-transform: translateX({{pageCk*460/fLength}}rpx)"></view>
   </view>
 </view>
 <view class="page">

@@ -34,21 +34,21 @@ page{
           align-items: center;
 }
 .navigationBar__icon {
-  margin-right: 20rpx;
+  margin-right: 10rpx;
   vertical-align: middle;
   width: 54rpx;
   height: 54rpx;
 }
 .navigationBar__item {
   position: relative;
-  display: block;
+
   width: 10em;
   -webkit-box-flex: 1;
   -webkit-flex: 1;
           flex: 1;
   padding: 26rpx 0;
   text-align: center;
-  font-size: 0;
+
 }
 .navigationBar__title {
   display: inline-block;
@@ -66,25 +66,26 @@ page{
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  border-radius: 10rpx;
+  width: 480rpx;
+  border-radius: 30rpx;
   background: #FFFFFF;
   border: 1rpx solid #E6E6EA;
 }
 .navigationBar__input {
   position: relative;
-
   -webkit-box-flex: 1;
   -webkit-flex: 1;
           flex: 1;
-  padding: 26rpx 0;
+  width: 430rpx;
+  padding: 10rpx 0;
   text-align: center;
 }
-.navigationBar__btn {
+.navigationBar__btn_icon {
   position: inline-block;
-  margin-top: 10rpx;
-	margin-left: 10rpx;
+  margin-top: 0rpx;
+	margin-right: 10rpx;
   padding: 0 0;
-  line-height: 54rpx;
+  line-height: 46rpx;
   width: 50rpx;
   color: #3CC51F;
   text-align: center;
