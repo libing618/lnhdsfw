@@ -7,12 +7,14 @@
 </view>
 <view wx:else class="navigationBar">
   <form bindsubmit="fSearch">
-    <view class="navigationBar__column"> 
+    <view class="navigationBar__column">
       <template is="navBarLogo" data="{{srcurl:'../../images/logo.png'}}"/>
-      <input class="weui-cell__bd" name="searchGoods" placeholder="搜索" />
-      <button class="weui-cell__ft weui-cell__ft_in-access" formType="submit">
-        <icon type="search" size="15"/>
+      <view class="navSearchBar__form">
+      <input class="navSearchBar__item" name="searchGoods" placeholder="搜索" />
+      <button class="navigationBar__btn" formType="submit">
+        <icon class="weui-icon-radio" type="search" size="18"/>
       </button>
+      </view>
     </view>
   </form>
 </view>

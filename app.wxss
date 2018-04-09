@@ -15,7 +15,7 @@ page{
   top:0;
   z-index: 500;
   width: 100%;
-  height: 100rpx;
+  height: 102rpx;
   background-color: #F5F5F5;
   border-bottom: 1rpx solid #CCCCCC;
 }
@@ -38,6 +38,56 @@ page{
   vertical-align: middle;
   width: 54rpx;
   height: 54rpx;
+}
+.navigationBar__item {
+  position: relative;
+  display: block;
+  width: 10em;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  padding: 26rpx 0;
+  text-align: center;
+  font-size: 0;
+}
+.navigationBar__title {
+  display: inline-block;
+  font-size: 30rpx;
+  max-width: 10em;
+  width: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+}
+.navSearchBar__form {
+  position: relative;
+  word-wrap: break-word;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  border-radius: 10rpx;
+  background: #FFFFFF;
+  border: 1rpx solid #E6E6EA;
+}
+.navigationBar__input {
+  position: relative;
+
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  padding: 26rpx 0;
+  text-align: center;
+}
+.navigationBar__btn {
+  position: inline-block;
+  margin-top: 10rpx;
+	margin-left: 10rpx;
+  padding: 0 0;
+  line-height: 54rpx;
+  width: 50rpx;
+  color: #3CC51F;
+  text-align: center;
 }
 .navigationBar__price {
   display: inline-block;
