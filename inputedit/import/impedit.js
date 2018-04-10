@@ -273,7 +273,7 @@ module.exports = {
       sourceType: ['album', 'camera'],             // album 从相册选图，camera 使用相机，默认二者都有
       success: function (restem) {                     // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
         that.setData(vdSet(that.data.reqData[n].gname, restem.tempFilePaths[0]));
-        wx.navigateTo({ url: '/util/ceimage/ceimage?reqName=' + that.data.reqData[n].gname })
+        wx.navigateTo({ url: '/pages/ceimage/ceimage?reqName=' + that.data.reqData[n].gname })
       },
       fail: function () { wx.showToast({ title: '选取照片失败！' }) }
     })
@@ -433,10 +433,10 @@ module.exports = {
         let nts;
         switch (sIndex) {
           case '-1':
-            nts = '/util/goodssct/goodssct';
+            nts = '/pages/goodssct/goodssct';
             break;
           case '-6':
-            nts = '/util/filesct/filesct';
+            nts = '/pages/filesct/filesct';
             break;
           default: break;
         }

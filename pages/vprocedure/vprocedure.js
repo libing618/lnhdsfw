@@ -1,4 +1,4 @@
-// 浏览pages
+// 浏览
 const { readShowFormat } = require('../../model/initForm.js');
 var app=getApp()
 Page({

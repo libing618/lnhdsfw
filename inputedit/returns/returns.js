@@ -1,4 +1,4 @@
-// pages/customer/returns/returns.js
+//退换货
 Page({
   data:{},
   onLoad:function(options){

@@ -1,5 +1,5 @@
 const AV = require('../../libs/leancloud-storage.js');
-const { initConfig, loginAndMenu,openWxLogin,setTiringRoom } = require('../../util/util');
+const { initConfig, loginAndMenu,openWxLogin,setTiringRoom } = require('../../libs/util');
 const { integration } = require('../../model/initForm.js');
 const { readAllData, tabClick } = require('../../model/initupdate');
 var app = getApp()
@@ -62,7 +62,7 @@ Page({
     openWxLogin(app.roleData).then( mstate=> {
       app.roleData = mstate;
       app.logData.push([Date.now(), '用户授权' + app.sysinfo.toString()]);                //用户授权时间记入日志
-      wx.navigateTo({url:'/util/signup/signup?type=promoter'});                //进行推广合伙人注册
+      wx.navigateTo({url:'/pages/signup/signup?type=promoter'});                //进行推广合伙人注册
     }).catch( console.error );
   },
 

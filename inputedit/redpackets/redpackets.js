@@ -1,4 +1,4 @@
-// pages/marketing/redpackets/redpackets.js红包券
+// 红包券
 Page({
   data:{},
   onLoad:function(options){

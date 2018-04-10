@@ -1,4 +1,4 @@
-//图片选取及简单编辑模块 util/ceimage/ceimage.js
+//图片选取及简单编辑模块 pages/ceimage/ceimage.js
 const { File } = require('../../libs/leancloud-storage.js');
 var iScale=1 , cScale ,ds;
 var ctx = wx.createCanvasContext('cei');

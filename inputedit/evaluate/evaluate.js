@@ -1,5 +1,5 @@
-// pages/customer/evaluate/evaluate.js客户评价及统计
-const weutil = require('../../util/util.js');
+//客户评价及统计
+const weutil = require('../../libs/util.js');
 var app = getApp();
 Page({
   data:{

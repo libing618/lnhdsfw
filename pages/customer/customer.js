@@ -1,6 +1,6 @@
 const { updateRoleData } = require('../../model/initupdate.js');
 const { integration,unitData } = require('../../model/initForm.js');
-const {indexClick} = require('../../util/util.js');
+const {indexClick} = require('../../libs/util.js');
 const aimenu = require('../../libs/allmenu.js').iMenu;
 var app = getApp()
 Page({

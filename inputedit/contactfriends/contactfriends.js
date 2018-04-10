@@ -1,4 +1,4 @@
-// pages/customer/contactfriends/contactfriends.js
+// "联系厂家
 Page({
   data:{},
   onLoad:function(options){

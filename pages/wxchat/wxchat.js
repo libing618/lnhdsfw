@@ -1,4 +1,4 @@
-//对话聊天模块pages
+//对话聊天模块
 var app = getApp()
 Page({
   data:{

@@ -16,7 +16,7 @@
   <view wx:if="{{pno=='goods'}}">
     <view class="page__ft weui-footer_fixed-bottom">
       <view class="opt-buttons">
-        <navigator class="button-group" url="/pages/">
+        <navigator class="button-group" url="/pages/rcustomer/rcustomer">
           <image src="../../../../images/icon_phonelogin.png" class="button-image" />
           <text class="button-text">联系客服</text>
         </navigator>

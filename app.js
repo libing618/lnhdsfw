@@ -19,7 +19,7 @@ const realtime = new Realtime({
   plugins: [TypedMessagesPlugin],                    // 注册富媒体消息插件
   pushOfflineMessages: true                          //使用离线消息通知方式
 });
-const { initConfig, loginAndMenu } = require('./util/util');
+const { initConfig, loginAndMenu } = require('./libs/util');
 function onNet(){
   return new Promise((resolve, reject) => {
     wx.getNetworkType({
@@ -170,7 +170,7 @@ App({
         initConfig(that.configData).then(icData=>{that.configData = icData}),
         loginAndMenu(AV.User.current(),that.roleData).then(rData=>{that.roleData = rData})]).then(() => {
         if (that.configData.goods.updatedAt != proGoodsUpdate) { that.mData.pAt.goods = [new Date(0).toISOString(),new Date(0).toISOString()] };   //店铺签约厂家有变化则重新读商品数据
-        if (that.roleData.user.objectId=='0' && path=='util/singup/signup'){
+        if (that.roleData.user.objectId=='0' && path=='pagessingup/signup'){
           wx.authorize({    //请用户授权登录本平台
             scope: 'scope.userInfo',
             success() {          // 用户同意小程序使用用户信息

@@ -1,4 +1,4 @@
-// 通用的内容编辑pages
+// 通用的内容编辑
 const wImpEdit = require('../../import/impedit.js');
 const { initData } = require('../../model/initForm');
 var app = getApp()

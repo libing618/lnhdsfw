@@ -1,4 +1,4 @@
-// pages/customer/communication/communication.js
+//工作沟通
 Page({
   data:{},
   onLoad:function(options){

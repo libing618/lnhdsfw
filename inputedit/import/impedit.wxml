@@ -338,7 +338,7 @@
 
 <template name="i_MS">
   <view hidden="true"><input name="{{gname}}" value="{{c}}"/></view>
-  <navigator url="/util/mapsunit/mapsunit?reqNumber={{n}}">
+  <navigator url="/pages/mapsunit/mapsunit?reqNumber={{n}}">
     <view class="weui-cell weui-cell_input">
       <view class="weui-cell__hd">{{p}}:</view>
       <view class="weui-cell__bd">{{e}}</view>
@@ -349,7 +349,7 @@
 <template name="i_table">
   <view hidden="true"><input name="{{gname}}" value="{{c}}"/></view>
   <view class="weui-cell weui-cell_input">
-    <navigator url="/util/mapsunit/mapsunit?reqName={{gname}}">
+    <navigator url="/pages/mapsunit/mapsunit?reqName={{gname}}">
       <view class="weui-cell__hd">{{p}}:</view>
       <view class="weui-cell__ft">{{e}}</view>
     </navigator>

@@ -1,6 +1,6 @@
 // 店铺货架
 const AV = require('../../libs/leancloud-storage.js');
-const weutil = require('../../util/util.js');
+const weutil = require('../../libs/util.js');
 var app = getApp()
 Page({
   data:{

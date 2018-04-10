@@ -1,4 +1,4 @@
-// pages/customer/analyzing/analyzing.js
+// 客户分析
 Page({
   data:{},
   onLoad:function(options){

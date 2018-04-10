@@ -1,4 +1,4 @@
-// pages/customer/deal/deal.js
+// 达成销售
 Page({
   data:{},
   onLoad:function(options){

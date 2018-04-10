@@ -1,6 +1,6 @@
 //合伙人或伙伴注册
 const AV = require('../../libs/leancloud-storage.js');
-const { initConfig, loginAndMenu,openWxLogin,setTiringRoom } = require('../../util/util');
+const { initConfig, loginAndMenu,openWxLogin,setTiringRoom } = require('../../libs/util');
 var app = getApp()
 Page({
   data:{

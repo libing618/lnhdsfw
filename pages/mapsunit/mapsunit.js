@@ -1,4 +1,4 @@
-//从地图选单位util/mapsunit/mapsunit.js
+//从地图选单位pages/mapsunit/mapsunit.js
 const AV = require('../../libs/leancloud-storage.js');
 var app = getApp()
 Page({

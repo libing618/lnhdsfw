@@ -1,16 +1,18 @@
 {
   "pages": [
-    "index/home/home",
-    "index/manage/manage",
-    "index/marketing/marketing",
-    "index/customer/customer",
-    "util/wxchat/wxchat",
-    "util/signup/signup",
-    "util/approve/approve",
-    "util/goodssct/goodssct",
-    "util/mapsunit/mapsunit",
-    "util/ceimage/ceimage",
-    "util/filesct/filesct"
+    "pages/home/home",
+    "pages/manage/manage",
+    "pages/marketing/marketing",
+    "pages/customer/customer",
+    "pages/lprocedures/lprocedures",
+    "pages/vprocedure/vprocedure",
+    "pages/wxchat/wxchat",
+    "pages/signup/signup",
+    "pages/approve/approve",
+    "pages/goodssct/goodssct",
+    "pages/mapsunit/mapsunit",
+    "pages/ceimage/ceimage",
+    "pages/filesct/filesct"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -25,25 +27,25 @@
     "selectedColor": "#FF0033",
     "list": [
       {
-        "pagePath": "index/home/home",
+        "pagePath": "pages/home/home",
         "text": "首页",
         "iconPath": "images/icon_component.png",
         "selectedIconPath": "images/icon_component_HL.png"
       },
       {
-        "pagePath": "index/marketing/marketing",
+        "pagePath": "pages/marketing/marketing",
         "text": "商城",
         "iconPath": "images/index.png",
         "selectedIconPath": "images/index-1.png"
       },
       {
-        "pagePath": "index/customer/customer",
+        "pagePath": "pages/customer/customer",
         "text": "购物车",
         "iconPath": "images/icon_cart.png",
         "selectedIconPath": "images/icon_cart_HL.png"
       },
       {
-        "pagePath": "index/manage/manage",
+        "pagePath": "pages/manage/manage",
         "text": "我的",
         "iconPath": "images/icon_my.png",
         "selectedIconPath": "images/icon_my_HL.png"
@@ -52,27 +54,25 @@
   },
   "subPackages": [
     {
-      "root": "pages",
+      "root": "shops",
       "pages": [
-        "lprocedures/lprocedures",
-        "vprocedure/vprocedure",
-        "shops/address/add/add",
-        "shops/address/list/list",
-        "shops/cart/cart",
-        "shops/give/address/address",
-        "shops/goods/list/list",
-        "shops/goods/detail/detail",
-        "shops/member/login/login",
-        "shops/member/delivergoods/delivergoods",
-        "shops/member/fenxiaologin/fenxiaologin",
-        "shops/member/give/give",
-        "shops/member/money/money",
-        "shops/member/readorder/readorder",
-        "shops/member/finish/finish",
-        "shops/member/index/index",
-        "shops/order/give/give",
-        "shops/order/checkout/checkout",
-        "shops/zhongchou/zhongchou"
+        "address/add/add",
+        "address/list/list",
+        "cart/cart",
+        "give/address/address",
+        "goods/list/list",
+        "goods/detail/detail",
+        "member/login/login",
+        "member/delivergoods/delivergoods",
+        "member/fenxiaologin/fenxiaologin",
+        "member/give/give",
+        "member/money/money",
+        "member/readorder/readorder",
+        "member/finish/finish",
+        "member/index/index",
+        "order/give/give",
+        "order/checkout/checkout",
+        "zhongchou/zhongchou"
       ]
     },
     {
