@@ -284,7 +284,7 @@
 <template name="navBarReturn">
 <view class="navigationBar">
   <view class="navigationBar__column">
-    <template is="navBackIcon"/>
+    <template is="navBackIcon" data="{{rtUrl}}"/>
     <view class="weui-cell__bd">{{navBarTitle ? navBarTitle : '扶贫济困，共享良品'}}</view>
   </view>
 </view>

@@ -55,11 +55,5 @@ Page({
   onReachBottom:function(){
     readAllData(false, 'articles').then(isupdated=>{ this.setPage(isupdated) });
   },
-  onShareAppMessage: function() {    // 用户点击右上角分享
-    return {
-      title: '创业服务平台', // 分享标题
-      desc: '扶贫济困，共享良品。', // 分享描述
-      path: '/index/home/home' // 分享路径
-    }
-  }
+  onShareAppMessage: require('../../libs/util').shareMessage
 })

@@ -108,5 +108,5 @@ Page({
       wx.showToast({title: '请进行审批处理', duration: 2500, icon: 'loading'})
     }
   },
-
+  onShareAppMessage: require('../../libs/util').shareMessage
 })

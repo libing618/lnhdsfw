@@ -15,9 +15,8 @@ Page({
 		applyUser: [],
 		cmRole:[0,0],
 		reqrole: [0,0],
-    reqstate: 0,
     crole: '0',
-		eRole: '00'                        //岗位代码
+    eRole: 'channel'                        //岗位代码
 	},
   aUser: {},
 
@@ -28,7 +27,7 @@ Page({
       mRolJsons.channel = '渠道合伙人';
       for (let tx=0;tx<4;tx++){
         for (let gw=0;gw<3;gw++){
-          mRolJsons[tx.toString()+gw.toString()] = that.data.mRols[0][tx]+' 条线 '+that.data.mRols[1][gw]+' 事业合伙人'
+          mRolJsons[tx.toString() + gw.toString()] = '事业合伙人(' +that.data.mRols[0][tx]+' 条线 '+that.data.mRols[1][gw]+')';
         }
       }
       new AV.Query('_User')
@@ -151,6 +150,7 @@ Page({
   },
 
   onShareAppMessage: function () {
+    console.log('/pages/signup/signup?sjid=' + app.roleData.user.objectId + '&type=' + this.data.eRole)
     return {
       title: app.roleData.user.uName + '诚邀您加入乐农汇的大家庭，邀请您成为' + this.data.mRolJsons[this.data.eRole],
       desc: '扶贫济困，共享良品。',

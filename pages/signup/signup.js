@@ -5,7 +5,7 @@ var app = getApp()
 Page({
   data:{
     user: app.roleData.user,
-    sysheight: app.sysinfo.windowHeight-160,
+    sysheight: app.sysinfo.windowHeight-200,
     swcheck: true,
     iName: app.roleData.user.uName,
     activemobile: true,
@@ -24,29 +24,64 @@ Page({
 
   onLoad: function (ops) {
     var that = this;
-    if (app.roleData.user.objectId=='0'){                 //非授权用户
-      wx.showToast({ title: '请授权微信登录', duration: 2500 });
-      setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 2000);
-    } else {
-      let usertype=ops.type,nbTitle;
-      switch (ops.type) {
-        case 'promoter':
-          nbTitle = '注册成为推广合伙人';
-          break;
-        case 'channel':
-          nbTitle = '注册成为渠道合伙人';
-          break;
-        default:
-          usertype = 'partner';
-          nbTitle = '注册成为事业合伙人';
+    if (!app.netState) { wx.redirectTo({ url: 'pages/home/home' }); }
+    let nowPages = getCurrentPages();
+    let rtUrl = 0;
+    return new Promise((resolve, reject) => {
+      if (nowPages.length==1) {
+        rtUrl = '/pages/home/home';
+        let proGoodsUpdate = app.configData.goods.updatedAt;
+        initConfig(app.configData).then(icData => {
+          app.configData = icData;
+          if (app.configData.goods.updatedAt != proGoodsUpdate) { app.mData.pAt.goods = [new Date(0).toISOString(), new Date(0).toISOString()] };   //店铺签约厂家有变化则重新读商品数据
+          loginAndMenu(AV.User.current(), app.roleData).then(rData => {
+            app.roleData = rData;
+            if (app.roleData.user.objectId == '0') {
+              wx.authorize({    //请用户授权登录本平台
+                scope: 'scope.userInfo',
+                success() {          // 用户同意小程序使用用户信息
+                  app.roleData.user.userRolName = ops.type;
+                  opepWxLogin(app.roleData).then(resLogin => {
+                    app.roleData = resLogin;
+                    resolve(app.roleData.user.objectId)
+                  })
+                },
+                fail: () => { wx.switchTab({ url: rtUrl }); }
+              })
+            } else { resolve(app.roleData.user.objectId) }
+            wx.setStorage({ key: 'configData', data: app.configData });
+          })
+        })
+      } else { resolve(app.roleData.user.objectId) }
+    }).then(userId=>{
+      if (userId == '0') {                 //非授权用户
+        wx.showToast({ title: '请授权微信登录', duration: 2500 });
+        setTimeout(function () {
+            wx.navigateBack({ delta: 1 })
+        }, 2000);
+      } else {
+        let usertype=ops.type,nbTitle;
+        switch (ops.type) {
+          case 'promoter':
+            nbTitle = '注册成为推广合伙人';
+            break;
+          case 'channel':
+            nbTitle = '注册成为渠道合伙人';
+            break;
+          default:
+            usertype = 'partner';
+            nbTitle = '注册成为事业合伙人';
+        }
+        that.setData({		    		// 获得当前用户channelid
+          iName: app.roleData.user.uName ? app.roleData.user.uName : '',
+          user: app.roleData.user,
+          useRol: ops.type,
+          navBarTitle: nbTitle,
+          rtUrl: rtUrl,
+          userType: usertype
+        });
       }
-      that.setData({		    		// 获得当前用户channelid
-        iName: app.roleData.user.uName,
-        useRol: ops.type,
-        navBarTitle: nbTitle,
-        userType: usertype
-      });
-    }
+    }).catch(console.error)
   },
 
 	fswcheck: function(e){
@@ -72,6 +107,13 @@ Page({
           app.roleData.user.uName = that.data.iName;
           app.roleData.user.userRolName = that.data.userType;
           that.setData({ user:app.roleData.user })
+          setTimeout(function () {
+            if (that.data.rtUrl){
+              wx.switchTab({ url: that.data.rtUrl });
+            } else {
+              wx.navigateBack({ delta: 1 })
+            }
+          }, 2000 );
         }).catch( ()=>{
           wx.showToast({
             title: '微信手机号注册失败，请检查是否已在本平台上使用。', icon:'none', duration: 2000

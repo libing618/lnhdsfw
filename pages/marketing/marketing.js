@@ -93,5 +93,6 @@ Page({
   },
   onReachBottom: function() {
     readAllData(true,'goods').then(isupdated=>{ this.setPage(isupdated) });
-  }
+  },
+  onShareAppMessage: require('../../libs/util').shareMessage
 })

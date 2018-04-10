@@ -164,29 +164,6 @@ App({
         that.configData[qKey] = query[qKey];
       }
     };
-    if (path != 'index/home/home' && that.netState) {
-      let proGoodsUpdate = that.configData.goods.updatedAt ;
-      return Promise.all([
-        initConfig(that.configData).then(icData=>{that.configData = icData}),
-        loginAndMenu(AV.User.current(),that.roleData).then(rData=>{that.roleData = rData})]).then(() => {
-        if (that.configData.goods.updatedAt != proGoodsUpdate) { that.mData.pAt.goods = [new Date(0).toISOString(),new Date(0).toISOString()] };   //店铺签约厂家有变化则重新读商品数据
-        if (that.roleData.user.objectId=='0' && path=='pagessingup/signup'){
-          wx.authorize({    //请用户授权登录本平台
-            scope: 'scope.userInfo',
-            success() {          // 用户同意小程序使用用户信息
-              that.roleData.userRolName = query.type;
-              opepWxLogin(that.roleData).then(resLogin=>{
-                that.roleData=resLogin;
-              })
-            },
-            fail: () => {
-              path = 'index/home/home';
-            }
-          })
-        }
-        wx.setStorage({ key: 'configData', data: that.configData });
-      }).catch(console.error)
-    }
     wx.setStorage({ key: 'proSceneQuery', data: { path, query, scene } })
   },
 

@@ -1,5 +1,5 @@
 <import src="../../libs/weimport.wxml" />
-<template is="navBarReturn" data="{{...navBarTitle}}"/>
+<template is="navBarReturn" data="{{navBarTitle,rtUrl}}"/>
 <wxs src="signmsg.wxs" module="tk" />
 <view class="page">
   <view class="page__hd">
@@ -23,7 +23,7 @@
     </view>
   </view>
   <view class="page__bd">
-    <scroll-view scroll-y="true" style="height:{{sysheight}}rpx;text-indent:2em" hover="true" hover-class="weui-hover" hover-stay-time="500">
+    <scroll-view scroll-y="true" style="height:{{sysheight}}px;text-indent:2em" hover="true" hover-class="weui-hover" hover-stay-time="500">
       <text>{{tk[userType]}}</text>
     </scroll-view>
     <view class="weui-cell_switch">

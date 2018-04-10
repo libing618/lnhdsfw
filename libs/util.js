@@ -1,4 +1,4 @@
-const AV = require('../libs/leancloud-storage.js');
+const AV = require('leancloud-storage.js');
 const wxappNumber = 2;    //本小程序在开放平台中自定义的序号
 const menuKeys=['manage', 'marketing', 'customer'];
 function formatNumber(n) {
@@ -22,9 +22,10 @@ function openWxLogin(roleData) {            //注册登录（本机登录状态�
                   let signuser = {};
                   signuser['uid'] = wxuid.uId;
                   AV.User.signUpOrlogInWithAuthData(signuser, 'openWx').then((statuswx) => {    //用户在云端注册登录
-                    if (statuswx.country) {
+                    if (statuswx.createdAt != statuswx.updatedAt)          //客户已注册在本机初次登录成功
+                    {
                       roleData.user = statuswx.toJSON();
-                      resolve(roleData);                        //客户已注册在本机初次登录成功
+                      resolve(roleData);
                     } else {                         //客户在本机授权登录则保存信息
                       let newUser = wxuserinfo.userInfo;
                       newUser['wxapp' + wxappNumber] = wxuid.oId;         //客户第一次登录时将openid保存到数据库且客户端不可见
@@ -32,6 +33,7 @@ function openWxLogin(roleData) {            //注册登录（本机登录状态�
                       newUser.channelid = roleData.user.userRolName=='0' ? roleData.user.channelid : statuswx.id;
                       let mReqACL = new AV.ACL();
                       mReqACL.setPublicReadAccess(true);
+                      mReqACL.setWriteAccess(statuswx.objectId,true)
                       mReqACL.setRoleWriteAccess(roleData.shopId,true);
                       mReqACL.setRoleReadAccess(roleData.shopId,true);
                       statuswx.set(newUser);
@@ -92,50 +94,58 @@ function fetchMenu(roleData) {
   }).catch(console.error);
 };
 
-function setTiringRoom(goTiringRoom){
-  if (goTiringRoom && typeof goTiringRoom == 'boolean') {
-    wx.setTabBarItem({
-      index: 1,
-      text: "营销",
-      iconPath: "images/icon_forum.png",
-      selectedIconPath: "images/icon_forum_HL.png"
-    });
-    wx.setTabBarItem({
-      index: 2,
-      text: "客服",
-      iconPath: "images/customer.png",
-      selectedIconPath: "images/customer-1.png"
-    });
-    wx.setTabBarItem({
-      index: 3,
-      text: "管理",
-      iconPath: "images/icon_manage.png",
-      selectedIconPath: "images/icon_my_HL.png"
-    });
-  } else {
-    wx.setTabBarItem({
-      index: 1,
-      text: "分类",
-      iconPath: "images/index.png",
-      selectedIconPath: "images/index-1.png"
-    });
-    wx.setTabBarItem({
-      index: 2,
-      text: "购物车",
-      iconPath: "images/icon_cart.png",
-      selectedIconPath: "images/icon_cart_HL.png"
-    });
-    wx.setTabBarItem({
-      index: 3,
-      text: "我的",
-      iconPath: "images/icon_my.png",
-      selectedIconPath: "images/icon_my_HL.png"
-    });
-  }
-};
 module.exports = {
   openWxLogin: openWxLogin,
-  setTiringRoom:setTiringRoom,
+  setTiringRoom: function setTiringRoo(goTiringRoom){
+    if (goTiringRoom && typeof goTiringRoom == 'boolean') {
+      wx.setTabBarItem({
+        index: 1,
+        text: "营销",
+        iconPath: "images/icon_forum.png",
+        selectedIconPath: "images/icon_forum_HL.png"
+      });
+      wx.setTabBarItem({
+        index: 2,
+        text: "客服",
+        iconPath: "images/customer.png",
+        selectedIconPath: "images/customer-1.png"
+      });
+      wx.setTabBarItem({
+        index: 3,
+        text: "管理",
+        iconPath: "images/icon_manage.png",
+        selectedIconPath: "images/icon_my_HL.png"
+      });
+    } else {
+      wx.setTabBarItem({
+        index: 1,
+        text: "分类",
+        iconPath: "images/index.png",
+        selectedIconPath: "images/index-1.png"
+      });
+      wx.setTabBarItem({
+        index: 2,
+        text: "购物车",
+        iconPath: "images/icon_cart.png",
+        selectedIconPath: "images/icon_cart_HL.png"
+      });
+      wx.setTabBarItem({
+        index: 3,
+        text: "我的",
+        iconPath: "images/icon_my.png",
+        selectedIconPath: "images/icon_my_HL.png"
+      });
+    }
+  },
+
+  shareMessage: function () {
+    return {
+      title: '扶贫济困，共享良品。',
+      desc: '乐农汇',
+      path: '/pages/home/home?sjid='+app.roleData.user.objectId
+    }
+  },
+
   loginAndMenu: function (lcUser,roleData) {
     return new Promise((resolve, reject) => {
       if (lcUser) {roleData.user=lcUser.toJSON()};

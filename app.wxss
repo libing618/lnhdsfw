@@ -4,7 +4,7 @@
 page{
   background-color: #FFFFFF;
   font-size: 28rpx;
-  padding-top: 100rpx;
+  padding-top: 106rpx;
     /* font-family: -apple-system-font,Helvetica Neue,Helvetica,sans-serif; */
 }
 .page__hd {
