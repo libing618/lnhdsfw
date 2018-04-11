@@ -96,7 +96,7 @@ function fetchMenu(roleData) {
 
 module.exports = {
   openWxLogin: openWxLogin,
-  setTiringRoom: function setTiringRoo(goTiringRoom){
+  setTiringRoom: function(goTiringRoom){
     if (goTiringRoom && typeof goTiringRoom == 'boolean') {
       wx.setTabBarItem({
         index: 1,

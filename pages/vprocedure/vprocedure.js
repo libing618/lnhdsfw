@@ -10,22 +10,48 @@ Page({
     reqData: []
   },
   inFamily:false,
+  startTime: new Date(),
 
   onLoad: function(options) {
     var that = this ;
-    let cUnitName = app.roleData.user.emailVerified ? app.roleData.shopName : '体验用户';     //用户已通过单位和职位审核
+    let nowPages = getCurrentPages();
+    let rtUrl = 0;
     that.data.pno = options.pNo;
-    let artid = Number(options.artId);
     let pClass = require('../../model/procedureclass.js')[that.data.pno];
     that.inFamily = (typeof pClass.afamily != 'undefined');
-    that.data.vData = app.aData[that.data.pno][options.artId];
-    readShowFormat(pClass.pSuccess, that.data.vData).then(req=>{
-      that.data.reqData=req;
-      that.data.enUpdate = typeof that.data.vData.shopId!='undefined' && typeof pClass.suRoles!='undefined';  //有本店信息且流程有上级审批的才允许修改
-      that.setData(that.data);
-    });
-    wx.setNavigationBarTitle({
-      title: (that.inFamily ? pClass.afamily[that.data.vData.afamily] : pClass.pName) + '--' + that.data.vData.uName,
+    if (nowPages.length == 1) {
+      rtUrl = '/pages/home/home';
+      let proGoodsUpdate = app.configData.goods.updatedAt;
+      initConfig(app.configData).then(icData => {
+        app.configData = icData;
+        if (app.configData.goods.updatedAt != proGoodsUpdate) { app.mData.pAt.goods = [new Date(0).toISOString(), new Date(0).toISOString()] };   //店铺签约厂家有变化则重新读商品数据
+        loginAndMenu(AV.User.current(), app.roleData).then(rData => {
+          app.roleData = rData;
+        }),
+        wx.setStorage({ key: 'configData', data: app.configData });
+      }).catch(console.error)
+    }
+    return new Promise((resolve, reject) => {
+      if (app.aData[that.data.pno][options.artId]){
+        resolve(true)
+      } else {
+        AV.Object.createWithoutData(that.data.pno,options.artId).fetch().then(getData=>{
+          app.aData[that.data.pno][options.artId] = getData.toJSON();
+          resolve(true)
+        }).catch(resolve(false))
+      }
+    }).then(canView=>{
+      if (canView){
+        that.data.vData = app.aData[that.data.pno][options.artId];
+        readShowFormat(pClass.pSuccess, that.data.vData).then(req=>{
+          that.data.reqData=req;
+          that.data.enUpdate = typeof that.data.vData.shopId!='undefined' && typeof pClass.suRoles!='undefined';  //有本店信息且流程有上级审批的才允许修改
+          that.setData(that.data);
+        });
+      } else {
+        wx.showToast({ title: '数据传输有误',icon:'loading', duration: 2500 });
+        setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 2000);
+      }
     })
   },
 
@@ -43,5 +69,27 @@ Page({
         break;
     };
     wx.navigateTo({ url: url});
+  },
+
+  onUnload: function () {             //进入后台时缓存数据。
+    var that = this;
+    let browseLog=wx.getStorageSync('browseLog') || [];  //如有旧日志则拼成一个新日志数组
+    browseLog.push({ userId: app.roleData.user.objectId, pModel: that.data.pno, broweObject: that.data.vData.objectId, sjid:app.configData.sjid,channelid:app.configData.channelid,startTime:that.startTime, stayTime:new Date()-that.startTime})
+    wx.setStorage({
+      key: 'browseLog',
+      data: browseLog
+    })
+  },
+
+  onShareAppMessage: function () {
+    if (this.data.vData.objectId.indexOf(this.data.pno)<0){
+      return {
+        title: '扶贫济困，共享良品。',
+        desc: '乐农汇',
+        path: '/pages/vprocedurevprocedure?sjid='+app.roleData.user.objectId+'&pNo='+this.data.pno+'&artId='+this.data.vData.objectId
+      }
+    } else {
+      wx.showToast({title:'本地文件不能共享！',icon:'none'})
+    }
   }
 })

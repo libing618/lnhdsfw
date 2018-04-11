@@ -160,9 +160,7 @@ App({
     var that = this;            //调用应用实例的方法获取全局数据
     let configQuery = query ? query : wx.getStorageSync('proSceneQuery').query;
     if (configQuery) {
-      for (let qKey in query) {
-        that.configData[qKey] = query[qKey];
-      }
+      for (let qKey in query) { that.configData[qKey] = query[qKey]; }
     };
     wx.setStorage({ key: 'proSceneQuery', data: { path, query, scene } })
   },
@@ -228,7 +226,9 @@ App({
           }
         }
       })
-    }
+    };
+    let browseLog = wx.getStorageSync('browseLog') || [];
+    
   },
 
   onError: function(msg) {

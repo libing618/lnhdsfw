@@ -91,7 +91,7 @@
         <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
           <image class="weui-media-box__thumb" src="{{master[specsId].thumbnail}}" background-size="cover"></image>
         </view>
-        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+        <view wx:if="{{slave[specsId] && master[specsId]}}"class="weui-media-box__bd weui-media-box__bd_in-appmsg">
           <view class="weui-media-box__title">{{slave[specsId].uName}}/{{master[specsId].package}}份装/{{master[specsId].price}}元</view>
           <view class="weui-media-box__desc">{{master[specsId].title}}</view>
           <view class="weui-media-box__desc">已售{{sstock.scale(slave[specsId],master[specsId].package)}},库存{{sstock.csupply(slave[specsId],maste[specsId].package)}}</view>
