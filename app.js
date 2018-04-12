@@ -163,11 +163,6 @@ App({
     if (configQuery) {
       for (let qKey in query) { that.configData[qKey] = query[qKey]; }
     };
-    let lastDateArr = ['goods','cargo','specs'];
-//    for (var className in that.aCount){lastDateArr.push(className)};
-    AV.Object.fetchAll(lastDateArr.map( className=>{new AV.Query(className).ascending('updatedAt').first()}) ).then(lastData=>{
-      lastData.forEach(lData=>{console.log(lData.updatedAt)})
-    })
     wx.setStorage({ key: 'proSceneQuery', data: { path, query, scene } })
   },
 

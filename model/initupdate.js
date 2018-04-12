@@ -179,7 +179,8 @@ module.exports = {
     return new Promise((resolve, reject) => {
       var umdata=[] ,updAt;
       var urData = new AV.Query(procedureclass[pNo].pModel);                                      //进行数据库初始化操作
-        urData.equalTo(app.roleData.user.userRolName, app.roleData.user.objectId);                //除权限和文章类数据外只能查指定单位的数据
+      let userType = app.roleData.user.userRolName=='promoter' ? 'sjid' : 'channelid';
+      if (app.roleData.user.userRolName!=='admin') {urData.equalTo(userType, app.roleData.user.objectId)};                //除权限和文章类数据外只能查指定单位的数据
         updAt = appDataExist(pNo, app.roleData.user.objectId) ? app.mData.pAt[pNo][app.roleData.user.objectId] : [0, 0];
         if (typeof app.mData[pNo][app.roleData.user.objectId] == 'undefined') {       //添加以单位ID为Key的JSON初值
           let umobj={};
