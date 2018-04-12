@@ -39,7 +39,8 @@ App({
   roleData: wx.getStorageSync('roleData') || require('globaldata.js').roleData,
   netState: onNet(),
   mData: wx.getStorageSync('mData') || require('globaldata.js').mData,              //读数据管理的缓存
-  aData: wx.getStorageSync('aData') || require('globaldata.js').aData,                           //以objectId为key的数据记录
+  aData: wx.getStorageSync('aData') || require('globaldata.js').aData,              //以objectId为key的数据记录
+  aCount : wx.getStorageSync('aCount') || require('globaldata.js').aData,
   configData: wx.getStorageSync('configData') || require('globaldata.js').configData,
   procedures: wx.getStorageSync('procedures') || {},              //读流程的缓存
   logData: [],                         //操作记录
@@ -162,6 +163,11 @@ App({
     if (configQuery) {
       for (let qKey in query) { that.configData[qKey] = query[qKey]; }
     };
+    let lastDateArr = ['goods','cargo','specs'];
+//    for (var className in that.aCount){lastDateArr.push(className)};
+    AV.Object.fetchAll(lastDateArr.map( className=>{new AV.Query(className).ascending('updatedAt').first()}) ).then(lastData=>{
+      lastData.forEach(lData=>{console.log(lData.updatedAt)})
+    })
     wx.setStorage({ key: 'proSceneQuery', data: { path, query, scene } })
   },
 

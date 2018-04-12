@@ -8,7 +8,7 @@
 <view wx:else class="navigationBar">
   <form bindsubmit="fSearch">
     <view class="navigationBar__column">
-      <template is="navBarLogo" data="{{srcurl:'../../images/logo.png'}}"/>
+      <template is="navBarLogo"/>
       <view class="navSearchBar__form">
       <input class="navSearchBar__input" name="searchGoods" placeholder="搜索" />
       <button class="navigationBar__btn_icon" formType="submit">
@@ -24,18 +24,17 @@
       <scroll-view class="article-scroll" scroll-y="true">
         <view class="weui-article">
             <view class="weui-article__section">
-              <view class="weui-article__h3">促销活动</view>
+              <view class="weui-article__h3">营销活动</view>
               <view class="weui-article__p">
-                  团购XX笔, 用券XX元，返红包XX元。
+                  团购XX笔, 众筹XX笔，促销XX笔。
               </view>
             </view>
             <view class="weui-article__section">
-              <view class="weui-article__h3">直销分析</view>
+              <view class="weui-article__h3">销售分析</view>
               <view class="weui-article__p">
-                  会员卡XX张, 发优惠券XX张，发红包券XX张。
-                  一个月：访问量XX，成交率X%，销售收入XX元；
-                  本季度：访问量XX，成交率X%，销售收入XX元；
-                  上半年度：访问量XX，成交率X%，销售收入XX元；
+                  一个月：访问量XX，成交率X%；发红包券XX张,使用XX张。
+                  本季度：访问量XX，成交率X%；发红包券XX张,使用XX张。
+                  今年以来：访问量XX，成交率X%；发红包券XX张,使用XX张。
               </view>
           </view>
         </view>
