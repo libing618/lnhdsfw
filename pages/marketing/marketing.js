@@ -1,5 +1,6 @@
 const { readAllData,updateRoleData } = require('../../model/initupdate.js');
-const { integration,unitData } = require('../../model/initForm.js');
+const { integration } = require('../../model/initForm.js');
+const { getMonInterval,sumData,countData } = require('../../model/initForm.js');
 const {droneId,master,slave} = require('../../libs/goodstype')
 const {indexClick} = require('../../libs/util.js');
 const aimenu = require('../../libs/allmenu.js').iMenu;
@@ -20,11 +21,14 @@ Page({
     grids:[]
   },
   onShow:function(options){
-    this.setData({
-      tiringRoom: app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom,
-      goodsIndex: app.configData.goodsIndex,
-      grids: (app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom) ? aimenu(app.roleData.wmenu.marketing, 'marketing') : []
-    })
+    let tRoom = app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom;
+    if (tRoom != this.data.tiringRoom){
+      this.setData({
+        tiringRoom: tRoom,
+  //      goodsIndex: app.configData.goodsIndex,
+        grids: (app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom) ? aimenu(app.roleData.wmenu.marketing, 'marketing') : []
+      })
+    };
     this.setPage(app.mData.goods);
   },
 
@@ -44,35 +48,10 @@ Page({
     }
   },
 
-  sumData: function(dataUpdated){
-    if (dataUpdated){
-      let fields = ['canSupply', 'cargoStock'];
-      let sLength = 2;
-      let fieldSum = new Array(sLength);
-      let mSum = {};
-      fieldSum.fill(0);         //定义汇总数组长度且填充为0
-      if (app.mData.order[app.roleData.user.objectId]){
-        app.mData.order[app.roleData.user.objectId].forEach(mId=>{
-          mSum[mId] = [];
-          for (let i = 0; i < sLength; i++) {mSum[mId].push(0)};
-          app.aData.order[app.roleData.user.objectId][mId].cargo.forEach(aId=>{
-            for (let i=0;i<sLength;i++){
-              fieldSum[i] += app.aData.cargo[aId][fields[i]];
-              mSum[mId][i] = mSum[mId][i]+app.aData.cargo[aId][fields[i]];
-            }
-          })
-        })
-      }
-      this.setData({
-        pandect:fieldSum,
-        mSum: mSum
-      })
-    }
-  },
-
   onReady:function(){
     readAllData(true,'goods').then(isupdated=>{ this.setPage(isupdated) });
-    updateRoleData(true,'order').then(dUpdated=>{this.sumData(dUpdated)});
+    console.log(getMonInterval())
+  //  updateRoleData(true,'order').then(dUpdated=>{ if(dUpdated) {sumData('order',['amount','return'])} });
   },
 
   f_pickMaster: function(e){                           //选择打开的主数组下标
@@ -89,7 +68,7 @@ Page({
 
   onPullDownRefresh: function() {
     readAllData(true,'goods').then(isupdated=>{ this.setPage(isupdated) });
-    updateRoleData(true,'order').then(dUpdated=>{this.sumData(dUpdated)});
+//    updateRoleData(true,'order').then(dUpdated=>{this.sumData(dUpdated)});
   },
   onReachBottom: function() {
     readAllData(true,'goods').then(isupdated=>{ this.setPage(isupdated) });
