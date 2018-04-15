@@ -179,15 +179,6 @@ App({
             content: '当前微信版本过低，无法正常使用，请升级到最新微信版本后重试。',
             compressed(res) { setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 2000); }
           })
-        } else {
-          if (!that.configData.browser){
-            let nowdate = new Date();
-            that.configData.browser = res.brand+res.model+nowdate.getTime();
-            wx.setStorage({
-              key: 'browseLog',
-              data: {userId:that.configData.browser, pModel:'newBrower', broweObject:'firstOnThis', sjid:app.configData.sjid,channelid:app.configData.channelid,startTime:new Date(), stayTime:0}
-            })
-          }
         };
       }
     });

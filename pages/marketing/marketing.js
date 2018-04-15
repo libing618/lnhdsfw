@@ -1,6 +1,6 @@
 const { readAllData,updateRoleData } = require('../../model/initupdate.js');
 const { integration } = require('../../model/initForm.js');
-const { getMonInterval,sumData,countData } = require('../../model/initForm.js');
+const { getMonInterval,sumData,countData } = require('../../model/dataAnalysis.js');
 const {droneId,master,slave} = require('../../libs/goodstype')
 const {indexClick} = require('../../libs/util.js');
 const aimenu = require('../../libs/allmenu.js').iMenu;
@@ -26,7 +26,7 @@ Page({
       this.setData({
         tiringRoom: tRoom,
   //      goodsIndex: app.configData.goodsIndex,
-        grids: (app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom) ? aimenu(app.roleData.wmenu.marketing, 'marketing') : []
+        grids: tRoom ? aimenu(app.roleData.wmenu.marketing, 'marketing') : []
       })
     };
     this.setPage(app.mData.goods);
@@ -50,7 +50,9 @@ Page({
 
   onReady:function(){
     readAllData(true,'goods').then(isupdated=>{ this.setPage(isupdated) });
-    console.log(getMonInterval())
+    this.setData({
+      goodsIndex: app.configData.goodsIndex
+    })
   //  updateRoleData(true,'order').then(dUpdated=>{ if(dUpdated) {sumData('order',['amount','return'])} });
   },
 

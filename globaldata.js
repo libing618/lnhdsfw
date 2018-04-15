@@ -19,9 +19,9 @@ module.exports={
       "objectId": "0"
     },
     wmenu: {
-      manage:[],                         //用户未注册时的基础菜单
-      marketing:[],
-      customer:[],
+      manage:[101,102,103,104],                         //推广用户的菜单
+      marketing:[201,202,203,204,205,206,207],
+      customer:[303,304],
       updatedAt: 0
     },
     shopId: '598daa452f301e0069f699d6',

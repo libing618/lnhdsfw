@@ -8,16 +8,10 @@
         <image class="weui-media-box__thumb" src="{{user.avatarUrl}}" background-size="cover"></image>
       </view>
       <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-        <view class="weui-media-box__title">尊敬的{{user.nickName}}{{user.gender==1 ? "先生":"女士"}}</view>
-        <view class="weui-media-box__desc">
-          <view class="weui-cell weui-cell_input">
-            <view class="weui-cell__hd">
-                <view class="weui-label">请检查您的姓名:</view>
-            </view>
-            <view class="weui-cell__bd">
-              <input value="{{iName}}" class="weui-input" placeholder="请输入姓名" bindinput="i_Name"/>
-            </view>
-          </view>
+        <view class="weui-media-box__desc">尊敬的{{user.nickName}}{{user.gender==1 ? "先生":"女士"}}</view>
+        <view class="weui-cell weui-media-box__title">
+          <view class="weui-cell__hd">请检查您的姓名:</view>
+          <input value="{{iName}}" class="weui-cell__bd" placeholder="请输入姓名" bindinput="i_Name"/>
         </view>
       </view>
     </view>

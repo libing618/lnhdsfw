@@ -31,6 +31,28 @@ Page({
         if (app.configData.goods.updatedAt != proGoodsUpdate) { app.mData.pAt.goods = [new Date(0).toISOString(), new Date(0).toISOString()] };   //店铺签约厂家有变化则重新读商品数据
         loginAndMenu(AV.User.current(),app.roleData).then(rData=>{
           app.roleData = rData;
+          let initlog = {};
+          initlog.startTime = new Date();
+          initlog.broweObject = 'firstOnThis'
+          initlog.sjid = app.configData.sjid;
+          initlog.channelid = app.configData.channelid;
+          initlog.stayTime = 0
+          if ( app.roleData.user.objectId=='0'){
+            if (app.configData.browser) {
+              initlog.userId = app.configData.browser
+              initlog.pModel = 'browerUser';
+              wx.setStorage({ key: 'browseLog', data: initlog })
+            } else {
+              app.configData.browser = app.sysinfo.brand + app.sysinfo.model + app.roleData.ipAddress;
+              initlog.userId = app.configData.browser
+              initlog.pModel = 'newBrower';
+              wx.setStorage({ key: 'browseLog', data: initlog })
+            };
+          } else {
+            initlog.userId=app.roleData.user.objectId;
+            initlog.pModel = 'signupUser';
+            wx.setStorage({ key: 'browseLog',data: initlog });
+          }
           readAllData(true, 'goods').then(isupdated => {
             this.setData({
               signuped: app.roleData.user.mobilePhoneVerified,

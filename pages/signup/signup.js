@@ -5,7 +5,7 @@ var app = getApp()
 Page({
   data:{
     user: app.roleData.user,
-    sysheight: app.sysinfo.windowHeight-200,
+    sysheight: app.sysinfo.windowHeight-260,
     swcheck: true,
     iName: app.roleData.user.uName,
     activemobile: true,

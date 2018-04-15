@@ -1,4 +1,4 @@
-const AV = require('leancloud-storage.js');
+const AV = require('../libs/leancloud-storage.js');
 var app = getApp();
 function sumArr(arrData,arrIndex){
   let dSum = 0;
@@ -9,11 +9,10 @@ module.exports = {
   getMonInterval: ()=>{
     var result = [];
     var starts = app.roleData.user.createdAt.split('-');
-    var ends = new Date().split('-');
     var staYear = parseInt(starts[0]);
     var staMon = parseInt(starts[1]);
-    var endYear = parseInt(ends[0]);
-    var endMon = parseInt(ends[1]);
+    var endYear = new Date().getFullYear();
+    var endMon = new Date().getMonth()+1;
     while (staYear <= endYear) {
       if (staYear === endYear) {
         while (staMon < endMon) {

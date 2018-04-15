@@ -22,8 +22,7 @@ function openWxLogin(roleData) {            //注册登录（本机登录状态�
                   let signuser = {};
                   signuser['uid'] = wxuid.uId;
                   AV.User.signUpOrlogInWithAuthData(signuser, 'openWx').then((statuswx) => {    //用户在云端注册登录
-                    if (statuswx.createdAt != statuswx.updatedAt)          //客户已注册在本机初次登录成功
-                    {
+                    if (statuswx.createdAt != statuswx.updatedAt){          //客户已注册,在本机登录成功
                       roleData.user = statuswx.toJSON();
                       resolve(roleData);
                     } else {                         //客户在本机授权登录则保存信息
@@ -50,7 +49,8 @@ function openWxLogin(roleData) {            //注册登录（本机登录状态�
           })
         } else { reject({ ec: 3, ee: '微信用户登录返回code失败！' }) };
       },
-      fail: function (err) { reject({ ec: 4, ee: err.errMsg }); }     //微信用户登录失败
+      fail: function (err) {
+        reject({ ec: 4, ee: err.errMsg }); }     //微信用户登录失败
     })
   });
 };
@@ -164,7 +164,12 @@ module.exports = {
               }).catch((loginErr) => { reject('系统登录失败:' + loginErr.toString()) });
             } else { resolve(roleData) }
           },
-          fail: (resFail) => { resolve(roleData) }
+          fail: (resFail) => {
+            AV.Cloud.run('getIP',).then(aIP=>{
+              roleData.ipAddress=aIP.remoteAddress
+              resolve(roleData);
+            }).catch(()=>{resolve(roleData) })
+          }
         })
       }
     }).catch(console.error);
