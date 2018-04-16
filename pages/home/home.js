@@ -68,6 +68,13 @@ Page({
     setTiringRoom(false);
   },
 
+  onShow: function(){
+    this.setData({
+      signuped: app.roleData.user.mobilePhoneVerified,
+      tiringRoom: app.configData.tiringRoom
+    })
+  },
+
   setPage: function(iu){
     if (iu){
       this.setData({

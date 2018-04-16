@@ -21,12 +21,16 @@ Page({
     grids:[]
   },
   onShow:function(options){
-    let tRoom = app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom;
-    if (tRoom != this.data.tiringRoom){
-      this.setData({
-        tiringRoom: tRoom,
-  //      goodsIndex: app.configData.goodsIndex,
-        grids: tRoom ? aimenu(app.roleData.wmenu.marketing, 'marketing') : []
+    if (app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom){
+      let showPage = {};
+      showPage.grids = aimenu(app.roleData.wmenu.marketing, 'marketing')
+      let mInterval = getMonInterval();
+      countData(mInterval,'Order','status','1').then(orderCount=>{
+        showPage.orderCount = orderCount;
+        this.setData(showPage);
+      }).catch(error=>{
+        this.setData(showPage);
+        console.log(error)
       })
     };
     this.setPage(app.mData.goods);
@@ -51,6 +55,7 @@ Page({
   onReady:function(){
     readAllData(true,'goods').then(isupdated=>{ this.setPage(isupdated) });
     this.setData({
+      tiringRoom: app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom,
       goodsIndex: app.configData.goodsIndex
     })
   //  updateRoleData(true,'order').then(dUpdated=>{ if(dUpdated) {sumData('order',['amount','return'])} });

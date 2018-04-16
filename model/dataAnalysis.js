@@ -57,27 +57,44 @@ module.exports = {
     }
   },
 
-  countData: (staYear,endYear,monInterval,className,cObjName,cObjValue,attributeName,attributeId)=>{
+  countData: (monInterval,className,cObjName,cObjValue,attributeName,attributeId)=>{
     var countClass = new AV.Query(className);                                      //进行数据库初始化操作
-    let userType = app.roleData.user.userRolName=='promoter' ? 'sjid' : 'channelid';
-    if (app.roleData.user.userRolName!=='admin') {urData.equalTo(userType, app.roleData.user.objectId)};                //除权限和文章类数据外只能查指定单位的数据
-    if (cObjName) {urData.equalTo(cObjName, cObjValue)};                //除权限和文章类数据外只能查指定单位的数据
-    if (attributeName) {urData.equalTo(attributeName, attributeId)};
-    let countMon = (year,Mon)=>{
-      let yearMon = year+'-'+Mon;
-      if (!app.aCount[className][yearMon]){
-        countClass.greaterThan('updatedAt', new Date(yearMon+'-01 00:00:00'));
-        countClass.lessThan('updatedAt', new Date(Mon == 12 ? yearMon + '-31 23-59-59' : year + '-' + (Mon + 1) + '-01 00:00:00'));
-        countClass.count().then(monCount=>app.aCount[className][yearMon]=monCount)
-      }
+    var aCountClass = app.aCount[className] || {};
+    let userType = app.roleData.user.userRolName=='promoter' ? 'promoter' : 'channel';
+    if (app.roleData.user.userRolName !== 'admin') { countClass.equalTo(userType, app.roleData.user.objectId)};                //除权限和文章类数据外只能查指定单位的数据
+ //   if (cObjName) { countClass.equalTo(cObjName, cObjValue)};                //除权限和文章类数据外只能查指定单位的数据
+    if (attributeName) { countClass.equalTo(attributeName, attributeId)};
+    let countMon = (classCount,[year,Mon])=>{
+      return new Promise((resolve, reject) => {
+        let yearMon = year+'-'+Mon;
+        if (typeof aCountClass[yearMon]=='undefined'){
+          classCount.greaterThan('updatedAt', new Date(yearMon+'-01 00:00:00'));
+          classCount.lessThan('updatedAt', new Date(Mon == 12 ? yearMon + '-31 23-59-59' : year + '-' + (Mon + 1) + '-01 00:00:00'));
+          classCount.count().then(monCount=>{
+            aCountClass[yearMon] = monCount.count;
+            resolve(yearMon)
+          })
+        } else {
+          resolve(yearMon)
+        };
+      })
     }
-    monInterval.map(ym=>{ countMon(ym) }).reduce(
-      (m,p) => {m.then(v=>{ Promise.all([...v,p()]) }),
-      Promise.resolve([])
-    }).then(()=>{
-      let endYearIndex = monInterval.filter(ym=>{ return ym.indexOf(endYear)>=0 })
-      return { countAll: sumArr(app.aCount[className]), countYear: sumArr(app.aCount[className], endYearIndex), countMon: app.aCount[className][endYear + '-' + endMon] }
-    }).catch(err=>{ return err })
-
+    let numEnd = monInterval.length - 1;
+    let endYearMon = monInterval[numEnd][0] + '-' + monInterval[numEnd][1]
+    return new Promise((resolve, reject) => {
+      countClass.greaterThan('updatedAt', new Date(endYearMon + '-01 00:00:00'));
+      countClass.lessThan('updatedAt', new Date(monInterval[numEnd][1] == 12 ? endYearMon + '-31 23-59-59' : monInterval[numEnd][0] + '-' + (monInterval[numEnd][1] + 1) + '-01 00:00:00'));
+      countClass.count().then(endCount =>{
+        aCountClass[endYearMon] = endCount.count;
+        monInterval.map(ym => { countMon(countClass,ym) }).reduce(
+          (m,p) => {m.then(v=>{ Promise.all([...v,p()]) }),
+          Promise.resolve([])
+        }).then(()=>{
+          let endYearIndex = monInterval.filter(ym=>{ return ym.indexOf(monInterval[numEnd][0])>=0 })
+          app.aCount[className] = aCountClass;
+          resolve({ countAll: sumArr(aCountClass), countYear: sumArr(aCountClass, endYearIndex), countMon: aCountClass[endYearMon] });
+        }).catch(err => { reject(err) })
+      })
+    }).catch(console.error)
   }
 }

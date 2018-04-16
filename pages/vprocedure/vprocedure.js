@@ -87,7 +87,7 @@ Page({
       return {
         title: '扶贫济困，共享良品。',
         desc: '乐农汇',
-        path: '/pages/vprocedurevprocedure?sjid='+app.roleData.user.objectId+'&pNo='+this.data.pno+'&artId='+this.data.vData.objectId
+        path: 'pages/vprocedure/vprocedure?sjid='+app.roleData.user.objectId+'&pNo='+this.data.pno+'&artId='+this.data.vData.objectId
       }
     } else {
       wx.showToast({title:'本地文件不能共享！',icon:'none'})
