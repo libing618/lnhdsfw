@@ -1,6 +1,6 @@
 const AV = require('../../libs/leancloud-storage.js');
 const { initConfig, loginAndMenu,openWxLogin,setTiringRoom } = require('../../libs/util');
-const { integration } = require('../../model/initForm.js');
+const { integration,initLogStg } = require('../../model/initForm.js');
 const { readAllData, tabClick } = require('../../model/initupdate');
 var app = getApp()
 Page({
@@ -31,28 +31,7 @@ Page({
         if (app.configData.goods.updatedAt != proGoodsUpdate) { app.mData.pAt.goods = [new Date(0).toISOString(), new Date(0).toISOString()] };   //店铺签约厂家有变化则重新读商品数据
         loginAndMenu(AV.User.current(),app.roleData).then(rData=>{
           app.roleData = rData;
-          let initlog = {};
-          initlog.startTime = new Date();
-          initlog.broweObject = 'firstOnThis'
-          initlog.sjid = app.configData.sjid;
-          initlog.channelid = app.configData.channelid;
-          initlog.stayTime = 0
-          if ( app.roleData.user.objectId=='0'){
-            if (app.configData.browser) {
-              initlog.userId = app.configData.browser
-              initlog.pModel = 'browerUser';
-              wx.setStorage({ key: 'browseLog', data: initlog })
-            } else {
-              app.configData.browser = app.sysinfo.brand + app.sysinfo.model + app.roleData.ipAddress;
-              initlog.userId = app.configData.browser
-              initlog.pModel = 'newBrower';
-              wx.setStorage({ key: 'browseLog', data: initlog })
-            };
-          } else {
-            initlog.userId=app.roleData.user.objectId;
-            initlog.pModel = 'signupUser';
-            wx.setStorage({ key: 'browseLog',data: initlog });
-          }
+          initLogStg();
           readAllData(true, 'goods').then(isupdated => {
             this.setData({
               signuped: app.roleData.user.mobilePhoneVerified,
@@ -88,6 +67,7 @@ Page({
     var that = this;
     app.roleData.user.sjid = app.configData.sjid;
     app.roleData.user.channelid = app.configData.channelid;
+    app.roleData.user.goodsIndex = app.configData.goodsIndex;
     openWxLogin(app.roleData).then( mstate=> {
       app.roleData = mstate;
       app.logData.push([Date.now(), '用户授权' + app.sysinfo.toString()]);                //用户授权时间记入日志

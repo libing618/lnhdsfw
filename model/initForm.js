@@ -32,6 +32,44 @@ module.exports = {
 
   integration: integration,
 
+  initLogStg: ()=>{
+    let initlog = {};
+    initlog.startTime = new Date();
+    initlog.broweObject = 'firstOnThis'
+    initlog.promoter = app.configData.sjid;
+    initlog.channel = app.configData.channelid;
+    initlog.stayTime = 0
+    return new Promise((resolve, reject) => {
+      if ( app.roleData.user.objectId=='0'){
+        if (app.configData.browser) {
+          initlog.userId = app.configData.browser
+          initlog.pModel = 'browerUser';
+          resolve(false)
+        } else {
+          initlog.pModel = 'newBrower';
+          if (app.roleData.ipAddress){
+            resolve(true);
+          } else {
+            AV.Cloud.run('getIP',).then(aIP=>{
+              app.roleData.ipAddress=aIP.remoteAddress;
+              resolve(true);
+            })
+          };
+        };
+      } else {
+        initlog.userId=app.roleData.user.objectId;
+        initlog.pModel = 'signupUser';
+        resolve(false)
+      }
+    }).then(nBrower=>{
+      if (nBrower){
+        app.configData.browser = app.sysinfo.brand + app.sysinfo.model + app.roleData.ipAddress;
+        initlog.userId = app.configData.browser
+      }
+      wx.setStorage({ key: 'browseLog',data: initlog });
+    });
+  },
+
   readShowFormat: function (req, vData) {
     var unitId = vData.unitId
     return new Promise((resolve, reject) => {
