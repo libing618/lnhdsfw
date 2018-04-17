@@ -54,6 +54,5 @@ Page({
   },
   onReachBottom:function(){
     readAllData(false, 'articles').then(isupdated=>{ this.setPage(isupdated) });
-  },
-  onShareAppMessage: require('../../libs/util').shareMessage
+  }
 })

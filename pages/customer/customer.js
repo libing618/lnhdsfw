@@ -59,6 +59,5 @@ Page({
   },
   onReachBottom: function() {
     updateRoleData(false,'orderlist').then(isupdated=>{ this.setPage(isupdated) });
-  },
-  onShareAppMessage: require('../../libs/util').shareMessage
+  }
 })

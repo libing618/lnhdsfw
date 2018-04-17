@@ -4,6 +4,7 @@ const weutil = require('../../libs/util.js');
 var app = getApp()
 Page({
   data:{
+    pNo: 'manufactor',
     reqData:[
       {gname:"uName", p:'单位名称',t:"h3" },
       {gname:"nick", p:'单位简称',t:"h3" },

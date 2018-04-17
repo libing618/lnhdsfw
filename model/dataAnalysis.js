@@ -2,9 +2,8 @@ const AV = require('../libs/leancloud-storage.js');
 var app = getApp();
 function sumArr(arrData,arrIndex){
   let dSum = 0;
-  console.log(arrData)
   arrIndex.forEach(ad=>{
-    dSum += arrData[ ad[0]+'-'+ad[1] ]
+    dSum = dSum +arrData[ ad[2] ]
   })
   return dSum
 }
@@ -16,12 +15,12 @@ module.exports = {
     var endYear = new Date().getFullYear();
     var endMon = new Date().getMonth()+1;
     var result = [];
-    result.push([staYear, staMon]);
+    result.push([staYear, staMon, staYear + '-' + staMon]);
     while (staYear <= endYear) {
       if (staYear === endYear) {
         while (staMon < endMon) {
           staMon++;
-          result.push([staYear,staMon]);
+          result.push([staYear, staMon, staYear + '-' + staMon]);
         }
         staYear++;
       } else {
@@ -30,7 +29,7 @@ module.exports = {
           staMon = 1;
           staYear++;
         }
-        result.push([staYear,staMon]);
+        result.push([staYear, staMon, staYear + '-' + staMon]);
       }
     }
     return result;
@@ -62,11 +61,9 @@ module.exports = {
   },
 
   countData: (monInterval,className,cObjName,cObjValue,attributeName,attributeId)=>{     //进行数据库统计
-    var aCountClass = app.aCount[className] || {};
-    function countMon([year,Mon]){
+    function countMon(aCountClass,[year, Mon, yearMon]){
       return new Promise((resolve, reject) => {
-        let yearMon = year+'-'+Mon;
-        if (typeof aCountClass[yearMon]!=='number'){
+        if (!aCountClass){
           let countClass = new AV.Query(className);
           let userType = app.roleData.user.userRolName == 'promoter' ? 'promoter' : 'channel';
           if (app.roleData.user.userRolName !== 'admin') { countClass.equalTo(userType, app.roleData.user.objectId)};                //除权限和文章类数据外只能查指定单位的数据
@@ -74,28 +71,34 @@ module.exports = {
           if (attributeName) { countClass.equalTo(attributeName, attributeId)};
           countClass.greaterThan('updatedAt', new Date(yearMon+'-01 00:00:00'));
           countClass.lessThan('updatedAt', new Date(Mon == 12 ? yearMon + '-31 23:59:59:999' : year + '-' + (Mon + 1) + '-01 00:00:00'));
-          countClass.limit(1000)
           countClass.count().then(monCount=>{
-            aCountClass[yearMon] = Number(monCount);
-            resolve(yearMon)
+            resolve([yearMon,Number(monCount)])
           })
         } else {
-          resolve(yearMon)
+          resolve([yearMon,aCountClass])
         };
       })
     }
     let numEnd = monInterval.length - 1;
-    let endYearMon = monInterval[numEnd][0] + '-' + monInterval[numEnd][1];
-    aCountClass[endYearMon] = null;
+    
     return new Promise((resolve, reject) => {
-      monInterval.map(ym => () =>{ countMon(ym) }).reduce(
+      let initCount = app.aCount[className] || {};
+      initCount[monInterval[numEnd][2]] = null;
+      monInterval.map(ym => () => { countMon(initCount[ym[2]], ym) }).reduce(
         (m,p) => m.then(v=> Promise.all([...v,p()]) ),
         Promise.resolve([])
       ).then((yms)=>{
+        console.log(yms)
+        yms.forEach(ac => { initCount[ac[0]] = ac[1] })
+        resolve(initCount)
+      })
+    }).then( aCounts=>{
+      return new Promise((resolve, reject) => {
+        app.aCount[className] = aCounts;
         let endYearIndex = monInterval.filter(ym => { return ym[0] == monInterval[numEnd][0] });
-        console.log( endYearMon,aCountClass[ endYearMon ] )
-        app.aCount[className] = aCountClass;
-        resolve({ countAll: sumArr(aCountClass, monInterval), countYear: sumArr(aCountClass, endYearIndex), countMon: aCountClass[endYearMon] });
+        
+        let countAll = sumArr(app.aCount[className], monInterval)
+        resolve({ countAll: sumArr(app.aCount[className], monInterval), countYear: sumArr(app.aCount[className], endYearIndex), countMon: app.aCount[className][monInterval[numEnd][2]] });
       }).catch(err => { reject(err) })
     }).catch(console.error)
   }
