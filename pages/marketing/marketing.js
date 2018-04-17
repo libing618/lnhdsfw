@@ -25,8 +25,8 @@ Page({
       let showPage = {};
       showPage.grids = aimenu(app.roleData.wmenu.marketing, 'marketing')
       let mInterval = getMonInterval();
-      countData(mInterval,'Order','status','1').then(orderCount=>{
-        showPage.orderCount = orderCount;
+      Promise.all([countData(mInterval,'Order','status','1').then(orderCount=>{showPage.orderCount = orderCount}),
+        countData(mInterval, 'browseLog', 'pModel', 'goods').then(goodsCount => { showPage.goodsCount = goodsCount })]).then(()=>{
         this.setData(showPage);
       }).catch(error=>{
         this.setData(showPage);

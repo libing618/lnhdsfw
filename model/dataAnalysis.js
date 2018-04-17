@@ -61,45 +61,35 @@ module.exports = {
   },
 
   countData: (monInterval,className,cObjName,cObjValue,attributeName,attributeId)=>{     //进行数据库统计
-    function countMon(aCountClass,[year, Mon, yearMon]){
-      return new Promise((resolve, reject) => {
-        if (!aCountClass){
-          let countClass = new AV.Query(className);
-          let userType = app.roleData.user.userRolName == 'promoter' ? 'promoter' : 'channel';
-          if (app.roleData.user.userRolName !== 'admin') { countClass.equalTo(userType, app.roleData.user.objectId)};                //除权限和文章类数据外只能查指定单位的数据
-          if (cObjName) { countClass.equalTo(cObjName, cObjValue)};                //除权限和文章类数据外只能查指定单位的数据
-          if (attributeName) { countClass.equalTo(attributeName, attributeId)};
-          countClass.greaterThan('updatedAt', new Date(yearMon+'-01 00:00:00'));
-          countClass.lessThan('updatedAt', new Date(Mon == 12 ? yearMon + '-31 23:59:59:999' : year + '-' + (Mon + 1) + '-01 00:00:00'));
-          countClass.count().then(monCount=>{
-            resolve([yearMon,Number(monCount)])
-          })
-        } else {
-          resolve([yearMon,aCountClass])
-        };
-      })
-    }
-    let numEnd = monInterval.length - 1;
-    
-    return new Promise((resolve, reject) => {
-      let initCount = app.aCount[className] || {};
-      initCount[monInterval[numEnd][2]] = null;
-      monInterval.map(ym => () => { countMon(initCount[ym[2]], ym) }).reduce(
-        (m,p) => m.then(v=> Promise.all([...v,p()]) ),
-        Promise.resolve([])
-      ).then((yms)=>{
-        console.log(yms)
-        yms.forEach(ac => { initCount[ac[0]] = ac[1] })
-        resolve(initCount)
-      })
-    }).then( aCounts=>{
-      return new Promise((resolve, reject) => {
-        app.aCount[className] = aCounts;
-        let endYearIndex = monInterval.filter(ym => { return ym[0] == monInterval[numEnd][0] });
-        
-        let countAll = sumArr(app.aCount[className], monInterval)
-        resolve({ countAll: sumArr(app.aCount[className], monInterval), countYear: sumArr(app.aCount[className], endYearIndex), countMon: app.aCount[className][monInterval[numEnd][2]] });
-      }).catch(err => { reject(err) })
-    }).catch(console.error)
+  let numEnd = monInterval.length - 1;
+  return new Promise((resolve, reject) => {
+    let initCount = app.aCount[className] || {};
+    initCount[monInterval[numEnd][2]] = null;
+    app.aCount[className] = initCount
+    let acpa = [];
+    monInterval.forEach(([year, Mon, yearMon])=>{
+      if (!app.aCount[className][yearMon]) {
+        let countClass = new AV.Query(className);
+        let userType = app.roleData.user.userRolName == 'promoter' ? 'promoter' : 'channel';
+        if (app.roleData.user.userRolName !== 'admin') { countClass.equalTo(userType, app.roleData.user.objectId) };                //除权限和文章类数据外只能查指定单位的数据
+        if (cObjName) { countClass.equalTo(cObjName, cObjValue) };                //除权限和文章类数据外只能查指定单位的数据
+        if (attributeName) { countClass.equalTo(attributeName, attributeId) };
+        countClass.greaterThan('updatedAt', new Date(yearMon + '-01 00:00:00'));
+        countClass.lessThan('updatedAt', new Date(Mon == 12 ? yearMon + '-31 23:59:59:999' : year + '-' + (Mon + 1) + '-01 00:00:00'));
+        acpa.push([countClass,yearMon])
+      }
+    })
+    acpa.map(ym => () => ym[0].count().then(monCount => {
+      app.aCount[className][ym[1]] = monCount
+    })
+    ).reduce(
+      (m, p) => m.then(v => Promise.all([...v, p()])),
+      Promise.resolve([])
+    ).then(aCounts => {
+      let endYearIndex = monInterval.filter(ym => { return ym[0] == monInterval[numEnd][0] });
+      let countAll = sumArr(app.aCount[className], monInterval)
+      resolve({ countAll: countAll, countYear: sumArr(app.aCount[className], endYearIndex), countMon: app.aCount[className][monInterval[numEnd][2]] });
+    })
+  }).catch(console.error)
   }
 }

@@ -232,7 +232,8 @@ App({
     if (browseLog){
       let browse = AV.Object.extend('browseLog');
       let browseArr = browseLog.map(broweData=>{
-        return new browse.set(broweData)
+        let nBrowse = new browse
+        return nBrowse.set(broweData)
       });
       AV.Object.saveAll(browseArr).then(()=>{
         wx.removeStorage({key:'browseLog'});

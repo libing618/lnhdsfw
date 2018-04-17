@@ -75,7 +75,7 @@ Page({
     var that = this;
     let browseLog=wx.getStorageSync('browseLog') || [];  //如有旧日志则拼成一个新日志数组
     let userId = app.roleData.user.objectId=='0' ? app.configData.browser : app.roleData.user.objectId;
-    browseLog.push({ userId: userId, pModel: that.data.pno, broweObject: that.data.vData.objectId, sjid:app.configData.sjid,channelid:app.configData.channelid,startTime:that.startTime, stayTime:new Date()-that.startTime})
+    browseLog.push({ userId: userId, pModel: that.data.pno, broweObject: that.data.vData.objectId, promoter:app.configData.sjid,channel:app.configData.channelid,startTime:that.startTime, stayTime:new Date()-that.startTime})
     wx.setStorage({
       key: 'browseLog',
       data: browseLog

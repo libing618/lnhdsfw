@@ -66,7 +66,7 @@ module.exports = {
         app.configData.browser = app.sysinfo.brand + app.sysinfo.model + app.roleData.ipAddress;
         initlog.userId = app.configData.browser
       }
-      wx.setStorage({ key: 'browseLog',data: initlog });
+      wx.setStorage({ key: 'browseLog',data: [initlog] });
     });
   },
 
