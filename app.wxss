@@ -204,7 +204,7 @@ page{
 	line-height: 40rpx;
 }
 
-.drawer_screen {
+.modal_box {
   width: 100%;
   height: 100%;
   position: fixed;
@@ -213,17 +213,17 @@ page{
   background: #000;
   opacity: 0.2;
   overflow: hidden;
-  z-index: 1000;
+  z-index: 600;
   color: #fff;
 }
 
-.drawer_attr_box {
+.modal_attr_box {
   width: 100%;
   overflow: hidden;
   position: fixed;
   bottom: 0;
   left: 0;
-  z-index: 2000;
+  z-index: 700;
   background: #fff;
 }
 

@@ -1,0 +1,26 @@
+<import src="wedetail.wxml" />
+<import src="weimport.wxml" />
+
+<template name="p_navBar">
+<view class="navigationBar">
+  <view class="navigationBar__column">
+    <template is="navBackIcon"/>
+    <view class="weui-cell__bd">{{vData.uName}}</view>
+  </view>
+</view>
+</template>
+
+<template name="p_modalBox">
+<view wx:if="{{modalStatus}}" class="modal_box" bindtap="hideModal">
+  <view animation="{{animationData}}" class="modal_attr_box" wx:if="{modalStatus}}">
+  <view class="close_icon" bindtap="hideModal">×</view>
+    <view class="weui-form-preview" >
+      <view class="weui-form-preview__hd">{{modalData.uName}}</view>
+      <scroll-view class='weui-form-preview__bd' wx:for="{{modalFormat}}" wx:key="index">
+        <template is="s_{{item.t}}" data="{{...item, c:modalData[item.gname]}}"/>
+      </scroll-view>
+    </view>
+     <button class="weui-form-preview__ft" bindtap="hideModal">我知道了</button>
+  </view>
+</view>
+</template>

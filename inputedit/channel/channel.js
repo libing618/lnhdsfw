@@ -5,16 +5,8 @@ var app = getApp()
 Page({
   data:{
     pNo: 'manufactor',
-    reqData:[
-      {gname:"uName", p:'单位名称',t:"h3" },
-      {gname:"nick", p:'单位简称',t:"h3" },
-      {gname: "title", p: '单位简介', t: "p"},
-      {gname: "desc", p: '单位描述', t: "p"},
-      {gname: "thumbnail", p: '图片简介', t: "thumb" },
-      {gname: "aGeoPoint", p: '选择地理位置', t: "chooseAd" },
-      {gname: "address", p: '详细地址', t: "ed"}
-    ],
-
+    modalFormat: require('../../model/procedureclass').manufactor,
+    modalData: {}
   },
   onLoad:function(options){
     var that = this;
@@ -32,6 +24,47 @@ Page({
       wx.showToast({ title: '权限不足请检查！', duration: 2500 });
       setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 2000);
     };
+  },
+
+  showModal: function () {
+    // 显示遮罩层
+    var animation = wx.createAnimation({
+      duration: 200,
+      timingFunction: "linear",
+      delay: 0
+    })
+    this.animation = animation
+    animation.translateY(300).step()
+    this.setData({
+      buyanimationData: animation.export(),
+      buyshowModalStatus: true
+    })
+    setTimeout(function () {
+      animation.translateY(0).step()
+      this.setData({
+        buyanimationData: animation.export()
+      })
+    }.bind(this), 200)
+  },
+  hideModal: function () {
+    // 隐藏遮罩层
+    var animation = wx.createAnimation({
+      duration: 200,
+      timingFunction: "linear",
+      delay: 0
+    })
+    this.animation = animation
+    animation.translateY(300).step()
+    this.setData({
+      buyanimationData: animation.export(),
+    })
+    setTimeout(function () {
+      animation.translateY(0).step()
+      this.setData({
+        buyanimationData: animation.export(),
+        buyshowModalStatus: false
+      })
+    }.bind(this), 200)
   },
   onReady:function(){
     // 页面渲染完成
