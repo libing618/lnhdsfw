@@ -1,2 +1,10 @@
-<!--生产厂家-->
-<text>生产厂家</text>
+<import src="../../libs/weimport.wxml" />
+<import src="../../libs/wepage.wxml" />
+<template is="p_navBar__back" data="{{nbTitle:vData.uName,...statusBar}}"/>
+<view style="padding-top:{{statusBar}}px;"></view>
+<view class="page" id="model-{{pNo}}">
+  <view class="page__hd"></view>
+  <view class="page__bd page__ac_spacing"></view>
+
+  <view class="page__ft"></view>
+</view>

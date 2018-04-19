@@ -1,8 +1,8 @@
 <import src="wedetail.wxml" />
 <import src="weimport.wxml" />
 
-<template name="p_navBar">
-<view class="navigationBar">
+<template name="p_navBar__back">
+<view class="navigationBar" style="padding-top:{{statusBar}}px;">
   <view class="navigationBar__column">
     <template is="navBackIcon"/>
     <view class="weui-cell__bd">{{vData.uName}}</view>

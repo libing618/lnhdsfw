@@ -4,11 +4,13 @@
 page{
   background-color: #FFFFFF;
   font-size: 28rpx;
-  padding-top: 106rpx;
     /* font-family: -apple-system-font,Helvetica Neue,Helvetica,sans-serif; */
 }
+.page__prew {
+  padding: 10px;
+}
 .page__hd {
-  padding: 16rpx;
+  padding-top: 100rpx;
 }
 .navigationBar {
   position: fixed;
@@ -47,7 +49,6 @@ page{
           flex: 1;
   padding: 6rpx 0;
   text-align: center;
-
 }
 .navigationBar__title {
   display: inline-block;
