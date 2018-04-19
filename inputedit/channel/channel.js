@@ -36,13 +36,13 @@ Page({
     this.animation = animation
     animation.translateY(300).step()
     this.setData({
-      buyanimationData: animation.export(),
-      buyshowModalStatus: true
+      animationData: animation.export(),
+      showModalStatus: true
     })
     setTimeout(function () {
       animation.translateY(0).step()
       this.setData({
-        buyanimationData: animation.export()
+        animationData: animation.export()
       })
     }.bind(this), 200)
   },
@@ -56,13 +56,13 @@ Page({
     this.animation = animation
     animation.translateY(300).step()
     this.setData({
-      buyanimationData: animation.export(),
+      animationData: animation.export(),
     })
     setTimeout(function () {
       animation.translateY(0).step()
       this.setData({
-        buyanimationData: animation.export(),
-        buyshowModalStatus: false
+        animationData: animation.export(),
+        showModalStatus: false
       })
     }.bind(this), 200)
   },

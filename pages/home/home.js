@@ -14,8 +14,7 @@ Page({
     ],
     autoplay: true,
     scrollTop : 0,
-    scrollHeight: app.sysinfo.windowHeight-80,
-    wWidth: app.sysinfo.windowWidth,
+    pw: app.sysinfo.pw,
     signuped: app.roleData.user.mobilePhoneVerified,
     tiringRoom: false,//app.configData.tiringRoom,
     mPage: app.mData.goods,
@@ -43,7 +42,7 @@ Page({
         }),
         wx.setStorage({ key: 'configData', data: app.configData });
       }).catch(console.error)
-    }
+    };
     setTiringRoom(false);
   },
 

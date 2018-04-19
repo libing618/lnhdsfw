@@ -6,24 +6,19 @@ page{
   font-size: 28rpx;
     /* font-family: -apple-system-font,Helvetica Neue,Helvetica,sans-serif; */
 }
-.page__prew {
-  padding: 10px;
-}
 .page__hd {
-  padding-top: 100rpx;
+  padding-top: 10rpx;
 }
 .navigationBar {
   position: fixed;
   top:0;
   z-index: 500;
   width: 100%;
-  height: 106rpx;
   background-color: #F5F5F5;
   border-bottom: 1rpx solid #CCCCCC;
 }
 .navigationBar__column {
   position: relative;
-  margin-top: 38rpx;
   margin-left: 20rpx;
   white-space: nowrap;
   font-size: 32rpx;
@@ -59,6 +54,17 @@ page{
   text-overflow: ellipsis;
   white-space: nowrap;
   word-wrap: normal;
+}
+.navigationBar__btn {
+  position: inline-block;
+  padding-left: 4rpx;
+  padding-right: 4rpx;
+  line-height: 46rpx;
+  font-size: 26rpx;
+  background-color:#FFFFFF;
+  border-radius: 60rpx;
+  border-color: #FFFFFF;
+  text-align: center;
 }
 .navSearchBar__form {
   position: relative;

@@ -1,20 +1,20 @@
 <import src="../../libs/weimport.wxml" />
-<view class="navigationBar">
-  <view class="navigationBar__column">
+<view class="navigationBar" style="padding-top:{{pw.statusBar}}px;">
+  <view class="navigationBar__column" style="height:{{pw.capsule}}px;">
     <template is="navBarLogo"/>
     <view class="weui-cell__bd">扶贫济困，共享良品</view>
     <view class="weui-cell__ft">
       <view wx:if="{{signuped}}">
-        <button class="weui-btn" style="top:6rpx" size="mini" bindtap="changeTiring">{{tiringRoom ? '退出' : '进入'}}管理界面</button>
+        <button class="navigationBar__btn" bindtap="changeTiring">{{tiringRoom ? '商城界面' : '管理界面'}}</button>
       </view>
       <view wx:else>
-        <button style="top:6rpx" size="mini" open-type="getUserInfo" bindgetuserinfo="userInfoHandler">合伙人注册</button>
+        <button class="navigationBar__btn" open-type="getUserInfo" bindgetuserinfo="userInfoHandler">推广注册</button>
       </view>
     </view>
   </view>
 </view>
 <view class="page">
-  <view class="page__hd">
+  <view class="page__hd" style="padding-top:{{pw.statusBar+pw.capsule+2}}px;">
     <swiper class="swiper_box" indicator-dots="true" autoplay="{{autoplay}}">
       <block wx:for="{{images}}" wx:key="{{index}}">
         <swiper-item>

@@ -24,3 +24,19 @@
   </view>
 </view>
 </template>
+
+<template name="p_tabPanelToModal">
+<view class="weui-tab__panel">
+  <block wx:for="{{tPage}}" wx:key="{{index}}">
+      <view class="weui-media-box weui-media-box_appmsg" id="{{item}}" hover="true" hover-class="weui-cell_active" bindtap="showModal">
+        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+          <image class="weui-media-box__thumb" src="{{pageData[item].thumbnail}}" background-size="cover"></image>
+        </view>
+        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+          <view class="weui-media-box__title">{{pageData[item].uName}}</view>
+          <view class="weui-media-box__desc">{{pageData[item].title}}</view>
+        </view>
+      </view>
+  </block>
+</view>
+</template>
