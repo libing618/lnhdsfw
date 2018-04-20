@@ -3,7 +3,7 @@ const procedureclass = require('procedureclass.js');
 const initTime = new Date(0).toISOString();
 var app = getApp();
 function isAllData(cName){
-  return ['articles','artshop'].indexOf(cName)>=0;
+  return ['articles','artshop','manufactor'].indexOf(cName)>=0;
 };
 function appDataExist(dKey0, dKey1) {              //检查app.aData是否存在二三级的键值
   if (typeof app.mData.pAt[dKey0] == 'undefined') {

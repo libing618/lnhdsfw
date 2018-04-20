@@ -1,6 +1,7 @@
+<import src="../../libs/wepage.wxml" />
 <import src="../../libs/weimport.wxml" />
-<view class="navigationBar">
-  <view class="navigationBar__column">
+<view class="navigationBar" style="padding-top:{{pw.statusBar}}px;">
+  <view class="navigationBar__column" style="height:{{pw.capsule}}px;">
     <view class="weui-cell__hd">
       <image src="{{tiringRoom ? '../../images/logo.png' : user.avatarUrl}}" class="navigationBar__icon"></image>
     </view>
@@ -8,6 +9,7 @@
   </view>
 </view>
 <view class="page">
+<template is="p_marginTop" data="{{...pw}}"/>
 <view wx:if="{{tiringRoom}}">
   <view class="page__hd">
     <swiper class="swiper_box" indicator-dots="{{false}}" autoplay="{{true}}">
@@ -22,7 +24,7 @@
   <view class="page__bd">
     <template is="showgrids" data="{{grids}}"/>
     <view class="weui-tab">
-      <template is="tabsCk" data="{{ fLength , pageCk , tabs ,wWidth }}"/>
+      <template is="tabsCk" data="{{ fLength , pageCk , tabs }}"/>
       <template is="tabPanel" data="{{ tPage: fLength ? mPage[pageCk] : mPage , pageData , pNo }}"/>
     </view>
   </view>

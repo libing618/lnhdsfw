@@ -9,6 +9,7 @@ Page({
   data:{
     tiringRoom: app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom,
     pNo: 'goods',                       //流程
+    pw: app.sysinfo.pw,
     pMasterNo: -1,
     goodsIndex: app.configData.goodsIndex,
     droneId: droneId,
@@ -21,19 +22,10 @@ Page({
     grids:[]
   },
   onShow:function(options){
-    if (app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom){
-      let showPage = {};
-      showPage.grids = aimenu(app.roleData.wmenu.marketing, 'marketing')
-      let mInterval = getMonInterval();
-      Promise.all([countData(mInterval,'Order','status','1').then(orderCount=>{showPage.orderCount = orderCount}),
-        countData(mInterval, 'browseLog', 'pModel', 'goods').then(goodsCount => { showPage.goodsCount = goodsCount })]).then(()=>{
-        this.setData(showPage);
-      }).catch(error=>{
-        this.setData(showPage);
-        console.log(error)
-      })
-    };
-    this.setPage(app.mData.goods);
+    this.setData({
+      tiringRoom: app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom,
+      goodsIndex: app.configData.goodsIndex
+    })
   },
 
   setPage: function(iu){
@@ -54,10 +46,18 @@ Page({
 
   onReady:function(){
     readAllData(true,'goods').then(isupdated=>{ this.setPage(isupdated) });
-    this.setData({
-      tiringRoom: app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom,
-      goodsIndex: app.configData.goodsIndex
-    })
+    if (app.roleData.user.mobilePhoneVerified){
+      let showPage = {};
+      showPage.grids = aimenu(app.roleData.wmenu.marketing, 'marketing')
+      let mInterval = getMonInterval();
+      Promise.all([countData(mInterval,'Order','status','1').then(orderCount=>{showPage.orderCount = orderCount}),
+        countData(mInterval, 'browseLog', 'pModel', 'goods').then(goodsCount => { showPage.goodsCount = goodsCount })]).then(()=>{
+        this.setData(showPage);
+      }).catch(error=>{
+        this.setData(showPage);
+        console.log(error)
+      })
+    };
   //  updateRoleData(true,'order').then(dUpdated=>{ if(dUpdated) {sumData('order',['amount','return'])} });
   },
 

@@ -2,7 +2,7 @@
 <template is="p_navBar__headTab" data="{{...pw,...ht}}"/>
 
 <view class="page">
-  <template is="page_margin" data="{{...pw}}"/>
+  <template is="p_marginTop" data="{{...pw}}"/>
   <view wx:if="{{ht.pageCk==0}}">
     <view class="page__hd">
       <view class="weui-cell">

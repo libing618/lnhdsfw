@@ -5,17 +5,15 @@ Page({
   data: {
     autoplay: true,
     tiringRoom: app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom,
+    pw: app.sysinfo.pw,
     user: app.roleData.user,
     mSwiper: app.mData.articles[0],
-    scrollTop : 0,
-    scrollHeight: app.sysinfo.windowHeight-80,
     mPage: [app.mData.articles[1],app.mData.articles[3]],
     pNo: 'articles',                       //文章类信息
     pageData: app.aData.articles,
     fLength:2,
     tabs: ["厂商品牌", "产品宣传"],
     pageCk: app.mData.pCkarticles,
-    wWidth: app.sysinfo.windowWidth,
     grids: []
   },
 

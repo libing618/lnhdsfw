@@ -1,4 +1,5 @@
 <import src="../../libs/wepage.wxml" />
+<import src="../../libs/weimport.wxml" />
 <view wx:if="{{tiringRoom}}">
   <template is="p_navBar__switchTab" data="{{...pw,navBarTitle:'乐农汇的营销管理'}}"/>
 </view>

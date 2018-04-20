@@ -259,7 +259,10 @@
       <view class="weui-navbar__title">{{item}}</view>
     </view>
   </block>
-  <view class="weui-navbar__slider" style="left:{{(wWidth/fLength-72)/2}}px; transform: translateX(0px); -webkit-transform: translateX({{pageCk*wWidth/fLength}}px)"></view>
+  <view class="weui-navbar__slider" style="left:{{375/fLength-72}}rpx; transform: translateX(0px); -webkit-transform: translateX({{pageCk*750/fLength}}rpx)"></view>
+
+<!-- <view class="weui-navbar__slider" style="left:{{(wWidth/fLength-72)/2}}px; transform: translateX(0px); -webkit-transform: translateX({{pageCk*wWidth/fLength}}px)"></view>
+-->
 </view>
 </template>
 

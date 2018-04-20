@@ -202,7 +202,7 @@ module.exports = {
         let cData;
         dConfig.forEach(conData => {
           cData = conData.toJSON();
-          configData[cData.cName] = { cfield: cData.cfield, fConfig: cData.fConfig, updatedAt: cData.updatedAt }
+          configData[cData.cName] = { objectId:cData.objectId,cfield: cData.cfield, fConfig: cData.fConfig, updatedAt: cData.updatedAt }
         });
         return new AV.Query('_User').select(['goodsIndex','channelid']).get(configData.sjid);
       }).then(sjData => {

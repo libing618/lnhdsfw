@@ -13,7 +13,6 @@ Page({
       {thumbnail:'https://e3sl2viw1q4ta7me-10007535.file.myqcloud.com/42e17b8efd6a01896496.JPG'}
     ],
     autoplay: true,
-    scrollTop : 0,
     pw: app.sysinfo.pw,
     signuped: app.roleData.user.mobilePhoneVerified,
     tiringRoom: false,//app.configData.tiringRoom,

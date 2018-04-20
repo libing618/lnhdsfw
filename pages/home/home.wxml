@@ -1,4 +1,5 @@
 <import src="../../libs/weimport.wxml" />
+<import src="../../libs/wedetail.wxml" />
 <import src="../../libs/wepage.wxml" />
 <view class="navigationBar" style="padding-top:{{pw.statusBar}}px;">
   <view class="navigationBar__column" style="height:{{pw.capsule}}px;">
@@ -15,7 +16,7 @@
   </view>
 </view>
 <view class="page">
-  <template is="page_margin" data="{{...pw}}"/>
+  <template is="p_marginTop" data="{{...pw}}"/>
   <view class="page__hd">
     <swiper class="swiper_box" indicator-dots="true" autoplay="{{autoplay}}">
       <block wx:for="{{images}}" wx:key="{{index}}">
