@@ -3,10 +3,12 @@ const AV = require('../../libs/leancloud-storage.js');
 var app = getApp()
 Page({
   data: {
-    wWidth: app.sysinfo.windowWidth,
-    navTabs: ['事业合伙人','渠道合伙人'],
-    fLength: 2,
-    pageCk: 1,
+    pw: app.sysinfo.pw,
+    ht:{
+      navTabs: ['事业合伙人','渠道合伙人'],
+      fLength: 2,
+      pageCk: 1
+    },
 		mRols: [
 			['办公','产品','营销','客服'],
 			['负责人','部门管理','员工']
@@ -72,7 +74,7 @@ Page({
   tabClick: function (e) {                                //点击tab
     let pCk = Number(e.currentTarget.id)
     this.setData({
-      pageCk: pCk,               //点击序号切换
+      "ht.pageCk": pCk,               //点击序号切换
       eRole: pCk==0 ? ''+this.data.reqrole[0]+this.data.reqrole[1] : 'channel'
     });
   },
@@ -113,13 +115,13 @@ Page({
           that.data.roleUser[1].push(roleUserId);
           break;
         case 'mr_2':
-          rNo = that.data.applyUser[that.data.pageCk].indexOf(roleUserId);
-          that.data.applyUser[that.data.pageCk].splice(rNo,1);
-          that.data.roleUser[that.data.pageCk].push(roleUserId);
+          rNo = that.data.applyUser[that.data.ht.pageCk].indexOf(roleUserId);
+          that.data.applyUser[that.data.ht.pageCk].splice(rNo,1);
+          that.data.roleUser[that.data.ht.pageCk].push(roleUserId);
           break;
         case 'mr_3':
-          rNo = that.data.applyUser[that.data.pageCk].indexOf(roleUserId);
-          that.data.applyUser[that.data.pageCk].splice(rNo,1);
+          rNo = that.data.applyUser[that.data.ht.pageCk].indexOf(roleUserId);
+          that.data.applyUser[that.data.ht.pageCk].splice(rNo,1);
           break;
         case 'mr_4':
           rNo = that.data.roleUser[1].indexOf(roleUserId);

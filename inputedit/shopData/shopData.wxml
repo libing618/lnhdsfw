@@ -1,17 +1,9 @@
-<import src="../../libs/wedetail.wxml" />
-<view class="navigationBar">
-  <view class="navigationBar__column">
-    <template is="navBackIcon"/>
-    <block wx:for="{{navTabs}}" wx:key="{{index}}">
-      <view id="{{index}}" class="navigationBar__item {{ pageCk==index ? 'weui-bar__item_on' : ''}}" bindtap="tabClick">
-        <view class="navigationBar__title">{{item}}</view>
-      </view>
-    </block>
-    <view class="weui-navbar__slider" style="top:58rpx;left:{{230/fLength+10}}rpx; transform: translateX(0rpx); -webkit-transform: translateX({{pageCk*460/fLength}}rpx)"></view>
-  </view>
-</view>
+<import src="../../libs/wepage.wxml" />
+<template is="p_navBar__headTab" data="{{...pw,...ht}}"/>
+
 <view class="page">
-  <view wx:if="{{pageCk==0}}">
+  <template is="page_margin" data="{{...pw}}"/>
+  <view wx:if="{{ht.pageCk==0}}">
     <view class="page__hd">
       <view class="weui-cell">
           <button open-type="share">招募{{mRols[0][reqrole[0]]}}条线{{mRols[1][reqrole[1]]}}岗</button>

@@ -1,10 +1,11 @@
 <import src="../../libs/weimport.wxml" />
 <import src="../../libs/wepage.wxml" />
-<template is="p_navBar__back" data="{{nbTitle:vData.uName,...statusBar}}"/>
-<view style="padding-top:{{statusBar}}px;"></view>
+<template is="p_p_navBar__headTab" data="{{...pw,...ht}}"/>
+
 <view class="page" id="model-{{pNo}}">
-  <view class="page__hd"></view>
-  <view class="page__bd page__ac_spacing"></view>
+  <template is="p_marginTop" data="{{...pw}}"/>
+  <template is="p_tabPanelToModal" data="{{tPage:cPage[ht.pageCk], pageData}}"/>
 
   <view class="page__ft"></view>
+  <template is="p_modalBox" data="{{modalStatus,animationData,modalFormat,modalData,...pw}}"/>
 </view>

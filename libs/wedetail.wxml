@@ -10,6 +10,12 @@
   </view>
 </template>
 
+<template name="navBarLogo">
+  <view class="weui-cell__hd">
+    <image src="../../images/logo.png" class="navigationBar__icon"></image>
+  </view>
+</template>
+
 <template name="navBackIcon">
   <view class="weui-cell__hd">
     <navigator open-type="{{rtUrl ? 'switchTab' : 'navigateBack'}}" url="{{rtUrl}}" delta="1">

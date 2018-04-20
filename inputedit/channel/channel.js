@@ -5,6 +5,14 @@ var app = getApp()
 Page({
   data:{
     pNo: 'manufactor',
+    pw: app.sysinfo.pw,
+    ht:{
+      navTabs: ['已签约厂家','未签约厂家'],
+      modalBtn: ['解约','签约'],
+      fLength: 2,
+      pageCk: 0
+    },
+    modalStatus: false,
     modalFormat: require('../../model/procedureclass').manufactor,
     modalData: {}
   },
@@ -26,7 +34,7 @@ Page({
     };
   },
 
-  showModal: function () {
+  showModal: function (target:{id}) {
     // 显示遮罩层
     var animation = wx.createAnimation({
       duration: 200,
@@ -37,7 +45,7 @@ Page({
     animation.translateY(300).step()
     this.setData({
       animationData: animation.export(),
-      showModalStatus: true
+      modalStatus: true
     })
     setTimeout(function () {
       animation.translateY(0).step()
@@ -62,7 +70,7 @@ Page({
       animation.translateY(0).step()
       this.setData({
         animationData: animation.export(),
-        showModalStatus: false
+        modalStatus: false
       })
     }.bind(this), 200)
   },

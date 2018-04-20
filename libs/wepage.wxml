@@ -1,42 +1,100 @@
 <import src="wedetail.wxml" />
 <import src="weimport.wxml" />
 
-<template name="p_navBar__back">
+<template name="p_navBar__switchTab">
 <view class="navigationBar" style="padding-top:{{statusBar}}px;">
-  <view class="navigationBar__column">
-    <template is="navBackIcon"/>
-    <view class="weui-cell__bd">{{vData.uName}}</view>
+  <view class="navigationBar__column" style="height:{{capsule}}px;">
+    <template is="navBarLogo"/>
+    <view class="weui-cell__bd">{{navBarTitle ? navBarTitle : '扶贫济困，共享良品'}}</view>
   </view>
 </view>
 </template>
 
-<template name="p_modalBox">
-<view wx:if="{{modalStatus}}" class="modal_box" bindtap="hideModal">
-  <view animation="{{animationData}}" class="modal_attr_box" wx:if="{modalStatus}}">
-  <view class="close_icon" bindtap="hideModal">×</view>
-    <view class="weui-form-preview" >
-      <view class="weui-form-preview__hd">{{modalData.uName}}</view>
-      <scroll-view class='weui-form-preview__bd' wx:for="{{modalFormat}}" wx:key="index">
-        <template is="s_{{item.t}}" data="{{...item, c:modalData[item.gname]}}"/>
-      </scroll-view>
-    </view>
-     <button class="weui-form-preview__ft" bindtap="hideModal">我知道了</button>
+<template name="p_navBar__seach">
+<view class="navigationBar" style="padding-top:{{statusBar}}px;">
+  <view class="navigationBar__column" style="height:{{capsule}}px;">
+    <form bindsubmit="fSearch">
+      <view class="navigationBar__column">
+        <template is="navBarLogo"/>
+        <view class="navSearchBar__form">
+        <input class="navSearchBar__input" name="searchGoods" placeholder="搜索" />
+        <button class="navigationBar__btn_icon" formType="submit">
+          <icon style="margin-top:12rpx;margin-bottom:-8rpx" type="search" size="15"/>
+        </button>
+      </view>
+    </form>
   </view>
+</view>
+</template>
+
+<template name="p_navBar__headTab">
+<view class="navigationBar" style="padding-top:{{statusBar}}px;">
+  <view class="navigationBar__column" style="height:{{capsule}}px;">
+    <template is="navBackIcon"/>
+    <block wx:for="{{navTabs}}" wx:key="{{index}}">
+      <view id="{{index}}" class="navigationBar__item {{ pageCk==index ? 'weui-bar__item_on' : ''}}" bindtap="tabClick">
+        <view class="navigationBar__title">{{item}}</view>
+      </view>
+    </block>
+    <view class="weui-navbar__slider" style="top::{{capsule}}px;left:{{230/fLength+10}}rpx; transform: translateX(0px); -webkit-transform: translateX({{pageCk*460/fLength}}rpx)"></view>
+  </view>
+</view>
+</template>
+
+<template name="p_navBar__back">
+<view class="navigationBar" style="padding-top:{{statusBar}}px;">
+  <view class="navigationBar__column" style="height:{{capsule}}px;">
+    <template is="navBackIcon" data="{{rtUrl}}"/>
+    <view class="weui-cell__bd">{{navBarTitle ? navBarTitle : '扶贫济困，共享良品'}}</view>
+  </view>
+</view>
+</template>
+
+<template name="p_marginTop">
+  <view style="padding-top:{{statusBar+capsule}}px;"></view>
+</template>
+
+<template name="p_footBtn">
+<view style="padding-bottom:100rpx;"></view>
+<view class="page__ft weui-footer_fixed-bottom" style="z-index:300;flex-direction:row;">
+  <button class="weui-btn" style="display:inline-block}}" type="primary" size="mini" bindtap="fSubmit" id="fSave">提交</button>
+  <button class="weui-btn" style="display:inline-block}}" type="primary" size="mini" bindtap="fSubmit" id="fBack">返回</button>
 </view>
 </template>
 
 <template name="p_tabPanelToModal">
 <view class="weui-tab__panel">
   <block wx:for="{{tPage}}" wx:key="{{index}}">
-      <view class="weui-media-box weui-media-box_appmsg" id="{{item}}" hover="true" hover-class="weui-cell_active" bindtap="showModal">
-        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-          <image class="weui-media-box__thumb" src="{{pageData[item].thumbnail}}" background-size="cover"></image>
-        </view>
-        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-          <view class="weui-media-box__title">{{pageData[item].uName}}</view>
-          <view class="weui-media-box__desc">{{pageData[item].title}}</view>
-        </view>
+    <view class="weui-media-box weui-media-box_appmsg" id="{{item}}" hover="true" hover-class="weui-cell_active" bindtap="showModal">
+      <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+        <image class="weui-media-box__thumb" src="{{pageData[item].thumbnail}}" background-size="cover"></image>
       </view>
+      <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+        <view class="weui-media-box__title">{{pageData[item].uName}}</view>
+        <view class="weui-media-box__desc">{{pageData[item].title}}</view>
+      </view>
+    </view>
   </block>
+</view>
+</template>
+
+<template name="p_modalBox">
+<view wx:if="{{modalStatus}}" class="modal_box" bindtap="hideModal">
+  <view animation="{{animationData}}" class="modal_attr_box" wx:if="{modalStatus}}">
+  <view class="close_icon" id="fBack" bindtap="hideModal">×</view>
+    <view class="weui-form-preview" >
+      <view class="weui-form-preview__hd">{{modalData.uName}}</view>
+      <scroll-view class='weui-form-preview__bd' wx:for="{{modalFormat}}" wx:key="index">
+        <template is="s_{{item.t}}" data="{{...item, c:modalData[item.gname]}}"/>
+      </scroll-view>
+    </view>
+    <view wx:if="{{modalBtn[pageCk]}}" class="weui-form-preview__ft">
+      <button class="weui-btn" style="display:inline-block}}" type="primary" size="mini" bindtap="hideModal" id="fSave">{{modalBtn[pageCk]}}</button>
+      <button class="weui-btn" style="display:inline-block}}" type="primary" size="mini" bindtap="hideModal" id="fBack">返回</button>
+    </view>
+    <view wx:else class="weui-form-preview__ft">
+      <button bindtap="hideModal" id="fBack">我知道了</button>
+    </view>
+  </view>
 </view>
 </template>

@@ -280,18 +280,3 @@
   </block>
 </view>
 </template>
-
-<template name="navBarReturn">
-<view class="navigationBar">
-  <view class="navigationBar__column">
-    <template is="navBackIcon" data="{{rtUrl}}"/>
-    <view class="weui-cell__bd">{{navBarTitle ? navBarTitle : '扶贫济困，共享良品'}}</view>
-  </view>
-</view>
-</template>
-
-<template name="navBarLogo">
-  <view class="weui-cell__hd">
-    <image src="../../images/logo.png" class="navigationBar__icon"></image>
-  </view>
-</template>
