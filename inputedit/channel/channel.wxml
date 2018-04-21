@@ -1,11 +1,10 @@
-<import src="../../libs/weimport.wxml" />
+
 <import src="../../libs/wepage.wxml" />
-<template is="p_navBar__headTab" data="{{...pw,...ht}}"/>
-
-<view class="page" id="model-{{pNo}}">
-  <template is="p_marginTop" data="{{...pw}}"/>
-  <template is="p_tabPanelToModal" data="{{tPage:cPage[ht.pageCk], pageData}}"/>
-
-  <template is="p_footBtn"/>
-  <template is="p_modalSwitchBox" data="{{modalStatus,animationData,modalFormat,modalData:pageData[modalId],smtName:ht.modalBtn[ht.pageCk]}}"/>
+<view class="page">
+  <template is="p_navBar__headTab" data="{{...pw,...ht}}"/>
+  <view class="page__sub" id="model-{{pNo}}">
+    <template is="p_tabPanelToModal" data="{{tPage:cPage[ht.pageCk], pageData}}"/>
+    <template is="p_footBtn"/>
+  </view>
+  <template is="p_modalSwitchBox" data="{{...pw,modalStatus,animationData,modalFormat,modalData:pageData[modalId],smtName:ht.modalBtn[ht.pageCk]}}"/>
 </view>

@@ -6,6 +6,7 @@ Page({
     uEV: app.roleData.user.emailVerified,
     enUpdate: false,
     pno:'goods',
+    pw: app.sysinfo.pw,
     vData: {},
     reqData: []
   },

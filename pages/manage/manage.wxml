@@ -1,64 +1,66 @@
 <import src="../../libs/wepage.wxml" />
 <import src="../../libs/weimport.wxml" />
-<view class="navigationBar" style="padding-top:{{pw.statusBar}}px;">
-  <view class="navigationBar__column" style="height:{{pw.capsule}}px;">
-    <view class="weui-cell__hd">
-      <image src="{{tiringRoom ? '../../images/logo.png' : user.avatarUrl}}" class="navigationBar__icon"></image>
-    </view>
-    <view class="weui-cell__bd">{{tiringRoom ? '乐农汇的店铺管理' : user.nickName+'的信息'}}</view>
-  </view>
-</view>
 <view class="page">
-<template is="p_marginTop" data="{{...pw}}"/>
-<view wx:if="{{tiringRoom}}">
-  <view class="page__hd">
-    <swiper class="swiper_box" indicator-dots="{{false}}" autoplay="{{true}}">
-      <block wx:for="{{mSwiper}}" wx:key="{{index}}">
-          <navigator url="/pages/vprocedure/vprocedure?pNo={{pNo}}&artId={{item.objectId}}">
-            <image src="{{pageData[item].thumbnail}}" class="swimage"></image>
-            <view class="swtext">{{pageData[item].title}}</view>
-          </navigator>
-      </block>
-    </swiper>
-  </view>
-  <view class="page__bd">
-    <template is="showgrids" data="{{grids}}"/>
-    <view class="weui-tab">
-      <template is="tabsCk" data="{{ fLength , pageCk , tabs }}"/>
-      <template is="tabPanel" data="{{ tPage: fLength ? mPage[pageCk] : mPage , pageData , pNo }}"/>
+  <view class="navigationBar" style="padding-top:{{pw.statusBar}}px;">
+    <view class="navigationBar__column" style="height:{{pw.capsule}}px;">
+      <view class="weui-cell__hd">
+        <image src="{{tiringRoom ? '../../images/logo.png' : user.avatarUrl}}" class="navigationBar__icon"></image>
+      </view>
+      <view class="weui-cell__bd">{{tiringRoom ? '乐农汇的店铺管理' : user.nickName+'的信息'}}</view>
     </view>
   </view>
-</view>
-<view wx:else>
-  <view class="userinfo">
-    <image class="userinfo-avatar" src="{{user.avatarUrl}}" background-size="cover"></image>
-    <text class="userinfo-nickname">{{user.nickName}}</text>
-  </view>
-  <view class="order-area">
-    <view bindtap="readorder" class="order" data-status="1">
-      <image src="../../../../images/fahuo.png" />
-      <text>待发货</text>
+  <template is="p_marginTop" data="{{...pw}}"/>
+  <view class="page__main">
+    <view wx:if="{{tiringRoom}}">
+      <view class="page__hd">
+        <swiper class="swiper_box" indicator-dots="{{false}}" autoplay="{{true}}">
+          <block wx:for="{{mSwiper}}" wx:key="{{index}}">
+              <navigator url="/pages/vprocedure/vprocedure?pNo={{pNo}}&artId={{item.objectId}}">
+                <image src="{{pageData[item].thumbnail}}" class="swimage"></image>
+                <view class="swtext">{{pageData[item].title}}</view>
+              </navigator>
+          </block>
+        </swiper>
+      </view>
+      <view class="page__bd">
+        <template is="showgrids" data="{{grids}}"/>
+        <view class="weui-tab">
+          <template is="tabsCk" data="{{ fLength , pageCk , tabs }}"/>
+          <template is="tabPanel" data="{{ tPage: fLength ? mPage[pageCk] : mPage , pageData , pNo }}"/>
+        </view>
+      </view>
     </view>
-    <view bindtap="delivergoods" class="order" data-status="2">
-      <image src="../../../../images/delivergoods.png" />
-      <text>已发货</text>
+    <view wx:else>
+      <view class="userinfo">
+        <image class="userinfo-avatar" src="{{user.avatarUrl}}" background-size="cover"></image>
+        <text class="userinfo-nickname">{{user.nickName}}</text>
+      </view>
+      <view class="order-area">
+        <view bindtap="readorder" class="order" data-status="1">
+          <image src="../../../../images/fahuo.png" />
+          <text>待发货</text>
+        </view>
+        <view bindtap="delivergoods" class="order" data-status="2">
+          <image src="../../../../images/delivergoods.png" />
+          <text>已发货</text>
+        </view>
+        <view bindtap="finish" class="order" data-status="3">
+          <image src="../../../../images/finish.png" />
+          <text>已完成</text>
+        </view>
+      </view>
+      <view bindtap="navigateToAddress" class="tableviewcell">
+        <image src="../../../../images/icon_address.png" />
+        <text>收货地址</text>
+      </view>
+      <view bindtap="kefu" class="tableviewcell">
+        <image src="../../../../images/icon_phonelogin.png" />
+        <text>联系客服</text>
+      </view>
+      <view bindtap="money" class="tableviewcell">
+        <image src="../../../../images/icon_phonelogin.png" />
+        <text>提现</text>
+      </view>
     </view>
-    <view bindtap="finish" class="order" data-status="3">
-      <image src="../../../../images/finish.png" />
-      <text>已完成</text>
-    </view>
   </view>
-  <view bindtap="navigateToAddress" class="tableviewcell">
-    <image src="../../../../images/icon_address.png" />
-    <text>收货地址</text>
-  </view>
-  <view bindtap="kefu" class="tableviewcell">
-    <image src="../../../../images/icon_phonelogin.png" />
-    <text>联系客服</text>
-  </view>
-  <view bindtap="money" class="tableviewcell">
-    <image src="../../../../images/icon_phonelogin.png" />
-    <text>提现</text>
-  </view>
-</view>
 </view>

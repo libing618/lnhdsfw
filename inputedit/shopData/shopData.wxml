@@ -1,95 +1,95 @@
 <import src="../../libs/wepage.wxml" />
-<template is="p_navBar__headTab" data="{{...pw,...ht}}"/>
-
 <view class="page">
-  <template is="p_marginTop" data="{{...pw}}"/>
-  <view wx:if="{{ht.pageCk==0}}">
-    <view class="page__hd">
+  <template is="p_navBar__headTab" data="{{...pw,...ht}}"/>
+  <view class="page__sub">
+    <view wx:if="{{ht.pageCk==0}}">
+      <view class="page__hd">
+        <view class="weui-cell">
+            <button open-type="share">招募{{mRols[0][reqrole[0]]}}条线{{mRols[1][reqrole[1]]}}岗</button>
+        </view>
+        <view class="page__title">岗位选择：</view>
+      </view>
+      <view class="page__bd page__bd_spacing">
+        <picker-view indicator-style="height: 60rpx;" style="width: 100%; height: 200rpx;" value="{{reqrole}}" bindchange="fSpicker">
+          <picker-view-column>
+            <view wx:for="{{mRols[0]}}" wx:key="{{index}}" style="line-height: 60rpx">{{item}} 条线</view>
+          </picker-view-column>
+          <picker-view-column>
+            <view wx:for="{{mRols[1]}}" wx:key="{{index}}" style="line-height: 60rpx">{{item}} 岗位</view>
+          </picker-view-column>
+        </picker-view>
+      </view>
+      <block wx:for="{{roleUser[0]}}" wx:key="{{index}}">
+        <view wx:if="{{aUser[item].userRolName==eRole}}" class="weui-cell">
+          <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
+            <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+              <image class="weui-media-box__thumb" src="{{aUser[item].avatarUrl}}" background-size="cover"></image>
+            </view>
+            <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+              <view class="weui-media-box__title">{{aUser[item].uName}}(呢称：{{aUser[item].nickName}})</view>
+              <button id="mr_0" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fManageRole">解职</button>
+              <button id="mr_c" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fChangeRole">调岗</button>
+              <picker disabled="{{crole!=item}}" mode="multiSelector" bindchange="rChange" bindcolumnchange="mColumnChange" value="{{mIndex}}" range="{{mRols}}">
+                <button id="mr_1" data-id="{{item}}" bindtap="fManageRole">
+                  选择调整为：{{mRols[0][mrrole[0]]}}，{{mRols[1][mrrole[1]]}}
+                </button>
+              </picker>
+            </view>
+          </view>
+        </view>
+      </block>
+      <view class="page__title"> 岗位申请人：</view>
+      <view class="page__bd page__bd_spacing">
+        <block wx:for="{{applyUser[0]}}" wx:key="{{createdAt}}" class="weui-cell">
+          <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
+            <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+              <image class="weui-media-box__thumb" src="{{aUser[item].avatarUrl}}" background-size="cover"></image>
+            </view>
+            <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+              <view class="weui-media-box__title">{{aUser[item].uName}}(呢称：{{aUser[item].nickName}})</view>
+              <view class="weui-media-box__desc">申请 {{mRolJsons[aUser[item].userRolName]}}</view>
+              <button id="mr_2" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fManageRole">同意</button>
+              <button id="mr_3" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fManageRole">拒绝</button>
+            </view>
+          </view>
+        </block>
+      </view>
+    </view>
+    <view wx:else>
+      <view class="page__hd">
       <view class="weui-cell">
-          <button open-type="share">招募{{mRols[0][reqrole[0]]}}条线{{mRols[1][reqrole[1]]}}岗</button>
+            <button open-type="share">招募渠道合伙人</button>
+          </view>
+        <view class="page__title">已签约渠道合伙人</view>
       </view>
-      <view class="page__title">岗位选择：</view>
-    </view>
-    <view class="page__bd page__bd_spacing">
-      <picker-view indicator-style="height: 60rpx;" style="width: 100%; height: 200rpx;" value="{{reqrole}}" bindchange="fSpicker">
-        <picker-view-column>
-          <view wx:for="{{mRols[0]}}" wx:key="{{index}}" style="line-height: 60rpx">{{item}} 条线</view>
-        </picker-view-column>
-        <picker-view-column>
-          <view wx:for="{{mRols[1]}}" wx:key="{{index}}" style="line-height: 60rpx">{{item}} 岗位</view>
-        </picker-view-column>
-      </picker-view>
-    </view>
-    <block wx:for="{{roleUser[0]}}" wx:key="{{index}}">
-      <view wx:if="{{aUser[item].userRolName==eRole}}" class="weui-cell">
-        <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
-          <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-            <image class="weui-media-box__thumb" src="{{aUser[item].avatarUrl}}" background-size="cover"></image>
+      <view class="page__bd page__bd_spacing">
+        <block wx:for="{{roleUser[1]}}" wx:key="{{index}}" class="weui-cell">
+          <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
+            <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+              <image class="weui-media-box__thumb" src="{{aUser[item].avatarUrl}}" background-size="cover"></image>
+            </view>
+            <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+              <view class="weui-media-box__title">{{aUser[item].uName}}(呢称：{{aUser[item].nickName}})</view>
+              <button id="mr_4" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fManageRole">解约</button>
+            </view>
           </view>
-          <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-            <view class="weui-media-box__title">{{aUser[item].uName}}(呢称：{{aUser[item].nickName}})</view>
-            <button id="mr_0" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fManageRole">解职</button>
-            <button id="mr_c" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fChangeRole">调岗</button>
-            <picker disabled="{{crole!=item}}" mode="multiSelector" bindchange="rChange" bindcolumnchange="mColumnChange" value="{{mIndex}}" range="{{mRols}}">
-              <button id="mr_1" data-id="{{item}}" bindtap="fManageRole">
-                选择调整为：{{mRols[0][mrrole[0]]}}，{{mRols[1][mrrole[1]]}}
-              </button>
-            </picker>
-          </view>
-        </view>
+        </block>
       </view>
-    </block>
-    <view class="page__title"> 岗位申请人：</view>
-    <view class="page__bd page__bd_spacing">
-      <block wx:for="{{applyUser[0]}}" wx:key="{{createdAt}}" class="weui-cell">
-        <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
-          <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-            <image class="weui-media-box__thumb" src="{{aUser[item].avatarUrl}}" background-size="cover"></image>
+      <view class="page__title">应募渠道合伙人</view>
+      <view class="page__bd page__bd_spacing">
+        <block wx:for="{{applyUser[0]}}" wx:key="{{createdAt}}" class="weui-cell">
+          <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
+            <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+              <image class="weui-media-box__thumb" src="{{aUser[item].avatarUrl}}" background-size="cover"></image>
+            </view>
+            <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+              <view class="weui-media-box__title">{{aUser[item].uName}}(呢称：{{aUser[item].nickName}})</view>
+              <button id="mr_2" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fManageRole">同意</button>
+              <button id="mr_3" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fManageRole">拒绝</button>
+            </view>
           </view>
-          <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-            <view class="weui-media-box__title">{{aUser[item].uName}}(呢称：{{aUser[item].nickName}})</view>
-            <view class="weui-media-box__desc">申请 {{mRolJsons[aUser[item].userRolName]}}</view>
-            <button id="mr_2" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fManageRole">同意</button>
-            <button id="mr_3" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fManageRole">拒绝</button>
-          </view>
-        </view>
-      </block>
-    </view>
-  </view>
-  <view wx:else>
-    <view class="page__hd">
-    <view class="weui-cell">
-          <button open-type="share">招募渠道合伙人</button>
-        </view>
-      <view class="page__title">已签约渠道合伙人</view>
-    </view>
-    <view class="page__bd page__bd_spacing">
-      <block wx:for="{{roleUser[1]}}" wx:key="{{index}}" class="weui-cell">
-        <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
-          <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-            <image class="weui-media-box__thumb" src="{{aUser[item].avatarUrl}}" background-size="cover"></image>
-          </view>
-          <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-            <view class="weui-media-box__title">{{aUser[item].uName}}(呢称：{{aUser[item].nickName}})</view>
-            <button id="mr_4" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fManageRole">解约</button>
-          </view>
-        </view>
-      </block>
-    </view>
-    <view class="page__title">应募渠道合伙人</view>
-    <view class="page__bd page__bd_spacing">
-      <block wx:for="{{applyUser[0]}}" wx:key="{{createdAt}}" class="weui-cell">
-        <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
-          <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-            <image class="weui-media-box__thumb" src="{{aUser[item].avatarUrl}}" background-size="cover"></image>
-          </view>
-          <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-            <view class="weui-media-box__title">{{aUser[item].uName}}(呢称：{{aUser[item].nickName}})</view>
-            <button id="mr_2" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fManageRole">同意</button>
-            <button id="mr_3" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fManageRole">拒绝</button>
-          </view>
-        </view>
-      </block>
+        </block>
+      </view>
     </view>
   </view>
 </view>

@@ -397,7 +397,6 @@ icon {
 .article-scroll {
   height:300rpx;
   color:black;
-    /*background-color: lightblue;*/
 }
 .weui-article__h1 {
   font-size: 36rpx;
@@ -507,9 +506,9 @@ icon {
   }
 }
 .weui-flex {
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 .weui-flex__item {
   -webkit-box-flex: 1;
@@ -517,10 +516,13 @@ icon {
           flex: 1;
 }
 .weui-btn {
-  margin-top: 30rpx;
+  margin-top: 12rpx;
+  line-height: 52rpx;
+  font-size: 30rpx;
+  display:inline-block;
 }
 .weui-btn:first-child {
-  margin-top: 0;
+  margin-top: 12rpx;
 }
 .weui-btn-area {
   margin: 1.17647059em 30rpx 0.3em;
@@ -562,13 +564,16 @@ icon {
   text-align: center;
 }
 .weui-footer_fixed-bottom {
-  z-index:998;
-  position: fixed;
+  position: absolute;
+  z-index:198;
   background-color: rgba(109, 109, 109, 1);
   background-size: 100%;
   bottom: 0;
   left: 0;
   right: 0;
+  display: flex;
+	flex-direction: row;
+	justify-content: space-around;
 }
 .weui-footer__links {
   font-size: 0;

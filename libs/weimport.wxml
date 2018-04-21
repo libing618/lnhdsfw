@@ -7,7 +7,7 @@
 <template name="s_industrytype">
 <view class="weui-cell">
   <view class="weui-cell__hd">{{p}}:</view>
-  <view class="weui-cell__bd">
+  <view class="weui-cell__bd weui-flex">
     <view wx:for="{{c.sName}}" wx:key="{{index}}">{{item}}{{mDot(index,c.sName)}}</view>
   </view>
 </view>
@@ -260,9 +260,6 @@
     </view>
   </block>
   <view class="weui-navbar__slider" style="left:{{375/fLength-72}}rpx; transform: translateX(0px); -webkit-transform: translateX({{pageCk*750/fLength}}rpx)"></view>
-
-<!-- <view class="weui-navbar__slider" style="left:{{(wWidth/fLength-72)/2}}px; transform: translateX(0px); -webkit-transform: translateX({{pageCk*wWidth/fLength}}px)"></view>
--->
 </view>
 </template>
 

@@ -68,7 +68,7 @@ module.exports = {
     app.aCount[className] = initCount
     let acpa = [];
     monInterval.forEach(([year, Mon, yearMon])=>{
-      if (!app.aCount[className][yearMon]) {
+      if (typeof app.aCount[className][yearMon]=='undefined') {
         let countClass = new AV.Query(className);
         let userType = app.roleData.user.userRolName == 'promoter' ? 'promoter' : 'channel';
         if (app.roleData.user.userRolName !== 'admin') { countClass.equalTo(userType, app.roleData.user.objectId) };                //除权限和文章类数据外只能查指定单位的数据

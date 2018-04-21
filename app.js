@@ -183,7 +183,7 @@ App({
           that.sysinfo.pw={
             statusBar: res.statusBarHeight,
             capsule: res.screenHeight - res.windowHeight-8,
-            cwHight: 2 * res.windowHeight - res.screenHeight - res.statusBarHeight
+            cwHeight: 2 * res.windowHeight - res.screenHeight - res.statusBarHeight -50
           }
         };
       }
@@ -210,6 +210,7 @@ App({
           wx.setStorage({key:"aData", data:that.aData});
           wx.setStorage({key:"mData", data:that.mData});
           wx.setStorage({ key: 'roleData', data: that.roleData });
+          wx.setStorage({ key: 'aCount', data: that.aCount });
           wx.setStorage({key:"procedures", data:that.procedures});
         }
       }

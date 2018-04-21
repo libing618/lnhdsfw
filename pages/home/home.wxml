@@ -1,6 +1,7 @@
 <import src="../../libs/weimport.wxml" />
 <import src="../../libs/wedetail.wxml" />
 <import src="../../libs/wepage.wxml" />
+<view class="page">
 <view class="navigationBar" style="padding-top:{{pw.statusBar}}px;">
   <view class="navigationBar__column" style="height:{{pw.capsule}}px;">
     <template is="navBarLogo"/>
@@ -15,8 +16,8 @@
     </view>
   </view>
 </view>
-<view class="page">
-  <template is="p_marginTop" data="{{...pw}}"/>
+<template is="p_marginTop" data="{{...pw}}"/>
+<view class="page__main">
   <view class="page__hd">
     <swiper class="swiper_box" indicator-dots="true" autoplay="{{autoplay}}">
       <block wx:for="{{images}}" wx:key="{{index}}">
@@ -37,4 +38,5 @@
   <view class="weui-tab">
     <template is="tabPanel" data="{{ tPage: mPage , pageData , pNo }}"/>
   </view>
+</view>
 </view>

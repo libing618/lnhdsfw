@@ -11,14 +11,12 @@ module.exports = {
   "pSuccess": [
     {gname:"afamily", p:'厂商类型', inclose:false,t:"listsel", aList:['产品制造人','物流服务人','电商服务站','生产厂家','电子商务企业']},
     {inclose:true, gname:"indType", p:'主营业务', t:"industrytype", csc:"aslist" },
-    {gname:"nick", p:'厂商简称',t:"h2" },
+    {gname:"nick", p:'厂商简称',t:"h3" },
     {gname: "title", p:'厂商简介', t:"h3"},
     {gname: "desc", p: '厂商描述', t: "p"},
-    {gname: "thumbnail", p: '厂商简介', t: "thumb" },
+    {gname: "thumbnail", p: '图片简介', t: "thumb" },
     {gname: "aGeoPoint", p: '地理位置', t: "chooseAd" },
-    {gname: "address", p: '地址', t: "ed"},
-    {gname: "adminPhone", p:'负责人手机号', t: "h3" },
-    {gname: "agreement", p:'招募说明',t: "p" }
+    {gname: "address", p: '地址', t: "ed"}
   ],
   "puRoles": [],
   "pBewrite": "单位负责人提出岗位和单位设置或修改申请，提交单位或个人身份证明文件的照片，由电子商务服务公司进行审批。",

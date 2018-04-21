@@ -6,8 +6,12 @@ page{
   font-size: 28rpx;
     /* font-family: -apple-system-font,Helvetica Neue,Helvetica,sans-serif; */
 }
-.page__hd {
+.page__main {
   padding-top: 10rpx;
+}
+.page__sub {
+  padding-top: 10rpx;
+  padding-bottom: 100rpx;
 }
 .navigationBar {
   position: fixed;
@@ -57,8 +61,8 @@ page{
 }
 .navigationBar__btn {
   position: inline-block;
-  padding-left: 4rpx;
-  padding-right: 4rpx;
+  padding-left: 8rpx;
+  padding-right: 8rpx;
   line-height: 46rpx;
   font-size: 26rpx;
   background-color:#FFFFFF;
@@ -102,6 +106,10 @@ page{
 	margin-left: 10rpx;
   font-size: 34rpx;
 }
+
+.page__hd {
+  padding-top: 10rpx;
+}
 .page__bd {
   padding-bottom: 10rpx;
 }
@@ -113,7 +121,6 @@ page{
   padding-left: 40rpx;
   padding-right: 40rpx;
 }
-
 .page__ft{
     padding-bottom: 10rpx;
     text-align: center;
@@ -215,13 +222,15 @@ page{
   width: 100%;
   height: 100%;
   position: fixed;
+  overflow: hidden;
   top: 0;
   left: 0;
-  background: #000;
-  opacity: 0.2;
-  overflow: hidden;
-  z-index: 600;
   color: #fff;
+  background-color: #8FB0D1;
+  -moz-opacity: 0.8;
+  opacity: 0.8;
+  z-index: 600;
+  filter: alpha(opacity=40);
 }
 
 .modal_attr_box {
@@ -231,7 +240,7 @@ page{
   bottom: 0;
   left: 0;
   z-index: 700;
-  background: #fff;
+  background: silver;
 }
 
 .close_icon {
@@ -243,7 +252,7 @@ page{
   right: 5rpx;
   top:5rpx;
   padding: 10rpx;
-  color: #ccc;
+  color: red;
   border: 1rpx solid #ccc;
   border-radius: 50%;
   text-align: center;
@@ -252,7 +261,6 @@ page{
 
 .drawer_attr_content {
   padding: 20rpx;
-  height: 600rpx;
   overflow-y: scroll;
 }
 
@@ -265,74 +273,21 @@ page{
 .drawer_standard{
   display: block;
 	border: 1px solid #e5e5e5;
-	height: 40px;
-	line-height: 40px;
 	text-align: center;
 	color: #232626;
-	font-size: 14px;
-	background-color: #f9f9f9;
+	font-size: 32rpx;
+	background-color: #f9f9f9; 
 }
 
 .drawer_btn {
   width: 100%;
+  z-index: 800;
   border-radius: 10rpx;
   text-align: center;
-  background: red;
-  color: #fff;
-}
-
-
-.buy_screen {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background: #000;
-  opacity: 0.2;
-  overflow: hidden;
-  z-index: 1000;
-  color: #fff;
-}
-
-.buy_attr_box {
-  width: 100%;
-  overflow: hidden;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  z-index: 2000;
-  background: #fff;
-}
-
-.buy_attr_content {
-  padding: 20rpx;
-  height: 600rpx;
-  overflow-y: scroll;
-}
-
-.buy_amount{
-  font-size: 20px;
-  text-align: center;
-  margin-bottom: 30rpx;
-}
-
-.buy_standard{
-  display: block;
-	border: 1px solid #e5e5e5;
-	height: 40px;
-	line-height: 40px;
-	text-align: center;
-	color: #232626;
-	font-size: 14px;
-	background-color: #f9f9f9;
-}
-
-.buy_btn {
-  width: 100%;
-  border-radius: 10rpx;
-  text-align: center;
-  background: red;
+  display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+  background: darkgrey;
   color: #fff;
 }
 

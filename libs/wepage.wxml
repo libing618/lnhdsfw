@@ -8,6 +8,7 @@
     <view class="weui-cell__bd">{{navBarTitle ? navBarTitle : '扶贫济困，共享良品'}}</view>
   </view>
 </view>
+<view style="padding-top:{{statusBar+capsule}}px;"></view>
 </template>
 
 <template name="p_navBar__seach">
@@ -26,6 +27,7 @@
     </form>
   </view>
 </view>
+<view style="padding-top:{{statusBar+capsule}}px;"></view>
 </template>
 
 <template name="p_navBar__headTab">
@@ -40,6 +42,7 @@
     <view class="weui-navbar__slider" style="top:{{capsule}}px;left:{{230/fLength}}rpx; transform: translateX(0px); -webkit-transform: translateX({{pageCk*460/fLength}}rpx)"></view>
   </view>
 </view>
+<view style="padding-top:{{statusBar+capsule}}px;"></view>
 </template>
 
 <template name="p_navBar__back">
@@ -49,6 +52,7 @@
     <view class="weui-cell__bd">{{navBarTitle ? navBarTitle : '扶贫济困，共享良品'}}</view>
   </view>
 </view>
+<view style="padding-top:{{statusBar+capsule}}px;"></view>
 </template>
 
 <template name="p_marginTop">
@@ -57,9 +61,9 @@
 
 <template name="p_footBtn">
 <view style="padding-bottom:100rpx;"></view>
-<view class="page__ft weui-footer_fixed-bottom" style="z-index:300;flex-direction:row;">
-  <button class="weui-btn" style="display:inline-block}}" type="warn" bindtap="fSubmit" id="fSave">提交</button>
-  <button class="weui-btn" style="display:inline-block}}" type="primary" bindtap="fSubmit" id="fBack">返回</button>
+<view class="page__ft weui-footer_fixed-bottom">
+  <button class="weui-btn" type="warn" bindtap="fSubmit" id="fSave">提交</button>
+  <button class="weui-btn" type="primary" bindtap="fSubmit" id="fBack">返回</button>
 </view>
 </template>
 
@@ -81,19 +85,21 @@
 
 <template name="p_modalSwitchBox">
 <view wx:if="{{modalStatus}}" class="modal_box" bindtap="hideModal">
-  <view animation="{{animationData}}" class="modal_attr_box" wx:if="{modalStatus}}">
-  <view class="close_icon" id="fBack" bindtap="hideModal">×</view>
-    <view class="weui-form-preview" >
-      <view class="weui-form-preview__hd">{{modalData.uName}}</view>
-      <scroll-view class='weui-form-preview__bd' wx:for="{{modalFormat}}" wx:key="index">
-        <template is="s_{{item.t}}" data="{{...item, c:modalData[item.gname]}}"/>
-      </scroll-view>
+<view class="page__title" style="margin-top:{{statusBar+capsule}}px;">{{modalData.uName}}</view>
+  <view animation="{{animationData}}" class="modal_attr_box" wx:if="{modalStatus}}" style="height:{{cwHeight+70}}px;">
+    <view class="close_icon" id="fBack" bindtap="hideModal">×</view>
+     <view class="drawer_attr_content"> 
+      <view class="drawer_standard" style="height:{{cwHeight}}px;">
+        <block class="highlight" wx:for="{{modalFormat}}" wx:key="index">
+          <template is="s_{{item.t}}" data="{{...item, c:modalData[item.gname]}}"/>
+        </block>
+      </view>
+     </view> 
+    <view wx:if="{{smtName}}" class="drawer_btn">
+      <button class="weui-btn" size="mini" bindtap="hideModal" id="fSwitch">{{smtName}}</button>
+      <button class="weui-btn" type="primary" size="mini" bindtap="hideModal" id="fBack">返回</button>
     </view>
-    <view wx:if="{{smtName}}" class="weui-form-preview__ft">
-      <button class="weui-btn" style="display:inline-block}}" type="primary" size="mini" bindtap="hideModal" id="fSwitch">{{smtName}}</button>
-      <button class="weui-btn" style="display:inline-block}}" type="primary" size="mini" bindtap="hideModal" id="fBack">返回</button>
-    </view>
-    <view wx:else class="weui-form-preview__ft">
+    <view wx:else class="drawer_btn">
       <button bindtap="hideModal" id="fBack">我知道了</button>
     </view>
   </view>

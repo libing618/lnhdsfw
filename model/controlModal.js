@@ -30,7 +30,9 @@ module.exports = {
     var that = this;
     if (id=='fSwitch'){                  //确认切换到下一数组
       let arrNext = (that.data.ht.pageCk + 1)==that.data.ht.fLength ? 0 : (that.data.ht.pageCk + 1);
-      that.data.cPage[arrNext].push(that.data.modalId)
+      that.data.cPage[arrNext].push(that.data.modalId);
+      let oldNo = that.data.cPage[that.data.ht.pageCk].indexOf(that.data.modalId);
+      that.data.cPage[that.data.ht.pageCk].splice(oldNo,1);
     };
     var animation = wx.createAnimation({    // 隐藏遮罩层
       duration: 200,
