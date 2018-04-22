@@ -2,7 +2,7 @@
 const AV = require('../../libs/leancloud-storage.js');
 const {checkRols} = require('../../libs/util.js');
 const { updateData } = require('../../model/initupdate');
-const {showProcedureModal,hideSwitchModal} = require('../../model/controlModal');
+const {showProcedureModal} = require('../../model/controlModal');
 var app = getApp()
 Page({
   data:{
@@ -15,8 +15,8 @@ Page({
       pageCk: 0
     },
     cPage: [],
+    pageName: 'tabPanelToModal',
     pageData: app.aData.manufactor,
-    modalStatus: false,
     modalFormat: require('../../model/procedureclass').manufactor.pSuccess,
     modalId: '0'
   },
@@ -44,9 +44,7 @@ Page({
 
   showModal: showProcedureModal,
 
-  hideModal: hideSwitchModal,
-
-  fSumber:function({target:{id}}){
+  fSumbit:function({target:{id}}){
     var that = this;
     app.configData.goods.fConfig = that.data.cPage[0];
     if (id=='fSave'){
@@ -54,5 +52,5 @@ Page({
     }
     setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 500);
   }
-  
+
 })

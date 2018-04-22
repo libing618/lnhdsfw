@@ -32,15 +32,15 @@ module.exports = {
 
   integration: integration,
 
-  initLogStg: ()=>{
+  initLogStg: (pName)=>{
     let initlog = {};
     initlog.startTime = new Date();
-    initlog.broweObject = 'firstOnThis'
+    initlog.broweObject = pName;          //登录页名称
     initlog.promoter = app.configData.sjid;
     initlog.channel = app.configData.channelid;
-    initlog.stayTime = 0
+    initlog.stayTime = app.configData.scene;          //登录的场景值
     return new Promise((resolve, reject) => {
-      if ( app.roleData.user.objectId=='0'){
+      if ( app.roleData.user.objectId=='0'){    //未注册用户
         if (app.configData.browser) {
           initlog.userId = app.configData.browser
           initlog.pModel = 'browerUser';
@@ -56,8 +56,15 @@ module.exports = {
             })
           };
         };
-      } else {
+      } else {                               //已注册用户
         initlog.userId=app.roleData.user.objectId;
+        let mReqACL = new AV.ACL();
+        mReqACL.setReadAccess(app.roleData.user.objectId,true);
+        mReqACL.setReadAccess(app.configData.sjid,true);
+        mReqACL.setReadAccess(app.configData.channelid,true);
+        mReqACL.setWriteAccess(app.roleData.user.objectId,true);
+        mReqACL.setRoleReadAccess(app.roleData.shopId,true);
+        app.configData.reqRole = mReqACL;
         initlog.pModel = 'signupUser';
         resolve(false)
       }
@@ -66,6 +73,7 @@ module.exports = {
         app.configData.browser = app.sysinfo.brand + app.sysinfo.model + app.roleData.ipAddress;
         initlog.userId = app.configData.browser
       }
+      wx.setStorage({ key: 'configData', data: app.configData });
       wx.setStorage({ key: 'browseLog',data: [initlog] });
     });
   },

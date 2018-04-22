@@ -159,6 +159,8 @@ App({
 
   onLaunch: function ({ path, query, scene, shareTicket, referrerInfo }) {
     var that = this;            //调用应用实例的方法获取全局数据
+    that.configData.scene = scene;
+    that.configData.path = path;
     let configQuery = query ? query : wx.getStorageSync('proSceneQuery').query;
     if (configQuery) {
       for (let qKey in query) { that.configData[qKey] = query[qKey]; }

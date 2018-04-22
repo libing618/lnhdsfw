@@ -1,4 +1,4 @@
-const AV = require('../../libs/leancloud-storage.js');
+const { User } = require('../../libs/leancloud-storage.js');
 const { initConfig, loginAndMenu,openWxLogin,setTiringRoom } = require('../../libs/util');
 const { integration,initLogStg } = require('../../model/initForm.js');
 const { readAllData, tabClick } = require('../../model/initupdate');
@@ -15,34 +15,42 @@ Page({
     autoplay: true,
     pw: app.sysinfo.pw,
     signuped: app.roleData.user.mobilePhoneVerified,
-    tiringRoom: false,//app.configData.tiringRoom,
+    tiringRoom: app.configData.tiringRoom,
     mPage: app.mData.goods,
     pNo: 'goods',                       //商品信息
     pageData: app.aData.goods
   },
 
-  onLoad: function () {
-    if (app.netState) {
-      let proGoodsUpdate = app.configData.goods.updatedAt ;
-      initConfig(app.configData).then(icData=>{
-        app.configData = icData;
-        if (app.configData.goods.updatedAt != proGoodsUpdate) { app.mData.pAt.goods = [new Date(0).toISOString(), new Date(0).toISOString()] };   //店铺签约厂家有变化则重新读商品数据
-        loginAndMenu(AV.User.current(),app.roleData).then(rData=>{
-          app.roleData = rData;
-          initLogStg();
-          readAllData(true, 'goods').then(isupdated => {
-            this.setData({
-              signuped: app.roleData.user.mobilePhoneVerified,
-              tiringRoom: app.configData.tiringRoom,
-              mPage: app.mData.goods,
-              pageData: app.aData.goods
-            });
-          })
-        }),
-        wx.setStorage({ key: 'configData', data: app.configData });
-      }).catch(console.error)
-    };
-    setTiringRoom(false);
+  onLoad: function (options) {
+    var that = this ;
+    return new Promise((resolve, reject) => {
+      if (app.configData.path == 'pages/home/home') {
+        let proGoodsUpdate = app.configData.goods.updatedAt ;
+        initConfig(app.configData).then(icData=>{    //系统初妈化
+          app.configData = icData;
+          if (app.configData.goods.updatedAt != proGoodsUpdate) { app.mData.pAt.goods = [new Date(0).toISOString(), new Date(0).toISOString()] };   //店铺签约厂家有变化则重新读商品数据
+          loginAndMenu(User.current(),app.roleData).then(rData=>{    //用户登录及读菜单权限
+            app.roleData = rData;
+            if (typeof options.sjid=='undefined' && app.roleData.user.objectId!=='0'){    //非分享入口
+              app.configData.sjid = app.roleData.user.sjid;
+              app.configData.channelid = app.roleData.user.channelid;
+            }
+            initLogStg('home');
+            resolve(true);
+          });
+        })
+      } else { resolve(false) }
+    }).then(firstVer=>{
+      readAllData(true, 'goods').then(isupdated => {
+        this.setData({
+          signuped: app.roleData.user.mobilePhoneVerified,
+          tiringRoom: app.configData.tiringRoom,
+          mPage: app.mData.goods,
+          pageData: app.aData.goods
+        });
+      })
+      if (firstVer) { setTiringRoom(app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom);}
+    }).catch(console.error)
   },
 
   onShow: function(){

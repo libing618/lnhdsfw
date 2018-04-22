@@ -1,8 +1,9 @@
+const {User} = require('../../libs/leancloud-storage.js');
 const { readAllData,updateRoleData } = require('../../model/initupdate.js');
-const { integration } = require('../../model/initForm.js');
+const { integration, initLogStg } = require('../../model/initForm.js');
 const { getMonInterval,sumData,countData } = require('../../model/dataAnalysis.js');
 const {droneId,master,slave} = require('../../libs/goodstype')
-const {indexClick} = require('../../libs/util.js');
+const { initConfig, loginAndMenu, indexClick } = require('../../libs/util');
 const aimenu = require('../../libs/allmenu.js').iMenu;
 var app = getApp()
 Page({
@@ -21,10 +22,36 @@ Page({
     mSum: {},
     grids:[]
   },
+  onLoad: function(options) {
+    var that = this ;
+    return new Promise((resolve, reject) => {
+      if (app.configData.path == 'pages/marketing/marketing') {
+        let proGoodsUpdate = app.configData.goods.updatedAt;
+        initConfig(app.configData).then(icData => {
+          app.configData = icData;
+          if (app.configData.goods.updatedAt != proGoodsUpdate) { app.mData.pAt.goods = [new Date(0).toISOString(), new Date(0).toISOString()] };   //店铺签约厂家有变化则重新读商品数据
+          loginAndMenu(User.current(), app.roleData).then(rData => {
+            app.roleData = rData;
+            initLogStg('marketing');
+            resolve(true);
+          });
+        })
+      } else { resolve(false) }
+    }).then(()=>{
+      readAllData(true, 'goods').then(isupdated => {
+        this.setData({
+          tiringRoom: app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom,
+          mPage: app.mData.goods,
+          pageData: app.aData.goods,
+          goodsIndex: app.configData.goodsIndex
+        });
+      })
+    }).catch(console.error);
+  },
+
   onShow:function(options){
     this.setData({
-      tiringRoom: app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom,
-      goodsIndex: app.configData.goodsIndex
+      tiringRoom: app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom
     })
   },
 
@@ -45,7 +72,6 @@ Page({
   },
 
   onReady:function(){
-    readAllData(true,'goods').then(isupdated=>{ this.setPage(isupdated) });
     if (app.roleData.user.mobilePhoneVerified){
       let showPage = {};
       showPage.grids = aimenu(app.roleData.wmenu.marketing, 'marketing')
@@ -58,7 +84,6 @@ Page({
         console.log(error)
       })
     };
-  //  updateRoleData(true,'order').then(dUpdated=>{ if(dUpdated) {sumData('order',['amount','return'])} });
   },
 
   f_pickMaster: function(e){                           //选择打开的主数组下标
