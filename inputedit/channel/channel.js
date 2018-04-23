@@ -17,8 +17,8 @@ Page({
     cPage: [],
     pageName: 'tabPanelToModal',
     pageData: app.aData.manufactor,
-    modalFormat: require('../../model/procedureclass').manufactor.pSuccess,
-    modalId: '0'
+    reqData: require('../../model/procedureclass').manufactor.pSuccess,
+    idClicked: '0'
   },
   onLoad:function(options){
     var that = this;

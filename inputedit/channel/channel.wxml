@@ -1,4 +1,3 @@
-
 <import src="../../libs/wepage.wxml" />
 <view class="page">
   <template is="p_navBar__headTab" data="{{...pw,...ht}}"/>

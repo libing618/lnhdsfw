@@ -16,7 +16,7 @@ module.exports = {
     {gname: "desc", p: '厂商描述', t: "p"},
     {gname: "thumbnail", p: '图片简介', t: "thumb" },
     {gname: "aGeoPoint", p: '地理位置', t: "chooseAd" },
-    {gname: "address", p: '地址', t: "ed"}
+    { gname: "address", p: '地址', t: "modalAddressBox"}
   ],
   "puRoles": [],
   "pBewrite": "单位负责人提出岗位和单位设置或修改申请，提交单位或个人身份证明文件的照片，由电子商务服务公司进行审批。",
@@ -45,7 +45,7 @@ module.exports = {
     {gname:"title", p:'固定资产简介',t:"h3" },
     {gname:"desc", p:'固定资产描述',t:"p" },
     {gname:"aGeoPoint", p:'地理位置',t:"chooseAd" },
-    {gname:"address", p: '详细地址', t: "ed"},
+    { gname: "address", p: '详细地址', t: "modalAddressBox"},
     {gname:"thumbnail", p: '图片简介',t: "thumb" },
     {gname:"fcode", p: '编号',t: "inScan"  }
   ],
@@ -63,7 +63,7 @@ module.exports = {
     {gname:"title", p:'简介',t:"h4" },
     {gname:"thumbnail", p:'图片简介',t:"thumb" },
     {gname:"aGeoPoint", p:'出厂位置', t: "chooseAd" },
-    {gname:"address", p:'产地', t: "ed" },
+    { gname: "address", p: '产地', t: "modalAddressBox" },
     {gname:"PARM_content", p:'内容', t:"h4" },
     {gname:"PARM_additive", p:'附加', t:"h4" },
     {gname:"PARM_attention", p:'注意事项', t:"h4" },
@@ -87,7 +87,7 @@ module.exports = {
     {gname:"serFamily", p:'服务类型', inclose: true, t:"producttype",  csc:"arrsel"},
     {gname:"title", p:'简介',t:"h4" },
     {gname:"aGeoPoint", p: '服务地位置', t: "chooseAd" },
-    {gname:"address", p: '服务地址', t: "ed" },
+    { gname: "address", p: '服务地址', t: "modalAddressBox" },
     {gname:"price", p:'价格', t:"dg",csc:"digit" },
     {gname:"serParty", p:'服务方', t:"h4" },
     {gname:"serName", p:'联系人姓名', t:"h4" },
@@ -255,7 +255,7 @@ module.exports = {
     {gname:"title", p:'厂商简介',t:"h3" },
     {gname:"desc", p:'厂商描述',t:"p" },
     {gname:"aGeoPoint", p:'地理位置',t:"chooseAd" },
-    {gname:"address", p: '详细地址', t: "ed"},
+    { gname: "address", p: '详细地址', t: "modalAddressBox"},
     {gname:"thumbnail", p: '图片简介',t: "thumb" },
     {gname:"fcode", p: '编号',t: "inScan"  }
   ],

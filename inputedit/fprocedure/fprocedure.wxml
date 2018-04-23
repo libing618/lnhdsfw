@@ -1,4 +1,5 @@
-<import src="../import/impedit.wxml"/>
+<!-- <import src="../import/impedit.wxml"/>
+<import src="../../libs/wepage.wxml" />
 <view class="page" id="approval-{{pNo}}">
   <form bindsubmit="fSubmit">
     <view class="page__bd_spacing" id="{{targetId}}">
@@ -18,4 +19,9 @@
     <view hidden="{{enIns}}">
       <template is="i_insdata"></template>
     </view>
+  <template is="modalAddressBox" data="{{pageName,...fieldFormat,gname,p,c}}">
+</view> -->
+<view class="page">
+  <template is="p_navBar__back" data="{{...pw,navBarTitle}}"/>
+  <template is="p_{{pageName}}" data="{{pageName,animationData,reqData, vData, n,...fieldFormat}}"/>
 </view>

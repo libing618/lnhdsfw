@@ -28,8 +28,7 @@ var app = getApp()
       })
     }.bind(that), 200)
   };
-function controlModal(showPage,hidePage){
-  var that = this;
+function controlModal(that,showPage,hidePage){
   var animation = wx.createAnimation({      //遮罩层
     duration: 200,
     timingFunction: "linear",
@@ -59,7 +58,7 @@ module.exports = {
         hidePage.pageName = 'tabPanelToModal';
         hidePage.cPage = that.data.cPage;
         break;
-      case 'fBack':                  //确认切换到下一数组并返回
+      case 'fBack':                  //返回
         hidePage.pageName = 'tabPanelToModal';
         break;
       default:                  //打开弹出页
@@ -67,25 +66,61 @@ module.exports = {
         showPage.pageName = dataset.pname;
         break;
     }
-    controlModal(showPage,hidePage);
+    controlModal(that,showPage,hidePage);
   },
 
-  f_modalAddressBox: function ({ currentTarget:{id,dataset},detail:{value} }) {
+  i_modalAddressBox: function ({ currentTarget:{id,dataset},detail:{value} }) {
     var that = this;
     let showPage = {},hidePage = {};
+    hidePage.fieldFormat = {};
     switch (id) {
       case 'fSave':                  //确认返回数据
         hidePage.pageName = 'editFieldToModal';
-        hidePage.vData[gname] =  { code: that.data.saddv, sName: value.address1 + value.address2 };
+        hidePage.vData[that.data.gname] =  { code: that.data.saddv, sName: value.address1 + value.address2 };
         controlModal(showPage,hidePage)
         break;
-      case 'fBack':                  //确认切换到下一数组并返回
+      case 'fBack':                  //返回
         hidePage.pageName = 'editFieldToModal';
         controlModal(showPage,hidePage)
         break;
-      default:                  //打开弹出页
-        showPage.n = id;
-        showPage.pageName = dataset.pname;
+      case 'faddclass':                  //选择行政区划
+        showPage.saddv = 0;
+        if (that.data.adcvalue[0] == value[0]){
+          if (that.data.adcvalue[1] == value[1]) {
+            showPage.saddv = that.data.adclist[value[0]].st[value[1]].ct[value[2]].c;
+            that.setData({ address1: that.data.adclist[val[0]].n + that.data.adclist[val[0]].st[val[1]].n + that.data.adclist[val[0]].st[val[1]].ct[val[2]].n });
+          } else { value[2]=0 }
+        } else { value[1]=0 }
+        that.setData({ adcvalue: value, saddv: saddv });
+        break;
+      case 'raddgroup':                  //读村镇区划数据
+        if (that.data.saddv != 0) {
+          return new AV.Query('ssq4')
+          .equalTo('tncode', that.data.saddv)
+          .first()
+          .then(result => {
+            let adgroup = result.toJSON() ;
+            that.setData({ adglist: adgroup.tn });
+          }).catch( console.error );
+        };
+        break;
+      case 'saddgroup':                  //选择村镇
+        showPage.adgvalue = value;
+        if (that.data.adgvalue[0] == value[0]) {
+          showPage.address1 = that.data.address1 + that.data.adglist[value[0]].n + that.data.adglist[value[0]].cm[value[1]].n;
+        }
+        that.setData(showPage);
+        break;
+      case 'modalAddressBox':                  //打开弹出页
+        showPage.fieldFormat = {
+          adclist: require('addresclass.js'),   //读取行政区划分类数据
+          adglist: [],
+          saddv: 0,
+          adcvalue: [3, 9, 15],
+          adgvalue: [0, 0]
+        };
+        showPage.n = parseInt(dataset.n)      //数组下标;
+        showPage.pageName = id;
         break;
     }
   }

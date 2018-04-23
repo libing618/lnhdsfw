@@ -60,6 +60,8 @@ function setRole(puRoles){
   return { cManagers,cUserName,managers}
 };
 module.exports = {
+  i_modalAddressBox: require('../../model/controlModal.js').i_modalAddressBox,
+  
   f_idsel: function (e) {                         //选择ID
     let n = parseInt(e.currentTarget.id.substring(3))      //数组下标
     let sIdValue = this.data.reqData[n].maData[Number(e.detail.value)].objectId;

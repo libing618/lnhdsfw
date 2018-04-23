@@ -3,7 +3,7 @@ const AV = require('../../libs/leancloud-storage.js');
 var app = getApp()
 Page({
   data: {
-    adclist: require('addresclass.js'),   //读取行政区划分类数据
+    adclist: require('../../model/addresclass.js'),   //读取行政区划分类数据
     adglist: [],
     saddv: 0,
     adcvalue: [3, 9, 15],
