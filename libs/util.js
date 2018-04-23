@@ -260,7 +260,7 @@ module.exports = {
   },
 
   indexClick: function(e){                           //选择打开的索引数组本身id
-    this.setData({ iClicked: e.currentTarget.id });
+    this.setData({ idClicked: e.currentTarget.id });
   },
 
   mClick: function (e) {                      //点击mClick

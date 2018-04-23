@@ -2,7 +2,7 @@
 const AV = require('../../libs/leancloud-storage.js');
 const {checkRols} = require('../../libs/util.js');
 const { updateData } = require('../../model/initupdate');
-const {showProcedureModal} = require('../../model/controlModal');
+const {f_modalSwitchBox} = require('../../model/controlModal');
 var app = getApp()
 Page({
   data:{
@@ -35,17 +35,18 @@ Page({
     };
   },
 
-  tabClick: function (e) {                                //点击tab
+  hTabClick: function (e) {                                //点击tab
     let pCk = Number(e.currentTarget.id)
     this.setData({
       "ht.pageCk": pCk
     });
   },
 
-  showModal: showProcedureModal,
+  f_modalSwitchBox: f_modalSwitchBox,
 
-  fSumbit:function({target:{id}}){
+  f_tabPanelToModal:function({target:{id}}){
     var that = this;
+    console.log(id)
     app.configData.goods.fConfig = that.data.cPage[0];
     if (id=='fSave'){
       AV.Object.createWithoutData('shopConfig',app.configData.goods.objectId).set('fConfig',that.data.cPage[0]).save();

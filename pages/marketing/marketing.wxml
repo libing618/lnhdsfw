@@ -63,8 +63,8 @@
           <template is="tabPanel" data="{{ tPage: goodsIndex , pageData , pNo }}"/>
         </view>
         <view wx:else>
-          <view wx:if="{{iClicked!='0'}}">
-            <template is="tabPanel" data="{{ tPage: goodsPage[iClicked] , pageData , pNo }}"/>
+          <view wx:if="{{idClicked!='0'}}">
+            <template is="tabPanel" data="{{ tPage: goodsPage[idClicked] , pageData , pNo }}"/>
           </view>
           <view wx:else>
             <view wx:for="{{droneId[pMasterNo].slaveId}}" wx:key="{{index}}" wx:for-item="sForId">

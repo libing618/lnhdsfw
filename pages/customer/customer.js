@@ -10,7 +10,7 @@ Page({
     pNo: "orderlist",                       //订单信息
     pw: app.sysinfo.pw,
     pageData: {},
-    iClicked: '0',
+    idClicked: '0',
     grids: []
   },
   onShow:function(options){

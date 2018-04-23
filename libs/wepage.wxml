@@ -35,7 +35,7 @@
   <view class="navigationBar__column" style="height:{{capsule}}px;">
     <template is="navBackIcon"/>
     <block wx:for="{{navTabs}}" wx:key="{{index}}">
-      <view id="{{index}}" class="navigationBar__item {{ pageCk==index ? 'weui-bar__item_on' : ''}}" bindtap="tabClick">
+      <view id="{{index}}" class="navigationBar__item {{ pageCk==index ? 'weui-bar__item_on' : ''}}" bindtap="hTabClick">
         <view class="navigationBar__title">{{item}}</view>
       </view>
     </block>
@@ -59,72 +59,124 @@
   <view style="padding-top:{{statusBar+capsule}}px;"></view>
 </template>
 
-<template name="p_footBtn">
-<view style="padding-bottom:100rpx;"></view>
-<view class="page__ft weui-footer_fixed-bottom">
-  <button class="weui-btn" type="warn" bindtap="fSubmit" id="fSave">提交</button>
-  <button class="weui-btn" type="primary" bindtap="fSubmit" id="fBack">暂存</button>
+<template name="p_tabPanelToModal">
+<view wx:if="{{pageName=='tabPanelToModal'}}" class="page__sub" id="model-{{pNo}}">
+  <view class="weui-tab__panel">
+    <block wx:for="{{tPage}}" wx:key="{{index}}">
+      <view class="weui-media-box weui-media-box_appmsg" id="{{item}}" data-pname="modalSwitchBox" hover="true" hover-class="weui-cell_active" bindtap="f_modalSwitchBox">
+        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+          <image class="weui-media-box__thumb" src="{{pageData[item].thumbnail}}" background-size="cover"></image>
+        </view>
+        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+          <view class="weui-media-box__title">{{pageData[item].uName}}</view>
+          <view class="weui-media-box__desc">{{pageData[item].title}}</view>
+        </view>
+      </view>
+    </block>
+  </view>
+  <view style="padding-bottom:100rpx;"></view>
+  <view class="page__ft weui-footer_fixed-bottom">
+    <button class="weui-btn" type="warn" bindtap="f_tabPanelToModal" id="fSave">提交</button>
+    <button class="weui-btn" type="primary" bindtap="f_tabPanelToModal" id="fBack">暂存</button>
+  </view>
 </view>
 </template>
 
-<template name="p_tabPanelToModal">
-<view class="weui-tab__panel">
-  <block wx:for="{{tPage}}" wx:key="{{index}}">
-    <view class="weui-media-box weui-media-box_appmsg" id="{{item}}" data-pname="modalSwitchBox" hover="true" hover-class="weui-cell_active" bindtap="showModal">
-      <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-        <image class="weui-media-box__thumb" src="{{pageData[item].thumbnail}}" background-size="cover"></image>
-      </view>
-      <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-        <view class="weui-media-box__title">{{pageData[item].uName}}</view>
-        <view class="weui-media-box__desc">{{pageData[item].title}}</view>
-      </view>
-    </view>
-  </block>
+<template name="p_editFieldToModal">
+<view wx:if="{{pageName=='editFieldToModal'}}" class="page__sub" id="model-{{pNo}}">
+<form bindsubmit="fSubmit">
+  <view class="page__bd_spacing" id="{{targetId}}">
+    <block wx:for="{{reqData}}" wx:key="index">
+      <template is="i_{{item.t}}" data="{{...item,c:vData[item.gname],n:index}}"></template>
+    </block>
+  </view>
+  <view style="padding-bottom:100rpx;"></view>
+    <button class="weui-btn" style="display:{{enMenu=='none' && uEV ? 'inline-block' : 'none'}}" type="primary" size="mini" formType="submit" id="fSave">提交</button>
+    <button class="weui-btn" style="display:{{enMenu=='none' && targetId=='0' ? 'inline-block' : 'none'}}" type="primary" size="mini" formType="submit" id="fStorage">保存</button>
+    <button class="weui-btn" style="display:{{ enMenu }}" type="warn" size="mini" formType="submit" id="fdeldata">删除</button>
+    <button class="weui-btn" style="display:{{ enMenu }}" type="default" size="mini" formType="submit" id="fupdate">替换</button>
+    <button class="weui-btn" style="display:{{ enMenu }}" type="primary" size="mini" formType="submit" id="fenins">插入</button>
+  </view>
+</form>
+  <view hidden="{{enIns}}">
+    <template is="i_insdata"></template>
+  </view>
 </view>
 </template>
 
 <template name="p_modalSwitchBox">
-<view wx:if="{{pageName=='modalSwitchBox'}}" class="modal_box" bindtap="hideModal">
-<view class="page__title" style="margin-top:{{statusBar+capsule}}px;">{{modalData.uName}}</view>
-  <view animation="{{animationData}}" class="modal_attr_box" wx:if="{pageName=='modalSwitchBox'}}" style="height:{{cwHeight+70}}px;">
-    <view class="close_icon" id="fBack" bindtap="hideModal">×</view>
-     <view class="drawer_attr_content">
-      <view class="drawer_standard" style="height:{{cwHeight}}px;">
-        <block class="highlight" wx:for="{{modalFormat}}" wx:key="index">
-          <template is="s_{{item.t}}" data="{{...item, c:modalData[item.gname]}}"/>
+<view wx:if="{{pageName=='modalSwitchBox'}}" class="modal_box" bindtap="f_modalSwitchBox">
+  <view class="page__title" style="margin-top:{{statusBar+capsule}}px;">{{modalData.uName}}</view>
+  <view class="close_icon" id="fBack" bindtap="f_modalSwitchBox">×</view>
+  <view animation="{{animationData}}" class="modal_attr_box" wx:if="{pageName=='modalSwitchBox'}}">
+      <view class="drawer_standard">
+        <block class="highlight" wx:for="{{reqData}}" wx:key="index">
+          <template is="s_{{item.t}}" data="{{...item, c:pageData[idClicked][item.gname]}}"/>
         </block>
       </view>
+     <view style="padding-bottom:100rpx;"></view>
+     <view class="page__ft weui-footer_fixed-bottom">
+       <view wx:if="{{smtName}}">
+         <button class="weui-btn" size="mini" bindtap="f_modalSwitchBox" id="fSwitch">{{smtName}}</button>
+         <button class="weui-btn" type="primary" size="mini" bindtap="f_modalSwitchBox" id="fBack">返回</button>
+       </view>
+       <view wx:else>
+         <button bindtap="hideModal" id="fBack">我知道了</button>
+       </view>
      </view>
-    <view wx:if="{{smtName}}" class="drawer_btn">
-      <button class="weui-btn" size="mini" bindtap="hideModal" id="fSwitch">{{smtName}}</button>
-      <button class="weui-btn" type="primary" size="mini" bindtap="hideModal" id="fBack">返回</button>
-    </view>
-    <view wx:else class="drawer_btn">
-      <button bindtap="hideModal" id="fBack">我知道了</button>
-    </view>
   </view>
 </view>
 </template>
 
 <template name="p_modalAddressBox">
-<view wx:if="{{pageName=='modalAddressBox'}}" class="modal_box" bindtap="hideModal">
-<view class="page__title" style="margin-top:{{statusBar+capsule}}px;">{{modalData.uName}}</view>
-<view class="close_icon" id="fBack" bindtap="hideModal">×</view>
-  <view animation="{{animationData}}" class="modal_attr_box" wx:if="{pageName=='modalAddressBox'}}" style="height:{{cwHeight+70}}px;">
-    <view class="drawer_attr_content">
-    <view class="drawer_standard" style="height:{{cwHeight}}px;">
-      <block class="highlight" wx:for="{{modalFormat}}" wx:key="index">
-        <template is="s_{{item.t}}" data="{{...item, c:modalData[item.gname]}}"/>
-      </block>
-    </view>
-    </view>
-    <view wx:if="{{smtName}}" class="drawer_btn">
-      <button class="weui-btn" size="mini" bindtap="hideModal" id="fSwitch">{{smtName}}</button>
-      <button class="weui-btn" type="primary" size="mini" bindtap="hideModal" id="fBack">返回</button>
-    </view>
-    <view wx:else class="drawer_btn">
-      <button bindtap="hideModal" id="fBack">我知道了</button>
+<view wx:if="{{pageName=='modalAddressBox'}}" class="modal_box" bindtap="f_modalAddressBox">
+<view class="page__title" style="margin-top:{{statusBar+capsule}}px;">{{p}}</view>
+<view class="close_icon" id="fBack" bindtap="f_modalAddressBox">×</view>
+  <view animation="{{animationData}}" class="modal_attr_box" wx:if="{pageName=='modalAddressBox'}}">
+  <view class="page__hd">
+    <view class="page__title">选择区(县)</view>
+       <picker-view indicator-style="height: 40rpx;" style="width: 100%; height: 300rpx;" value="{{adcvalue}}" id="faddclass" bindchange="f_modalAddressBox">
+        <picker-view-column>
+            <view wx:for="{{adclist}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
+        </picker-view-column>
+        <picker-view-column>
+            <view wx:for="{{adclist[adcvalue[0]].st}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
+        </picker-view-column>
+        <picker-view-column>
+            <view wx:for="{{adclist[adcvalue[0]].st[adcvalue[1]].ct}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
+        </picker-view-column>
+      </picker-view>
+    <view hidden="{{asaddv}}">
+      <button class="page__title" id="raddgroup" bindtap="f_modalAddressBox">点此处选择村(社区)</button>
+      <picker-view indicator-style="height: 40rpx;" style="width: 100%; height: 300rpx;" value="{{adgvalue}}" id="saddgroup" bindchange="f_modalAddressBox">
+          <picker-view-column>
+              <view wx:for="{{adglist}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
+          </picker-view-column>
+          <picker-view-column>
+              <view wx:for="{{adglist[adgvalue[0]].cm}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
+          </picker-view-column>
+      </picker-view>
     </view>
   </view>
+  <form class="page__ft" bindsubmit="f_modalAddressBox">
+    <view class="weui-cells__title">详细地址:</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell">
+        <view class="weui-cell__bd">
+          <textarea class="weui-textarea" auto-height name="address1" value="{{address1}}" />
+        </view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">
+          <textarea class="weui-textarea" auto-height name="address2" value="{{address2}}" />
+        </view>
+      </view>
+    </view>
+    <view style="padding-bottom:100rpx;"></view>
+    <view class="page__ft weui-footer_fixed-bottom">
+      <button class="weui-btn" formType="submit" size="mini" id="fSave">确定</button>
+      <button class="weui-btn" type="primary" size="mini" bindtap="f_modalAddressBox" id="fBack">返回</button>
+    </view>
+  </form>
 </view>
 </template>

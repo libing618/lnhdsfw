@@ -18,7 +18,7 @@ Page({
     slave: slave,
     goodsPage: {},                 //页面管理数组
     pageData: {},
-    iClicked: '0',
+    idClicked: '0',
     mSum: {},
     grids:[]
   },
@@ -91,7 +91,7 @@ Page({
     if (this.data.pMasterNo != masterNo){
       this.setData({
         pMasterNo: masterNo,
-        iClicked: '0'
+        idClicked: '0'
       });
     }
   },

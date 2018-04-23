@@ -2,9 +2,5 @@
 <import src="../../libs/wepage.wxml" />
 <view class="page">
   <template is="p_navBar__headTab" data="{{...pw,...ht}}"/>
-  <view wx:if="{{pageName=='tabPanelToModal'}}" class="page__sub" id="model-{{pNo}}">
-    <template is="p_tabPanelToModal" data="{{tPage:cPage[ht.pageCk], pageData}}"/>
-    <template is="p_footBtn"/>
-  </view>
-  <template is="p_modalSwitchBox" data="{{...pw,pageName,animationData,modalFormat,modalData:pageData[modalId],smtName:ht.modalBtn[ht.pageCk]}}"/>
+  <template is="p_{{pageName}}" data="{{pageName,animationData,tPage:cPage[ht.pageCk], pageData,reqData,idClicked,smtName:ht.modalBtn[ht.pageCk]}}"/>
 </view>
