@@ -11,13 +11,13 @@ function exitPage(){
 };
 function openWxLogin(roleData) {            //注册登录（本机登录状态）
   return new Promise((resolve, reject) => {
-    wx.login({
-      success: function (wxlogined) {
-        if (wxlogined.code) {
-          wx.getUserInfo({
-            withCredentials: true,
-            success: function (wxuserinfo) {
-              if (wxuserinfo) {
+    wx.getSetting({
+      success: ({authSetting:{scope}})=> {
+        if (scope.userInfo) {
+          let wxuserifnfo = {}
+          wx.login({
+            success: function (wxlogined) {
+              if (wxlogined) {
                 AV.Cloud.run('wxLogin'+wxappNumber, { code: wxlogined.code, encryptedData: wxuserinfo.encryptedData, iv: wxuserinfo.iv }).then(function (wxuid) {
                   let signuser = {};
                   signuser['uid'] = wxuid.uId;
@@ -51,7 +51,7 @@ function openWxLogin(roleData) {            //注册登录（本机登录状态�
         } else { reject({ ec: 3, ee: '微信用户登录返回code失败！' }) };
       },
       fail: function (err) {
-        reject({ ec: 4, ee: err.errMsg }); }     //微信用户登录失败
+        reject({ ec: 4, ee: err.errMsg }); }     //获取微信用户权限失败
     })
   });
 };

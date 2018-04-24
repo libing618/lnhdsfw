@@ -28,21 +28,31 @@ var app = getApp()
       })
     }.bind(that), 200)
   };
-function controlModal(that,showPage,hidePage){
-  var animation = wx.createAnimation({      //遮罩层
-    duration: 200,
-    timingFunction: "linear",
-    delay: 0
-  })
-  that.animation = animation;
-  animation.translateY(300).step();
-  showPage.animationData = animation.export();
+function popModal(that,showPage){
+  if (typeof that.animation!='function'){
+    that.animation = wx.createAnimation({      //遮罩层
+      duration: 200,
+      timingFunction: "linear",
+      delay: 0
+    })
+  }
+  that.animation.height(app.sysinfo.pw.cwHeight).translateY(app.sysinfo.pw.cwHeight).step();
+  showPage.animationData = that.animation.export();
   that.setData(showPage)
   setTimeout(function () {
-    animation.translateY(0).step()
-    hidePage.animationData = animation.export();
-    that.setData(hidePage)
+    that.animation.translateY(0).step()
+    that.setData({ animationData: that.animation.export() });
   }.bind(that), 200)
+};
+function downModal(that,hidePage){
+  animation = animation;
+  that.animation.translateY(-300).step();
+  that.setData({ animationData: that.animation.export() });
+  setTimeout(function () {
+    that.animation.translateY(0).step();
+    hidePage.animationData = that.animation.export();
+    that.setData(hidePage);
+  }, 200)
 }
 module.exports = {
 
@@ -57,16 +67,18 @@ module.exports = {
         that.data.cPage[that.data.ht.pageCk].splice(oldNo, 1);
         hidePage.pageName = 'tabPanelToModal';
         hidePage.cPage = that.data.cPage;
+        downModal(that,hidePage)
         break;
       case 'fBack':                  //返回
         hidePage.pageName = 'tabPanelToModal';
+        downModal(that,hidePage)
         break;
       default:                  //打开弹出页
         showPage.idClicked = id;
         showPage.pageName = dataset.pname;
+        popModal(that,showPage)
         break;
     }
-    controlModal(that,showPage,hidePage);
   },
 
   i_modalAddressBox: function ({ currentTarget:{id,dataset},detail:{value} }) {
