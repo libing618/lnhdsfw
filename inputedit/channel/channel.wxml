@@ -1,5 +1,7 @@
 <import src="../../libs/wepage.wxml" />
 <view class="page">
   <template is="p_navBar__headTab" data="{{...pw,...ht}}"/>
-  <template is="p_{{pageName}}" data="{{pageName,animationData,tPage:cPage[ht.pageCk], pageData,reqData,idClicked,smtName:ht.modalBtn[ht.pageCk]}}"/>
+  <!-- <view wx:if="{{pageName=='modalSwitchBox'}}"> -->
+  <template is="p_{{pageName}}" data="{{showModalBox,animationData,tPage:cPage[ht.pageCk], pageData,reqData,idClicked,smtName:ht.modalBtn[ht.pageCk]}}"/>
+
 </view>

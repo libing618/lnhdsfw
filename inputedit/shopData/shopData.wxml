@@ -57,38 +57,38 @@
     </view>
     <view wx:else>
       <view class="page__hd">
-      <view class="weui-cell">
+        <view class="weui-cell">
             <button open-type="share">招募渠道合伙人</button>
-          </view>
+        </view>
         <view class="page__title">已签约渠道合伙人</view>
-      </view>
-      <view class="page__bd page__bd_spacing">
-        <block wx:for="{{roleUser[1]}}" wx:key="{{index}}" class="weui-cell">
-          <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
-            <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-              <image class="weui-media-box__thumb" src="{{aUser[item].avatarUrl}}" background-size="cover"></image>
+        <view class="page__bd page__bd_spacing">
+          <block wx:for="{{roleUser[1]}}" wx:key="{{index}}" class="weui-cell">
+            <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
+              <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+                <image class="weui-media-box__thumb" src="{{aUser[item].avatarUrl}}" background-size="cover"></image>
+              </view>
+              <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+                <view class="weui-media-box__title">{{aUser[item].uName}}(呢称：{{aUser[item].nickName}})</view>
+                <button id="mr_4" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fManageRole">解约</button>
+              </view>
             </view>
-            <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-              <view class="weui-media-box__title">{{aUser[item].uName}}(呢称：{{aUser[item].nickName}})</view>
-              <button id="mr_4" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fManageRole">解约</button>
+          </block>
+        </view>
+        <view class="page__title">应募渠道合伙人</view>
+        <view class="page__bd page__bd_spacing">
+          <block wx:for="{{applyUser[1]}}" wx:key="{{createdAt}}" class="weui-cell">
+            <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
+              <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+                <image class="weui-media-box__thumb" src="{{aUser[item].avatarUrl}}" background-size="cover"></image>
+              </view>
+              <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+                <view class="weui-media-box__title">{{aUser[item].uName}}(呢称：{{aUser[item].nickName}})</view>
+                <button id="mr_2" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fManageRole">同意</button>
+                <button id="mr_3" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fManageRole">拒绝</button>
+              </view>
             </view>
-          </view>
-        </block>
-      </view>
-      <view class="page__title">应募渠道合伙人</view>
-      <view class="page__bd page__bd_spacing">
-        <block wx:for="{{applyUser[0]}}" wx:key="{{createdAt}}" class="weui-cell">
-          <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
-            <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-              <image class="weui-media-box__thumb" src="{{aUser[item].avatarUrl}}" background-size="cover"></image>
-            </view>
-            <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-              <view class="weui-media-box__title">{{aUser[item].uName}}(呢称：{{aUser[item].nickName}})</view>
-              <button id="mr_2" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fManageRole">同意</button>
-              <button id="mr_3" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fManageRole">拒绝</button>
-            </view>
-          </view>
-        </block>
+          </block>
+        </view>
       </view>
     </view>
   </view>

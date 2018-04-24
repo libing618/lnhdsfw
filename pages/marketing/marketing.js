@@ -41,10 +41,9 @@ Page({
       readAllData(true, 'goods').then(isupdated => {
         this.setData({
           tiringRoom: app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom,
-          mPage: app.mData.goods,
-          pageData: app.aData.goods,
           goodsIndex: app.configData.goodsIndex
         });
+        that.setPage(true)
       })
     }).catch(console.error);
   },
@@ -96,7 +95,7 @@ Page({
     }
   },
 
-  indexClick:indexClick,
+  f_pickSlave:indexClick,
 
   onPullDownRefresh: function() {
     readAllData(true,'goods').then(isupdated=>{ this.setPage(isupdated) });

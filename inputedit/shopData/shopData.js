@@ -60,8 +60,8 @@ Page({
           });
           that.setData({
             mRolJsons: mRolJsons,
-            roleUser: [channel,partner],
-            applyUser: [aChannel,aPartner],
+            roleUser: [partner,channel],
+            applyUser: [aPartner,aChannel],
             aUser: that.aUser
           });
         }).catch(console.error);
@@ -71,7 +71,7 @@ Page({
     };
   },
 
-  tabClick: function (e) {                                //点击tab
+  hTabClick: function (e) {                                //点击tab
     let pCk = Number(e.currentTarget.id)
     this.setData({
       "ht.pageCk": pCk,               //点击序号切换

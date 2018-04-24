@@ -14,20 +14,20 @@ function openWxLogin(roleData) {            //注册登录（本机登录状态�
     wx.getSetting({
       success: ({authSetting:{scope}})=> {
         if (scope.userInfo) {
-          let wxuserifnfo = {}
           wx.login({
             success: function (wxlogined) {
               if (wxlogined) {
-                AV.Cloud.run('wxLogin'+wxappNumber, { code: wxlogined.code, encryptedData: wxuserinfo.encryptedData, iv: wxuserinfo.iv }).then(function (wxuid) {
+                AV.Cloud.run('wxLogin'+wxappNumber, { code: wxlogined.code }).then(function (wxuid) {
+                  let wxLoginClass = 'wxapp' + wxappNumber;
                   let signuser = {};
-                  signuser['uid'] = wxuid.uId;
-                  AV.User.signUpOrlogInWithAuthData(signuser, 'openWx').then((statuswx) => {    //用户在云端注册登录
+                  signuser['uid'] = wxuid.uId ? wxuid.uId : wxuid.oId;
+                  AV.User.signUpOrlogInWithAuthData(signuser, wxuid.uId ? 'openWx' : wxLoginClass).then((statuswx) => {    //用户在云端注册登录
                     if (statuswx.createdAt != statuswx.updatedAt){          //客户已注册,在本机登录成功
                       roleData.user = statuswx.toJSON();
                       resolve(roleData);
                     } else {                         //客户在本机授权登录则保存信息
                       let newUser = wxuserinfo.userInfo;
-                      newUser['wxapp' + wxappNumber] = wxuid.oId;         //客户第一次登录时将openid保存到数据库且客户端不可见
+                      newUser[wxLoginClass] = wxuid.oId;         //客户第一次登录时将openid保存到数据库且客户端不可见
                       newUser.sjid = roleData.user.sjid;
                       newUser.goodsIndex = roleData.user.goodsIndex;
                       newUser.channelid = roleData.user.userRolName=='0' ? roleData.user.channelid : statuswx.id;

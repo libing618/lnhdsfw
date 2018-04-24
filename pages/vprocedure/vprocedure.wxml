@@ -9,7 +9,7 @@
     </view>
   </view>
   <view style="padding-top:{{pw.statusBar+pw.capsule}}px;"></view>
-  <view class="page__sub" id="approval-{{pNo}}">
+  <view class="page__sub" id="approval-{{pno}}">
     <view class="page__bd page__ac_spacing">
       <block wx:for="{{reqData}}" wx:key="index">
         <template is="s_{{item.t}}" data="{{...item, c:vData[item.gname]}}"></template>
@@ -28,7 +28,6 @@
         <button class="buy" bindtap="showModal">购买</button>
         <button class="give" bindtap="giveshowModal">赠送</button>
       </view>
-
       <view wx:if="{{buyshowModalStatus}}" class="buy_screen">
         <view class="buy_attr_box">
           <view class="close_icon" bindtap="hideModal">×</view>

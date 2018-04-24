@@ -185,7 +185,7 @@ App({
           that.sysinfo.pw={
             statusBar: res.statusBarHeight,
             capsule: res.screenHeight - res.windowHeight-8,
-            cwHeight: 2 * res.windowHeight - res.screenHeight - res.statusBarHeight -50
+            cwHeight: res.windowHeight - res.statusBarHeight
           }
         };
       }
