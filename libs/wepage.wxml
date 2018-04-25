@@ -133,11 +133,40 @@
 </view>
 </template>
 
+<template name="p_modalFieldBox">
+<view class="modal_box" id="fBack" bindtap="f_modalSwitchBox">
+  <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
+    <view class="page__hd">
+      <view class="page__title">{{vData[idClicked].uName}}</view>
+      <view class="close_icon" id="fBack" bindtap="f_modalSwitchBox">×</view>
+    </view>
+    <view class="page__ac_spacing">
+      <view class="drawer_attr_content">
+        <block wx:for="{{reqData}}" wx:key="index">
+          <template is="s_{{item.t}}" data="{{...item, c:pageData[idClicked][item.gname]}}"/>
+        </block>
+      </view>
+    </view>
+    <view style="padding-bottom:100rpx;"></view>
+  </view>
+  <view wx:if="{{showModalBox}}" class="page__ft weui-footer_fixed-bottom">
+    <view wx:if="{{smtName}}">
+      <button class="weui-btn" size="mini" bindtap="f_modalSwitchBox" id="fSwitch">{{smtName}}</button>
+      <button class="weui-btn" type="primary" size="mini" bindtap="f_modalSwitchBox" id="fBack">返回</button>
+    </view>
+    <view wx:else>
+      <button bindtap="hideModal" id="fBack">我知道了</button>
+    </view>
+  </view>
+</view>
+</template>
+
 <template name="p_modalAddressBox">
-<view wx:if="{{pageName=='modalAddressBox'}}" class="modal_box" bindtap="i_modalAddressBox">
-  <view class="page__title" style="margin-top:{{statusBar+capsule}}px;">{{p}}</view>
-  <view class="close_icon" id="fBack" bindtap="i_modalAddressBox">×</view>
-  <view animation="{{animationData}}" class="modal_attr_box" wx:if="{pageName=='modalAddressBox'}}">
+<view class="modal_box" id="fBack" bindtap="i_modalAddressBox">
+<form bindsubmit="i_modalAddressBox">
+  <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
+    <view class="page__title">{{reqData[n].p}}</view>
+    <view class="close_icon" id="fBack" bindtap="i_modalAddressBox">×</view>
     <view class="page__hd">
       <view class="page__title">选择区(县)</view>
         <picker-view indicator-style="height: 40rpx;" style="width: 100%; height: 300rpx;" value="{{adcvalue}}" id="faddclass" bindchange="i_modalAddressBox">
@@ -163,26 +192,20 @@
         </picker-view>
       </view>
     </view>
-    <form class="page__bd" bindsubmit="i_modalAddressBox">
-      <view class="weui-cells__title">详细地址:</view>
-      <view class="weui-cells weui-cells_after-title">
-        <view class="weui-cell">
-          <view class="weui-cell__bd">
-            <textarea class="weui-textarea" auto-height name="address1" value="{{address1}}" />
-          </view>
-        </view>
-        <view class="weui-cell">
-          <view class="weui-cell__bd">
-            <textarea class="weui-textarea" auto-height name="address2" value="{{address2}}" />
-          </view>
+    <view class="weui-cells__title">详细地址:</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell">
+        <view class="weui-cell__bd">
+          <textarea class="weui-textarea" auto-height name="address1" value="{{address1 ? address1 : vData[reqData[n].gname].sName}}" />
         </view>
       </view>
-      <view style="padding-bottom:100rpx;"></view>
-      <view class="page__ft weui-footer_fixed-bottom">
-        <button class="weui-btn" formType="submit" size="mini" id="fSave">确定</button>
-        <button class="weui-btn" type="primary" size="mini" bindtap="i_modalAddressBox" id="fBack">返回</button>
-      </view>
-    </form>
+    </view>
+    <view style="padding-bottom:100rpx;"></view>
   </view>
+  <view class="page__ft weui-footer_fixed-bottom">
+    <button class="weui-btn" formType="submit" size="mini" id="fSave">确定</button>
+    <button class="weui-btn" type="primary" size="mini" bindtap="i_modalAddressBox" id="fBack">返回</button>
+  </view>
+</form>
 </view>
 </template>

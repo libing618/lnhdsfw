@@ -1,35 +1,6 @@
 const AV = require('../libs/leancloud-storage.js');
-var app = getApp()
-
-  function f_modalSwitchModal({ currentTarget: { id } }) {
-    var that = this;
-    if (id == 'fSwitch') {                  //确认切换到下一数组
-      let arrNext = (that.data.ht.pageCk + 1) == that.data.ht.fLength ? 0 : (that.data.ht.pageCk + 1);
-      that.data.cPage[arrNext].push(that.data.modalId);
-      let oldNo = that.data.cPage[that.data.ht.pageCk].indexOf(that.data.modalId);
-      that.data.cPage[that.data.ht.pageCk].splice(oldNo, 1);
-    };
-    var animation = wx.createAnimation({    // 隐藏遮罩层
-      duration: 200,
-      timingFunction: "linear",
-      delay: 0
-    })
-    that.animation = animation
-    animation.translateY(300).step()
-    that.setData({
-      animationData: animation.export(),
-      
-    })
-    setTimeout(function () {
-      animation.translateY(0).step()
-      that.setData({
-        animationData: animation.export(),
-        cPage: that.data.cPage,
-        pageName: 'tabPanelToModal'
-      })
-    }.bind(that), 200)
-  };
-function popModal(that,showPage){
+var app = getApp();
+function popModal(that){
   if (typeof that.animation=='undefined'){
     that.animation = wx.createAnimation({      //遮罩层
       duration: 200,
@@ -39,7 +10,6 @@ function popModal(that,showPage){
   }
   that.animation.height(app.sysinfo.pw.cwHeight).translateY(app.sysinfo.pw.cwHeight).step();
   that.setData({ animationData: that.animation.export() });
-//  that.setData(showPage)
   setTimeout(function () {
     that.animation.translateY(0).step()
     that.setData({
@@ -62,7 +32,7 @@ module.exports = {
 
   f_modalSwitchBox: function ({ currentTarget:{id,dataset} }) {
     var that = this;
-    let showPage = {},hidePage = {};
+    let hidePage = {};
     switch (id) {
       case 'fSwitch':                  //确认切换到下一数组并返回
         let arrNext = (that.data.ht.pageCk + 1) == that.data.ht.fLength ? 0 : (that.data.ht.pageCk + 1);
@@ -78,9 +48,10 @@ module.exports = {
         downModal(that,hidePage)
         break;
       default:                  //打开弹出页
-        showPage.idClicked = id;
-        showPage.pageName = dataset.pname;
-        that.setData(showPage);
+        that.setData({
+          idClicked: id,
+          pageName: dataset.pname
+        });
         popModal(that)
         break;
     }
@@ -93,22 +64,23 @@ module.exports = {
     switch (id) {
       case 'fSave':                  //确认返回数据
         hidePage.pageName = 'editFieldToModal';
-        hidePage.vData[that.data.gname] =  { code: that.data.saddv, sName: value.address1 + value.address2 };
-        controlModal(showPage,hidePage)
+        hidePage.vData[that.data.reqData[n].gname] =  { code: that.data.saddv, sName: value.address1 };
+        downModal(that,hidePage)
         break;
       case 'fBack':                  //返回
         hidePage.pageName = 'editFieldToModal';
-        controlModal(showPage,hidePage)
+        downModal(that,hidePage)
         break;
       case 'faddclass':                  //选择行政区划
         showPage.saddv = 0;
         if (that.data.adcvalue[0] == value[0]){
           if (that.data.adcvalue[1] == value[1]) {
             showPage.saddv = that.data.adclist[value[0]].st[value[1]].ct[value[2]].c;
-            that.setData({ address1: that.data.adclist[val[0]].n + that.data.adclist[val[0]].st[val[1]].n + that.data.adclist[val[0]].st[val[1]].ct[val[2]].n });
+            showPage.address1: that.data.adclist[val[0]].n + that.data.adclist[val[0]].st[val[1]].n + that.data.adclist[val[0]].st[val[1]].ct[val[2]].n;
           } else { value[2]=0 }
         } else { value[1]=0 }
-        that.setData({ adcvalue: value, saddv: saddv });
+        showPage.adcvalue = value;
+        that.setData(showPage);
         break;
       case 'raddgroup':                  //读村镇区划数据
         if (that.data.saddv != 0) {
@@ -138,6 +110,8 @@ module.exports = {
         };
         showPage.n = parseInt(dataset.n)      //数组下标;
         showPage.pageName = id;
+        that.setData(showPage);
+        popModal(that);
         break;
     }
   }

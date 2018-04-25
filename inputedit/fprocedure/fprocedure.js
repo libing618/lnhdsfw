@@ -11,6 +11,7 @@ Page({
     targetId: '0',              //流程申请表的ID
     dObjectId: '0',             //已建数据的ID作为修改标志，0则为新建
     vData: {},
+    fieldFormat: {},
     reqData: []
   },
   onLoad: function (options) {        //传入参数为tgId或pNo/artId,不得为空
