@@ -59,7 +59,7 @@
   <view style="padding-top:{{statusBar+capsule}}px;"></view>
 </template>
 
-<template name="p_tabPanelToModal">
+<template name="p_tabPanelPage">
 <view class="page__sub" id="model-{{pNo}}">
   <view class="weui-tab__panel">
     <block wx:for="{{tPage}}" wx:key="{{index}}">
@@ -76,14 +76,14 @@
   </view>
   <view style="padding-bottom:100rpx;"></view>
   <view class="page__ft weui-footer_fixed-bottom">
-    <button class="weui-btn" type="warn" bindtap="f_tabPanelToModal" id="fSave">提交</button>
-    <button class="weui-btn" type="primary" bindtap="f_tabPanelToModal" id="fBack">暂存</button>
+    <button class="weui-btn" type="warn" bindtap="f_tabPanelPage" id="fSave">提交</button>
+    <button class="weui-btn" type="primary" bindtap="f_tabPanelPage" id="fBack">暂存</button>
   </view>
 </view>
 </template>
 
-<template name="p_editFieldToModal">
-<view wx:if="{{pageName=='editFieldToModal'}}" class="page__sub" id="model-{{pNo}}">
+<template name="p_editFields">
+<view wx:if="{{pageName=='editFields'}}" class="page__sub" id="model-{{pNo}}">
 <form bindsubmit="fSubmit">
   <view class="page__bd_spacing" id="{{targetId}}">
     <block wx:for="{{reqData}}" wx:key="index">
@@ -109,26 +109,21 @@
 <view class="modal_box" id="fBack" bindtap="f_modalSwitchBox">
   <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
     <view class="page__hd">
-      <view class="page__title">{{pageData[idClicked].uName}}</view>
+      <view class="page__title">{{pageData[targetId].uName}}</view>
       <view class="close_icon" id="fBack" bindtap="f_modalSwitchBox">×</view>
     </view>
     <view class="page__ac_spacing">
       <view class="drawer_attr_content">
         <block wx:for="{{reqData}}" wx:key="index">
-          <template is="s_{{item.t}}" data="{{...item, c:pageData[idClicked][item.gname]}}"/>
+          <template is="s_{{item.t}}" data="{{...item, c:pageData[targetId][item.gname]}}"/>
         </block>
       </view>
     </view>
     <view style="padding-bottom:100rpx;"></view>
   </view>
   <view wx:if="{{showModalBox}}" class="page__ft weui-footer_fixed-bottom">
-    <view wx:if="{{smtName}}">
-      <button class="weui-btn" size="mini" bindtap="f_modalSwitchBox" id="fSwitch">{{smtName}}</button>
-      <button class="weui-btn" type="primary" size="mini" bindtap="f_modalSwitchBox" id="fBack">返回</button>
-    </view>
-    <view wx:else>
-      <button bindtap="hideModal" id="fBack">我知道了</button>
-    </view>
+    <button class="weui-btn" size="mini" bindtap="f_modalSwitchBox" id="fSwitch">{{smtName}}</button>
+    <button class="weui-btn" type="primary" size="mini" bindtap="f_modalSwitchBox" id="fBack">返回</button>
   </view>
 </view>
 </template>
@@ -137,26 +132,20 @@
 <view class="modal_box" id="fBack" bindtap="f_modalSwitchBox">
   <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
     <view class="page__hd">
-      <view class="page__title">{{vData[idClicked].uName}}</view>
+      <view class="page__title">{{pageData[targetId].uName}}</view>
       <view class="close_icon" id="fBack" bindtap="f_modalSwitchBox">×</view>
     </view>
     <view class="page__ac_spacing">
       <view class="drawer_attr_content">
         <block wx:for="{{reqData}}" wx:key="index">
-          <template is="s_{{item.t}}" data="{{...item, c:pageData[idClicked][item.gname]}}"/>
+          <template is="s_{{item.t}}" data="{{...item, c:pageData[targetId][item.gname]}}"/>
         </block>
       </view>
     </view>
     <view style="padding-bottom:100rpx;"></view>
   </view>
   <view wx:if="{{showModalBox}}" class="page__ft weui-footer_fixed-bottom">
-    <view wx:if="{{smtName}}">
-      <button class="weui-btn" size="mini" bindtap="f_modalSwitchBox" id="fSwitch">{{smtName}}</button>
-      <button class="weui-btn" type="primary" size="mini" bindtap="f_modalSwitchBox" id="fBack">返回</button>
-    </view>
-    <view wx:else>
-      <button bindtap="hideModal" id="fBack">我知道了</button>
-    </view>
+    <button bindtap="hideModal" id="fBack">我知道了</button>
   </view>
 </view>
 </template>

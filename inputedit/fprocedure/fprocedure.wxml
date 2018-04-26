@@ -23,5 +23,5 @@
 </view> -->
 <view class="page">
   <template is="p_navBar__back" data="{{...pw,navBarTitle}}"/>
-  <template is="p_{{pageName}}" data="{{showModalBox,animationData,reqData, vData, n,...fieldFormat}}"/>
+  <template is="p_{{sPages[sPages.length-1].pageName}}" data="{{...sPages[sPages.length-1]}}"/>
 </view>

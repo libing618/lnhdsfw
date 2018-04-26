@@ -14,7 +14,7 @@ Page({
   },
   inFamily:false,
   startTime: new Date(),
-
+  sPages: ['viewFields'],
   onLoad: function(options) {
     var that = this ;
     let rtUrl = 0;

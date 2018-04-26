@@ -14,6 +14,7 @@ Page({
     fieldFormat: {},
     reqData: []
   },
+  sPages: ['editFields'],
   onLoad: function (options) {        //传入参数为tgId或pNo/artId,不得为空
     var that = this;
     let aaData;

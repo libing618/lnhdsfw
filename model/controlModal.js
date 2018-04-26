@@ -39,36 +39,67 @@ module.exports = {
         that.data.cPage[arrNext].push(that.data.modalId);
         let oldNo = that.data.cPage[that.data.ht.pageCk].indexOf(that.data.modalId);
         that.data.cPage[that.data.ht.pageCk].splice(oldNo, 1);
-        hidePage.pageName = 'tabPanelToModal';
         hidePage.cPage = that.data.cPage;
+        that.data.sPages.pop();
+        hidePage.sPages = that.data.sPages;
         downModal(that,hidePage)
         break;
       case 'fBack':                  //返回
-        hidePage.pageName = 'tabPanelToModal';
-        downModal(that,hidePage)
+        that.data.sPages.pop();
+        hidePage.sPages = that.data.sPages;
+        downModal(that,hidePage);
         break;
       default:                  //打开弹出页
+        let newPage = {
+          that.data.showModalBox,
+          that.data.animationData,
+          targetId: id,
+          that.data.reqData
+        };
+        newPage.smtName = that.data.ht.modalBtn[that.data.ht.pageCk];
+        newPage.pageName = 'modalSwitchBox';
         that.setData({
-          idClicked: id,
-          pageName: dataset.pname
+          sPages: that.data.sPages.push(newPage)
         });
         popModal(that)
         break;
     }
   },
 
-  i_modalAddressBox: function ({ currentTarget:{id,dataset},detail:{value} }) {
+  f_modalFieldBox: function ({ currentTarget:{id,dataset} }) {
     var that = this;
-    let showPage = {},hidePage = {};
-    hidePage.fieldFormat = {};
+    let hidePage = {};
+    switch (id) {
+      case 'fBack':                  //返回
+        that.data.sPages.pop();
+        hidePage.sPages = that.data.sPages;
+        downModal(that,hidePage);
+        break;
+      default:                  //打开弹出页
+      that.data.pageData[]
+        let showPage = {};
+        showPage['pageData.'+id] = app.aData[dataset.pNo][id];
+        showPage.sPages: that.data.sPages.push({showModalBox,animationData,pageName:'modalFieldBox',targetId:id,pageData,reqData: require('procedureclass.js')[dataset.pNo].pSuccess});
+        that.setData(showPage);
+        popModal(that)
+        break;
+    }
+    downModal(that,hidePage)
+  },
+
+  i_modalAddressBox: function ({ currentTarget:{id,dataset},detail:{value} }) {      //地址编辑
+    var that = this;
+    let hidePage = {};
     switch (id) {
       case 'fSave':                  //确认返回数据
-        hidePage.pageName = 'editFieldToModal';
         hidePage.vData[that.data.reqData[n].gname] =  { code: that.data.saddv, sName: value.address1 };
+        that.data.sPages.pop();
+        hidePage.sPages = that.data.sPages;
         downModal(that,hidePage)
         break;
       case 'fBack':                  //返回
-        hidePage.pageName = 'editFieldToModal';
+        that.data.sPages.pop();
+        hidePage.sPages = that.data.sPages;
         downModal(that,hidePage)
         break;
       case 'faddclass':                  //选择行政区划
@@ -76,7 +107,7 @@ module.exports = {
         if (that.data.adcvalue[0] == value[0]){
           if (that.data.adcvalue[1] == value[1]) {
             showPage.saddv = that.data.adclist[value[0]].st[value[1]].ct[value[2]].c;
-            showPage.address1: that.data.adclist[val[0]].n + that.data.adclist[val[0]].st[val[1]].n + that.data.adclist[val[0]].st[val[1]].ct[val[2]].n;
+            showPage.address1 = that.data.adclist[val[0]].n + that.data.adclist[val[0]].st[val[1]].n + that.data.adclist[val[0]].st[val[1]].ct[val[2]].n;
           } else { value[2]=0 }
         } else { value[1]=0 }
         showPage.adcvalue = value;
@@ -101,16 +132,20 @@ module.exports = {
         that.setData(showPage);
         break;
       case 'modalAddressBox':                  //打开弹出页
-        showPage.fieldFormat = {
+        let newPage = {
+          showModalBox,
+          animationData,
+          vData,
+          reqData,
           adclist: require('addresclass.js'),   //读取行政区划分类数据
           adglist: [],
           saddv: 0,
           adcvalue: [3, 9, 15],
           adgvalue: [0, 0]
         };
-        showPage.n = parseInt(dataset.n)      //数组下标;
-        showPage.pageName = id;
-        that.setData(showPage);
+        newPage.n = parseInt(dataset.n)      //数组下标;
+        newPage.pageName = 'modalAddressBox';
+        that.setData({sPages: that.data.sPages.push(newPage)});
         popModal(that);
         break;
     }

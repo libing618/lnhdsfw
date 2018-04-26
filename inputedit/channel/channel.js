@@ -15,7 +15,8 @@ Page({
       pageCk: 0
     },
     cPage: [],
-    pageName: 'tabPanelToModal',
+    pageName: 'tabPanels',
+    sPages: ['tabPanels'],
     pageData: app.aData.manufactor,
     reqData: require('../../model/procedureclass').manufactor.pSuccess,
     idClicked: '0'
@@ -44,7 +45,7 @@ Page({
 
   f_modalSwitchBox: f_modalSwitchBox,
 
-  f_tabPanelToModal:function({target:{id}}){
+  f_tabPanelPage:function({target:{id}}){
     var that = this;
     console.log(id)
     app.configData.goods.fConfig = that.data.cPage[0];
