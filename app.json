@@ -78,11 +78,10 @@
     {
       "root": "inputedit",
       "pages": [
-        "import/addressedit",
+        "import/goodsindex",
         "shopData/shopData",
         "communication/communication",
         "channel/channel",
-        "goods/goods",
         "redpackets/redpackets",
         "storeflow/storeflow",
         "closerate/closerate",

@@ -1,48 +1,42 @@
-//签约厂家
+// 店铺货架
 const AV = require('../../libs/leancloud-storage.js');
 const {checkRols,hTabClick} = require('../../libs/util.js');
-const { updateData } = require('../../model/initupdate');
+const { readAllData } = require('../../model/initupdate');
 const {f_modalSwitchBox} = require('../../model/controlModal');
 var app = getApp()
 Page({
   data:{
-    pNo: 'manufactor',
+    pNo: 'goods',
     pw: app.sysinfo.pw,
     ht:{
-      navTabs: ['已签约厂家','未签约厂家'],
-      modalBtn: ['解约','签约'],
+      navTabs: ['推荐排名','尚未推荐'],
+      modalBtn: ['移出','推荐'],
       fLength: 2,
       pageCk: 0
     },
-    cPage: [app.configData.goods.fConfig,[]],
-    pageData: app.aData.manufactor,
+    qd:['分红比例',app.roleData.user.userRolName],
+    cPage: [app.configData.goodsindex,[]],
+    pageData: app.aData.goods,
     sPages: [{
       pageName: 'tabPanelPage'
     }],
-    reqData: require('../../model/procedureclass').manufactor.pSuccess,
+    reqData: require('../../model/procedureclass').goods.pSuccess,
     showModalBox: false,
     animationData: {}
   },
   onLoad:function(options){
     var that = this;
-    if (checkRols(9,app.roleData.user)) {
-      updateData(true,'manufactor').then(isupdated=>{
-        let mfData = app.mData.manufactor.filter(manufactorId=>{
-          return (app.configData.goods.fConfig.indexOf(manufactorId)<0)
+    if (checkRols(8,app.roleData.user)) {
+      readAllData(true,'goods').then(isupdated=>{
+        let mgData = app.mData.goods.filter(goodsId=>{
+          return (app.configData.goodsindex.indexOf(goodsId)<0)
         })
         that.setData({
-          cPage: [app.configData.goods.fConfig,mfData],
-          pageData: app.aData.manufactor
+          cPage: [app.configData.goodsindex,mgData],
+          pageData: app.aData.goods
         })
       }).catch(console.error);
     };
-  },
-
-  hTabClick: function (e) {                                //点击tab
-    let pCk = Number(e.currentTarget.id)
-    this.setData({
-      "ht.pageCk": pCk
-    });
   },
 
   hTabClick: hTabClick,

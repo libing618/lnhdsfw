@@ -180,17 +180,34 @@ module.exports = {
   },
 
   checkRols: function(ouRole,user){
-    if (user.userRolName=='admin' && user.emailVerified){
+    let crd = false;
+    switch (ouRole) {
+      case 9:
+        if (user.userRolName=='admin' && user.emailVerified){crd = true}
+        break;
+      case 8:
+        if (user.mobilePhoneVerified){crd = true}
+        break;
+      default:
+        let roleLine = parseInt(substring(user.userRolName,1,1));
+        if (user.emailVerified){
+          if (roleLine==ouRole || user.userRolName=='admin') {crd = true}
+        }
+        break;
+    }
+    if(crd) {
       return true;
     } else {
-      let roleLine = parseInt(substring(user.userRolName,1,1));
-      if (roleLine==ouRole && user.emailVerified) {
-        return true;
-      } else {
-        exitPage();
-        return false
-      }
+      exitPage();
+      return false
     }
+  },
+
+  hTabClick: function (e) {                                //点击tab
+    let pCk = Number(e.currentTarget.id)
+    this.setData({
+      "ht.pageCk": pCk
+    });
   },
 
   initConfig: function(configData) {

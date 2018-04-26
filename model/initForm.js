@@ -79,7 +79,7 @@ module.exports = {
   },
 
   readShowFormat: function (req, vData) {
-    var unitId = vData.unitId
+    var unitId = vData.unitId;
     return new Promise((resolve, reject) => {
       let promArr = [];                   //定义一个Promise数组
       let setPromise = new Set();
@@ -101,31 +101,35 @@ module.exports = {
         };
         return reqField;
       })
-      if (setPromise) { setPromise.forEach(nPromise => { promArr.push(updateData(true, nPromise, unitId)) }) };
-      return Promise.all(promArr).then(() => {
-        for (let i = 0; i < reqData.length; i++) {
-          switch (reqData[i].t) {
-            case 'sObject':                    //对象选择字段
-              if (reqData[i].gname != 'goodstype') { reqData[i].slave = app.aData[reqData[i].gname][vData[reqData[i].gname]]; };
-              break;
-            case 'specsel':                    //规格选择字段
-              reqData[i].master = {};
-              reqData[i].slave = {};
-              app.aData.goods[vData.objectId].specs = app.mData.specs[unitId].filter(slaveId => { return app.aData.specs[slaveId].goods == vData.objectId });
-              app.aData.goods[vData.objectId].specs.forEach(specsId => {
-                reqData[i].master[specsId] = app.aData.specs[specsId];
-                reqData[i].slave[specsId] = app.aData.cargo[app.aData.specs[specsId].cargo];
-              });
-              break;
-            case 'sId':
-              reqData[i].thumbnail = app.aData[reqData[i].gname][vData[reqData[i].gname]].thumbnail;
-              reqData[i].uName = app.aData[reqData[i].gname][vData[reqData[i].gname]].uName;
-              reqData[i].title = app.aData[reqData[i].gname][vData[reqData[i].gname]].title;
-              break;
+      if (setPromise) {
+        setPromise.forEach(nPromise => { promArr.push(updateData(true, nPromise, unitId)) });
+        return Promise.all(promArr).then(() => {
+          for (let i = 0; i < reqData.length; i++) {
+            switch (reqData[i].t) {
+              case 'sObject':                    //对象选择字段
+                if (reqData[i].gname != 'goodstype') { reqData[i].slave = app.aData[reqData[i].gname][vData[reqData[i].gname]]; };
+                break;
+              case 'specsel':                    //规格选择字段
+                reqData[i].master = {};
+                reqData[i].slave = {};
+                app.aData.goods[vData.objectId].specs = app.mData.specs[unitId].filter(slaveId => { return app.aData.specs[slaveId].goods == vData.objectId });
+                app.aData.goods[vData.objectId].specs.forEach(specsId => {
+                  reqData[i].master[specsId] = app.aData.specs[specsId];
+                  reqData[i].slave[specsId] = app.aData.cargo[app.aData.specs[specsId].cargo];
+                });
+                break;
+              case 'sId':
+                reqData[i].thumbnail = app.aData[reqData[i].gname][vData[reqData[i].gname]].thumbnail;
+                reqData[i].uName = app.aData[reqData[i].gname][vData[reqData[i].gname]].uName;
+                reqData[i].title = app.aData[reqData[i].gname][vData[reqData[i].gname]].title;
+                break;
+            }
           }
-        }
-        resolve(reqData);
-      });
+          resolve({reqData,fModal:true});
+        });
+      } else {
+        resolve({reqData,fModal: false});
+      };
     }).catch(console.error);
   },
 

@@ -2,6 +2,6 @@
 <view class="page">
   <template is="p_navBar__headTab" data="{{...pw,...ht}}"/>
   <!-- <view wx:if="{{pageName=='modalSwitchBox'}}"> -->
-  <template is="p_{{sPages[sPages.length-1].pageName}}" data="{{showModalBox,animationData,tPage:cPage[ht.pageCk], pageData,reqData,idClicked,smtName:ht.modalBtn[ht.pageCk]}}"/>
+  <template is="p_{{sPages[sPages.length-1].pageName}}" data="{{showModalBox,animationData,tPage:cPage[ht.pageCk], pageData,reqData,...sPages[sPages.length-1]}}"/>
 
 </view>

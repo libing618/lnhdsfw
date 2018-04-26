@@ -16,12 +16,15 @@ function popModal(that){
       animationData: that.animation.export(),
       showModalBox: true
     });
-  }.bind(that), 200)
+  }, 200)
 };
 function downModal(that,hidePage){
   that.animation.translateY(-app.sysinfo.pw.cwHeight).step();
   that.setData({ animationData: that.animation.export() });
   setTimeout(function () {
+    let sPages = that.data.sPages;
+    sPages.pop();
+    hidePage.sPages = sPages;
     that.animation.translateY(0).step();
     hidePage.animationData = that.animation.export();
     hidePage.showModalBox = false;
@@ -40,26 +43,19 @@ module.exports = {
         let oldNo = that.data.cPage[that.data.ht.pageCk].indexOf(that.data.modalId);
         that.data.cPage[that.data.ht.pageCk].splice(oldNo, 1);
         hidePage.cPage = that.data.cPage;
-        that.data.sPages.pop();
-        hidePage.sPages = that.data.sPages;
         downModal(that,hidePage)
         break;
       case 'fBack':                  //返回
-        that.data.sPages.pop();
-        hidePage.sPages = that.data.sPages;
         downModal(that,hidePage);
         break;
       default:                  //打开弹出页
-        let newPage = {
-          that.data.showModalBox,
-          that.data.animationData,
+        that.data.sPages.push({
+          pageName: 'modalSwitchBox',
           targetId: id,
-          that.data.reqData
-        };
-        newPage.smtName = that.data.ht.modalBtn[that.data.ht.pageCk];
-        newPage.pageName = 'modalSwitchBox';
+          smtName: that.data.ht.modalBtn[that.data.ht.pageCk]
+        });
         that.setData({
-          sPages: that.data.sPages.push(newPage)
+          sPages: that.data.sPages
         });
         popModal(that)
         break;
@@ -71,20 +67,16 @@ module.exports = {
     let hidePage = {};
     switch (id) {
       case 'fBack':                  //返回
-        that.data.sPages.pop();
-        hidePage.sPages = that.data.sPages;
         downModal(that,hidePage);
         break;
       default:                  //打开弹出页
-      that.data.pageData[]
         let showPage = {};
         showPage['pageData.'+id] = app.aData[dataset.pNo][id];
-        showPage.sPages: that.data.sPages.push({showModalBox,animationData,pageName:'modalFieldBox',targetId:id,pageData,reqData: require('procedureclass.js')[dataset.pNo].pSuccess});
+        showPage.sPages = that.data.sPages.push({pageName:'modalFieldBox',targetId:id,reqData: require('procedureclass.js')[dataset.pNo].pSuccess});
         that.setData(showPage);
         popModal(that)
         break;
     }
-    downModal(that,hidePage)
   },
 
   i_modalAddressBox: function ({ currentTarget:{id,dataset},detail:{value} }) {      //地址编辑
@@ -93,13 +85,9 @@ module.exports = {
     switch (id) {
       case 'fSave':                  //确认返回数据
         hidePage.vData[that.data.reqData[n].gname] =  { code: that.data.saddv, sName: value.address1 };
-        that.data.sPages.pop();
-        hidePage.sPages = that.data.sPages;
         downModal(that,hidePage)
         break;
       case 'fBack':                  //返回
-        that.data.sPages.pop();
-        hidePage.sPages = that.data.sPages;
         downModal(that,hidePage)
         break;
       case 'faddclass':                  //选择行政区划
@@ -133,10 +121,7 @@ module.exports = {
         break;
       case 'modalAddressBox':                  //打开弹出页
         let newPage = {
-          showModalBox,
-          animationData,
-          vData,
-          reqData,
+          pageName: 'modalAddressBox',
           adclist: require('addresclass.js'),   //读取行政区划分类数据
           adglist: [],
           saddv: 0,
@@ -144,7 +129,6 @@ module.exports = {
           adgvalue: [0, 0]
         };
         newPage.n = parseInt(dataset.n)      //数组下标;
-        newPage.pageName = 'modalAddressBox';
         that.setData({sPages: that.data.sPages.push(newPage)});
         popModal(that);
         break;

@@ -43,7 +43,7 @@
 
 <template name="s_sObject">
   <view class="weui-cell">{{p}}:</view>
-  <view class="weui-cell" id="{{c}}">
+  <view class="weui-cell" id="{{c}}" data-pNo="{{gname}}" bingtap="f_modalFieldBox">
     <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
       <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
         <image class="weui-media-box__thumb" src="{{slave.thumbnail}}" background-size="cover"></image>
@@ -58,7 +58,7 @@
 
 <template name="s_sId">
   <view class="weui-cell">{{p}}:</view>
-  <view class="weui-cell" id="{{c}}">
+  <view class="weui-cell" id="{{c}}" data-pNo="{{gname}}" bingtap="f_modalFieldBox">
     <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
       <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
         <image class="weui-media-box__thumb" src="{{thumbnail}}" background-size="cover"></image>
@@ -87,7 +87,7 @@
   <view class="weui-cell">{{p}}:</view>
   <view class="weui-cells">
     <block wx:for="{{c}}" wx:key="{{index}}" wx:for-item="specsId">
-      <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
+      <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active" id="{{specsId}}" data-pNo="{{gname}}" bingtap="f_modalFieldBox">
         <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
           <image class="weui-media-box__thumb" src="{{master[specsId].thumbnail}}" background-size="cover"></image>
         </view>
