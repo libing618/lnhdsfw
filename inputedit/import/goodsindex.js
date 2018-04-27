@@ -16,7 +16,7 @@ Page({
     },
     pInfo: app.roleData.user.userRolName=='promoter' ? '推广分红:' : '渠道分红:',
     infoName: app.roleData.user.userRolName=='promoter' ? 'promoter' : 'channel',
-    cPage: [app.configData.goodsindex,[]],
+    cPage: [app.configData.goodsIndex,[]],
     pageData: app.aData.goods,
     sPages: [{
       pageName: 'tabPanelPage'
@@ -30,17 +30,10 @@ Page({
     if (checkRols(8,app.roleData.user)) {
       readAllData(true,'goods').then(isupdated=>{
         let mgData = app.mData.goods.filter(goodsId=>{
-          return (app.configData.goodsindex.indexOf(goodsId)<0)
+          return (app.configData.goodsIndex.indexOf(goodsId)<0)
         })
-        switch (app.roleData.user.userRolName) {
-          case expression:
-
-            break;
-          default:
-
-        };
         that.setData({
-          cPage: [app.configData.goodsindex,mgData],
+          cPage: [app.configData.goodsIndex,mgData],
           pageData: app.aData.goods
         })
       }).catch(console.error);
@@ -51,16 +44,16 @@ Page({
 
   f_modalSwitchBox: f_modalSwitchBox,
 
-  f_modalFieldBox: f_modalFieldBox;
+  f_modalFieldBox: f_modalFieldBox,
 
   f_tabPanelPage:function({currentTarget:{id}}){
     var that = this;
     app.configData.goodsindex = that.data.cPage[0];
     if (id=='fSave'){
-      AV.User.become(AV.User.current().getSessionToken()).select(['goodsindex']).then((rLoginUser) => {
-        let gIndex = rLoginUser.get('goodsindex');
+      AV.User.become(AV.User.current().getSessionToken()).select(['goodsIndex']).then((rLoginUser) => {
+        let gIndex = rLoginUser.get('goodsIndex');
         if (gIndex.toString()!=app.configData.goodsindex.toString()){
-          rLoginUser.set('goodsindex',app.configData.goodsindex).save().then(() => { resolve(roleData) });
+          rLoginUser.set('goodsIndex',app.configData.goodsindex).save().then(() => { resolve(roleData) });
         }
       })
     }

@@ -11,22 +11,14 @@
     <view class="page__hd">
       <view wx:if="{{tiringRoom}}">
         <scroll-view class="article-scroll" scroll-y="true">
-          <view class="weui-article">
-              <view class="weui-article__section">
-                <view class="weui-article__h3">营销活动</view>
-                <view class="weui-article__p">
-                    团购XX笔, 众筹XX笔，促销XX笔。
-                </view>
-              </view>
-              <view class="weui-article__section">
-                <view class="weui-article__h3">销售分析</view>
-                <view class="weui-article__p">
-                    一个月：访问量XX，成交率X%；发红包券XX张,使用XX张。
-                    本季度：访问量XX，成交率X%；发红包券XX张,使用XX张。
-                    今年以来：访问量XX，成交率X%；发红包券XX张,使用XX张。
-                </view>
+          <view class="weui-article__section">
+            <view class="weui-article__h3">销售分析</view>
+            <view class="weui-article__p">
+                一个月：访问量{{goodsCount.countMon}}，成交量{{orderCount.countMon}}；发红包券XX张,使用XX张。/n
+                今年以来：访问量{{goodsCount.countYear}}，成交量{{orderCount.countYear}}；发红包券XX张,使用XX张。
+                总数量：访问量{{goodsCount.countAll}}，成交率{{orderCount.countAll}}；发红包券XX张,使用XX张。
             </view>
-          </view>
+        </view>
         </scroll-view>
       </view>
       <view wx:else>

@@ -1,19 +1,24 @@
 // 客户分析
+const { updateRoleData } = require('../../model/initupdate.js');
+const { getMonInterval,countData } = require('../../model/dataAnalysis.js');
+var wxCharts = require('../../libs/wxcharts-min.js');
+var app = getApp()
 Page({
-  data:{},
-  onLoad:function(options){
-    // 页面初始化 options为页面跳转所带来的参数
+  data:{
+    pw: app.sysinfo.pw
   },
+
   onReady:function(){
-    // 页面渲染完成
-  },
-  onShow:function(){
-    // 页面显示
-  },
-  onHide:function(){
-    // 页面隐藏
-  },
-  onUnload:function(){
-    // 页面关闭
+    var that = this;
+    if (checkRols(8,app.roleData.user)) {
+      let mInterval = getMonInterval();        //用户注册日到本月的月份信息数组
+      Promise.all([countData(mInterval,'Order','status','1'),
+        countData(mInterval, 'browseLog', 'pModel', 'goods')]).then(()=>{
+
+        
+      }).catch( console.error )
+
+    };
   }
+
 })

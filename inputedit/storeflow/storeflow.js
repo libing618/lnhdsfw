@@ -1,13 +1,16 @@
 //流量分析
-const AV = require('../../libs/leancloud-storage.js');
+const { updateRoleData } = require('../../model/initupdate.js');
+const { getMonInterval,countData } = require('../../model/dataAnalysis.js');
 var wxCharts = require('../../libs/wxcharts-min.js');
 var app = getApp()
 Page({
+  data:{
+    pw: app.sysinfo.pw
+  },
   onReady: function () {
     var that = this;
-    if (app.roleData.role.unit){                     //用户有所属单位
-      var goodslog = wx.getStorageSync('goodslog'+app.roleData.role.unit) || [];                 //产品访问量
-      var artlog = wx.getStorageSync('artlog'+app.roleData.role.unit) || [];                  //文章访问量
+    if (checkRols(8,app.roleData.user)) {
+      let mInterval = getMonInterval();        //用户注册日到本月的月份信息数组
       new wxCharts({
         canvasId: 'lineCanvas',
         type: 'line',
@@ -35,19 +38,7 @@ Page({
         width: 400,
         height: 300
       });
-    }else
-    {
-      wx.showModal({
-        title: '请确认您的单位',
-        content: '请确认您申请的所属单位已通过审批。',
-        success: function(res) {
-            if (res.confirm) {                          //用户点击确定
-                wx.navigateBack({
-                delta: 1,                             // 回退前 delta(默认为1) 页面
-                })
-            }
-        }
-      })
-    }
-  },
+    };
+  }
+
 })

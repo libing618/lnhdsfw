@@ -74,7 +74,7 @@ Page({
     if (app.roleData.user.mobilePhoneVerified){
       let showPage = {};
       showPage.grids = aimenu(app.roleData.wmenu.marketing, 'marketing')
-      let mInterval = getMonInterval();
+      let mInterval = getMonInterval();        //用户注册日到本月的月份信息数组
       Promise.all([countData(mInterval,'Order','status','1').then(orderCount=>{showPage.orderCount = orderCount}),
         countData(mInterval, 'browseLog', 'pModel', 'goods').then(goodsCount => { showPage.goodsCount = goodsCount })]).then(()=>{
         this.setData(showPage);

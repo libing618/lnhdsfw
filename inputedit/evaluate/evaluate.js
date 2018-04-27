@@ -16,11 +16,7 @@ Page({
         pageData: app.oData[1],
         mPage: app.mData.oped1
       });
-
-    } else {
-      wx.showToast({ title: '权限不足请检查！', duration: 2500 });
-      setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 2000);
-    };
+    }
   },
   onReady:function(){
     // 页面渲染完成
