@@ -53,7 +53,13 @@ Page({
     var that = this;
     app.configData.goods.fConfig = that.data.cPage[0];
     if (id=='fSave'){
-      AV.Object.createWithoutData('shopConfig',app.configData.goods.objectId).set('fConfig',that.data.cPage[0]).save();
+      let scObject = AV.Object.createWithoutData('shopConfig',app.configData.goods.objectId)
+      scObject.fecth({keys:'fConfig'}).then(fcdata=>{
+        let lcfConfig = fcdata.get('fConfig');
+        if(lcfConfig.toString()!=app.configData.goods.fConfig.toString()){
+          scObject.set('fConfig',that.data.cPage[0]).save();
+        }
+      })
     }
     setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 500);
   }

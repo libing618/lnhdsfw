@@ -1,2 +1,5 @@
-
-<text>店铺货架</text>
+<import src="../../libs/wepage.wxml" />
+<view class="page">
+  <template is="p_navBar__headTab" data="{{...pw,...ht}}"/>
+  <template is="p_{{sPages[sPages.length-1].pageName}}" data="{{showModalBox,animationData,pInfo,infoName,tPage:cPage[ht.pageCk], pageData,reqData,...sPages[sPages.length-1]}}"/>
+</view>

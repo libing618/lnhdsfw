@@ -13,7 +13,7 @@ manage:{
 },
 marketing:{
   N200:{"tourl": "/inputedit/channel/channel", "mName": "生产厂家" },
-  N201:{"tourl": "/inputedit/goods/goods", "mName": "我的货架" },
+  N201:{"tourl": "/inputedit/import/goodsindex", "mName": "我的货架" },
   N202:{"tourl": "/inputedit/redpackets/redpackets", "mName": "红包券" },
   N203:{"tourl": "/pages/lprocedures/lprocedures?pNo=artshop&artId=3", "mName": "我的推介" },
   N204:{"tourl": "/inputedit/storeflow/storeflow", "mName": "流量分析" },

@@ -2,7 +2,7 @@
 const AV = require('../../libs/leancloud-storage.js');
 const {checkRols,hTabClick} = require('../../libs/util.js');
 const { readAllData } = require('../../model/initupdate');
-const {f_modalSwitchBox} = require('../../model/controlModal');
+const {f_modalSwitchBox,f_modalFieldBox} = require('../../model/controlModal');
 var app = getApp()
 Page({
   data:{
@@ -14,7 +14,8 @@ Page({
       fLength: 2,
       pageCk: 0
     },
-    qd:['分红比例',app.roleData.user.userRolName],
+    pInfo: app.roleData.user.userRolName=='promoter' ? '推广分红:' : '渠道分红:',
+    infoName: app.roleData.user.userRolName=='promoter' ? 'promoter' : 'channel',
     cPage: [app.configData.goodsindex,[]],
     pageData: app.aData.goods,
     sPages: [{
@@ -31,6 +32,13 @@ Page({
         let mgData = app.mData.goods.filter(goodsId=>{
           return (app.configData.goodsindex.indexOf(goodsId)<0)
         })
+        switch (app.roleData.user.userRolName) {
+          case expression:
+
+            break;
+          default:
+
+        };
         that.setData({
           cPage: [app.configData.goodsindex,mgData],
           pageData: app.aData.goods
@@ -43,11 +51,18 @@ Page({
 
   f_modalSwitchBox: f_modalSwitchBox,
 
+  f_modalFieldBox: f_modalFieldBox;
+
   f_tabPanelPage:function({currentTarget:{id}}){
     var that = this;
-    app.configData.goods.fConfig = that.data.cPage[0];
+    app.configData.goodsindex = that.data.cPage[0];
     if (id=='fSave'){
-      AV.Object.createWithoutData('shopConfig',app.configData.goods.objectId).set('fConfig',that.data.cPage[0]).save();
+      AV.User.become(AV.User.current().getSessionToken()).select(['goodsindex']).then((rLoginUser) => {
+        let gIndex = rLoginUser.get('goodsindex');
+        if (gIndex.toString()!=app.configData.goodsindex.toString()){
+          rLoginUser.set('goodsindex',app.configData.goodsindex).save().then(() => { resolve(roleData) });
+        }
+      })
     }
     setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 500);
   }

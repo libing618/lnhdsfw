@@ -69,6 +69,7 @@
         </view>
         <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
           <view class="weui-media-box__title">{{pageData[item].uName}}</view>
+          <view class="weui-media-box__info">{{pInfo+pageData[item][infoName]}}</view>
           <view class="weui-media-box__desc">{{pageData[item].title}}</view>
         </view>
       </view>
