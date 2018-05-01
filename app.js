@@ -226,7 +226,7 @@ App({
           }else{
             let loguser = AV.Object.extend('userlog');       //有网络则上传操作日志
             let userlog = new loguser();
-            userlog.set('userObjectId',that.roleData.user.objectId);
+            userlog.set('userId',that.roleData.user.objectId);
             userlog.set('workRecord',logData);
             userlog.save().then( resok =>{
               wx.removeStorageSync('loguser');              //上传成功清空日志缓存
@@ -242,7 +242,9 @@ App({
       let browse = AV.Object.extend('browseLog');
       let browseArr = browseLog.map(broweData=>{
         let nBrowse = new browse
-        return nBrowse.set(broweData)
+        nBrowse.set(broweData);
+        nBrower.setACL(app.configData.reqRole);
+        return nBrowse;
       });
       AV.Object.saveAll(browseArr).then(()=>{
         wx.removeStorage({key:'browseLog'});

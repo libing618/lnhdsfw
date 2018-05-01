@@ -139,7 +139,6 @@ module.exports = {
   "pName": "商品规格",
   "pSuccess": [
     {gname:"goods", p:'商品', t:"sId", csc:"idsel" },
-    {gname:"uName", p:'名称', t:"h3" },
     {gname:"cargo", p:'成品', inclose: true,t:"sObject", csc:"objsel" },
     {gname:"serFamily", p:'服务类型', inclose:false,t:"listsel", aList:['快递送货','货运自提','柜台提货','店铺消费'] },
     {gname:"title", p:'简介',t:"h4" },
@@ -176,7 +175,6 @@ module.exports = {
   "pName": "店铺文章",
   "afamily": ['产品课堂','营销课堂','常见问题'],
   "pSuccess": [
-    {gname:"uName", t:"h1", p:"名称" },
     {gname:"title",t:"h2", p:"标题" },
     {gname:"thumbnail", p: '上传用于缩略图的图片',t: "thumb" },
     {gname:"desc", t:"p", p:"摘要" },
@@ -192,7 +190,6 @@ module.exports = {
 "recommend":{
   "pName": "推荐文章",
   "pSuccess": [
-    {gname:"uName", t:"h1", p:"名称" },
     {gname:"title",t:"h2", p:"标题" },
     {gname:"userId", t:"h3", p:"作者", csc:"objsel" },
     {gname:"thumbnail", p: '上传用于缩略图的图片',t: "thumb" },
@@ -208,9 +205,8 @@ module.exports = {
 },
 "order": {
   "pName": "订单处理",
-  "oprocess": ['订单确认', '成品出货', '到货确认'],
+  "afamily": ['订单确认', '订单取消', '确认付款'],
   "pSuccess": [
-    { gname: "uName", p: '成品名称', t: "h3" },
     { gname: "cargo", p: '成品', t: "sObject", csc: "objsel" },
     { gname: "thumbnail", p: '图片', t: "thumb" },
     { gname: "vUnit", p: '物流商', t: "h3", e: '单位名称' },
@@ -227,10 +223,9 @@ module.exports = {
   "oModel": "supplies"
 },
 "orderlist":{
-  "pName": "订单处理",
-  "oprocess": ['订单确认', '成品出货', '到货确认'],
+  "pName": "交易流水",
+  "afamily": ['付款确认', '成品出货', '到货确认', '待清冻结', '退货还款', '清算结束'],
   "pSuccess": [
-    {gname: "uName", p:'成品名称', t:"h3" },
     {gname:"cargo", p:'成品',t:"sObject", csc:"objsel" },
     { gname: "thumbnail", p: '图片', t: "thumb" },
     { gname: "vUnit", p: '物流商', t: "h3", e: '单位名称' },
@@ -247,23 +242,15 @@ module.exports = {
   "oModel": "supplies"
 },
 
-"proUnit":{
-  "pName": "厂商签约",
+"distribution":{
+  "pName": "分红流水",
+  "afamily": ['付款确认','清算结束'],
   "pSuccess": [
-    {gname:"uName", p:'厂商名称', t:"h2" },
-    {inclose:true, gname:"unitId", p:'厂商代码',t:"fd"},
-    {gname:"title", p:'厂商简介',t:"h3" },
-    {gname:"desc", p:'厂商描述',t:"p" },
-    {gname:"aGeoPoint", p:'地理位置',t:"chooseAd" },
-    { gname: "address", p: '详细地址', t: "modalAddressBox"},
-    {gname:"thumbnail", p: '图片简介',t: "thumb" },
-    {gname:"fcode", p: '编号',t: "inScan"  }
+    {gname:"orderlist", p:'订单',t:"sObject", csc:"objsel" },
+    {gname:"cargo", p:'成品',t:"sObject", csc:"objsel" },
+    {gname:"amount", p:'分红金额',t:"dg",csc:"digit" }
   ],
   "pBewrite": "综合条线提出固定资产设置或修改申请，由条线负责人进行审批。",
-  "puRoles": [
-    "32",
-    "31"
-  ],
-  "pModel": "proUnit"
+  "pModel": "xs_distribution"
 }
 }

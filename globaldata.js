@@ -56,5 +56,5 @@ module.exports={
     proceduresCk: -1,
     pAt:{}
   },
-  aData:{"articles":{},"asset":{},"product":{},"service":{},"cargo":{},"goods":{},"specs":{},"promotion":{},"manufactor":{},"artshop":{},"proUnit":{},order:{},orderlist:{}}
+  aData:{"articles":{},"asset":{},"product":{},"service":{},"cargo":{},"goods":{},"specs":{},"promotion":{},"manufactor":{},"artshop":{},"distribution":{},order:{},orderlist:{}}
 }

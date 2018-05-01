@@ -1,6 +1,7 @@
 //交易状况及提现
 const { updateRoleData } = require('../../model/initupdate.js');
 const { getMonInterval,countData } = require('../../model/dataAnalysis.js');
+const orderListFamily = require('../../model/procedureclass').orderlist.afamily;
 var wxCharts = require('../../libs/wxcharts-min.js');
 var app = getApp()
 Page({
@@ -10,37 +11,46 @@ Page({
   onReady: function () {
     var that = this;
     if (checkRols(8,app.roleData.user)) {
-      let mInterval = getMonInterval();        //用户注册日到本月的月份信息数组
-      Promise.all([countData(mInterval,'Order','status','1'),
-        countData(mInterval, 'browseLog', 'pModel', 'goods')]).then(()=>{
-          new wxCharts({
-            canvasId: 'pieCanvas',
-            type: 'pie',
-            series: [{
-              name: '订单',
-              data: 50,
-            }, {
-              name: '已付',
-              data: 1,
-            }, {
-              name: '发货',
-              data: 30,
-            }, {
-              name: '已签收',
-              data: 1,
-            }, {
-              name: '保证金',
-              data: 1,
-            }, {
-              name: '已结算',
-              data: 46,
-            }],
-            width: app.sysinfo.windowWidth,
-            height: app.sysinfo.windowWidth,
-            dataLabel: true
-          });
+      sumFamily('orderlist',['amount','quantity'],6).then(sf=>{
+
       }).catch( console.error )
     };
+  },
+
+  setCanvas: function(num){
+    let 
+    new wxCharts({
+      canvasId: 'pieCanvas',
+      type: 'pie',
+      series: orderListFamily.map(afname=>{ return {name:afname,data:this.fSum[num,]})
+        name: '订单',
+        data: sf[num,0]
+      }, {
+        name: '已付',
+        data: sf[num,0]
+      }, {
+        name: '发货',
+        data: sf[num,0]
+      }, {
+        name: '已签收',
+        data: sf[num,0]
+      }, {
+        name: '保证金',
+        data: sf[num,0]
+      }, {
+        name: '已结算',
+        data: sf[num,0]
+      }],
+      width: app.sysinfo.windowWidth,
+      height: app.sysinfo.windowWidth,
+      dataLabel: true
+    });
   }
 
+  hTabClick: function (e) {                                //点击tab
+    let pCk = Number(e.currentTarget.id)
+    this.setData({
+      "ht.pageCk": pCk
+    });
+  },
 })

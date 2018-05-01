@@ -15,19 +15,20 @@ Page({
         countData(mInterval, 'browseLog', 'pModel', 'goods')]).then(()=>{
         var yms = mInterval.map(([year, Mon, yearMon])=>{return yearMon});
         var closerates = [];
-        yms.forEach(ym=>{closerates.push( app.aCount.goodsCount[ym]==0 ? 0 : app.aCount.orderCount[ym]/app.aCount.goodsCount[ym]*100)})
+        yms.forEach(ym=>{closerates.push( app.aCount.browseLoggoods[ym]==0 ? 0 : app.aCount.browseLogorder[ym]/app.aCount.browseLoggoods[ym]*100)})
         new wxCharts({
           canvasId: 'columnCanvas',
           type: 'column',
           categories: yms,
           series: [{
-              name: '成交率',
-              data: closerates
+            name: '成交率',
+            data: closerates,
+            format: function (val) {
+                return val.toFixed(2) + '%';
+            }
           }],
           yAxis: {
-              format: function (val) {
-                  return val + '%';
-              }
+            format: function (val) {return val.toFixed(2) + '%';}
           },
           width: app.sysinfo.windowWidth,
           height: app.sysinfo.windowWidth
