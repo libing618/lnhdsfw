@@ -243,7 +243,7 @@ App({
       let browseArr = browseLog.map(broweData=>{
         let nBrowse = new browse
         nBrowse.set(broweData);
-        nBrower.setACL(app.configData.reqRole);
+        nBrowse.setACL(app.configData.reqRole);
         return nBrowse;
       });
       AV.Object.saveAll(browseArr).then(()=>{

@@ -14,7 +14,7 @@
           <view class="weui-article__section">
             <view class="weui-article__h3">销售分析</view>
             <view class="weui-article__p">
-                一个月：访问量{{goodsCount.countMon}}，成交量{{orderCount.countMon}}；发红包券XX张,使用XX张。/n
+                一个月：访问量{{goodsCount.countMon}}，成交量{{orderCount.countMon}}；发红包券XX张,使用XX张。
                 今年以来：访问量{{goodsCount.countYear}}，成交量{{orderCount.countYear}}；发红包券XX张,使用XX张。
                 总数量：访问量{{goodsCount.countAll}}，成交率{{orderCount.countAll}}；发红包券XX张,使用XX张。
             </view>

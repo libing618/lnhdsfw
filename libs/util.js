@@ -12,8 +12,8 @@ function exitPage(){
 function openWxLogin(roleData) {            //注册登录（本机登录状态）
   return new Promise((resolve, reject) => {
     wx.getSetting({
-      success: ({authSetting:{scope}})=> {
-        if (scope.userInfo) {
+      success: ({authSetting})=> {
+        if (authSetting['scope.userInfo']) {
           wx.login({
             success: function (wxlogined) {
               if (wxlogined.code) {

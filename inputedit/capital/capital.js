@@ -8,49 +8,37 @@ Page({
   data:{
     pw: app.sysinfo.pw
   },
+  pieSumData: [],
   onReady: function () {
     var that = this;
     if (checkRols(8,app.roleData.user)) {
       sumFamily('orderlist',['amount','quantity'],6).then(sf=>{
-
+        that.pieData = sf;
+        that.setCanvas();
       }).catch( console.error )
     };
   },
 
-  setCanvas: function(num){
-    let 
+  setCanvas: function(){
+    let pieData = [];
+    for (let i=0;i<orderListFamilyist.length;i++){
+      pieData.push({name:orderListFamily[i],data:this.pieData[this.data.ht.pageCk]})
+    }
     new wxCharts({
       canvasId: 'pieCanvas',
       type: 'pie',
-      series: orderListFamily.map(afname=>{ return {name:afname,data:this.fSum[num,]})
-        name: '订单',
-        data: sf[num,0]
-      }, {
-        name: '已付',
-        data: sf[num,0]
-      }, {
-        name: '发货',
-        data: sf[num,0]
-      }, {
-        name: '已签收',
-        data: sf[num,0]
-      }, {
-        name: '保证金',
-        data: sf[num,0]
-      }, {
-        name: '已结算',
-        data: sf[num,0]
-      }],
+      series: pewData,
       width: app.sysinfo.windowWidth,
       height: app.sysinfo.windowWidth,
       dataLabel: true
     });
-  }
+  },
 
   hTabClick: function (e) {                                //点击tab
-    let pCk = Number(e.currentTarget.id)
+    this.data.ht.pageCk = Number(e.currentTarget.id)
     this.setData({
-      "ht.pageCk": pCk
+      "ht.pageCk": this.data.ht.pageCk
     });
-  },
+    this.setCanvas()
+  }
 })
