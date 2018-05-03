@@ -1,22 +1,36 @@
 //对话聊天模块
+const conversationType = [
+  {name:'客户服务',cId:''},
+  {name:'工作沟通',cId:''},
+  {name:'直播课堂',cId:''}
+]
 var app = getApp()
 Page({
   data:{
     sysheight:app.sysinfo.windowHeight-60,
     syswidth:app.sysinfo.windowWidth-10,
+    pw: app.sysinfo.pw,
     enMultimedia: true,
     selectd: -1,
     vData: {},
+    message: [],
     mgrids: ['产品','图像','音频','视频','位置','文件']   //
   },
 
   onLoad:function(options){
     var that = this;
-    that.setData({		    		// 获得当前用户
-      user: app.roleData.user,
-      messages : app.getM('58e53adbb1acfc0056ba3897'),
-    })
-    wx.setNavigationBarTitle({title:conversation.name});
+    let cType = parseInt(options.ctype);
+    that.data.cId = conversationType[cType].cId;
+    app.getM(that.data.cId).then(messages=>{
+      that.setData({		    		// 获得当前用户
+        user: app.roleData.user,
+        cId: that.data.cId,
+        navBarTitle: conversationType[cType].name,
+        messages : messages,
+        mType: options.pNo ? options.pNo : '',
+        mObjectId: options.mId ? options.mId : ''
+      })
+    });
   },
 
   sendMsg: function(e){
@@ -25,7 +39,7 @@ Page({
     sMsg.mtext = e.detail.value.inputtext;
     sMsg.mtype = e.detail.value.itype;
     sMsg.wcontent = e.detail.value.inputmu;
-    app.sendM(sMsg,'58e53adbb1acfc0056ba3897').then( (rsm)=>{
+    app.sendM(sMsg,that.data.cId).then( (rsm)=>{
       if (rsm){
         that.data.messages.push(sMsg);
         sMsg.mtext = '信息发送成功，请等待客户服务人员与您联系。'
@@ -94,7 +108,7 @@ Page({
         }
       }).then( (wcontent)=>{
         return new Promise( (resolve, reject) => {
-          if (indexOf(sIndex,['-2','-3','-4','-6'])>=0){
+          if (['-2','-3','-4','-6'].indexOf(sIndex)>=0){
             wx.saveFile({
               tempFilePath : icontent,
               success: function(cres){ resolve(cres.savedFilePath); },

@@ -48,9 +48,9 @@ App({
   fwCs: [],                           //客户端的对话实例
   urM: [],                           //未读信息
 
-  imLogin: function(username){                               //实时通信客户端登录
+  imLogin: function(){                               //实时通信客户端登录
     var that = this;
-    realtime.createIMClient(username).then( (im)=> {
+    realtime.createIMClient(that.roleData.user.objectId).then( (im)=> {
       that.fwClient = im;
       im.getQuery().containsMembers([username]).find().then( (conversations)=> {  // 默认按每个对话的最后更新日期（收到最后一条消息的时间）倒序排列
         conversations.map( (conversation)=> { that.fwCs.push(conversation); });
@@ -99,18 +99,18 @@ App({
     return new Promise((resolve, reject) => {
       that.fwClient.getConversation(conversationId).then(function(conversation) {
         conversation.send(sendMessage).then(function(){
-          return resolve(true);
+          resolve(true);
         });
       });
-    }).catch((error)=>{ return reject(error) });
+    }).catch((error)=>{ reject(error) });
   },
 
   getM: function(conversationId){                   //接收消息内容
     var that = this;
     that.fwClient.getConversation(conversationId).then(function(conversation) {
-      conversation.queryMessages({ limit: 10, }).then(function(messages) {    //取limit条消息，取值范围 1~1000，默认 20
-        const gMesssages = messages.map((message)=>{ return that.mParse(message) });     //解析最新的limit条消息，按时间增序排列
-        Promise.all(gMesssages).then( (gM)=>{ return gMesssages });
+      conversation.queryMessages({ limit: 100, }).then(function(messages) {    //取limit条消息，取值范围 1~1000，默认 20
+        let gMesssages = messages.map((message)=>{ return that.mParse(message) });     //解析最新的limit条消息，按时间增序排列
+        Promise.all(gMesssages).then( (gM)=>{ return gM });
       }).catch(console.error.bind(console));
     })
   },

@@ -1,6 +1,7 @@
 <import src="../../libs/weimport.wxml"/>
-<template is="navBarReturn" data="{{...navBarTitle}}"/>
+<import src="../../libs/wepage.wxml" />
 <view class="page">
+  <template is="p_navBar__back" data="{{...pw,navBarTitle}}"/>
   <view class="page__bd">
       <scroll-view scroll-y="true" style="left:5px; height:{{sysheight}}px; width:{{syswidth}}px ; border:2px solid #F00" >
         <view class="weui-article">

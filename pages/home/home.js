@@ -24,16 +24,19 @@ Page({
   onLoad: function (options) {
     var that = this ;
     return new Promise((resolve, reject) => {
-      if (app.configData.path == 'pages/home/home') {
+      if (app.configData.path == 'pages/home/home') {         //判断本次登录本页是否首页
         let proGoodsUpdate = app.configData.goods.updatedAt ;
         initConfig(app.configData).then(icData=>{    //系统初妈化
           app.configData = icData;
           if (app.configData.goods.updatedAt != proGoodsUpdate) { app.mData.pAt.goods = [new Date(0).toISOString(), new Date(0).toISOString()] };   //店铺签约厂家有变化则重新读商品数据
           loginAndMenu(User.current(),app.roleData).then(rData=>{    //用户登录及读菜单权限
             app.roleData = rData;
-            if (typeof options.sjid=='undefined' && app.roleData.user.objectId!=='0'){    //非分享入口
-              app.configData.sjid = app.roleData.user.sjid;
-              app.configData.channelid = app.roleData.user.channelid;
+            if (app.roleData.user.objectId!=='0'){            //用户已注册
+              if (typeof options.sjid=='undefined'){    //非分享入口
+                app.configData.sjid = app.roleData.user.sjid;
+                app.configData.channelid = app.roleData.user.channelid;
+              };
+              app.imLogin();
             }
             initLogStg('home');
             resolve(true);
