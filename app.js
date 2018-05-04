@@ -46,16 +46,27 @@ App({
   logData: [],                         //操作记录
   fwClient: {},                        //实时通信客户端实例
   fwCs: [],                           //客户端的对话实例
-  urM: [],                           //未读信息
+  conMsg: {},                           //信息记录
+  nowOpenChat:{id:'',chatPage:{}},      //当前打开的对话
 
   imLogin: function(){                               //实时通信客户端登录
     var that = this;
     realtime.createIMClient(that.roleData.user.objectId).then( (im)=> {
       that.fwClient = im;
-      im.getQuery().containsMembers([username]).find().then( (conversations)=> {  // 默认按每个对话的最后更新日期（收到最后一条消息的时间）倒序排列
-        conversations.map( (conversation)=> { that.fwCs.push(conversation); });
+      that.fwClient.getQuery().containsMembers([username]).find().then( (conversations)=> {  // 默认按每个对话的最后更新日期（收到最后一条消息的时间）倒序排列
+        that.fwCs = conversations.map( (conversation)=> {
+          conversation.on('message', function messageEventHandler(message) {
+            if (!that.conMsg[conversation.id]){app.conMsg[conversation.id]=[]};
+            that.conMsg[conversation.id].push(that.mParse(message))
+            if (conversation.id==that.nowOpenChat.id){                               //当前打开的对话修改消息数据
+              that.nowOpenChat.chatPage.setData({message:that.conMsg[conversation.id]})
+            }
+          });
+          return conversation;
+        });
       });
-      im.on('unreadmessagescountupdate', function unreadmessagescountupdate(conversations) { that.urM = conversations; });
+      that.fwClient.on('unreadmessagescountupdate', function unreadmessagescountupdate(unreadconversations) {
+        unreadconversations.forEach(urcst=> { that.getM(urcst.id) });
      });
   },
 
@@ -99,18 +110,18 @@ App({
     return new Promise((resolve, reject) => {
       that.fwClient.getConversation(conversationId).then(function(conversation) {
         conversation.send(sendMessage).then(function(){
+          that.conMsg[conversationId].push(sendMessage);
           resolve(true);
         });
       });
     }).catch((error)=>{ reject(error) });
   },
 
-  getM: function(conversationId){                   //接收消息内容
+  getM: function(conversationId){                   //接收未读消息内容
     var that = this;
     that.fwClient.getConversation(conversationId).then(function(conversation) {
       conversation.queryMessages({ limit: 100, }).then(function(messages) {    //取limit条消息，取值范围 1~1000，默认 20
-        let gMesssages = messages.map((message)=>{ return that.mParse(message) });     //解析最新的limit条消息，按时间增序排列
-        Promise.all(gMesssages).then( (gM)=>{ return gM });
+        messages.forEach((message)=>{ that.conMsg[conversationId].push(that.mParse(message)) });     //解析最新的limit条消息，按时间增序排列
       }).catch(console.error.bind(console));
     })
   },
