@@ -280,3 +280,35 @@
   </block>
 </view>
 </template>
+
+<template name="personConversation">
+<view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
+  <navigator url="/pages/vprocedure/vprocedure?pNo={{pNo}}&artId={{item}}">
+    <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+      <image class="weui-media-box__thumb" src="{{avatarUrl}}" background-size="cover"></image>
+      <view>uName</view>
+    </view>
+  </navigator>
+  <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+    <view class="weui-media-box__title">{{wtext}}</view>
+    <view wx:if="{{wcontent}}" class="weui-media-box__desc">
+      <template is="{{mtype}}" data="{{c: wcontent}}" />
+    </view>
+  </view>
+</view>
+</template>
+
+<template name="ownConversation">
+<view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
+  <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+    <view class="weui-media-box__title">{{wtext}}</view>
+    <view wx:if="{{wcontent}}" class="weui-media-box__desc">
+      <template is="{{mtype}}" data="{{c: wcontent}}" />
+    </view>
+  </view>
+  <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+    <image class="weui-media-box__thumb" src="{{avatarUrl}}" background-size="cover"></image>
+    <view>uName</view>
+  </view>
+</view>
+</template>

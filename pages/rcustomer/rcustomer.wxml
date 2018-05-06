@@ -7,8 +7,8 @@
     <view class="weui-msg__title">{{conversation.name}}</view>
       <scroll-view scroll-y="true" style="left:5px; height:{{sysheight}}px; width:{{syswidth}}px ; border:2px solid #F00" >
         <view class="weui-article">
-          <block wx:for="{{messages}}" wx:key="{{updatedAt}}" wx:for-item="mName">
-            <template is="artshow" data="{{artshow: 'mName'}}" />
+          <block wx:for="{{messages}}" wx:key="{{updatedAt}}">
+            <template is="artshow" data="{{artshow:item}}" />
           </block>
         </view>
     </scroll-view>

@@ -2,6 +2,6 @@
 <view class="page">
   <template is="p_navBar__back" data="{{...pw,navBarTitle:'资金状况'}}"/>
   <view style="display:block;padding:1px;">
-    <canvas canvas-id="pieCanvas" class="weui-canvas"> </canvas>
+    <canvas canvas-id="ringCanvas" class="weui-canvas"> </canvas>
   </view>
 </view>

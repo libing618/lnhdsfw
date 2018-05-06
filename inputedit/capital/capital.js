@@ -25,8 +25,8 @@ Page({
       pieData.push({name:orderListFamily[i],data:this.pieData[this.data.ht.pageCk]})
     }
     new wxCharts({
-      canvasId: 'pieCanvas',
-      type: 'pie',
+      canvasId: 'ringCanvas',
+      type: 'ring',
       series: pewData,
       width: app.sysinfo.windowWidth,
       height: app.sysinfo.windowWidth,

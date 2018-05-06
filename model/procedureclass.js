@@ -173,7 +173,7 @@ module.exports = {
 },
 "artshop":{
   "pName": "店铺文章",
-  "afamily": ['产品课堂','营销课堂','常见问题'],
+  "afamily": ['我的推介','营销经验','常见问题'],
   "pSuccess": [
     {gname:"title",t:"h2", p:"标题" },
     {gname:"thumbnail", p: '上传用于缩略图的图片',t: "thumb" },
@@ -185,22 +185,6 @@ module.exports = {
     "admin"
   ],
   "pBewrite": "编写各类文章，经单位领导审批后发布。个人编写的此类文章由所属服务机构审批。",
-  "pModel": "artshop"
-},
-"recommend":{
-  "pName": "推荐文章",
-  "pSuccess": [
-    {gname:"title",t:"h2", p:"标题" },
-    {gname:"userId", t:"h3", p:"作者", csc:"objsel" },
-    {gname:"thumbnail", p: '上传用于缩略图的图片',t: "thumb" },
-    {gname:"desc", t:"p", p:"摘要" },
-    {gname:"details", p:'详情',t:"eDetail" }
-  ],
-  "puRoles": [
-    "20",
-    "admin"
-  ],
-  "pBewrite": "编写推荐文章，经单位领导审批后发布。",
   "pModel": "artshop"
 },
 "order": {

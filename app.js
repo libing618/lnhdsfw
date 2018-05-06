@@ -46,28 +46,30 @@ App({
   logData: [],                         //操作记录
   fwClient: {},                        //实时通信客户端实例
   fwCs: [],                           //客户端的对话实例
-  conMsg: {},                           //信息记录
-  nowOpenChat:{id:'',chatPage:{}},      //当前打开的对话
+  fwUnreads: {},                      //客户端的未读对话实例
+  conMsg: {},                           //对话信息记录
+  nowOpenChat:{},      //当前打开的对话
 
   imLogin: function(){                               //实时通信客户端登录
     var that = this;
     realtime.createIMClient(that.roleData.user.objectId).then( (im)=> {
       that.fwClient = im;
-      that.fwClient.getQuery().containsMembers([username]).find().then( (conversations)=> {  // 默认按每个对话的最后更新日期（收到最后一条消息的时间）倒序排列
+      that.fwClient.getQuery().containsMembers([that.roleData.user.objectId]).find().then( (conversations)=> {  // 默认按每个对话的最后更新日期（收到最后一条消息的时间）倒序排列
         that.fwCs = conversations.map( (conversation)=> {
+          if (!that.conMsg[conversation.id]){that.conMsg[conversation.id]=[]};
           conversation.on('message', function messageEventHandler(message) {
-            if (!that.conMsg[conversation.id]){app.conMsg[conversation.id]=[]};
             that.conMsg[conversation.id].push(that.mParse(message))
-            if (conversation.id==that.nowOpenChat.id){                               //当前打开的对话修改消息数据
-              that.nowOpenChat.chatPage.setData({message:that.conMsg[conversation.id]})
+            if (conversation.id==that.nowOpenChat.data.cId){                               //当前打开的对话修改消息数据
+              that.nowOpenChat.setData({message:that.conMsg[conversation.id]})
             }
           });
           return conversation;
         });
       });
       that.fwClient.on('unreadmessagescountupdate', function unreadmessagescountupdate(unreadconversations) {
-        unreadconversations.forEach(urcst=> { that.getM(urcst.id) });
-     });
+        unreadconversations.forEach(urcst=> { that.fwUnreads[urcst.id]=urcst });
+      });
+    });
   },
 
   sendM: function(sMessage,conversationId){
@@ -77,7 +79,7 @@ App({
       case -1:
         sendMessage = new TextMessage(sMessage.mtext);
         if (sMessage.wcontent){
-          sendMessage.setAttributes({ product: sMessage.wcontent })  //如有产品信息则发送之
+          sendMessage.setAttributes({ mcontent:sMessage.wcontent })  //如有产品、订单等附加信息信息则发送之
         };
         break;
       case -2:
@@ -105,12 +107,12 @@ App({
     };
     sendMessage.setAttributes({                                 //发送者呢称和头像
       avatarUrl: that.roleData.user.avatarUrl,
-      nickName: that.roleData.user.nickName
+      uName: that.roleData.user.uName
     });
     return new Promise((resolve, reject) => {
       that.fwClient.getConversation(conversationId).then(function(conversation) {
         conversation.send(sendMessage).then(function(){
-          that.conMsg[conversationId].push(sendMessage);
+          that.conMsg[conversationId].push(sMessage);
           resolve(true);
         });
       });
@@ -119,9 +121,14 @@ App({
 
   getM: function(conversationId){                   //接收未读消息内容
     var that = this;
-    that.fwClient.getConversation(conversationId).then(function(conversation) {
-      conversation.queryMessages({ limit: 100, }).then(function(messages) {    //取limit条消息，取值范围 1~1000，默认 20
-        messages.forEach((message)=>{ that.conMsg[conversationId].push(that.mParse(message)) });     //解析最新的limit条消息，按时间增序排列
+    return new Promise((resolve, reject) => {
+      that.fwClient.getConversation(conversationId).then(function(conversation) {
+        if (conversation.unreadMessagesCount>0){
+          conversation.queryMessages({ limit: conversation.unreadMessagesCount }).then(function(messages) {    //取limit条消息，取值范围 1~1000，默认 20
+            messages.forEach((message)=>{ that.conMsg[conversationId].push(that.mParse(message)) });     //解析最新的limit条消息，按时间增序排列
+            resolve(true);
+          });
+        } else { resolve(false) }
       }).catch(console.error.bind(console));
     })
   },
@@ -136,7 +143,7 @@ App({
     switch (message.type) {
       case TextMessage.TYPE:
         if (typeof message.getAttributes() != 'undefined'){
-          if (message.getAttributes().product){ rMessage.product = message.getAttributes().product;}
+          if (message.getAttributes().mcontent){ rMessage.wcontent = message.getAttributes().mcontent;}
         }
         break;
       case FileMessage.TYPE:
@@ -162,7 +169,7 @@ App({
         console.warn('收到未知类型消息');
     }
     if (typeof message.getAttributes() != 'undefined'){
-      rMessage.nickName = message.getAttributes().nickName;
+      rMessage.uName = message.getAttributes().uName;
       rMessage.avatarUrl = message.getAttributes().avatarUrl;
     }
     return rMessage;

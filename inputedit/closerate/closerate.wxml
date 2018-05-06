@@ -2,6 +2,6 @@
 <view class="page">
   <template is="p_navBar__back" data="{{...pw,navBarTitle:'访问购买率分析'}}"/>
   <view style="display:block;padding:1px;">
-    <canvas canvas-id="columnCanvas" class="weui-canvas"> </canvas>
+    <canvas canvas-id="lineCanvas" class="weui-canvas"> </canvas>
   </view>
 </view>

@@ -5,6 +5,33 @@ function formatNumber(n) {
   n = n.toString()
   return n[1] ? n : '0' + n
 };
+function checkRole(ouRole,user){
+  let crd = false;
+  switch (ouRole) {
+    case 9:                    //注册用户
+      if (user.objectId!=='0'){crd = true}
+      break;
+    case 8:                    //合伙人（含员工、渠道和推广人）
+      if (user.mobilePhoneVerified){crd = true}
+      break;
+    case 7:                    //渠道（含员工和渠道合伙人）
+      if (user.emailVerified){crd = true}
+      break;
+    case 6:                    //员工
+      if (user.userRolName!=='promoter' && user.emailVerified){crd = true}
+      break;
+    case 5:                    //负责人
+      if (user.userRolName=='admin' && user.emailVerified){crd = true}
+        break;
+    default:                    //各条线员工
+      let roleLine = parseInt(substring(user.userRolName,1,1));
+      if (user.emailVerified){
+        if (roleLine==ouRole || user.userRolName=='admin') {crd = true}
+      }
+      break;
+  }
+  return crd
+};
 function exitPage(){
   wx.showToast({ title: '权限不足请检查', duration: 2500 });
   setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 2000);
@@ -82,6 +109,7 @@ function fetchUser(roleData) {
 
 module.exports = {
   openWxLogin: openWxLogin,
+  checkRole: checkRole,
   setTiringRoom: function(goTiringRoom){
     if (goTiringRoom && typeof goTiringRoom == 'boolean') {
       wx.setTabBarItem({
@@ -180,27 +208,9 @@ module.exports = {
   },
 
   checkRols: function(ouRole,user){
-    let crd = false;
-    switch (ouRole) {
-      case 9:
-        if (user.userRolName=='admin' && user.emailVerified){crd = true}
-        break;
-      case 8:
-        if (user.mobilePhoneVerified){crd = true}
-        break;
-      default:
-        let roleLine = parseInt(substring(user.userRolName,1,1));
-        if (user.emailVerified){
-          if (roleLine==ouRole || user.userRolName=='admin') {crd = true}
-        }
-        break;
-    }
-    if(crd) {
-      return true;
-    } else {
-      exitPage();
-      return false
-    }
+    let crd = checkRole(ouRole,user);
+    if(!crd) {exitPage();};
+    return crd
   },
 
   hTabClick: function (e) {                                //点击tab

@@ -25,7 +25,7 @@ Page({
   },
   onLoad:function(options){
     var that = this;
-    if (checkRols(9,app.roleData.user)) {
+    if (checkRols(5,app.roleData.user)) {
       updateData(true,'manufactor').then(isupdated=>{
         let mfData = app.mData.manufactor.filter(manufactorId=>{
           return (app.configData.goods.fConfig.indexOf(manufactorId)<0)

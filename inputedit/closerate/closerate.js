@@ -17,8 +17,8 @@ Page({
         var closerates = [];
         yms.forEach(ym=>{closerates.push( app.aCount.browseLoggoods[ym]==0 ? 0 : app.aCount.browseLogorder[ym]/app.aCount.browseLoggoods[ym]*100)})
         new wxCharts({
-          canvasId: 'columnCanvas',
-          type: 'column',
+          canvasId: 'lineCanvas',
+          type: 'line',
           categories: yms,
           series: [{
             name: '成交率',

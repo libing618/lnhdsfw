@@ -3,13 +3,15 @@
 <view class="page">
   <template is="p_navBar__back" data="{{...pw,navBarTitle}}"/>
   <view class="page__bd">
-      <scroll-view scroll-y="true" style="left:5px; height:{{sysheight}}px; width:{{syswidth}}px ; border:2px solid #F00" >
-        <view class="weui-article">
-          <block wx:for="{{messages}}" wx:key="{{updatedAt}}" wx:for-item="mName">
-            <template is="artshow" data="{{artshow: 'mName'}}" />
-          </block>
-        </view>
-    </scroll-view>
+    <block wx:for="{{messages}}" wx:key="{{updatedAt}}">
+      <view wx:if="{{item.uName}}">
+        <template is="personConversation" data="{{...item}}" />
+      </view>
+      <view wx:else>
+        <template is="ownConversation" data="{{...item}}" />
+      </view>
+    </block>
+
     <form bindsubmit="sendMsg">
       <view class="page__ft">
         <view class="weui-cell weui-cell_input weui-cell_vcode">

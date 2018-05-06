@@ -82,7 +82,6 @@
         "shopData/shopData",
         "communication/communication",
         "channel/channel",
-        "redpackets/redpackets",
         "storeflow/storeflow",
         "closerate/closerate",
         "income/income",

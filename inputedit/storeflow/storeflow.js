@@ -19,8 +19,8 @@ Page({
           artshopBrowse.push(app.aCount.browseLogartshop[ym]);
         });
         new wxCharts({
-          canvasId: 'lineCanvas',
-          type: 'line',
+          canvasId: 'columnCanvas',
+          type: 'column',
           categories: mInterval.yearMon,
           series: [{
               name: '产品访问量',

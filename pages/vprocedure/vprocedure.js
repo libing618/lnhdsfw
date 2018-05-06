@@ -44,22 +44,20 @@ Page({
           AV.Object.createWithoutData(that.data.pno,options.artId).fetch().then(getData=>{
             app.aData[that.data.pno][options.artId] = getData.toJSON();
             resolve(true)
-          }).catch(resolve(false))
+          }).catch(reject(false))
         }
       })
     }).then(canView=>{
-      if (canView){
-        that.data.vData = app.aData[that.data.pno][options.artId];
-        readShowFormat(pClass.pSuccess, that.data.vData).then(({reqData,fModal})=>{
-          that.data.reqData=reqData;
-          if (fModal){that.f_modalFieldBox = require('../../model/controlModal').f_modalFieldBox}
-          that.data.enUpdate = typeof that.data.vData.shopId!='undefined' && typeof pClass.suRoles!='undefined';  //有本店信息且流程有上级审批的才允许修改
-          that.setData(that.data);
-        });
-      } else {
-        wx.showToast({ title: '数据传输有误',icon:'loading', duration: 2500 });
-        setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 2000);
-      }
+      that.data.vData = app.aData[that.data.pno][options.artId];
+      readShowFormat(pClass.pSuccess, that.data.vData).then(({reqData,fModal})=>{
+        that.data.reqData=reqData;
+        if (fModal){that.f_modalFieldBox = require('../../model/controlModal').f_modalFieldBox}
+        that.data.enUpdate = typeof that.data.vData.shopId!='undefined' && typeof pClass.suRoles!='undefined';  //有本店信息且流程有上级审批的才允许修改
+        that.setData(that.data);
+      });
+    }).catch( error=>{
+      wx.showToast({ title: '数据传输有误',icon:'loading', duration: 2500 });
+      setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 2000);
     })
   },
 
