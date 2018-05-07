@@ -45,10 +45,10 @@
   <view class="weui-cell">{{p}}:</view>
   <view class="weui-cell" id="{{c}}" data-pNo="{{gname}}" bingtap="f_modalFieldBox">
     <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
-      <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+      <view class="weui-media-box__hd_in-appmsg">
         <image class="weui-media-box__thumb" src="{{slave.thumbnail}}" background-size="cover"></image>
       </view>
-      <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+      <view class="weui-media-box__bd_in-appmsg">
         <view class="weui-media-box__title">{{slave.uName}}</view>
         <view class="weui-media-box__desc">{{slave.title}}</view>
       </view>
@@ -60,10 +60,10 @@
   <view class="weui-cell">{{p}}:</view>
   <view class="weui-cell" id="{{c}}" data-pNo="{{gname}}" bingtap="f_modalFieldBox">
     <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
-      <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+      <view class="weui-media-box__hd_in-appmsg">
         <image class="weui-media-box__thumb" src="{{thumbnail}}" background-size="cover"></image>
       </view>
-      <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+      <view class="weui-media-box__bd_in-appmsg">
         <view class="weui-media-box__title">{{uName}}</view>
         <view class="weui-media-box__desc">{{title}}</view>
       </view>
@@ -88,10 +88,10 @@
   <view class="weui-cells">
     <block wx:for="{{c}}" wx:key="{{index}}" wx:for-item="specsId">
       <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active" id="{{specsId}}" data-pNo="{{gname}}" bingtap="f_modalFieldBox">
-        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+        <view class="weui-media-box__hd_in-appmsg">
           <image class="weui-media-box__thumb" src="{{master[specsId].thumbnail}}" background-size="cover"></image>
         </view>
-        <view wx:if="{{slave[specsId] && master[specsId]}}"class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+        <view wx:if="{{slave[specsId] && master[specsId]}}"class="weui-media-box__bd_in-appmsg">
           <view class="weui-media-box__title">{{slave[specsId].uName}}/{{master[specsId].package}}份装/{{master[specsId].price}}元</view>
           <view class="weui-media-box__desc">{{master[specsId].title}}</view>
           <view class="weui-media-box__desc">已售{{sstock.scale(slave[specsId],master[specsId].package)}},库存{{sstock.csupply(slave[specsId],maste[specsId].package)}}</view>
@@ -268,10 +268,10 @@
   <block wx:for="{{tPage}}" wx:key="{{index}}">
     <navigator url="/pages/vprocedure/vprocedure?pNo={{pNo}}&artId={{item}}">
       <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
-        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+        <view class="weui-media-box__hd_in-appmsg">
           <image class="weui-media-box__thumb" src="{{pageData[item].thumbnail}}" background-size="cover"></image>
         </view>
-        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+        <view class="weui-media-box__bd_in-appmsg">
           <view class="weui-media-box__title">{{pageData[item].uName}}</view>
           <view class="weui-media-box__desc">{{pageData[item].title}}</view>
         </view>
@@ -282,14 +282,14 @@
 </template>
 
 <template name="personConversation">
-<view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
+<view class="chat-box__left" hover="true" hover-class="weui-cell_active">
   <navigator url="/pages/vprocedure/vprocedure?pNo={{pNo}}&artId={{item}}">
-    <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+    <view class="chat-box__hd">
       <image class="weui-media-box__thumb" src="{{avatarUrl}}" background-size="cover"></image>
       <view>uName</view>
     </view>
   </navigator>
-  <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+  <view class="chat-box__bd">
     <view class="weui-media-box__title">{{wtext}}</view>
     <view wx:if="{{wcontent}}" class="weui-media-box__desc">
       <template is="{{mtype}}" data="{{c: wcontent}}" />
@@ -299,14 +299,14 @@
 </template>
 
 <template name="ownConversation">
-<view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
-  <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+<view class="chat-box__right" hover="true" hover-class="weui-cell_active">
+  <view class="chat-box__bd">
     <view class="weui-media-box__title">{{wtext}}</view>
     <view wx:if="{{wcontent}}" class="weui-media-box__desc">
       <template is="{{mtype}}" data="{{c: wcontent}}" />
     </view>
   </view>
-  <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+  <view class="chat-box__hd">
     <image class="weui-media-box__thumb" src="{{avatarUrl}}" background-size="cover"></image>
     <view>uName</view>
   </view>

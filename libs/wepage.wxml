@@ -64,10 +64,10 @@
   <view class="weui-tab__panel">
     <block wx:for="{{tPage}}" wx:key="{{index}}">
       <view class="weui-media-box weui-media-box_appmsg" id="{{item}}" data-pname="modalSwitchBox" hover="true" hover-class="weui-cell_active" bindtap="f_modalSwitchBox">
-        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+        <view class="weui-media-box__hd_in-appmsg">
           <image class="weui-media-box__thumb" src="{{pageData[item].thumbnail}}" background-size="cover"></image>
         </view>
-        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+        <view class="weui-media-box__bd_in-appmsg">
           <view class="weui-media-box__title">{{pageData[item].uName}}</view>
           <view class="weui-media-box__info">{{pInfo+pageData[item][infoName]}}</view>
           <view class="weui-media-box__desc">{{pageData[item].title}}</view>
@@ -197,5 +197,37 @@
     <button class="weui-btn" type="primary" size="mini" bindtap="i_modalAddressBox" id="fBack">返回</button>
   </view>
 </form>
+</view>
+</template>
+
+<template name="p_modalSelectGoodsBox">
+<view class="modal_box" id="fBack" bindtap="i_modalSelectGoodsBox">
+  <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
+    <view class="page__title">选择产品{{}}</view>
+    <view class="close_icon" id="fBack" bindtap="i_modalAddressBox">×</view>
+    <view class="page__hd">
+    <view class="weui-tab__panel">
+      <block wx:for="{{goods}}" wx:key="{{index}}">
+        <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active" id="{{item}}" bindtap="cSure">
+          <view class="weui-media-box__hd_in-appmsg">
+            <image class="weui-media-box__thumb" src="{{pageData[item].thumbnail}}" background-size="cover"></image>
+          </view>
+          <view class="weui-media-box__bd_in-appmsg">
+            <view class="weui-media-box__title">{{pageData[item].uName}}</view>
+            <view class="weui-media-box__desc">{{pageData[item].title}}</view>
+          </view>
+        </view>
+        <navigator url="/pages/vprocedure/vprocedure?pNo={{pNo}}&artId={{item}}&uId={{pageData[item].unitId}}">
+          <button class="weui-cell__ft" size="mini">详情</button>
+        </navigator>
+      </block>
+    </view>
+    </view>
+    <view style="padding-bottom:100rpx;"></view>
+  </view>
+  <view class="page__ft weui-footer_fixed-bottom">
+    <button class="weui-btn" type="primary" size="mini" bindtap="i_modalSelectGoodsBox" id="fBack">确定</button>
+  </view>
+
 </view>
 </template>

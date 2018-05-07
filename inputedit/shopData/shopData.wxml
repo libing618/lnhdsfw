@@ -22,10 +22,10 @@
       <block wx:for="{{roleUser[0]}}" wx:key="{{index}}">
         <view wx:if="{{aUser[item].userRolName==eRole}}" class="weui-cell">
           <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
-            <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+            <view class="weui-media-box__hd_in-appmsg">
               <image class="weui-media-box__thumb" src="{{aUser[item].avatarUrl}}" background-size="cover"></image>
             </view>
-            <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+            <view class="weui-media-box__bd_in-appmsg">
               <view class="weui-media-box__title">{{aUser[item].uName}}(呢称：{{aUser[item].nickName}})</view>
               <button id="mr_0" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fManageRole">解职</button>
               <button id="mr_c" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fChangeRole">调岗</button>
@@ -42,10 +42,10 @@
       <view class="page__bd page__bd_spacing">
         <block wx:for="{{applyUser[0]}}" wx:key="{{createdAt}}" class="weui-cell">
           <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
-            <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+            <view class="weui-media-box__hd_in-appmsg">
               <image class="weui-media-box__thumb" src="{{aUser[item].avatarUrl}}" background-size="cover"></image>
             </view>
-            <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+            <view class="weui-media-box__bd_in-appmsg">
               <view class="weui-media-box__title">{{aUser[item].uName}}(呢称：{{aUser[item].nickName}})</view>
               <view class="weui-media-box__desc">申请 {{mRolJsons[aUser[item].userRolName]}}</view>
               <button id="mr_2" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fManageRole">同意</button>
@@ -64,10 +64,10 @@
         <view class="page__bd page__bd_spacing">
           <block wx:for="{{roleUser[1]}}" wx:key="{{index}}" class="weui-cell">
             <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
-              <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+              <view class="weui-media-box__hd_in-appmsg">
                 <image class="weui-media-box__thumb" src="{{aUser[item].avatarUrl}}" background-size="cover"></image>
               </view>
-              <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+              <view class="weui-media-box__bd_in-appmsg">
                 <view class="weui-media-box__title">{{aUser[item].uName}}(呢称：{{aUser[item].nickName}})</view>
                 <button id="mr_4" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fManageRole">解约</button>
               </view>
@@ -78,10 +78,10 @@
         <view class="page__bd page__bd_spacing">
           <block wx:for="{{applyUser[1]}}" wx:key="{{createdAt}}" class="weui-cell">
             <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
-              <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+              <view class="weui-media-box__hd_in-appmsg">
                 <image class="weui-media-box__thumb" src="{{aUser[item].avatarUrl}}" background-size="cover"></image>
               </view>
-              <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+              <view class="weui-media-box__bd_in-appmsg">
                 <view class="weui-media-box__title">{{aUser[item].uName}}(呢称：{{aUser[item].nickName}})</view>
                 <button id="mr_2" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fManageRole">同意</button>
                 <button id="mr_3" data-id="{{item}}" style="display:inline-block" size="mini" bindtap="fManageRole">拒绝</button>

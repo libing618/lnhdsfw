@@ -137,6 +137,41 @@ page{
   text-align: left;
   font-size: 28rpx;
 }
+.chat-box__left {
+  padding-top: 20rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  float: left;
+}
+.chat-box__right {
+  padding-top: 20rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  float: right;
+}
+.chat-box__hd {
+  margin-right: 20rpx;
+  margin-left: 20rpx;
+  width: 120rpx;
+  line-height: 120rpx;
+  text-align: center;
+}
+.chat-box__bd {
+  width: 600rpx;
+  line-height: 120rpx;
+  text-align: left;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+}
 .summary {
 	display: flex;
 	flex-direction: column;
@@ -233,9 +268,9 @@ page{
 
 .modal_attr_box {
   width: 100%;
-  overflow: scroll; 
+  overflow: scroll;
   position: fixed;
-  bottom: 0; 
+  bottom: 0;
   left: 0;
   z-index: 700;
   background: silver;
