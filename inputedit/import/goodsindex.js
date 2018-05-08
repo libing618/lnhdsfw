@@ -2,7 +2,7 @@
 const AV = require('../../libs/leancloud-storage.js');
 const {checkRols,hTabClick} = require('../../libs/util.js');
 const { readAllData } = require('../../model/initupdate');
-const {f_modalSwitchBox,f_modalFieldBox} = require('../../model/controlModal');
+const {f_modalSwitchBox,f_modalFieldView} = require('../../model/controlModal');
 var app = getApp()
 Page({
   data:{
@@ -44,7 +44,7 @@ Page({
 
   f_modalSwitchBox: f_modalSwitchBox,
 
-  f_modalFieldBox: f_modalFieldBox,
+  f_modalFieldView: f_modalFieldView,
 
   f_tabPanelPage:function({currentTarget:{id}}){
     var that = this;

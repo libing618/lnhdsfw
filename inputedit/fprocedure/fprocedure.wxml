@@ -19,7 +19,7 @@
     <view hidden="{{enIns}}">
       <template is="i_insdata"></template>
     </view>
-  <template is="modalAddressBox" data="{{pageName,...fieldFormat,gname,p,c}}">
+  <template is="p_modalEditAddress" data="{{pageName,...fieldFormat,gname,p,c}}">
 </view> -->
 <view class="page">
   <template is="p_navBar__back" data="{{...pw,navBarTitle}}"/>

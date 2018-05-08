@@ -51,7 +51,7 @@ Page({
       that.data.vData = app.aData[that.data.pno][options.artId];
       readShowFormat(pClass.pSuccess, that.data.vData).then(({reqData,fModal})=>{
         that.data.reqData=reqData;
-        if (fModal){that.f_modalFieldBox = require('../../model/controlModal').f_modalFieldBox}
+        if (fModal){that.f_modalFieldView = require('../../model/controlModal').f_modalFieldView}
         that.data.enUpdate = typeof that.data.vData.shopId!='undefined' && typeof pClass.suRoles!='undefined';  //有本店信息且流程有上级审批的才允许修改
         that.setData(that.data);
       });

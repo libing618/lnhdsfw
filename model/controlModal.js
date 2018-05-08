@@ -32,6 +32,7 @@ function downModal(that,hidePage){
   }, 200)
 }
 module.exports = {
+  popModal:popModal,
 
   f_modalSwitchBox: function ({ currentTarget:{id,dataset} }) {
     var that = this;
@@ -62,7 +63,7 @@ module.exports = {
     }
   },
 
-  f_modalFieldBox: function ({ currentTarget:{id,dataset} }) {
+  f_modalFieldView: function ({ currentTarget:{id,dataset} }) {
     var that = this;
     let hidePage = {};
     switch (id) {
@@ -72,19 +73,47 @@ module.exports = {
       default:                  //打开弹出页
         let showPage = {};
         showPage['pageData.'+id] = app.aData[dataset.pNo][id];
-        showPage.sPages = that.data.sPages.push({pageName:'modalFieldBox',targetId:id,reqData: require('procedureclass.js')[dataset.pNo].pSuccess});
+        showPage.sPages = that.data.sPages.push({pageName:'modalFieldView',targetId:id,reqData: require('procedureclass.js')[dataset.pNo].pSuccess});
         that.setData(showPage);
         popModal(that)
         break;
     }
   },
 
-  i_modalAddressBox: function ({ currentTarget:{id,dataset},detail:{value} }) {      //地址编辑
+  f_modalSelectPanel: function ({ currentTarget:{id,dataset} }) {
+    var that = this;
+    let hidePage = {};
+    switch (id) {
+      case 'fBack':                  //返回
+        downModal(that,hidePage);
+        break;
+      case 'fSelect':                  //选定返回
+        let nowPage = that.data.sPages[that.data.sPages.length-1];
+        hidePage['vData.'+that.data.reqData[nowPage.n].gname] =  { pNo: nowPage.pNo, ...that.data.pageData[that.data.idClicked] };
+        downModal(that,hidePage);
+        break;
+      case 'fPop':                  //打开弹出页
+        let showPage = {};
+        showPage.pageData = app.aData[dataset.pNo];
+        showPage.tPage = app.mData[dataset.pNo];
+        showPage.idClicked = '0';
+        showPage.sPages = that.data.sPages.push({pageName:'modalSelectPanel',vData:that.data.vData});
+        that.setData(showPage);
+        popModal(that)
+        break;
+      default:                  //确认ID
+        that.setData({idClicked:id});
+        break;
+    }
+  },
+
+  i_modalEditAddress: function ({ currentTarget:{id,dataset},detail:{value} }) {      //地址编辑
     var that = this;
     let hidePage = {};
     switch (id) {
       case 'fSave':                  //确认返回数据
-        hidePage.vData[that.data.reqData[n].gname] =  { code: that.data.saddv, sName: value.address1 };
+        let nowPage = that.data.sPages[that.data.sPages.length-1];
+        hidePage['vData.'+that.data.reqData[nowPage.n].gname] =  { code: that.data.saddv, sName: value.address1 };
         downModal(that,hidePage)
         break;
       case 'fBack':                  //返回
@@ -119,9 +148,9 @@ module.exports = {
         }
         that.setData(showPage);
         break;
-      case 'modalAddressBox':                  //打开弹出页
+      case 'modalEditAddress':                  //打开弹出页
         let newPage = {
-          pageName: 'modalAddressBox',
+          pageName: 'modalEditAddress',
           adclist: require('addresclass.js'),   //读取行政区划分类数据
           adglist: [],
           saddv: 0,

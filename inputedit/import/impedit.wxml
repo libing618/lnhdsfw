@@ -141,11 +141,8 @@
   </view>
 </template>
 
-<template name="i_modalAddressBox">
-  <!-- <navigator url="/inputedit/import/addressedit?reqName={{gname}}">
-    
-  </navigator> -->
-  <view id="modalAddressBox" data-n="{{n}}" class="weui-cell" bindtap='i_modalAddressBox'>{{p}}:{{c.sName}}</view>
+<template name="i_modalEditAddress">
+  <view id="modalEditAddress" data-n="{{n}}" class="weui-cell" bindtap='i_modalEditAddress'>{{p}}:{{c.sName}}</view>
 </template>
 
 <template name="i_eDetail">

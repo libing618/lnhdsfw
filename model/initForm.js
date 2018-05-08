@@ -234,7 +234,7 @@ module.exports = {
             case 'arrplus':
               vData[reqField.gname] = { code: 0, sName: '点此处进行选择' };
               break;
-            case 'modalAddressBox':
+            case 'modalEditAddress':
               vData[reqField.gname] = { code: 0, sName: '点此处进入编辑' };
               break;
             case 'listsel':

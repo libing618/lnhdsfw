@@ -129,7 +129,7 @@
 </view>
 </template>
 
-<template name="p_modalFieldBox">
+<template name="p_modalFieldView">
 <view class="modal_box" id="fBack" bindtap="f_modalSwitchBox">
   <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
     <view class="page__hd">
@@ -151,15 +151,15 @@
 </view>
 </template>
 
-<template name="p_modalAddressBox">
-<view class="modal_box" id="fBack" bindtap="i_modalAddressBox">
-<form bindsubmit="i_modalAddressBox">
+<template name="p_modalEditAddress">
+<view class="modal_box" id="fBack" bindtap="i_modalEditAddress">
+<form bindsubmit="i_modalEditAddress">
   <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
     <view class="page__title">{{reqData[n].p}}</view>
-    <view class="close_icon" id="fBack" bindtap="i_modalAddressBox">×</view>
+    <view class="close_icon" id="fBack" bindtap="i_modalEditAddress">×</view>
     <view class="page__hd">
       <view class="page__title">选择区(县)</view>
-        <picker-view indicator-style="height: 40rpx;" style="width: 100%; height: 300rpx;" value="{{adcvalue}}" id="faddclass" bindchange="i_modalAddressBox">
+        <picker-view indicator-style="height: 40rpx;" style="width: 100%; height: 300rpx;" value="{{adcvalue}}" id="faddclass" bindchange="i_modalEditAddress">
           <picker-view-column>
               <view wx:for="{{adclist}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
           </picker-view-column>
@@ -171,8 +171,8 @@
           </picker-view-column>
         </picker-view>
       <view hidden="{{asaddv}}">
-        <button class="page__title" id="raddgroup" bindtap="i_modalAddressBox">点此处选择村(社区)</button>
-        <picker-view indicator-style="height: 40rpx;" style="width: 100%; height: 300rpx;" value="{{adgvalue}}" id="saddgroup" bindchange="i_modalAddressBox">
+        <button class="page__title" id="raddgroup" bindtap="i_modalEditAddress">点此处选择村(社区)</button>
+        <picker-view indicator-style="height: 40rpx;" style="width: 100%; height: 300rpx;" value="{{adgvalue}}" id="saddgroup" bindchange="i_modalEditAddress">
             <picker-view-column>
                 <view wx:for="{{adglist}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
             </picker-view-column>
@@ -194,21 +194,21 @@
   </view>
   <view class="page__ft weui-footer_fixed-bottom">
     <button class="weui-btn" formType="submit" size="mini" id="fSave">确定</button>
-    <button class="weui-btn" type="primary" size="mini" bindtap="i_modalAddressBox" id="fBack">返回</button>
+    <button class="weui-btn" type="primary" size="mini" bindtap="i_modalEditAddress" id="fBack">返回</button>
   </view>
 </form>
 </view>
 </template>
 
-<template name="p_modalSelectGoodsBox">
-<view class="modal_box" id="fBack" bindtap="i_modalSelectGoodsBox">
+<template name="p_modalSelectPanel">
+<view class="modal_box" id="fBack" bindtap="i_modalSelectPanel">
   <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
-    <view class="page__title">选择产品{{}}</view>
-    <view class="close_icon" id="fBack" bindtap="i_modalAddressBox">×</view>
+    <view class="page__title">选择{{reqData[n].p}}</view>
+    <view class="close_icon" id="fBack" bindtap="i_modalEditAddress">×</view>
     <view class="page__hd">
     <view class="weui-tab__panel">
-      <block wx:for="{{goods}}" wx:key="{{index}}">
-        <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active" id="{{item}}" bindtap="cSure">
+      <block wx:for="{{mPage}}" wx:key="{{index}}">
+        <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active" id="{{item}}" bindtap="i_modalSelectPanel">
           <view class="weui-media-box__hd_in-appmsg">
             <image class="weui-media-box__thumb" src="{{pageData[item].thumbnail}}" background-size="cover"></image>
           </view>
@@ -217,16 +217,16 @@
             <view class="weui-media-box__desc">{{pageData[item].title}}</view>
           </view>
         </view>
-        <navigator url="/pages/vprocedure/vprocedure?pNo={{pNo}}&artId={{item}}&uId={{pageData[item].unitId}}">
+        <view wx:if="{{idClicked==item}}">
           <button class="weui-cell__ft" size="mini">详情</button>
-        </navigator>
+        </view>
       </block>
     </view>
     </view>
     <view style="padding-bottom:100rpx;"></view>
   </view>
-  <view class="page__ft weui-footer_fixed-bottom">
-    <button class="weui-btn" type="primary" size="mini" bindtap="i_modalSelectGoodsBox" id="fBack">确定</button>
+  <view wx:if="{{idClicked!=='0'}}" class="page__ft weui-footer_fixed-bottom">
+    <button class="weui-btn" type="primary" bindtap="i_modalSelectPanel" id="fSelect">选定{{pageData[idClicked].uName}}</button>
   </view>
 
 </view>
