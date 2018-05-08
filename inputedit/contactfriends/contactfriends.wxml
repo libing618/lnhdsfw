@@ -1,2 +1,24 @@
-<!--"联系厂家-->
-<text>"联系厂家</text>
+<import src="../../libs/wedetail.wxml"/>
+<import src="../../libs/weimport.wxml"/>
+<import src="../../libs/wepage.wxml" />
+<view class="page">
+  <template is="p_navBar__back" data="{{...pw,navBarTitle:'联系厂家'}}"/>
+  <view class="page__bd">
+  <block wx:for="{{vData}}" wx:key="{{index}}" wx:for-item="uu" wx:for-index="i">
+    <view class="weui-cell weui-cell_access" hover-class="weui-cell_active" id="{{uu.objectId}}" bindtap="indexClick">
+      <template is="{{ iClicked==uu.objectId ? 'selecticon1' : 'selecticon2'}}" />
+      <view class="weui-cell__ft weui-cell__ft_in-access">{{uu.uName}}</view>
+    </view>
+    <view hidden="{{iClicked!=uu.objectId}}" wx:for="{{uu.unitUsers}}" wx:key="{{index}}" wx:for-index="j" wx:for-item="user">
+      <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
+        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+          <image class="weui-media-box__thumb" src="{{user.avatarUrl}}" background-size="cover"></image>
+        </view>
+        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+          <view class="weui-media-box__title">{{user.userRolName}}</view>
+          <view class="weui-media-box__desc">{{user.uName}}({{user.nickName}})</view>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>
