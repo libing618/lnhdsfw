@@ -11,7 +11,7 @@ Page({
     var that = this;
     if (checkRols(8,app.roleData.user)) {
       let mInterval = getMonInterval();        //用户注册日到本月的月份信息数组
-      sumData(mInterval.yearMon,'distribution',['income','amount']).then((fSum)=>{
+      sumData(mInterval.yearMon,'distribution',['amount','income']).then((fSum)=>{
       new wxCharts({
         canvasId: 'areaCanvas',
         type: 'area',

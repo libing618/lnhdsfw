@@ -1,6 +1,11 @@
 //退换货
+const { updateRoleData } = require('../../model/initupdate.js');
+const { procedureSum } = require('../../model/dataAnalysis.js');
+var app = getApp()
 Page({
-  data:{},
+  data:{
+    pw: app.sysinfo.pw
+  },
   onLoad:function(options){
     // 页面初始化 options为页面跳转所带来的参数
   },

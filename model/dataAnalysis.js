@@ -40,10 +40,10 @@ function getMonInterval(){
   }
   return {yearMon:result,dayRange,endYear:endYearIndex,endYearMon:endYear+(endMon>9 ? '-' : '-0')+endMon};
 };
-function readRoleData(className,sumField,updAt,atName){
+function readRoleData(className,sumField,updAt,tName){
   var sumRecords = [];
   let uatName = (atName) ? atName : 'updatedAt';
-  let readUp = Promise.resolve(new AV.Query(className).select(sumField).greaterThan(uatName, updAt).limit(1000).ascending(uatName)).then(results=>{
+  let readUp = Promise.resolve(new AV.Query(className).select(sumField).greaterThan(tName, updAt).limit(1000).ascending(uatName)).then(results=>{
     if (results) {
       results.forEach(result=>{ sumRecords.push(result.toJSON()) });
       updAt = results[0].updatedAt;
@@ -53,6 +53,10 @@ function readRoleData(className,sumField,updAt,atName){
 }
 module.exports = {
   getMonInterval:getMonInterval,
+
+  procedureSum: function(className,sumField){
+
+  },
 
   sumFamily: function(className,fields,familyCount){
     let sLength = fields.length;

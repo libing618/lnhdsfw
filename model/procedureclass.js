@@ -128,7 +128,7 @@ module.exports = {
     {gname:"specs", p:'规格',t:"specsel",csc:"specsel" },
     {gname:"details", p:'详情',t:"eDetail" }
   ],
-  "pBewrite": "产品条线提出产品设置或修改申请，由产品条线负责人进行审批。",
+  "pBewrite": "产品条线提出商品设置或修改申请，由产品条线负责人进行审批。",
   "puRoles": [
     "12",
     "11"
@@ -146,7 +146,7 @@ module.exports = {
     {gname:"package", p:'含成品数量', t:"dg",csc:"number" },
     {gname:"price", p:'零售价', t:"dg",csc:"digit" }
   ],
-  "pBewrite": "产品条线提出产品设置或修改申请，由产品条线负责人进行审批。",
+  "pBewrite": "产品条线提出商品规格设置或修改申请，由产品条线负责人进行审批。",
   "puRoles": [
     "12",
     "11"
@@ -164,7 +164,7 @@ module.exports = {
     {gname:"big_amount", p:'大额目标数量',t:"dg",csc:"number" },
     {gname:"start_end", p:'活动起止日期', t:"sedate",endif:false}
   ],
-  "pBewrite": "产品条线提出产品设置或修改申请，由营销条线负责人进行审批。",
+  "pBewrite": "产品条线提出促销活动设置或修改申请，由营销条线负责人进行审批。",
   "puRoles": [
     "12",
     "31"
@@ -225,16 +225,38 @@ module.exports = {
   "oBewrite": "产品条线确认订单并出货,服务条线进行店铺确认。",
   "oModel": "supplies"
 },
-
-"distribution":{
-  "pName": "分红流水",
-  "afamily": ['付款确认','清算结束'],
+"unfinishedorder":{
+  "pName": "店铺优惠",
+  "pSuccess": [
+    {gname:"orderlist", p:'订单',t:"sObject", csc:"objsel" },
+    {gname:"amount", p:'订单总金额',t:"dg",csc:"digit" },
+    {gname:"sale", p:'优惠金额',t:"dg",csc:"digit"}
+  ],
+  "pBewrite": "店铺所有成员均可通过会话接受客户的优惠申请，直接写入优惠表。",
+  "pModel": "unfinishedorder"
+},
+"returns":{
+  "pName": "退回厂家",
+  "afamily": ['退货确认', '退货到厂', '还款重发'],
   "pSuccess": [
     {gname:"orderlist", p:'订单',t:"sObject", csc:"objsel" },
     {gname:"cargo", p:'成品',t:"sObject", csc:"objsel" },
-    {gname:"amount", p:'分红金额',t:"dg",csc:"digit" }
+    {gname:"returnAmount", p:'退货金额',t:"dg",csc:"digit" },
+    {gname:"invoice", p:'发货单号',t:"inScan" },
+    {gname:"returns", p:'退货单号',t:"inScan"}
   ],
-  "pBewrite": "综合条线提出固定资产设置或修改申请，由条线负责人进行审批。",
+  "pBewrite": "店铺所有成员均可通过会话接受客户的退货申请，直接写入退货表。",
+  "pModel": "returns"
+},
+"distribution":{
+  "pName": "分红付账",
+  "pSuccess": [
+    {gname:"orderlist", p:'订单',t:"sObject", csc:"objsel" },
+    {gname:"cargo", p:'成品',t:"sObject", csc:"objsel" },
+    {gname:"amount", p:'订单金额',t:"dg",csc:"digit" },
+    {gname:"income", p:'分红金额',t:"dg",csc:"digit" }
+  ],
+  "pBewrite": "系统在交易清算后自动进行分红、付产品款、付信息服务费等结算。",
   "pModel": "xs_distribution"
 }
 }
