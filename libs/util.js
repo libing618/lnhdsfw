@@ -213,10 +213,9 @@ module.exports = {
     return crd
   },
 
-  hTabClick: function (e) {                                //点击tab
-    let pCk = Number(e.currentTarget.id)
+  hTabClick: function (e) {                                //点击头部tab
     this.setData({
-      "ht.pageCk": pCk
+      "ht.pageCk": Number(e.currentTarget.id)
     });
   },
 

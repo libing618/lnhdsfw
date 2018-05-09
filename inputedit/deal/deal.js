@@ -1,19 +1,63 @@
-// 达成销售
+//销售优惠
+const { updateRoleData } = require('../../model/initupdate.js');
+const { getMonInterval,sumData } = require('../../model/dataAnalysis.js');
+var app = getApp()
 Page({
-  data:{},
-  onLoad:function(options){
-    // 页面初始化 options为页面跳转所带来的参数
+  data:{
+    ht:{
+      navTabs: ['已用', '未用'],
+      fLength: 2,
+      pageCk: 0
+    },
+    pw: app.sysinfo.pw,
+    cPage: [[],[]],
+    pageData: {}
   },
+
   onReady:function(){
-    // 页面渲染完成
+    var that = this;
+    if (checkRols(3,app.roleData.user)) {
+      let mInterval = getMonInterval();        //用户注册日到本月的月份信息数组
+      sumData(mInterval.yearMon,'distribution',['income','amount']).then((fSum)=>{
+        that.setData({fSum:fSum});
+        that.setCanvas();
+      }).catch( console.error )
+    };
   },
-  onShow:function(){
-    // 页面显示
+
+  setCanvas: function () {
+    new wxCharts({
+      canvasId: 'areaCanvas',
+      type: 'area',
+      categories: mInterval.yearMon,
+      series: [{
+          name: '成交额',
+          data: that.data.fSum.pandect[0],
+          format: function (val) {
+              return val.toFixed(2) + '万';
+          }
+      }, {
+          name: '优惠额',
+          data: that.data.fSum.pandect[1],
+          format: function (val) {
+              return val.toFixed(2) + '万';
+          }
+      }],
+      yAxis: {
+          format: function (val) {
+              return val + '万';
+          }
+      },
+      width: app.sysinfo.windowWidth,
+      height: app.sysinfo.windowWidth
+    });
   },
-  onHide:function(){
-    // 页面隐藏
-  },
-  onUnload:function(){
-    // 页面关闭
+
+  hTabClick: function (e) {                                //点击tab
+    this.data.ht.pageCk = Number(e.currentTarget.id)
+    this.setData({
+      "ht.pageCk": this.data.ht.pageCk
+    });
+    if (this.data.ht.pageCk==0){this.setCanvas()}
   }
 })

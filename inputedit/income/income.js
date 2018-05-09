@@ -4,6 +4,9 @@ const { getMonInterval,sumData } = require('../../model/dataAnalysis.js');
 var wxCharts = require('../../libs/wxcharts-min.js');
 var app = getApp()
 Page({
+  data:{
+    pw: app.sysinfo.pw
+  },
   onReady: function () {
     var that = this;
     if (checkRols(8,app.roleData.user)) {

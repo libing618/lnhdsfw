@@ -17,7 +17,6 @@ Page({
   onReady:function(){
     var that = this;
     if (checkRols(8,app.roleData.user)) {
-      let mInterval = getMonInterval();        //用户注册日到本月的月份信息数组
       countSort('_User', ['gender', 'city', 'province']).then(resSort=>{
         that.sumSort = resSort;
         that.setCanvas();
@@ -37,9 +36,8 @@ Page({
   },
 
   hTabClick: function (e) {                                //点击tab
-    this.data.ht.pageCk = Number(e.currentTarget.id)
     this.setData({
-      "ht.pageCk": this.data.ht.pageCk
+      "ht.pageCk": Number(e.currentTarget.id)
     });
     this.setCanvas()
   }

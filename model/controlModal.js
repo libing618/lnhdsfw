@@ -32,9 +32,7 @@ function downModal(that,hidePage){
   }, 200)
 }
 module.exports = {
-  popModal:popModal,
-
-  f_modalSwitchBox: function ({ currentTarget:{id,dataset} }) {
+  f_modalSwitchBox: function ({ currentTarget:{id,dataset} }) {            //切换选择弹出页
     var that = this;
     let hidePage = {};
     switch (id) {
@@ -63,7 +61,7 @@ module.exports = {
     }
   },
 
-  f_modalFieldView: function ({ currentTarget:{id,dataset} }) {
+  f_modalFieldView: function ({ currentTarget:{id,dataset} }) {            //字段内容查看弹出页
     var that = this;
     let hidePage = {};
     switch (id) {
@@ -80,7 +78,7 @@ module.exports = {
     }
   },
 
-  f_modalSelectPanel: function ({ currentTarget:{id,dataset} }) {
+  i_modalSelectPanel: function ({ currentTarget:{id,dataset} }) {            //单项选择面板弹出页
     var that = this;
     let hidePage = {};
     switch (id) {
@@ -107,7 +105,30 @@ module.exports = {
     }
   },
 
-  i_modalEditAddress: function ({ currentTarget:{id,dataset},detail:{value} }) {      //地址编辑
+  i_modalSelectFile: function ({ currentTarget:{id,dataset} }) {            //单项选择面板弹出页
+    var that = this;
+    let hidePage = {};
+    switch (id) {
+      case 'fBack':                  //返回
+        downModal(that,hidePage);
+        break;
+      case 'fSelect':                  //选定返回
+        let nowPage = that.data.sPages[that.data.sPages.length-1];
+        hidePage['vData.'+that.data.reqData[nowPage.n].gname] =  { pNo: nowPage.pNo, ...that.data.pageData[that.data.idClicked] };
+        downModal(that,hidePage);
+        break;
+      case 'fOpen':                  //打开文件
+        wx.openDocument({
+          filePath: this.data.idClicked
+        });
+        break;
+      default:                  //确认ID
+        that.setData({idClicked:id});
+        break;
+    }
+  },
+
+  i_modalEditAddress: function ({ currentTarget:{id,dataset},detail:{value} }) {      //地址编辑弹出页
     var that = this;
     let hidePage = {};
     switch (id) {
@@ -161,6 +182,116 @@ module.exports = {
         that.setData({sPages: that.data.sPages.push(newPage)});
         popModal(that);
         break;
+    }
+  },
+
+  i_msgEditSend:function(e){            //消息编辑发送框
+    var that = this;
+    switch (e.currentTarget.id) {
+      case 'sendMsg':
+        app.sendM(e.detail.value,that.data.cId).then( (rsm)=>{
+          if (rsm){
+            that.setData({
+              vData: {mtype:-1,mtext:'',wcontent},
+              messages: app.conMsg[that.data.cId]
+            })
+          }
+        });
+        break;
+      case 'fMultimedia':
+        that.setData({enMultimedia: !that.data.enMultimedia});
+        break;
+      case 'iMultimedia':
+        var sIndex = parseInt(e.currentTarget.dataset.n);      //选择的菜单id;
+        return new Promise( (resolve, reject) =>{
+          switch (sIndex){
+            case 1:             //选择产品
+              if (!that.f_modalSelectPanel) {that.f_modalSelectPanel = require('../../model/controlModal').f_modalSelectPanel}
+              let showPage = {};
+              showPage.pageData = app.aData.goods;
+              showPage.tPage = app.mData.goods;
+              showPage.idClicked = '0';
+              showPage.sPages = that.data.sPages.push({pageName:'modalSelectPanel',pNo:'goods',n:0});
+              that.setData(showPage);
+              popModal(that);
+              resolve(true);
+              break;
+            case 2:               //选择相册图片或拍照
+              wx.chooseImage({
+                count: 1, // 默认9
+                sizeType: ['original', 'compressed'],             //可以指定是原图还是压缩图，默认二者都有
+                sourceType: ['album', 'camera'],                 //可以指定来源是相册还是相机，默认二者都有
+                success: function (res) { resolve(res.tempFilePaths[0]) },               //返回选定照片的本地文件路径列表
+                fail: function(err){ reject(err) }
+              });
+              break;
+            case 3:               //录音
+              wx.startRecord({
+                success: function (res) { resolve( res.tempFilePath ); },
+                fail: function(err){ reject(err) }
+              });
+              break;
+            case 4:               //选择视频或拍摄
+              wx.chooseVideo({
+                sourceType: ['album','camera'],
+                maxDuration: 60,
+                camera: ['front','back'],
+                success: function(res) { resolve( res.tempFilePath ); },
+                fail: function(err){ reject(err) }
+              })
+              break;
+            case 5:                    //选择位置
+              wx.chooseLocation({
+                success: function(res){ resolve( { latitude: res.latitude, longitude: res.longitude } ); },
+                fail: function(err){ reject(err) }
+              })
+              break;
+            case 6:                     //选择文件
+              if (!that.f_modalSelectFile) {that.f_modalSelectFile = require('../../model/controlModal').f_modalSelectFile}
+              let showPage = {};
+              wx.getSavedFileList({
+                success: function(res) {
+                  let index,filetype,fileData={},cOpenFile=['doc', 'xls', 'ppt', 'pdf', 'docx', 'xlsx', 'pptx'];
+                  var sFiles=res.fileList.map(({filePath,createTime,size})=>{
+                    index = filePath.indexOf(".");                   //得到"."在第几位
+                    filetype = filePath.substring(index+1);          //得到后缀
+                    if ( cOpenFile.indexOf(filetype)>=0 ){
+                      fileData[filePath] = {"fType":filetype,"cTime":formatTime(createTime,false),"fLen":size/1024};
+                      return (fileList.filePath);
+                    }
+                  })
+                  showPage.pageData = fileData;
+                  showPage.tPage = sFiles;
+                  showPage.idClicked = '0';
+                  showPage.sPages = that.data.sPages.push({pageName:'modalSelectFile',pNo:'files',n:5});
+                  that.setData(showPage);
+                  popModal(that);
+                  resolve(true);
+                }
+              })
+              break;
+            default:
+              resolve('输入文字');
+              break;
+          }
+        }).then( (wcontent)=>{
+          return new Promise( (resolve, reject) => {
+            if (sIndex>1 && sIndex<5){
+              wx.saveFile({
+                tempFilePath : icontent,
+                success: function(cres){ resolve(cres.savedFilePath); },
+                fail: function(cerr){ reject('媒体文件保存错误！') }
+              });
+            }else{
+              resolve(wcontent);
+            };
+          });
+        }).then( (content) =>{
+          that.setData({ mtype: -sIndex ,wcontent: content });
+        }).catch((error)=>{console.log(error)});
+      break;
+    default:
+      break;
     }
   }
 

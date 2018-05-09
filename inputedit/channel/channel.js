@@ -38,13 +38,6 @@ Page({
     };
   },
 
-  hTabClick: function (e) {                                //点击tab
-    let pCk = Number(e.currentTarget.id)
-    this.setData({
-      "ht.pageCk": pCk
-    });
-  },
-
   hTabClick: hTabClick,
 
   f_modalSwitchBox: f_modalSwitchBox,

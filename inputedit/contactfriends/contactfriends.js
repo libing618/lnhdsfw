@@ -1,13 +1,32 @@
 // 联系厂家
-const app=getApp();
+const {checkRols,indexClick} = require('../../libs/util.js');
+const { updateData } = require('../../model/initupdate');
+var app = getApp();
 Page({
-data:{
-  vData:[],
-  idClicked: '0'
-},
-onLoad:function(options){
-  this.setData({vData:[app.roleData.uUnit,app.roleData.sUnit]});
-  this.indexClick = require('../../libs/util.js').indexClick;
-}
+  data:{
+    pw: app.sysinfo.pw，
+    tPage: app.configData.goods.fConfig,
+    pageData: app.aData.manufactor
+    idClicked: '0'
+  },
+  onLoad:function(options){
+    var that = this;
+    if (checkRols(5,app.roleData.user)) {
+      updateData(true,'manufactor').then(isupdated=>{
+        if (isupdated) {
+          that.setData({
+            cPage: app.configData.goods.fConfig,
+            pageData: app.aData.manufactor
+          })
+        }
+      }).catch(console.error);
+    };
+  },
+
+  indexClick: indexClick,
+
+  makePhone: function({currentTarget:{id}}){
+    wx.makePhoneCall({phoneNumber:id})
+  }
 
 })

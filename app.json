@@ -80,7 +80,6 @@
       "pages": [
         "import/goodsindex",
         "shopData/shopData",
-        "communication/communication",
         "channel/channel",
         "storeflow/storeflow",
         "closerate/closerate",
