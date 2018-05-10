@@ -6,7 +6,7 @@ function unitData(cName, unitId) {
   if (app.mData[cName][unitId]) { app.mData[cName][unitId].forEach(cuId => { uData[cuId] = app.aData[cName][cuId] }) };
   return uData;
 };
-function allData(dataClass, unitId) {
+function allUnitData(dataClass, unitId) {
   updateData(true, dataClass, unitId).then(() => {
     let readDown = Promise.resolve(updateData(false, dataClass, unitId)).then(notEnd => {
       if (notEnd) {
@@ -18,7 +18,7 @@ function allData(dataClass, unitId) {
   });
 };
 function integration(masterClass, slaveClass, unitId) {    //整合选择数组(主表，从表，单位Id)
-  return Promise.all([allData( masterClass, unitId), allData(slaveClass, unitId)]).then(([uMaster, uSlave]) => {
+  return Promise.all([allUnitData( masterClass, unitId), allUnitData(slaveClass, unitId)]).then(([uMaster, uSlave]) => {
     app.mData[masterClass][unitId].forEach(masterId => {
       if (typeof app.aData[masterClass][masterId] != 'undefined') {
         app.aData[masterClass][masterId][slaveClass] = app.mData[slaveClass][unitId].filter(slaveId => { return app.aData[slaveClass][slaveId][masterClass] == masterId });

@@ -13,32 +13,45 @@ Page({
     cPage: [[],[]],
     pageData: {}
   },
+  sMons:[],
+  fSum: {},
 
   onReady:function(){
     var that = this;
     if (checkRols(3,app.roleData.user)) {
-      let mInterval = getMonInterval();        //用户注册日到本月的月份信息数组
-      sumData(mInterval.yearMon,'distribution',['income','amount']).then((fSum)=>{
-        that.setData({fSum:fSum});
+      that.sMons = getMonInterval().yearMon;        //用户注册日到本月的月份信息数组
+      return new Promise.all([readRoleData('orderlist'),allUpdateData('unfinishedorder')]).then(()=>{
+        let pageData = {};
+        app.mData.unfinishedorder.forEach(ufod=>{
+          if (app.mData.orderlist.indexOf(ufod)>=0){
+            pageData[ufod] = app.aData.unfinishedorder[ufod];
+            if (app.aData.orderlist[ufod].afamily == 0){
+              that.data.cPage[0].push(ufod);
+            } else { that.data.cPage[1].push(ufod); }
+          }
+        })
+        app.aData.unfinishedorder = pageData;
+        that.fSum=aDataSum('unfinishedorder',['amount','sale'],that.data.cPage[0]);
         that.setCanvas();
       }).catch( console.error )
     };
   },
 
   setCanvas: function () {
+    var that = this;
     new wxCharts({
       canvasId: 'areaCanvas',
       type: 'area',
-      categories: mInterval.yearMon,
+      categories: that.sMons,
       series: [{
           name: '成交额',
-          data: that.data.fSum.pandect[0],
+          data: that.fSum.pandect[0],
           format: function (val) {
               return val.toFixed(2) + '万';
           }
       }, {
           name: '优惠额',
-          data: that.data.fSum.pandect[1],
+          data: that.fSum.pandect[1],
           format: function (val) {
               return val.toFixed(2) + '万';
           }

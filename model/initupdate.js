@@ -3,7 +3,7 @@ const procedureclass = require('procedureclass.js');
 const initTime = new Date(0).toISOString();
 var app = getApp();
 function isAllData(cName){
-  return ['articles','artshop','manufactor'].indexOf(cName)>=0;
+  return ['articles','artshop','manufactor','returns','unfinishedorder','orderlist','order'].indexOf(cName)>=0;
 };
 function appDataExist(dKey0, dKey1) {              //检查app.aData是否存在二三级的键值
   if (typeof app.mData.pAt[dKey0] == 'undefined') {
@@ -179,7 +179,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       var umdata=[] ,updAt;
       var urData = new AV.Query(procedureclass[pNo].pModel);                                      //进行数据库初始化操作
-      let userType = app.roleData.user.userRolName=='promoter' ? 'sjid' : 'channelid';
+      let userType = app.roleData.user.userRolName=='promoter' ? 'promoter' : 'channel';
       if (app.roleData.user.userRolName!=='admin') {urData.equalTo(userType, app.roleData.user.objectId)};                //除权限和文章类数据外只能查指定单位的数据
         updAt = appDataExist(pNo, app.roleData.user.objectId) ? app.mData.pAt[pNo][app.roleData.user.objectId] : [0, 0];
         if (typeof app.mData[pNo][app.roleData.user.objectId] == 'undefined') {       //添加以单位ID为Key的JSON初值

@@ -1,4 +1,5 @@
 const AV = require('../libs/leancloud-storage.js');
+const { updateRoleData } = require('initupdate');
 var app = getApp();
 function sumArr(arrData,arrIndex){
   let dSum = 0;
@@ -40,25 +41,66 @@ function getMonInterval(){
   }
   return {yearMon:result,dayRange,endYear:endYearIndex,endYearMon:endYear+(endMon>9 ? '-' : '-0')+endMon};
 };
-function readRoleData(className,sumField,updAt,tName){
+function readSumData(className,sumField,updAt,atName){
   var sumRecords = [];
-  let uatName = (atName) ? atName : 'updatedAt';
-  let readUp = Promise.resolve(new AV.Query(className).select(sumField).greaterThan(tName, updAt).limit(1000).ascending(uatName)).then(results=>{
+  let atName = (atName) ? atName : 'updatedAt';
+  let readUp = Promise.resolve(new AV.Query(className).select(sumField).greaterThan(atName, updAt).limit(1000).ascending(uatName)).then(results=>{
     if (results) {
       results.forEach(result=>{ sumRecords.push(result.toJSON()) });
       updAt = results[0].updatedAt;
       readUp();
     } else { return sumRecords };
   })
-}
+};
 module.exports = {
   getMonInterval:getMonInterval,
 
-  procedureSum: function(className,sumField){
-
+  readRoleData: function(className){
+    updateRoleData(true,className).then(()=>{
+      let readDown = Promise.resolve(updateRoleData(false, className)).then(notEnd => {
+        if (notEnd) {
+          return readDown();
+        } else {
+          return true;
+        }
+      });
+    });
   },
 
-  sumFamily: function(className,fields,familyCount){
+  allUpdateData: function(className){
+    updateData(true,className).then(()=>{
+      let readDown = Promise.resolve(updateData(false, className)).then(notEnd => {
+        if (notEnd) {
+          return readDown();
+        } else {
+          return true;
+        }
+      });
+    });
+  },
+
+  aDataSum: function(className,sumField,idArr){
+    return new Promise((resolve, reject) => {
+      let sLength = fields.length;
+      let fieldSum = new Array(sLength);
+      fieldSum.fill(0);         //定义汇总数组长度且填充为0
+      idArr = idArr ? idArr : app.mData[className][app.roleData.user.objectId];
+        if (idArr) {
+          idArr.forEach(mId => {
+            for (let i = 0; i < sLength; i++) { mSum[mId].push(0) };
+            if (app.aData[className][mId]){
+              for (let i = 0; i < sLength; i++) {
+                fieldSum[i] += app.aData[className][mId][fields[i]];
+              }
+            };
+          })
+        }
+        resolve(fieldSum);
+      });
+    }).catch(console.error);
+  },
+
+  sumFamily: function(className,fields,familyCount){                  //暂态数据按月根据afamily汇总
     let sLength = fields.length;
     let sFields = [];
     let fSum = {},newSum;
@@ -83,7 +125,7 @@ module.exports = {
       });
     }).then(updatedAt=>{
       return new Promise((resolve,reject)=>{
-        readRoleData(className,[...fields,'afamily'],updatedAt).then(sumData=>{
+        readSumData(className,[...fields,'afamily'],updatedAt).then(sumData=>{
           if (sumData){
             let recordJSON,rDate,rYearMon;
             sumData.forEach(mRecord=>{
@@ -107,7 +149,7 @@ module.exports = {
     }).catch(console.error)
   },
 
-  sumData: function(mIntervals,className,sumField){
+  sumData: function(mIntervals,className,sumField){                   //暂态数据按月汇总
     let sfLength = sumField.length;
     let mSum = {},newSum=[];
     let fieldSum = new Array(sfLength);
@@ -144,7 +186,7 @@ module.exports = {
             newSum.push(aSumRecord);
           };
         });
-        readRoleData(className,sumField,updatedAt).then(sumData=>{
+        readSumData(className,sumField,updatedAt).then(sumData=>{
           if (sumData){
             let recordJSON,rDate,rYearMon;
             sumData.forEach(mRecord=>{
@@ -194,7 +236,7 @@ module.exports = {
         });
     }).then(createdAt => {
       return new Promise((resolve, reject) => {
-        readRoleData(className, cField, createdAt, 'createdAt').then(sumData => {
+        readSumData(className, cField, createdAt, 'createdAt').then(sumData => {
           if (sumData) {
             let recordJSON;
             sumData.forEach(mRecord => {
