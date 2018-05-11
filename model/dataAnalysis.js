@@ -43,7 +43,7 @@ function getMonInterval(){
 };
 function readSumData(className,sumField,updAt,atName){
   var sumRecords = [];
-  let atName = (atName) ? atName : 'updatedAt';
+  if (!atName) { atName = 'updatedAt' };
   let readUp = Promise.resolve(new AV.Query(className).select(sumField).greaterThan(atName, updAt).limit(1000).ascending(uatName)).then(results=>{
     if (results) {
       results.forEach(result=>{ sumRecords.push(result.toJSON()) });
@@ -79,24 +79,30 @@ module.exports = {
     });
   },
 
-  aDataSum: function(className,sumField,idArr){
+  aDataSum: function(yearMons,className,sumField,idArr){
     return new Promise((resolve, reject) => {
       let sLength = fields.length;
       let fieldSum = new Array(sLength);
       fieldSum.fill(0);         //定义汇总数组长度且填充为0
-      idArr = idArr ? idArr : app.mData[className][app.roleData.user.objectId];
-        if (idArr) {
-          idArr.forEach(mId => {
-            for (let i = 0; i < sLength; i++) { mSum[mId].push(0) };
-            if (app.aData[className][mId]){
-              for (let i = 0; i < sLength; i++) {
-                fieldSum[i] += app.aData[className][mId][fields[i]];
-              }
-            };
-          })
-        }
-        resolve(fieldSum);
+      let monSum = {};
+      yearMons.forEach(ym=>{
+        monSum[ym] = fieldSum
       });
+      idArr = idArr ? idArr : app.mData[className][app.roleData.user.objectId];
+      if (idArr) {
+        let dYearMon;
+        idArr.forEach(mId => {
+          if (app.aData[className][mId]){
+            dYearMon = app.aData[className][mId].updatedAt.splice(0,7);
+            for (let i = 0; i < sLength; i++) {
+              monSum[dYearMon][i] += app.aData[className][mId][fields[i]];
+            };
+          }
+        })
+        let mSum = [];
+        yearMons.forEach(ym=>{ mSum.push(monSum[ym]) })
+        resolve(mSum);
+      };
     }).catch(console.error);
   },
 

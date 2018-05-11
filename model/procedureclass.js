@@ -237,13 +237,12 @@ module.exports = {
 },
 "returns":{
   "pName": "退回厂家",
-  "afamily": ['退货确认', '退货到厂', '还款重发'],
   "pSuccess": [
-    {gname:"orderlist", p:'订单',t:"sObject", csc:"objsel" },
     {gname:"cargo", p:'成品',t:"sObject", csc:"objsel" },
+    {gname:"orderlist", p:'订单',t:"sObject", csc:"objsel" },
+    {gname:"returns", p:'退货单号',t:"inScan"},
     {gname:"returnAmount", p:'退货金额',t:"dg",csc:"digit" },
-    {gname:"invoice", p:'发货单号',t:"inScan" },
-    {gname:"returns", p:'退货单号',t:"inScan"}
+    {gname:"invoice", p:'重发货单号',t:"inScan" }
   ],
   "pBewrite": "店铺所有成员均可通过会话接受客户的退货申请，直接写入退货表。",
   "pModel": "returns"

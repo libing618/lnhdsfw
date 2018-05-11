@@ -1,6 +1,5 @@
 //销售优惠
-const { updateRoleData } = require('../../model/initupdate.js');
-const { getMonInterval,sumData } = require('../../model/dataAnalysis.js');
+const { getMonInterval,readRoleData,allUpdateData,aDataSum } = require('../../model/dataAnalysis.js');
 var app = getApp()
 Page({
   data:{
@@ -11,7 +10,13 @@ Page({
     },
     pw: app.sysinfo.pw,
     cPage: [[],[]],
-    pageData: {}
+    pageData: {},
+    sPages: [{
+      pageName: 'tabPanelPage'
+    }],
+    reqData: require('../../model/procedureclass').orderlist.pSuccess,
+    showModalBox: false,
+    animationData: {}
   },
   sMons:[],
   fSum: {},
@@ -31,7 +36,7 @@ Page({
           }
         })
         app.aData.unfinishedorder = pageData;
-        that.fSum=aDataSum('unfinishedorder',['amount','sale'],that.data.cPage[0]);
+        that.fSum=aDataSum(that.sMons,'unfinishedorder',['amount','sale'],that.data.cPage[0]);
         that.setCanvas();
       }).catch( console.error )
     };
@@ -45,13 +50,13 @@ Page({
       categories: that.sMons,
       series: [{
           name: '成交额',
-          data: that.fSum.pandect[0],
+          data: that.fSum[0],
           format: function (val) {
               return val.toFixed(2) + '万';
           }
       }, {
           name: '优惠额',
-          data: that.fSum.pandect[1],
+          data: that.fSum[1],
           format: function (val) {
               return val.toFixed(2) + '万';
           }

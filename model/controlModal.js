@@ -204,10 +204,10 @@ module.exports = {
       case 'iMultimedia':
         var sIndex = parseInt(e.currentTarget.dataset.n);      //选择的菜单id;
         return new Promise( (resolve, reject) =>{
+          let showPage = {};
           switch (sIndex){
             case 1:             //选择产品
               if (!that.f_modalSelectPanel) {that.f_modalSelectPanel = require('../../model/controlModal').f_modalSelectPanel}
-              let showPage = {};
               showPage.pageData = app.aData.goods;
               showPage.tPage = app.mData.goods;
               showPage.idClicked = '0';
@@ -247,8 +247,7 @@ module.exports = {
               })
               break;
             case 6:                     //选择文件
-              if (!that.f_modalSelectFile) {that.f_modalSelectFile = require('../../model/controlModal').f_modalSelectFile}
-              let showPage = {};
+              if (!that.f_modalSelectFile) { that.f_modalSelectFile = require('../../model/controlModal').f_modalSelectFile };
               wx.getSavedFileList({
                 success: function(res) {
                   let index,filetype,fileData={},cOpenFile=['doc', 'xls', 'ppt', 'pdf', 'docx', 'xlsx', 'pptx'];
