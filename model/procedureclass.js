@@ -206,8 +206,8 @@ module.exports = {
   "oBewrite": "产品条线确认订单并出货,服务条线进行店铺确认。",
   "oModel": "supplies"
 },
-"orderlist":{
-  "pName": "交易流水",
+"cargoOrder":{
+  "pName": "成品订单",
   "afamily": ['付款确认', '成品出货', '到货确认', '待清冻结', '退货还款', '清算结束'],
   "pSuccess": [
     {gname:"cargo", p:'成品',t:"sObject", csc:"objsel" },
@@ -229,8 +229,8 @@ module.exports = {
   "pName": "店铺优惠",
   "pSuccess": [
     {gname:"orderlist", p:'订单',t:"sObject", csc:"objsel" },
-    {gname:"amount", p:'订单总金额',t:"dg",csc:"digit" },
-    {gname:"sale", p:'优惠金额',t:"dg",csc:"digit"}
+    {gname:"amount", p:'订单总金额:',t:"dg",csc:"digit" },
+    {gname:"sale", p:'优惠金额:',t:"dg",csc:"digit"}
   ],
   "pBewrite": "店铺所有成员均可通过会话接受客户的优惠申请，直接写入优惠表。",
   "pModel": "unfinishedorder"
@@ -238,11 +238,11 @@ module.exports = {
 "returns":{
   "pName": "退回厂家",
   "pSuccess": [
-    {gname:"cargo", p:'成品',t:"sObject", csc:"objsel" },
+    {gname:"cargo", p:'成品:',t:"sObject", csc:"objsel" },
     {gname:"orderlist", p:'订单',t:"sObject", csc:"objsel" },
-    {gname:"returns", p:'退货单号',t:"inScan"},
-    {gname:"returnAmount", p:'退货金额',t:"dg",csc:"digit" },
-    {gname:"invoice", p:'重发货单号',t:"inScan" }
+    {gname:"returns", p:'退货单号:',t:"inScan"},
+    {gname:"returnAmount", p:'退货金额:',t:"dg",csc:"digit" },
+    {gname:"invoice", p:'重发货单号:',t:"inScan" }
   ],
   "pBewrite": "店铺所有成员均可通过会话接受客户的退货申请，直接写入退货表。",
   "pModel": "returns"

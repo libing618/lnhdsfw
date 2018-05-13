@@ -27,15 +27,18 @@ Page({
       that.sMons = getMonInterval().yearMon;        //用户注册日到本月的月份信息数组
       return new Promise.all([readRoleData('orderlist'),allUpdateData('unfinishedorder')]).then(()=>{
         let pageData = {};
+        let pageSuccess = require('../../model/procedureclass').unfinishedorder.pSuccess;
         app.mData.unfinishedorder.forEach(ufod=>{
+          pageData[ufod] = {uName:app.aData.orderlist[ufod].uName,thumbnail:app.aData.orderlist[ufod].thumbnail};
           if (app.mData.orderlist.indexOf(ufod)>=0){
-            pageData[ufod] = app.aData.unfinishedorder[ufod];
-            if (app.aData.orderlist[ufod].afamily == 0){
-              that.data.cPage[0].push(ufod);
-            } else { that.data.cPage[1].push(ufod); }
-          }
+            that.data.cPage[0].push(ufod);
+          } else { that.data.cPage[1].push(ufod); }
+          pageData[ufod].title = pageSuccess[1].p+app.aData.unfinishedorder[ufod].amount +'/'+ pageSuccess[2].p+app.aData.unfinishedorder[ufod].amount;
         })
-        app.aData.unfinishedorder = pageData;
+        that.setData({
+          cPage: that.data.cPage,
+          pageDaga: pageData
+        });
         that.fSum=aDataSum(that.sMons,'unfinishedorder',['amount','sale'],that.data.cPage[0]);
         that.setCanvas();
       }).catch( console.error )
@@ -49,23 +52,19 @@ Page({
       type: 'area',
       categories: that.sMons,
       series: [{
-          name: '成交额',
-          data: that.fSum[0],
-          format: function (val) {
-              return val.toFixed(2) + '万';
-          }
+        name: '成交额',
+        data: that.fSum[0],
+        format: function (val) {
+            return val.toFixed(2) + '元';
+        }
       }, {
-          name: '优惠额',
-          data: that.fSum[1],
-          format: function (val) {
-              return val.toFixed(2) + '万';
-          }
+        name: '优惠额',
+        data: that.fSum[1],
+        format: function (val) {
+            return val.toFixed(2) + '元';
+        }
       }],
-      yAxis: {
-          format: function (val) {
-              return val + '万';
-          }
-      },
+      yAxis: { format: function (val) { return val + '万'; } },
       width: app.sysinfo.windowWidth,
       height: app.sysinfo.windowWidth
     });
