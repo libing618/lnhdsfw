@@ -196,7 +196,7 @@ module.exports = {
     { gname: "title", p: '内容', t: "h3"},
     { gname: "signUser", p: '签收人', t: "h3", e: '签收人名称' }
   ],
-  "pModel": "Order",
+  "pModel": "order",
   "oSuccess": [
     { indexField: 'cargo', sumField: ['quantity'] },
     { indexField: 'address', sumField: ['deliverTotal'] },
@@ -211,6 +211,7 @@ module.exports = {
   "afamily": ['付款确认', '要求发货', '待清冻结', '退货还款', '清算结束'],
   "pSuccess": [
     {gname:"cart", p:'购买商品',t:"sCart", csc:"objArr" },
+    {gname:"order", p:'订单',t:"sObject", csc:"objsel" },
     { gname: "thumbnail", p: '图片', t: "thumb" },
     { gname: "title", p: '内容', t: "h3"},
     { gname: "_User", p: '付款人', t:"sObject", csc:"objsel"}
@@ -225,32 +226,20 @@ module.exports = {
   "oBewrite": "产品条线确认订单并出货,服务条线进行店铺确认。",
   "oModel": "cargoOrder"
 },
-"cargoOrder":{
-  "pName": "成品订单",
-  "pSuccess": [
-    {gname:"cargo", p:'成品',t:"sObject", csc:"objsel" },
-    { gname: "thumbnail", p: '图片', t: "thumb" },
-    { gname: "vUnit", p: '物流商', t: "h3", e: '单位名称' },
-    { gname: "signUser", p: '签收人', t: "h3", e: '签收人名称' }
-  ],
-  "pModel": "cargoOrder",
-  "oSuccess": [
-    { indexField: 'cargo', sumField: ['quantity']},
-    { indexField: 'address', sumField: ['deliverTotal'] },
-    { indexField: 'address', sumField: ['receiptTotal'] }
-  ],
-  "ouRoles": [1,1,3],
-  "oBewrite": "产品条线确认订单并出货,服务条线进行店铺确认。",
-  "oModel": "supplies"
-},
 "cargoSupplies":{
   "pName": "成品供货",
-  "afamily": ['供货确认', '成品出货', '到货确认'],
+  "afamily": ['供货订单', '供货确认', '成品出货', '到货确认'],
   "pSuccess": [
     {gname:"cargo", p:'成品',t:"sObject", csc:"objsel" },
-    { gname: "thumbnail", p: '图片', t: "thumb" },
-    { gname: "vUnit", p: '物流商', t: "h3", e: '单位名称' },
-    { gname: "signUser", p: '签收人', t: "h3", e: '签收人名称' }
+    {gname:"quantity", p:'数量:',t:"dg",csc:"number" },
+    {gname:"serFamily", p:'服务类型', inclose:false,t:"listsel", aList:['快递送货','货运自提','柜台提货','店铺消费'] },
+    {gname:"specs", p:'规格',t:"specsel",csc:"specsel" },
+    {gname: "address", p: '收货地址', t: "modalEditAddress"},
+    {gname:"order", p:'订单',t:"sOrder", csc:"objsel" },
+    {gname:"returnQuantity", p:'退货数量:',t:"dg",csc:"number" },
+    {gname:"successQuantity", p:'供货数量:',t:"dg",csc:"number" },
+    { gname: "unitId", p: '厂商', t:"sId", csc:"idsel" },
+    { gname: "deliverArr", p: '发货单', t: "sDeliver" }
   ],
   "pModel": "cargoSupplies",
   "puRoles": [1,1,3],

@@ -276,7 +276,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       new AV.Query(classObj)
       .equalTo(cObjName, cObjValue)
-      .equalTo(userId, app.roleData.user.objectId)
+      .equalTo('userId', app.roleData.user.objectId)
       .find().then(sCount => {
         let initCount = {};
         if (sCount) { sCount.forEach(sField => { sCount[sField.get('yearMon')] = sField.get('count') }) };
