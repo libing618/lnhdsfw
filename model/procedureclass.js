@@ -189,11 +189,11 @@ module.exports = {
 },
 "order": {
   "pName": "订单处理",
-  "afamily": ['订单确认', '订单取消', '确认付款'],
+  "afamily": ['订单确认', '订单取消', '付款确认', '要求发货'],
   "pSuccess": [
-    { gname: "cargo", p: '成品', t: "sObject", csc: "objsel" },
+    {gname:"cart", p:'购买商品',t:"sCart", csc:"objArr" },
     { gname: "thumbnail", p: '图片', t: "thumb" },
-    { gname: "vUnit", p: '物流商', t: "h3", e: '单位名称' },
+    { gname: "title", p: '内容', t: "h3"},
     { gname: "signUser", p: '签收人', t: "h3", e: '签收人名称' }
   ],
   "pModel": "Order",
@@ -204,16 +204,16 @@ module.exports = {
   ],
   "ouRoles": [1, 1, 3],
   "oBewrite": "产品条线确认订单并出货,服务条线进行店铺确认。",
-  "oModel": "supplies"
+  "oModel": "orderlist"
 },
-"cargoOrder":{
-  "pName": "成品订单",
-  "afamily": ['付款确认', '成品出货', '到货确认', '待清冻结', '退货还款', '清算结束'],
+"orderlist":{
+  "pName": "订单成交",
+  "afamily": ['付款确认', '要求发货', '待清冻结', '退货还款', '清算结束'],
   "pSuccess": [
-    {gname:"cargo", p:'成品',t:"sObject", csc:"objsel" },
+    {gname:"cart", p:'购买商品',t:"sCart", csc:"objArr" },
     { gname: "thumbnail", p: '图片', t: "thumb" },
-    { gname: "vUnit", p: '物流商', t: "h3", e: '单位名称' },
-    { gname: "signUser", p: '签收人', t: "h3", e: '签收人名称' }
+    { gname: "title", p: '内容', t: "h3"},
+    { gname: "_User", p: '付款人', t:"sObject", csc:"objsel"}
   ],
   "pModel": "orderlist",
   "oSuccess": [
@@ -223,12 +223,43 @@ module.exports = {
   ],
   "ouRoles": [1,1,3],
   "oBewrite": "产品条线确认订单并出货,服务条线进行店铺确认。",
+  "oModel": "cargoOrder"
+},
+"cargoOrder":{
+  "pName": "成品订单",
+  "pSuccess": [
+    {gname:"cargo", p:'成品',t:"sObject", csc:"objsel" },
+    { gname: "thumbnail", p: '图片', t: "thumb" },
+    { gname: "vUnit", p: '物流商', t: "h3", e: '单位名称' },
+    { gname: "signUser", p: '签收人', t: "h3", e: '签收人名称' }
+  ],
+  "pModel": "cargoOrder",
+  "oSuccess": [
+    { indexField: 'cargo', sumField: ['quantity']},
+    { indexField: 'address', sumField: ['deliverTotal'] },
+    { indexField: 'address', sumField: ['receiptTotal'] }
+  ],
+  "ouRoles": [1,1,3],
+  "oBewrite": "产品条线确认订单并出货,服务条线进行店铺确认。",
   "oModel": "supplies"
+},
+"cargoSupplies":{
+  "pName": "成品供货",
+  "afamily": ['供货确认', '成品出货', '到货确认'],
+  "pSuccess": [
+    {gname:"cargo", p:'成品',t:"sObject", csc:"objsel" },
+    { gname: "thumbnail", p: '图片', t: "thumb" },
+    { gname: "vUnit", p: '物流商', t: "h3", e: '单位名称' },
+    { gname: "signUser", p: '签收人', t: "h3", e: '签收人名称' }
+  ],
+  "pModel": "cargoSupplies",
+  "puRoles": [1,1,3],
+  "pBewrite": "产品条线确认订单并出货,服务条线进行店铺确认。",
 },
 "unfinishedorder":{
   "pName": "店铺优惠",
   "pSuccess": [
-    {gname:"orderlist", p:'订单',t:"sObject", csc:"objsel" },
+    {gname:"order", p:'订单',t:"sObject", csc:"objsel" },
     {gname:"amount", p:'订单总金额:',t:"dg",csc:"digit" },
     {gname:"sale", p:'优惠金额:',t:"dg",csc:"digit"}
   ],
@@ -238,7 +269,7 @@ module.exports = {
 "returns":{
   "pName": "退回厂家",
   "pSuccess": [
-    {gname:"cargo", p:'成品:',t:"sObject", csc:"objsel" },
+    {gname:"cargoSupplies", p:'供货成品:',t:"sObject", csc:"objsel" },
     {gname:"orderlist", p:'订单',t:"sObject", csc:"objsel" },
     {gname:"returns", p:'退货单号:',t:"inScan"},
     {gname:"returnAmount", p:'退货金额:',t:"dg",csc:"digit" },
@@ -247,11 +278,23 @@ module.exports = {
   "pBewrite": "店铺所有成员均可通过会话接受客户的退货申请，直接写入退货表。",
   "pModel": "returns"
 },
+"evaluates":{
+  "pName": "客户评价",
+  "pSuccess": [
+    {gname:"cargoSupplies", p:'供货成品:',t:"sObject", csc:"objsel" },
+    {gname:"orderlist", p:'订单',t:"sObject", csc:"objsel" },
+    { gname: "thumbnail", p: '图片', t: "thumb" },
+    { gname: "title", p: '标题', t: "h3"},
+    {gname:"desc", t:"p", p:"内容" }
+  ],
+  "pBewrite": "消费者对成品进行评价，直接写入客户评价表。",
+  "pModel": "evaluates"
+},
 "distribution":{
   "pName": "分红付账",
   "pSuccess": [
     {gname:"orderlist", p:'订单',t:"sObject", csc:"objsel" },
-    {gname:"cargo", p:'成品',t:"sObject", csc:"objsel" },
+    {gname:"cargoSupplies", p:'成品',t:"sObject", csc:"objsel" },
     {gname:"amount", p:'订单金额',t:"dg",csc:"digit" },
     {gname:"income", p:'分红金额',t:"dg",csc:"digit" }
   ],

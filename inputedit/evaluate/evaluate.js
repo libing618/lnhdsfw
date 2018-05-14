@@ -12,22 +12,9 @@ Page({
     if (weutil.checkRols(3,app.roleData.user)){  //检查用户操作权限
       that.setData({
         req: oClass.oSuccess[options.oState],
-        oArray: weutil.arrClose(options.oState ? 'evaluate' : 'ordObjectId',app.mData.oped1),     //确定数组分类字段
-        pageData: app.oData[1],
-        mPage: app.mData.oped1
+        pageData: app.aData.evaluates,
+        mPage: app.mData.evaluates
       });
     }
-  },
-  onReady:function(){
-    // 页面渲染完成
-  },
-  onShow:function(){
-    // 页面显示
-  },
-  onHide:function(){
-    // 页面隐藏
-  },
-  onUnload:function(){
-    // 页面关闭
   }
 })
