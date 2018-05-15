@@ -1,20 +1,61 @@
 //客户评价及统计
-const weutil = require('../../libs/util.js');
+const AV = require('leancloud-storage.js');
+const {checkRols,hTabClick} = require('../../libs/util.js');
+const { updateData } = require('../../model/initupdate');
 var app = getApp();
 Page({
   data:{
-    mPage: [],                 //页面管理数组
-    dObjectId: '0',             //已建数据的ID作为修改标志，0则为新建
-    pageData: []
+    ht:{
+      navTabs: ['好评','差评'],
+      fLength: 2,
+      pageCk: 0
+    },
+    pw: app.sysinfo.pw,
+    pNo: 'evaluates',
+    cPage: [[],[]],
+    pageData: {},
+    sPages: [{
+      pageName: 'tabPanelPage'
+    }],
+    reqData: require('../../model/procedureclass').evaluates.pSuccess,
+    showModalBox: false,
+    animationData: {}
   },
-  onLoad:function(options){          //参数oState为0客户评价1评价统计
+  evlsq: new AV.Query('evaluates'),
+  notEnd: true,
+  onReady:function(){
     var that = this;
-    if (weutil.checkRols(3,app.roleData.user)){  //检查用户操作权限
-      that.setData({
-        req: oClass.oSuccess[options.oState],
-        pageData: app.aData.evaluates,
-        mPage: app.mData.evaluates
-      });
+    if (checkRols(5,app.roleData.user)) {
+      that.evlsq.ascending('createdAt');
+      that.evlsq.limit(1000);
+      that.updatePage();
+    };
+  },
+  updatePage: function(){
+    var that = this;
+    if (that.notEnd){
+      that.evlsq.find().then(evls=>{
+        if (evls){
+          indexRecordFamily(evls,'specs',2).then(({indexList,aData,mData})=>{
+            that.setData({
+              cPage: indexList,
+              pageData: aData,
+              mPage: mData
+            })
+          })
+          that.evlsq.skip(1000);
+        } else { that.notEnd = false }
+      })
     }
+  },
+
+  hTabClick: hTabClick,
+
+  makePhone: function({currentTarget:{id}}){
+    wx.makePhoneCall({phoneNumber:id})
+  },
+
+  onReachBottom:function(){
+    this.updatePage();
   }
 })

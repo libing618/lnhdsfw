@@ -239,10 +239,10 @@ module.exports = {
   fetchRecord: function(requery,indexField,sumField) {                     //同步云端数据到本机
     return new Promise((resolve, reject) => {
       let aData = {}, mData = {}, indexList = [], aPlace = -1, iField, iSum = {}, mChecked = {};
-      arp.forEach(onedata => {
+      requery.forEach(onedata => {
         aData[onedata.id] = onedata;
         iField = onedata.get(indexField);                  //索引字段读数据数
-        if (indexList.indexOf(iField<0)) {
+        if (indexList.indexOf(iField)<0) {
           indexList.push(iField);
           mData[iField] = [onedata.id];                   //分类ID数组增加对应ID
           iSum[iField] = onedata.get(sumField);
@@ -253,6 +253,26 @@ module.exports = {
         mChecked[onedata.id] = true;
       });
       resolve({indexList:indexList,pageData:aData,quantity:iSum,mCheck:mChecked}) ;
+    }).catch( error=> {reject(error)} );
+  },
+
+  indexRecordFamily: function(requery,indexField,aFamilyLength) {                     //同步云端数据到本机
+    return new Promise((resolve, reject) => {
+      let aData = {}, indexList = new Array(aFamilyLength), aPlace = -1, iField, aFamily, mData = new Array(aFamilyLength);
+      mData.fill({});
+      indexList.fill([]);
+      requery.forEach(onedata => {
+        aData[onedata.id] = onedata;
+        iField = onedata.get(indexField);                  //索引字段读数据数
+        aFamily = onedata.get('afamily');
+        if (indexList[aFamily].indexOf(iField)<0) {
+          indexList[aFamily].push(iField);
+          mData[aFamily][iField] = [onedata.id];                   //分类ID数组增加对应ID
+        } else {
+          mData[aFamily][iField].push(onedata.id);
+        };
+      });
+      resolve({indexList,aData,mData}) ;
     }).catch( error=> {reject(error)} );
   },
 

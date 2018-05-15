@@ -25,13 +25,13 @@ Page({
     var that = this;
     if (checkRols(3,app.roleData.user)) {
       that.sMons = getMonInterval().yearMon;        //用户注册日到本月的月份信息数组
-      return new Promise.all([readRoleData('orderlist'),allUpdateData('returns')]).then(()=>{
+      return new Promise.all([readRoleData('cargoSupplies'),allUpdateData('returns')]).then(()=>{
         let pageData = {};
         let pageSuccess = require('../../model/procedureclass').returns.pSuccess;
         app.mData.returns.forEach(ufod=>{
-          if (app.mData.orderlist.indexOf(ufod)>=0){
+          if (app.mData.cargoSupplies.indexOf(ufod)>=0){
             let pck = 0;
-            pageData[ufod] = {uName:app.aData.orderlist[ufod].uName,thumbnail:app.aData.orderlist[ufod].thumbnail};
+            pageData[ufod] = {uName:app.aData.cargoSupplies[ufod].uName,thumbnail:app.aData.cargoSupplies[ufod].thumbnail};
             if (app.aData.returns[ufod].returnAmount){       //退款额有数据
               pck = 1;
             } else {
@@ -44,7 +44,9 @@ Page({
           cPage: that.data.cPage,
           pageDaga: pageData
         });
-        that.fSum=aDataSum(that.sMons,'unfinishedorder',['amount','sale'],that.data.cPage[0]);
+        that.fSum.push(aDataSum(that.sMons,'cargoSupplies',['amount'],that.data.cPage[0]));
+        that.fSum.push(aDataSum(that.sMons,'returns',['returnAmount'],that.data.cPage[1]));
+        that.fSum.push(aDataSum(that.sMons,'returns',['returnPrice'],that.data.cPage[2]));
         that.setCanvas();
       }).catch( console.error )
     };

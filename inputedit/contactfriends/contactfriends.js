@@ -6,7 +6,7 @@ Page({
   data:{
     pw: app.sysinfo.pw，
     tPage: app.configData.goods.fConfig,
-    pageData: app.aData.manufactor
+    pageData: app.aData.manufactor,
     idClicked: '0'
   },
   onLoad:function(options){

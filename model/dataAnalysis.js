@@ -115,7 +115,7 @@ module.exports = {
     }
     return new Promise((resolve,reject)=>{
       new AV.Query(className+'Family')
-      .equalTo(userId,app.roleData.user.objectId)
+      .equalTo('userId',app.roleData.user.objectId)
       .first().then(sFamily=>{
         if(sFamily){
           let sfield = sFamily.toJSON();
@@ -163,7 +163,7 @@ module.exports = {
     return new Promise((resolve,reject)=>{
       new AV.Query(className+'Sum')
       .descending('updatedAt')
-      .equalTo(userId,app.roleData.user.objectId)
+      .equalTo('userId',app.roleData.user.objectId)
       .find().then(sumRec=>{
         if(sumRec){
           let sfield;
@@ -187,7 +187,7 @@ module.exports = {
             mSum[nym] = fieldSum;
             let aSumRecord = new addSum;
             aSumRecord.set('yearMon',nym);
-            aSumRecord.set(userId,app.roleData.user.objectId);
+            aSumRecord.set('userId',app.roleData.user.objectId);
             aSumRecord.setACL(app.configData.reqRole);
             newSum.push(aSumRecord);
           };
@@ -225,7 +225,7 @@ module.exports = {
     let cSumUp;
     return new Promise((resolve, reject) => {
       new AV.Query(classObj)
-        .equalTo(userId, app.roleData.user.objectId)
+        .equalTo('userId', app.roleData.user.objectId)
         .select(cField)
         .first().then(sCount => {
           if (sCount) {

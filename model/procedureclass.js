@@ -224,20 +224,23 @@ module.exports = {
   ],
   "ouRoles": [1,1,3],
   "oBewrite": "产品条线确认订单并出货,服务条线进行店铺确认。",
-  "oModel": "cargoOrder"
+  "oModel": "cargoSupplies"
 },
 "cargoSupplies":{
   "pName": "成品供货",
   "afamily": ['供货订单', '供货确认', '成品出货', '到货确认'],
   "pSuccess": [
     {gname:"cargo", p:'成品',t:"sObject", csc:"objsel" },
-    {gname:"quantity", p:'数量:',t:"dg",csc:"number" },
+    {gname:"unitPrice", p:'成交单价:',t:"dg",csc:"digit" },
+    {gname:"suppliesQuantity", p:'供货数量:',t:"dg",csc:"number" },
+    {gname:"suppliesPrice", p:'供货价格:',t:"dg",csc:"number" },
     {gname:"serFamily", p:'服务类型', inclose:false,t:"listsel", aList:['快递送货','货运自提','柜台提货','店铺消费'] },
     {gname:"specs", p:'规格',t:"specsel",csc:"specsel" },
+    {gname:"title", p:'简介',t:"h4" },
+    {gname:"thumbnail", p:'图片简介',t:"thumb" },
     {gname: "address", p: '收货地址', t: "modalEditAddress"},
     {gname:"order", p:'订单',t:"sOrder", csc:"objsel" },
     {gname:"returnQuantity", p:'退货数量:',t:"dg",csc:"number" },
-    {gname:"successQuantity", p:'供货数量:',t:"dg",csc:"number" },
     { gname: "unitId", p: '厂商', t:"sId", csc:"idsel" },
     { gname: "deliverArr", p: '发货单', t: "sDeliver" }
   ],
@@ -259,6 +262,9 @@ module.exports = {
   "pName": "退回厂家",
   "pSuccess": [
     {gname:"cargoSupplies", p:'供货成品:',t:"sObject", csc:"objsel" },
+    {gname:"unitPrice", p:'单价:',t:"dg",csc:"digit" },
+    {gname:"returnQuantity", p:'数量:',t:"dg",csc:"number" },
+    {gname:"returnPrice", p:'退货价格:',t:"dg",csc:"digit" },
     {gname:"orderlist", p:'订单',t:"sObject", csc:"objsel" },
     {gname:"returns", p:'退货单号:',t:"inScan"},
     {gname:"returnAmount", p:'退货金额:',t:"dg",csc:"digit" },
@@ -269,9 +275,12 @@ module.exports = {
 },
 "evaluates":{
   "pName": "客户评价",
+  "afamily": ['好评','差评'],
   "pSuccess": [
     {gname:"cargoSupplies", p:'供货成品:',t:"sObject", csc:"objsel" },
-    {gname:"orderlist", p:'订单',t:"sObject", csc:"objsel" },
+    {gname:"specsName", p:'规格名称',t:"h3" },
+    { gname: "unitId", p: '厂商', t:"sId", csc:"idsel" },
+    {gname:"order", p:'订单',t:"sObject", csc:"objsel" },
     { gname: "thumbnail", p: '图片', t: "thumb" },
     { gname: "title", p: '标题', t: "h3"},
     {gname:"desc", t:"p", p:"内容" }

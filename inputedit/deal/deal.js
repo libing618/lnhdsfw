@@ -9,12 +9,13 @@ Page({
       pageCk: 0
     },
     pw: app.sysinfo.pw,
+    pNo: 'order',
     cPage: [[],[]],
     pageData: {},
     sPages: [{
       pageName: 'tabPanelPage'
     }],
-    reqData: require('../../model/procedureclass').orderlist.pSuccess,
+    reqData: require('../../model/procedureclass').order.pSuccess,
     showModalBox: false,
     animationData: {}
   },
@@ -25,11 +26,11 @@ Page({
     var that = this;
     if (checkRols(3,app.roleData.user)) {
       that.sMons = getMonInterval().yearMon;        //用户注册日到本月的月份信息数组
-      return new Promise.all([readRoleData('orderlist'),allUpdateData('unfinishedorder')]).then(()=>{
+      return new Promise.all([readRoleData('order'),[readRoleData('orderlist'),allUpdateData('unfinishedorder')]).then(()=>{
         let pageData = {};
         let pageSuccess = require('../../model/procedureclass').unfinishedorder.pSuccess;
         app.mData.unfinishedorder.forEach(ufod=>{
-          pageData[ufod] = {uName:app.aData.orderlist[ufod].uName,thumbnail:app.aData.orderlist[ufod].thumbnail};
+          pageData[ufod] = {uName:app.aData.order[ufod].uName,thumbnail:app.aData.order[ufod].thumbnail};
           if (app.mData.orderlist.indexOf(ufod)>=0){
             that.data.cPage[0].push(ufod);
           } else { that.data.cPage[1].push(ufod); }
