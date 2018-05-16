@@ -19,7 +19,7 @@ Page({
     cPage: [app.configData.goodsIndex,[]],
     pageData: app.aData.goods,
     sPages: [{
-      pageName: 'tabPanelPage'
+      pageName: 'tabPanelChange'
     }],
     reqData: require('../../model/procedureclass').goods.pSuccess,
     showModalBox: false,
@@ -46,7 +46,7 @@ Page({
 
   f_modalFieldView: f_modalFieldView,
 
-  f_tabPanelPage:function({currentTarget:{id}}){
+  f_tabPanelChange:function({currentTarget:{id}}){
     var that = this;
     app.configData.goodsindex = that.data.cPage[0];
     if (id=='fSave'){

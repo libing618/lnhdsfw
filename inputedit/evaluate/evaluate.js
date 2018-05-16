@@ -1,7 +1,7 @@
 //客户评价及统计
 const AV = require('leancloud-storage.js');
-const {checkRols,hTabClick} = require('../../libs/util.js');
-const { updateData } = require('../../model/initupdate');
+const {checkRols,indexRecordFamily,hTabClick,indexClick} = require('../../libs/util.js');
+const { f_modalRecordView } = require('../../model/controlModal');
 var app = getApp();
 Page({
   data:{
@@ -15,7 +15,7 @@ Page({
     cPage: [[],[]],
     pageData: {},
     sPages: [{
-      pageName: 'tabPanelPage'
+      pageName: 'tabPanelIndex'
     }],
     reqData: require('../../model/procedureclass').evaluates.pSuccess,
     showModalBox: false,
@@ -38,9 +38,9 @@ Page({
         if (evls){
           indexRecordFamily(evls,'specs',2).then(({indexList,aData,mData})=>{
             that.setData({
-              cPage: indexList,
+              indexList,
               pageData: aData,
-              mPage: mData
+              cPage: mData
             })
           })
           that.evlsq.skip(1000);
@@ -51,9 +51,9 @@ Page({
 
   hTabClick: hTabClick,
 
-  makePhone: function({currentTarget:{id}}){
-    wx.makePhoneCall({phoneNumber:id})
-  },
+  indexClick: indexClick,
+
+  f_modalRecordView: f_modalRecordView,
 
   onReachBottom:function(){
     this.updatePage();

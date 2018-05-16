@@ -17,7 +17,7 @@ Page({
     cPage: [app.configData.goods.fConfig,[]],
     pageData: app.aData.manufactor,
     sPages: [{
-      pageName: 'tabPanelPage'
+      pageName: 'tabPanelChange'
     }],
     reqData: require('../../model/procedureclass').manufactor.pSuccess,
     showModalBox: false,
@@ -42,7 +42,7 @@ Page({
 
   f_modalSwitchBox: f_modalSwitchBox,
 
-  f_tabPanelPage:function({currentTarget:{id}}){
+  f_tabPanelChange:function({currentTarget:{id}}){
     var that = this;
     app.configData.goods.fConfig = that.data.cPage[0];
     if (id=='fSave'){

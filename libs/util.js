@@ -258,21 +258,29 @@ module.exports = {
 
   indexRecordFamily: function(requery,indexField,aFamilyLength) {                     //同步云端数据到本机
     return new Promise((resolve, reject) => {
-      let aData = {}, indexList = new Array(aFamilyLength), aPlace = -1, iField, aFamily, mData = new Array(aFamilyLength);
-      mData.fill({});
+      let aData = {}, indexList = new Array(aFamilyLength), aPlace = -1, iField, aFamily, fieldFamily, mData = {};
       indexList.fill([]);
       requery.forEach(onedata => {
         aData[onedata.id] = onedata;
         iField = onedata.get(indexField);                  //索引字段读数据数
         aFamily = onedata.get('afamily');
+        fieldFamily = iField+''+aFamily;
         if (indexList[aFamily].indexOf(iField)<0) {
           indexList[aFamily].push(iField);
-          mData[aFamily][iField] = [onedata.id];                   //分类ID数组增加对应ID
+          mData[fieldFamily] = {
+            uName:onedata.get('uName'),
+            indexFieldId:[onedata.id]
+          };                   //分类ID数组增加对应ID
         } else {
-          mData[aFamily][iField].push(onedata.id);
+          mData[fieldFamily].indexFieldId.push(onedata.id);
         };
       });
-      resolve({indexList,aData,mData}) ;
+      let cPage = indexList.map((tId,family)=>{
+        return tId.map(fi=>{
+          return {indexId:fi,...mData[fi+family],iCount:mData[fi+family].indexFieldId.length}
+        })
+      })
+      resolve({indexList,aData}) ;
     }).catch( error=> {reject(error)} );
   },
 

@@ -59,7 +59,7 @@
   <view style="padding-top:{{statusBar+capsule}}px;"></view>
 </template>
 
-<template name="p_tabPanelPage">
+<template name="p_tabPanelChange">
 <view class="page__sub" id="model-{{pNo}}">
   <view class="weui-tab__panel">
     <block wx:for="{{tPage}}" wx:key="{{index}}">
@@ -77,8 +77,39 @@
   </view>
   <view style="padding-bottom:100rpx;"></view>
   <view class="page__ft weui-footer_fixed-bottom">
-    <button class="weui-btn" type="warn" bindtap="f_tabPanelPage" id="fSave">提交</button>
-    <button class="weui-btn" type="primary" bindtap="f_tabPanelPage" id="fBack">暂存</button>
+    <button class="weui-btn" type="warn" bindtap="f_tabPanelChange" id="fSave">提交</button>
+    <button class="weui-btn" type="primary" bindtap="f_tabPanelChange" id="fBack">暂存</button>
+  </view>
+</view>
+</template>
+
+<template name="p_tabPanelIndex">
+<view class="page__sub" id="model-{{pNo}}">
+  <view class="weui-tab__panel">
+    <block wx:for="{{tPage}}" wx:key="{{index}}" wx:for-item="ac">
+      <view class="weui-cell weui-cell_access" hover-class="weui-cell_active" id="{{ac.indexId}}" bindtap="indexClick">
+        <template is="{{ iClicked==ac.indexId ? 'selecticon1' : 'selecticon2'}}" />
+        <view class="weui-cell__hd">{{ac.uName}}</view>
+        <view class="weui-cell__bd">{{ac.iCount}} 笔</view>
+        <view wx:if="{{iClicked==ac.indexId}}">
+          <block wx:for="{{ac.indexFieldId}}" wx:key="{{index}}">
+            <view class="weui-media-box weui-media-box_appmsg" id="{{item}}" hover="true" hover-class="weui-cell_active" bindtap="f_modalRecordView">
+              <view class="weui-media-box__hd_in-appmsg">
+                <image class="weui-media-box__thumb" src="{{pageData[item].thumbnail}}" background-size="cover"></image>
+              </view>
+              <view class="weui-media-box__bd_in-appmsg">
+                <view class="weui-media-box__title">{{pageData[item].uName}}</view>
+                <view class="weui-media-box__desc">{{pageData[item].title}}</view>
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </block>
+  </view>
+  <view style="padding-bottom:100rpx;"></view>
+  <view class="page__ft weui-footer_fixed-bottom">
+    <button class="weui-btn" type="primary" bindtap="f_tabPanelChange" id="fBack">退出</button>
   </view>
 </view>
 </template>
@@ -129,12 +160,12 @@
 </view>
 </template>
 
-<template name="p_modalFieldView">
+<template name="p_modalRecordView">
 <view class="modal_box" id="fBack" bindtap="f_modalSwitchBox">
   <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
     <view class="page__hd">
       <view class="page__title">{{pageData[targetId].uName}}</view>
-      <view class="close_icon" id="fBack" bindtap="f_modalSwitchBox">×</view>
+      <view class="close_icon" id="fBack" bindtap="f_modalRecordView">×</view>
     </view>
     <view class="page__ac_spacing">
       <view class="drawer_attr_content">
@@ -146,7 +177,29 @@
     <view style="padding-bottom:100rpx;"></view>
   </view>
   <view wx:if="{{showModalBox}}" class="page__ft weui-footer_fixed-bottom">
-    <button bindtap="hideModal" id="fBack">我知道了</button>
+    <button bindtap="f_modalRecordView" id="fBack">我知道了</button>
+  </view>
+</view>
+</template>
+
+<template name="p_modalFieldView">
+<view class="modal_box" id="fBack" bindtap="f_modalSwitchBox">
+  <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
+    <view class="page__hd">
+      <view class="page__title">{{pageData[targetId].uName}}</view>
+      <view class="close_icon" id="fBack" bindtap="f_modalFieldView">×</view>
+    </view>
+    <view class="page__ac_spacing">
+      <view class="drawer_attr_content">
+        <block wx:for="{{rFormat}}" wx:key="index">
+          <template is="s_{{item.t}}" data="{{...item, c:pageData[targetId][item.gname]}}"/>
+        </block>
+      </view>
+    </view>
+    <view style="padding-bottom:100rpx;"></view>
+  </view>
+  <view wx:if="{{showModalBox}}" class="page__ft weui-footer_fixed-bottom">
+    <button bindtap="f_modalFieldView" id="fBack">我知道了</button>
   </view>
 </view>
 </template>

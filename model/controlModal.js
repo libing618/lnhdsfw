@@ -61,6 +61,22 @@ module.exports = {
     }
   },
 
+  f_modalRecordView: function ({ currentTarget:{id,dataset} }) {            // 记录内容查看弹出页
+    var that = this;
+    let hidePage = {};
+    switch (id) {
+      case 'fBack':                  //返回
+        downModal(that,hidePage);
+        break;
+      default:                  //打开弹出页
+        let showPage = {};
+        showPage.sPages = that.data.sPages.push({pageName:'modalRecordView',targetId:id});
+        that.setData(showPage);
+        popModal(that)
+        break;
+    }
+  },
+
   f_modalFieldView: function ({ currentTarget:{id,dataset} }) {            //字段内容查看弹出页
     var that = this;
     let hidePage = {};
@@ -71,7 +87,7 @@ module.exports = {
       default:                  //打开弹出页
         let showPage = {};
         showPage['pageData.'+id] = app.aData[dataset.pNo][id];
-        showPage.sPages = that.data.sPages.push({pageName:'modalFieldView',targetId:id,reqData: require('procedureclass.js')[dataset.pNo].pSuccess});
+        showPage.sPages = that.data.sPages.push({pageName:'modalFieldView',targetId:id, rFormat: require('procedureclass.js')[dataset.pNo].pSuccess});
         that.setData(showPage);
         popModal(that)
         break;
