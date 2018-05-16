@@ -17,7 +17,7 @@ function checkRole(ouRole,user){
     case 7:                    //渠道（含员工和渠道合伙人）
       if (user.emailVerified){crd = true}
       break;
-    case 6:                    //员工
+    case 6:                    //渠道合伙人
       if (user.userRolName!=='promoter' && user.emailVerified){crd = true}
       break;
     case 5:                    //负责人
@@ -50,8 +50,11 @@ function openWxLogin(roleData) {            //注册登录（本机登录状态�
                     if (wxuserinfo) {
                       AV.Cloud.run('wxLogin' + wxappNumber, { code: wxlogined.code, encryptedData: wxuserinfo.encryptedData, iv: wxuserinfo.iv }).then(function (wxuid) {
                         let signuser = {};
-                        signuser['uid'] = wxuid.uId;
-                        AV.User.signUpOrlogInWithAuthData(signuser, 'openWx').then((statuswx) => {    //用户在云端注册登录
+                        signuser['uid'+ wxappNumber] = wxuid.oId;
+                        AV.User.loginWithAuthDataAndUnionId(signuser,'weapp_union', wxuid.uId, {
+                          unionIdPlatform: 'weixin', // 指定为 weixin 即可通过 unionid 与其他 weixin 平台的帐号打通
+                          asMainAccount: true,
+                        }).then((statuswx) => {    //用户在云端注册登录
                           if (statuswx.createdAt != statuswx.updatedAt) {
                             roleData.user = statuswx.toJSON();
                             resolve(roleData);                        //客户已注册在本机初次登录成功
@@ -236,27 +239,7 @@ module.exports = {
     }).catch(console.error)
   },
 
-  fetchRecord: function(requery,indexField,sumField) {                     //同步云端数据到本机
-    return new Promise((resolve, reject) => {
-      let aData = {}, mData = {}, indexList = [], aPlace = -1, iField, iSum = {}, mChecked = {};
-      requery.forEach(onedata => {
-        aData[onedata.id] = onedata;
-        iField = onedata.get(indexField);                  //索引字段读数据数
-        if (indexList.indexOf(iField)<0) {
-          indexList.push(iField);
-          mData[iField] = [onedata.id];                   //分类ID数组增加对应ID
-          iSum[iField] = onedata.get(sumField);
-        } else {
-          iSum[iField] += onedata.get(sumField);
-          mData[iField].push(onedata.id);
-        };
-        mChecked[onedata.id] = true;
-      });
-      resolve({indexList:indexList,pageData:aData,quantity:iSum,mCheck:mChecked}) ;
-    }).catch( error=> {reject(error)} );
-  },
-
-  indexRecordFamily: function(requery,indexField,aFamilyLength) {                     //同步云端数据到本机
+  indexRecordFamily: function(requery,indexField,aFamilyLength) {             //按索引字段和类型整理已读数据
     return new Promise((resolve, reject) => {
       let aData = {}, indexList = new Array(aFamilyLength), aPlace = -1, iField, aFamily, fieldFamily, mData = {};
       indexList.fill([]);
@@ -281,6 +264,26 @@ module.exports = {
         })
       })
       resolve({indexList,aData}) ;
+    }).catch( error=> {reject(error)} );
+  },
+
+  fetchRecord: function(requery,indexField,sumField) {                     //同步云端数据到本机
+    return new Promise((resolve, reject) => {
+      let aData = {}, mData = {}, indexList = [], aPlace = -1, iField, iSum = {}, mChecked = {};
+      requery.forEach(onedata => {
+        aData[onedata.id] = onedata;
+        iField = onedata.get(indexField);                  //索引字段读数据数
+        if (indexList.indexOf(iField)<0) {
+          indexList.push(iField);
+          mData[iField] = [onedata.id];                   //分类ID数组增加对应ID
+          iSum[iField] = onedata.get(sumField);
+        } else {
+          iSum[iField] += onedata.get(sumField);
+          mData[iField].push(onedata.id);
+        };
+        mChecked[onedata.id] = true;
+      });
+      resolve({indexList:indexList,pageData:aData,quantity:iSum,mCheck:mChecked}) ;
     }).catch( error=> {reject(error)} );
   },
 

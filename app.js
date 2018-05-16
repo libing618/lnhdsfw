@@ -19,7 +19,6 @@ const realtime = new Realtime({
   plugins: [TypedMessagesPlugin],                    // 注册富媒体消息插件
   pushOfflineMessages: true                          //使用离线消息通知方式
 });
-const { initConfig, loginAndMenu } = require('./libs/util');
 function onNet(){
   return new Promise((resolve, reject) => {
     wx.getNetworkType({
