@@ -24,14 +24,7 @@ Page({
     message: [],
     idClicked: '0',
     cId:'',
-    reqData: [
-      {gname:'wcontent',p:'产品'},
-      {gname:'wcontent',p:'图像'},
-      {gname:'wcontent',p:'音频'},
-      {gname:'wcontent',p:'视频'},
-      {gname:'wcontent',p:'位置'},
-      {gname:'wcontent',p:'文件'}
-    ]
+    mgrids: ['产品','图像','音频','视频','位置','文件']
   },
 
   onLoad:function(options){
@@ -78,6 +71,6 @@ Page({
     }).catch( console.error );
   },
 
-  i_msgEditSend: i_msgEditSend,
+  i_msgEditSend: i_msgEditSend
 
 })

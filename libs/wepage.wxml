@@ -55,10 +55,6 @@
 <view style="padding-top:{{statusBar+capsule}}px;"></view>
 </template>
 
-<template name="p_marginTop">
-  <view style="padding-top:{{statusBar+capsule}}px;"></view>
-</template>
-
 <template name="p_tabPanelChange">
 <view class="page__sub" id="model-{{pNo}}">
   <view class="weui-tab__panel">
@@ -114,31 +110,8 @@
 </view>
 </template>
 
-<template name="p_editFields">
-<view wx:if="{{pageName=='editFields'}}" class="page__sub" id="model-{{pNo}}">
-<form bindsubmit="fSubmit">
-  <view class="page__bd_spacing" id="{{targetId}}">
-    <block wx:for="{{reqData}}" wx:key="index">
-      <template is="i_{{item.t}}" data="{{...item,c:vData[item.gname],n:index}}"></template>
-    </block>
-  </view>
-  <view style="padding-bottom:100rpx;"></view>
-  <view class="page__ft weui-footer_fixed-bottom">
-    <button class="weui-btn" style="display:{{enMenu=='none' && uEV ? 'inline-block' : 'none'}}" type="primary" size="mini" formType="submit" id="fSave">提交</button>
-    <button class="weui-btn" style="display:{{enMenu=='none' && targetId=='0' ? 'inline-block' : 'none'}}" type="primary" size="mini" formType="submit" id="fStorage">保存</button>
-    <button class="weui-btn" style="display:{{ enMenu }}" type="warn" size="mini" formType="submit" id="fdeldata">删除</button>
-    <button class="weui-btn" style="display:{{ enMenu }}" type="default" size="mini" formType="submit" id="fupdate">替换</button>
-    <button class="weui-btn" style="display:{{ enMenu }}" type="primary" size="mini" formType="submit" id="fenins">插入</button>
-  </view>
-</form>
-  <view hidden="{{enIns}}">
-    <template is="i_insdata"></template>
-  </view>
-</view>
-</template>
-
 <template name="p_modalSwitchBox">
-<view class="modal_box" id="fBack" bindtap="f_modalSwitchBox">
+  <view class="modal_box" id="fBack" bindtap="f_modalSwitchBox"></view>
   <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
     <view class="page__hd">
       <view class="page__title">{{pageData[targetId].uName}}</view>
@@ -157,11 +130,10 @@
     <button class="weui-btn" size="mini" bindtap="f_modalSwitchBox" id="fSwitch">{{smtName}}</button>
     <button class="weui-btn" type="primary" size="mini" bindtap="f_modalSwitchBox" id="fBack">返回</button>
   </view>
-</view>
 </template>
 
 <template name="p_modalRecordView">
-<view class="modal_box" id="fBack" bindtap="f_modalSwitchBox">
+  <view class="modal_box" id="fBack" bindtap="f_modalSwitchBox"></view>
   <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
     <view class="page__hd">
       <view class="page__title">{{pageData[targetId].uName}}</view>
@@ -179,11 +151,10 @@
   <view wx:if="{{showModalBox}}" class="page__ft weui-footer_fixed-bottom">
     <button bindtap="f_modalRecordView" id="fBack">我知道了</button>
   </view>
-</view>
 </template>
 
 <template name="p_modalFieldView">
-<view class="modal_box" id="fBack" bindtap="f_modalSwitchBox">
+  <view class="modal_box" id="fBack" bindtap="f_modalSwitchBox"></view>
   <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
     <view class="page__hd">
       <view class="page__title">{{pageData[targetId].uName}}</view>
@@ -201,62 +172,60 @@
   <view wx:if="{{showModalBox}}" class="page__ft weui-footer_fixed-bottom">
     <button bindtap="f_modalFieldView" id="fBack">我知道了</button>
   </view>
-</view>
 </template>
 
 <template name="p_modalEditAddress">
-<view class="modal_box" id="fBack" bindtap="i_modalEditAddress">
-<form bindsubmit="i_modalEditAddress">
-  <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
-    <view class="page__title">{{reqData[n].p}}</view>
-    <view class="close_icon" id="fBack" bindtap="i_modalEditAddress">×</view>
-    <view class="page__hd">
-      <view class="page__title">选择区(县)</view>
-        <picker-view indicator-style="height: 40rpx;" style="width: 100%; height: 300rpx;" value="{{adcvalue}}" id="faddclass" bindchange="i_modalEditAddress">
-          <picker-view-column>
-              <view wx:for="{{adclist}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
-          </picker-view-column>
-          <picker-view-column>
-              <view wx:for="{{adclist[adcvalue[0]].st}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
-          </picker-view-column>
-          <picker-view-column>
-              <view wx:for="{{adclist[adcvalue[0]].st[adcvalue[1]].ct}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
-          </picker-view-column>
-        </picker-view>
-      <view hidden="{{asaddv}}">
-        <button class="page__title" id="raddgroup" bindtap="i_modalEditAddress">点此处选择村(社区)</button>
-        <picker-view indicator-style="height: 40rpx;" style="width: 100%; height: 300rpx;" value="{{adgvalue}}" id="saddgroup" bindchange="i_modalEditAddress">
+  <view class="modal_box" id="fBack" bindtap="i_modalEditAddress"></view>
+  <form bindsubmit="i_modalEditAddress">
+    <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
+      <view class="page__title">{{reqData[n].p}}</view>
+      <view class="close_icon" id="fBack" bindtap="i_modalEditAddress">×</view>
+      <view class="page__hd">
+        <view class="page__title">选择区(县)</view>
+          <picker-view indicator-style="height: 40rpx;" style="width: 100%; height: 300rpx;" value="{{adcvalue}}" id="faddclass" bindchange="i_modalEditAddress">
             <picker-view-column>
-                <view wx:for="{{adglist}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
+                <view wx:for="{{adclist}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
             </picker-view-column>
             <picker-view-column>
-                <view wx:for="{{adglist[adgvalue[0]].cm}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
+                <view wx:for="{{adclist[adcvalue[0]].st}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
             </picker-view-column>
-        </picker-view>
-      </view>
-    </view>
-    <view class="weui-cells__title">详细地址:</view>
-    <view class="weui-cells weui-cells_after-title">
-      <view class="weui-cell">
-        <view class="weui-cell__bd">
-          <textarea class="weui-textarea" auto-height name="address1" value="{{address1 ? address1 : vData[reqData[n].gname].sName}}" />
+            <picker-view-column>
+                <view wx:for="{{adclist[adcvalue[0]].st[adcvalue[1]].ct}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
+            </picker-view-column>
+          </picker-view>
+        <view hidden="{{asaddv}}">
+          <view class="page__title" id="raddgroup" bindtap="i_modalEditAddress">点此处选择村(社区)</view>
+          <picker-view indicator-style="height: 40rpx;" style="width: 100%; height: 300rpx;" value="{{adgvalue}}" id="saddgroup" bindchange="i_modalEditAddress">
+              <picker-view-column>
+                  <view wx:for="{{adglist}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
+              </picker-view-column>
+              <picker-view-column>
+                  <view wx:for="{{adglist[adgvalue[0]].cm}}" wx:key="{{index}}" style="line-height: 36rpx">{{item.n}}</view>
+              </picker-view-column>
+          </picker-view>
         </view>
       </view>
+      <view class="weui-cells__title">详细地址:</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell">
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" auto-height name="address1" value="{{address1 ? address1 : vData[reqData[n].gname].sName}}" />
+          </view>
+        </view>
+      </view>
+      <view style="padding-bottom:100rpx;"></view>
     </view>
-    <view style="padding-bottom:100rpx;"></view>
-  </view>
-  <view class="page__ft weui-footer_fixed-bottom">
-    <button class="weui-btn" formType="submit" size="mini" id="fSave">确定</button>
-    <button class="weui-btn" type="primary" size="mini" bindtap="i_modalEditAddress" id="fBack">返回</button>
-  </view>
-</form>
-</view>
+    <view class="page__ft weui-footer_fixed-bottom">
+      <button class="weui-btn" formType="submit" size="mini" id="fSave">确定</button>
+      <button class="weui-btn" type="primary" size="mini" bindtap="i_modalEditAddress" id="fBack">返回</button>
+    </view>
+  </form>
 </template>
 
 <template name="p_modalSelectPanel">
-<view class="modal_box" id="fBack" bindtap="i_modalSelectPanel">
+  <view class="modal_box" id="fBack" bindtap="i_modalSelectPanel"></view>
   <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
-    <view class="page__title">选择{{reqData[n].p}}</view>
+    <view class="page__title">选择--{{p}}</view>
     <view class="close_icon" id="fBack" bindtap="i_modalSelectPanel">×</view>
     <view class="page__hd">
     <view class="weui-tab__panel">
@@ -279,13 +248,12 @@
   <view wx:if="{{idClicked!=='0'}}" class="page__ft weui-footer_fixed-bottom">
     <button class="weui-btn" type="primary" bindtap="i_modalSelectPanel" id="fSelect">选定{{pageData[idClicked].uName}}</button>
   </view>
-</view>
 </template>
 
 <template name="p_modalSelectFile">
-<view class="modal_box" id="fBack" bindtap="i_modalSelectFile">
+  <view class="modal_box" id="fBack" bindtap="i_modalSelectFile"></view>
   <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
-    <view class="page__title">选择{{reqData[n].p}}</view>
+    <view class="page__title">选择{{p}}</view>
     <view class="close_icon" id="fBack" bindtap="i_modalSelectFile">×</view>
     <view class="page__hd">
     <view class="weui-tab__panel">
@@ -308,5 +276,44 @@
   <view wx:if="{{idClicked!=='0'}}" class="page__ft weui-footer_fixed-bottom">
     <button class="weui-btn" type="primary" id="fSelect" bindtap="i_modalSelectFile">选定{{idClicked}}</button>
   </view>
-</view>
+</template>
+
+<template name="p_cutImageThumbnail">
+  <view class="modal_box" id="fBack" bindtap="i_cutImageThumbnail"></view>
+  <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
+    <view class="page__title" style="text-align: center;flex-direction:row;">
+      <button class="weui-btn" style="display:inline-block" type="warn" size="mini" id="fplus" bindtap="i_cutImageThumbnail">扩大范围</button>
+      <button class="weui-btn" style="display:inline-block" type="primary" size="mini" id="fSave" bindtap="i_cutImageThumbnail">确定</button>
+      <button class="weui-btn" style="display:inline-block" type="default" size="mini" id="freduce" bindtap="i_cutImageThumbnail">缩小范围</button>
+    </view>
+    <view class="close_icon" id="fBack" bindtap="i_cutImageThumbnail">×</view>
+    <movable-area style="height:{{yImage}}px;width: 750rpx; ">
+      <image  style="width:{{xImage}}px; height:{{yImage}}px;" mode="scaleToFill" src="{{iscr}}"></image>
+        <movable-view style="height: {{yOff}}px; background-color: rgba(0,0,0,0.6); width: {{xOff}}px;" x="{{x}}" y="{{y}}" id="fHandle" bindtouchstart="i_cutImageThumbnail" bindtouchmove="i_cutImageThumbnail">
+        </movable-view>
+    </movable-area>
+    <canvas canvas-id="cei" disable-scroll="{{false}}" style="width:320px;height:272px;"/>
+  </view>
+</template>
+
+<template name="p_mapSelectUnit">
+  <view class="modal_box" id="fBack" bindtap="i_mapSelectUnit"></view>
+  <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
+    <view class="page__title">选择{{p}}</view>
+    <view class="close_icon" id="fBack" bindtap="i_mapSelectUnit">×</view>
+    <map id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="{{scale}}" bindcontroltap="controltap" markers="{{markers}}" bindmarkertap="markertap" controls="{{controls}}" show-location style="width: 100%; height: {{Height}}px;"/>
+    <view class="page__bd">
+      <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
+        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+          <image class="weui-media-box__thumb" src="{{unitArray[sId].thumbnail}}" background-size="cover"></image>
+        </view>
+        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+          <view class="weui-media-box__title">{{unitArray[sId].uName}}</view>
+          <view class="weui-media-box__desc">{{unitArray[sId].title}}</view>
+        </view>
+      </view>
+      <template is="c_aslist" data="{{p:'主营业务',c:unitArray[sId].indType}}" />
+      <view>距离您现在的位置：{{unitArray[sId].distance}}米</view>
+    </view>
+  </view>
 </template>

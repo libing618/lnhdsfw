@@ -142,7 +142,7 @@
 </template>
 
 <template name="i_modalEditAddress">
-  <view id="modalEditAddress" data-n="{{n}}" class="weui-cell" bindtap='i_modalEditAddress'>{{p}}:{{c.sName}}</view>
+  <view id="ac-{{n}}" class="weui-cell" bindtap='i_modalEditAddress'>{{p}}:{{c.sName}}</view>
 </template>
 
 <template name="i_eDetail">
@@ -172,8 +172,8 @@
   </view>
 </template>
 
-<template name="i_thumb">
-  <view class="weui-article__-2" id="ac-{{n}}" bindtap="i_thumb">
+<template name="i_cutImageThumbnail">
+  <view class="weui-article__-2" id="ac-{{n}}" bindtap="i_cutImageThumbnail">
     <view hidden="{{c}}">{{p}}:</view>
     <image src="{{c ? c : '/images/2.png'}}" style="width: 100%;" mode="aspectFit"></image>
     <view hidden="true"><input name="{{gname}}" value="{{c}}"/></view>

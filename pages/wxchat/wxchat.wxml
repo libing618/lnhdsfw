@@ -11,6 +11,6 @@
         <template is="ownConversation" data="{{...item}}" />
       </view>
     </block>
-    <template is="msgEditSend" data="{{reqData,vData}}"/>
+    <template is="msgEditSend" data="{{grids,vData}}"/>
   </view>
 </view>

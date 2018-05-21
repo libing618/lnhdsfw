@@ -332,10 +332,10 @@
   </view>
 </form>
 <view class="weui-grids" hidden="{{enMultimedia}}">
-  <block wx:for="{{reqData}}" wx:key="{{index}}">
+  <block wx:for="{{grids}}" wx:key="{{index}}">
     <view class="weui-grid" data-n="{{index+1}}" hover-class="weui-grid_active" id="iMultimedia" bindtap="i_msgEditSend">
       <image class="weui-grid__icon" src="../../images/{{index+1}}.png"></image>
-      <view class="weui-grid__label">{{item.p}}</view>
+      <view class="weui-grid__label">{{item}}</view>
     </view>
   </block>
 </view>

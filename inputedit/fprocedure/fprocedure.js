@@ -1,20 +1,25 @@
 // 通用的内容编辑
-const wImpEdit = require('../../import/impedit.js');
+const wImpEdit = require('../import/impedit.js');
 const { initData } = require('../../model/initForm');
 var app = getApp()
 Page({
   data: {
-    selectd: -1,                       //详情项选中字段序号
     navBarTitle: '编辑--',              //申请项目名称
+    pw: app.sysinfo.pw,
+    sPages: [{
+      pageName: 'editFields'
+    }],
     enMenu: 'none',                  //‘插入、删除、替换’菜单栏关闭
     enIns: true,                  //插入grid菜单组关闭
     targetId: '0',              //流程申请表的ID
     dObjectId: '0',             //已建数据的ID作为修改标志，0则为新建
     vData: {},
-    fieldFormat: {},
-    reqData: []
+    selectd: -1,                       //详情项选中字段序号
+    reqData: [],
+    showModalBox: false,
+    animationData: {}
   },
-  sPages: ['editFields'],
+
   onLoad: function (options) {        //传入参数为tgId或pNo/artId,不得为空
     var that = this;
     let aaData;
@@ -69,6 +74,6 @@ Page({
     });
   },
 
-  fSubmit: wImpEdit.fSubmit
+  fSubmit: require('../import/shopEdit.js').fSubmit
 
 })
