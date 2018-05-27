@@ -564,7 +564,7 @@ icon {
   text-align: center;
 }
 .weui-footer_fixed-bottom {
-  position: absolute;
+  position: fixed; /*absolute; */
   z-index:998;
   background-color: rgba(109, 109, 109, 1);
   background-size: 100%;
@@ -981,9 +981,16 @@ icon {
   background: #CCCCCC;
   color: #fff;
 }
+.weui-footer__center{
+  position: fixed;
+  margin: 0 auto;
+  bottom: 0px;
+  width: 100%;
+}
 .weui-canvas{
-  width: 748px;
-  height: 600px;
+  margin: 0 auto;
+  width: 300 px;
+  height: 225 px;
 }
 .swiper_box {
   width: 100%;
@@ -1129,4 +1136,8 @@ icon {
 }
 .weui-picker__item_disabled{
   color:#999999;
+}
+.weui-map-box{
+  box-sizing: border-box;
+  padding-top: 16rpx;
 }

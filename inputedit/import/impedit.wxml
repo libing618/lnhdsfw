@@ -136,8 +136,17 @@
 
 <template name="i_chooseAd">
   <view id="ac-{{n}}" bindtap="i_chooseAd">
-  <view class="weui-label">{{p}}:</view>
-    <map longitude="{{c.longitude}}" latitude="{{c.latitude}}" scale="18" show-location style="width: 100%; height: 300px;"></map>
+    <view class="weui-label">{{p}}:</view>
+    <view class="weui-map-box">
+      <map
+        id="chooseAd"
+        style="width: 100%; height: 300px;"
+        latitude="{{c.latitude}}"
+        longitude="{{c.longitude}}"
+        covers="{{covers}}"
+        show-location
+      ></map>
+    </view>
   </view>
 </template>
 
@@ -334,14 +343,12 @@
   </view>
 </template>
 
-<template name="i_MS">
+<template name="i_mapSelectUnit">
   <view hidden="true"><input name="{{gname}}" value="{{c}}"/></view>
-  <navigator url="/pages/mapsunit/mapsunit?reqNumber={{n}}">
-    <view class="weui-cell weui-cell_input">
-      <view class="weui-cell__hd">{{p}}:</view>
-      <view class="weui-cell__bd">{{e}}</view>
-    </view>
-  </navigator>
+  <view class="weui-cell weui-cell_input" id="ac-{{n}}" bindtap="i_mapSelectUnit">
+    <view class="weui-cell__hd">{{p}}:</view>
+    <view class="weui-cell__bd">{{e}}</view>
+  </view>
 </template>
 
 <template name="i_table">

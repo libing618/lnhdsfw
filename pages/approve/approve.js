@@ -4,6 +4,7 @@ const { readShowFormat } = require('../../model/initForm.js');
 var app=getApp()
 Page({
   data:{
+    pw: app.sysinfo.pw,
     biType: [
       { gname:"unitName", p:'申请单位', t:"h3" },
       { gname:"sponsorName", p:'发起人姓名', t:"h3" }

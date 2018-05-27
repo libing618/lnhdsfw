@@ -1,7 +1,8 @@
 <import src="../../libs/weimport.wxml" />
-<template is="navBarReturn" data="{{navBarTitle,rtUrl}}"/>
+<import src="../../libs/wepage.wxml" />
 <wxs src="signmsg.wxs" module="tk" />
 <view class="page">
+  <template is="p_navBar__back" data="{{...pw,navBarTitle,rtUrl}}"/>
   <view class="page__hd">
     <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
       <view class="weui-media-box__hd_in-appmsg">

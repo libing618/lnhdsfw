@@ -179,8 +179,8 @@ page{
   position: fixed;
   top: 0;
   left: 0;
-   color: #fff;
-  background-color: #8FB0D1;
+  color: #fff;
+  background-color: #FFFFFF;
   -moz-opacity: 0.8;
   opacity: 0.8;
   z-index: 600;
@@ -194,6 +194,9 @@ page{
   bottom: 0;
   left: 0;
   z-index: 700;
+  border: 6rpx solid lightgray;
+  border-top-left-radius: 8rpx;
+  border-top-right-radius: 8rpx;
   background: silver;
 }
 

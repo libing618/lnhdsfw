@@ -281,38 +281,47 @@
 <template name="p_cutImageThumbnail">
   <view class="modal_box" id="fBack" bindtap="i_cutImageThumbnail"></view>
   <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
-    <view class="page__title" style="text-align: center;flex-direction:row;">
-      <button class="weui-btn" style="display:inline-block" type="warn" size="mini" id="fplus" bindtap="i_cutImageThumbnail">扩大范围</button>
-      <button class="weui-btn" style="display:inline-block" type="primary" size="mini" id="fSave" bindtap="i_cutImageThumbnail">确定</button>
-      <button class="weui-btn" style="display:inline-block" type="default" size="mini" id="freduce" bindtap="i_cutImageThumbnail">缩小范围</button>
-    </view>
+    <view class="page__title" id="fSave" bindtap="i_cutImageThumbnail">确定缩放比例{{cScale}}</view>
     <view class="close_icon" id="fBack" bindtap="i_cutImageThumbnail">×</view>
-    <movable-area style="height:{{yImage}}px;width: 750rpx; ">
-      <image  style="width:{{xImage}}px; height:{{yImage}}px;" mode="scaleToFill" src="{{iscr}}"></image>
-        <movable-view style="height: {{yOff}}px; background-color: rgba(0,0,0,0.6); width: {{xOff}}px;" x="{{x}}" y="{{y}}" id="fHandle" bindtouchstart="i_cutImageThumbnail" bindtouchmove="i_cutImageThumbnail">
-        </movable-view>
+    <movable-area style="width:{{xImage}}px;height:{{yImage}}px">
+      <image  style="width:{{xImage}}px; height:{{yImage}}px;" mode="scaleToFit" src="{{iscr}}"></image>
+      <movable-view style="height: {{yOff}}px; background-color: rgba(0,0,0,0.6); width: {{xOff}}px;" direction="all" bindchange="i_cutImageThumbnail" bindscale="i_cutImageThumbnail" scale-value="{{cScale}}" id="fHandle">
+      </movable-view>
     </movable-area>
-    <canvas canvas-id="cei" disable-scroll="{{false}}" style="width:320px;height:272px;"/>
+    <view class="weui-footer__center">
+      <canvas class="weui-canvas" style="width:300px;height:225px;" canvas-id="cei" disable-scroll="{{false}}"></canvas>
+    </view>
   </view>
 </template>
 
 <template name="p_mapSelectUnit">
   <view class="modal_box" id="fBack" bindtap="i_mapSelectUnit"></view>
   <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
-    <view class="page__title">选择{{p}}</view>
+    <view class="page__title" id="fSave" bindtap="i_mapSelectUnit">选择{{unitArray[sId].uName}}</view>
     <view class="close_icon" id="fBack" bindtap="i_mapSelectUnit">×</view>
-    <map id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="{{scale}}" bindcontroltap="controltap" markers="{{markers}}" bindmarkertap="markertap" controls="{{controls}}" show-location style="width: 100%; height: {{Height}}px;"/>
+    <view class="weui-map-box">
+      <map
+        id="mapSelect"
+        style="width: 100%; height: 300px;"
+        longitude="{{longitude}}"
+        latitude="{{latitude}}"
+        markers="{{markers}}"
+        bindmarkertap="i_mapSelectUnit"
+        bindregionchange="i_mapSelectUnit"
+        show-location="{{true}}"
+      ></map>
+    </view>
     <view class="page__bd">
       <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
-        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+        <view class="weui-media-box__hd_in-appmsg">
           <image class="weui-media-box__thumb" src="{{unitArray[sId].thumbnail}}" background-size="cover"></image>
         </view>
-        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+        <view class="weui-media-box__bd_in-appmsg">
           <view class="weui-media-box__title">{{unitArray[sId].uName}}</view>
           <view class="weui-media-box__desc">{{unitArray[sId].title}}</view>
         </view>
       </view>
-      <template is="c_aslist" data="{{p:'主营业务',c:unitArray[sId].indType}}" />
+      <template is="s_industrytype" data="{{p:'主营业务',c:unitArray[sId].indType}}" />
       <view>距离您现在的位置：{{unitArray[sId].distance}}米</view>
     </view>
   </view>

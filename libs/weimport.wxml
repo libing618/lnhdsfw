@@ -222,7 +222,7 @@
   </view>
 </template>
 
-<template name="s_MS">
+<template name="s_mapSelectUnit">
   <view hidden="true">{{c}}</view>
 </template>
 

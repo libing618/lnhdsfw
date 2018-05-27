@@ -16,7 +16,7 @@
     </view>
   </view>
 </view>
-<template is="p_marginTop" data="{{...pw}}"/>
+<view style="padding-top:{{pw.statusBar+pw.capsule}}px;"></view>
 <view class="page__main">
   <view class="page__hd">
     <swiper class="swiper_box" indicator-dots="true" autoplay="{{autoplay}}">

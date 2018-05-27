@@ -9,7 +9,7 @@
       <view class="weui-cell__bd">{{tiringRoom ? '乐农汇的店铺管理' : user.nickName+'的信息'}}</view>
     </view>
   </view>
-  <template is="p_marginTop" data="{{...pw}}"/>
+  <view style="padding-top:{{pw.statusBar+pw.capsule}}px;"></view>
   <view class="page__main">
     <view wx:if="{{tiringRoom}}">
       <view class="page__hd">

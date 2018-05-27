@@ -5,6 +5,7 @@ var app = getApp()
 Page({
   data:{
     user: app.roleData.user,
+    pw: app.sysinfo.pw,
     sysheight: app.sysinfo.windowHeight-260,
     swcheck: true,
     iName: app.roleData.user.uName,
@@ -26,7 +27,7 @@ Page({
     var that = this;
     if (!app.netState) { wx.redirectTo({ url: 'pages/home/home' }); }
     let nowPages = getCurrentPages();
-    let rtUrl = 0;
+    let rtUrl = '';
     return new Promise((resolve, reject) => {
       if (nowPages.length==1) {
         rtUrl = '/pages/home/home';
