@@ -1,5 +1,5 @@
 //交易状况及提现
-const { updateRoleData } = require('../../model/initupdate.js');
+const { checkRols,updateRoleData } =  require('../../model/initForm');
 const { getMonInterval,countData } = require('../../model/dataAnalysis.js');
 const orderListFamily = require('../../model/procedureclass').orderlist.afamily;
 var wxCharts = require('../../libs/wxcharts-min.js');

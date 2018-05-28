@@ -1,7 +1,7 @@
 // 浏览
 const AV = require('../../libs/leancloud-storage.js');
-const { readShowFormat,initLogStg } = require('../../model/initForm.js');
-const { initConfig, loginAndMenu } = require('../../libs/util');
+const { initConfig, loginAndMenu,initLogStg } = require('../../model/initForm.js');
+const { readShowFormat } = require('../../libs/util');
 var app=getApp()
 Page({
   data:{
@@ -9,12 +9,13 @@ Page({
     enUpdate: false,
     pno:'goods',
     pw: app.sysinfo.pw,
+    sPages: ['viewFields'],
     vData: {},
     reqData: []
   },
   inFamily:false,
   startTime: new Date(),
-  sPages: ['viewFields'],
+
   onLoad: function(options) {
     var that = this ;
     let rtUrl = 0;

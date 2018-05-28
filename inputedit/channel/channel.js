@@ -1,6 +1,7 @@
 //签约厂家
 const AV = require('../../libs/leancloud-storage.js');
-const {checkRols,hTabClick} = require('../../libs/util.js');
+const { checkRols } =  require('../../model/initForm');
+const {hTabClick} = require('../../libs/util.js');
 const { updateData } = require('../../model/initupdate');
 const {f_modalSwitchBox} = require('../../model/controlModal');
 var app = getApp()

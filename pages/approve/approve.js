@@ -1,6 +1,6 @@
 //流程审批模块
 const AV = require('../../libs/leancloud-storage.js');
-const { readShowFormat } = require('../../model/initForm.js');
+const { readShowFormat } = require('../../libs/util');
 var app=getApp()
 Page({
   data:{
@@ -109,5 +109,5 @@ Page({
       wx.showToast({title: '请进行审批处理', duration: 2500, icon: 'loading'})
     }
   },
-  onShareAppMessage: require('../../libs/util').shareMessage
+  onShareAppMessage: require('../../model/initForm').shareMessage
 })

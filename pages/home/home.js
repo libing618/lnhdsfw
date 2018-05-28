@@ -1,7 +1,7 @@
 const { User } = require('../../libs/leancloud-storage.js');
-const { initConfig, loginAndMenu,openWxLogin,setTiringRoom } = require('../../libs/util');
-const { integration,initLogStg } = require('../../model/initForm.js');
-const { readAllData, tabClick } = require('../../model/initupdate');
+const { integration,openWxLogin } = require('../../libs/util');
+const { readAllData, initConfig, loginAndMenu,initLogStg,setTiringRoom,shareMessage } = require('../../model/initForm.js');
+const { tabClick } = require('../../model/initupdate');
 var app = getApp()
 Page({
   data: {
@@ -102,5 +102,5 @@ Page({
     readAllData(false,'goods').then(isupdated=>{ this.setPage(isupdated) });
   },
 
-  onShareAppMessage: require('../../libs/util').shareMessage
+  onShareAppMessage: shareMessage
 })

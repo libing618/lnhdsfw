@@ -1,5 +1,6 @@
 //退换货
 const { getMonInterval,readRoleData,allUpdateData,aDataSum } = require('../../model/dataAnalysis.js');
+const { checkRols } = require('../../model/initForm');
 var app = getApp()
 Page({
   data:{

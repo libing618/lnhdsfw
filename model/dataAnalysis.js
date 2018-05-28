@@ -1,5 +1,5 @@
 const AV = require('../libs/leancloud-storage.js');
-const { updateRoleData } = require('initupdate');
+const { updateRoleData } = require('initForm');
 var app = getApp();
 function sumArr(arrData,arrIndex){
   let dSum = 0;

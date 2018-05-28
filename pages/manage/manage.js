@@ -1,4 +1,6 @@
-const { readAllData, tabClick } = require('../../model/initupdate');
+const { tabClick } = require('../../model/initupdate');
+const { readAllData,initConfig, shareMessage } = require('../../model/initForm.js');
+const { getMonInterval,sumData,countData } = require('../../model/dataAnalysis.js');
 const aimenu = require('../../libs/allmenu.js').iMenu;
 var app = getApp()
 Page({

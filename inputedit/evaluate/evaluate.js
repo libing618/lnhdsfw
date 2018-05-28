@@ -1,6 +1,7 @@
 //客户评价及统计
 const AV = require('leancloud-storage.js');
-const {checkRols,indexRecordFamily,hTabClick,indexClick} = require('../../libs/util.js');
+const {indexRecordFamily,hTabClick,indexClick} = require('../../libs/util.js');
+const { checkRols } =  require('../../model/initForm');
 const { f_modalRecordView } = require('../../model/controlModal');
 var app = getApp();
 Page({

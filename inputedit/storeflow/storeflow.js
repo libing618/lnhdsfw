@@ -1,5 +1,5 @@
 //流量分析
-const { updateRoleData } = require('../../model/initupdate.js');
+const { checkRols,updateRoleData } = require('../../model/initForm');
 const { getMonInterval,countData } = require('../../model/dataAnalysis.js');
 var wxCharts = require('../../libs/wxcharts-min.js');
 var app = getApp()

@@ -1,9 +1,8 @@
 const {User} = require('../../libs/leancloud-storage.js');
-const { readAllData,updateRoleData } = require('../../model/initupdate.js');
-const { integration, initLogStg } = require('../../model/initForm.js');
+const { readAllData,initConfig, loginAndMenu, initLogStg,shareMessage } = require('../../model/initForm.js');
 const { getMonInterval,sumData,countData } = require('../../model/dataAnalysis.js');
 const {droneId,master,slave} = require('../../libs/goodstype')
-const { initConfig, loginAndMenu, indexClick } = require('../../libs/util');
+const { integration,indexClick } = require('../../libs/util');
 const aimenu = require('../../libs/allmenu.js').iMenu;
 var app = getApp()
 Page({
@@ -99,10 +98,9 @@ Page({
 
   onPullDownRefresh: function() {
     readAllData(true,'goods').then(isupdated=>{ this.setPage(isupdated) });
-//    updateRoleData(true,'order').then(dUpdated=>{this.sumData(dUpdated)});
   },
   onReachBottom: function() {
     readAllData(true,'goods').then(isupdated=>{ this.setPage(isupdated) });
   },
-  onShareAppMessage: require('../../libs/util').shareMessage
+  onShareAppMessage: shareMessage
 })

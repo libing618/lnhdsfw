@@ -1,4 +1,5 @@
 //销售优惠
+const { checkRols } =  require('../../model/initForm');
 const { getMonInterval,readRoleData,allUpdateData,aDataSum } = require('../../model/dataAnalysis.js');
 var app = getApp()
 Page({

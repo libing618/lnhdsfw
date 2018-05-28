@@ -1,5 +1,6 @@
 // 联系厂家
-const {checkRols,indexClick} = require('../../libs/util.js');
+const {indexClick} = require('../../libs/util.js');
+const { checkRols } =  require('../../model/initForm');
 const { updateData } = require('../../model/initupdate');
 var app = getApp();
 Page({

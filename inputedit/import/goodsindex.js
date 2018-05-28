@@ -1,7 +1,7 @@
 // 店铺货架
 const AV = require('../../libs/leancloud-storage.js');
-const {checkRols,hTabClick} = require('../../libs/util.js');
-const { readAllData } = require('../../model/initupdate');
+const {hTabClick} = require('../../libs/util.js');
+const { checkRols,readAllData } =  require('../../model/initForm');
 const {f_modalSwitchBox,f_modalFieldView} = require('../../model/controlModal');
 var app = getApp()
 Page({
