@@ -97,7 +97,7 @@ function updateData(isDown, pNo, uId) {    //更新页面显示数据,isDown下�
 };
 module.exports = {
 appDataExist: appDataExist,
-isAllData：isAllData，
+isAllData:isAllData,
 updateData: updateData,
 
 tabClick: function (e) {                                //点击tab

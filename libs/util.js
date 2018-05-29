@@ -1,7 +1,6 @@
 const AV = require('leancloud-storage.js');
 const wxappNumber = 2;    //本小程序在开放平台中自定义的序号
 const { updateData,integration } = require('../model/initupdate');
-const menuKeys=['manage', 'marketing', 'customer'];
 function formatNumber(n) {
   n = n.toString()
   return n[1] ? n : '0' + n
