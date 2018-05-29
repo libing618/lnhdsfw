@@ -60,6 +60,7 @@ Page({
             that.i_insdata = wImpEdit.i_insdata;
           }
         });
+        reqData.unshift({gname:"uName", t:"h2", p:"名称" });
         that.setData({
           pNo: ops.pNo,
           navBarTitle: that.data.navBarTitle,

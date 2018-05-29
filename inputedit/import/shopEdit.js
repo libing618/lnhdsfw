@@ -1,6 +1,6 @@
 const AV = require('../../libs/leancloud-storage.js');
 const { unitData } = require('../../model/initForm.js');
-const { integration } = require('../../libs/util');
+const { integration } = require('../../model/initupdate');
 const qqmap_wx = require('../libs/qqmap-wx-jssdk.min.js');   //微信地图
 var QQMapWX = new qqmap_wx({ key: '6JIBZ-CWPW4-SLJUB-DPPNI-4TWIZ-Q4FWY' });   //开发密钥（key）
 var app = getApp();

@@ -1,8 +1,9 @@
 const {User} = require('../../libs/leancloud-storage.js');
+const { integration } = require('../../model/initupdate');
 const { readAllData,initConfig, loginAndMenu, initLogStg,shareMessage } = require('../../model/initForm.js');
 const { getMonInterval,sumData,countData } = require('../../model/dataAnalysis.js');
 const {droneId,master,slave} = require('../../libs/goodstype')
-const { integration,indexClick } = require('../../libs/util');
+const { indexClick } = require('../../libs/util');
 const aimenu = require('../../libs/allmenu.js').iMenu;
 var app = getApp()
 Page({
