@@ -415,7 +415,7 @@ fSubmit: function (e) {
               fcApproval.set('cFlowStep', approvalRole.cManagers[1]);              //下一流程审批人
               fcApproval.set('dObject', that.data.vData);            //流程审批内容
               acl.setRoleReadAccess(app.roleData.shopId, true);
-              acl.setRoleReadAccess(app.roleData.shopId, true);
+              acl.setRoleWriteAccess(app.roleData.shopId, true);
               approvalRole.managers.forEach(mUser => {
                 acl.setWriteAccess(mUser, true);
                 acl.setReadAccess(mUser, true);

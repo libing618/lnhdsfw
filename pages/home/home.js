@@ -1,4 +1,4 @@
-const { User } = require('../../libs/leancloud-storage.js');
+const { User,ACL } = require('../../libs/leancloud-storage.js');
 const { openWxLogin } = require('../../libs/util');
 const { readAllData, initConfig, loginAndMenu,initLogStg,setTiringRoom,shareMessage } = require('../../model/initForm.js');
 const { integration,tabClick } = require('../../model/initupdate');
@@ -74,13 +74,26 @@ Page({
 
   userInfoHandler: function (e) {
     var that = this;
-    app.roleData.user.sjid = app.configData.sjid;
-    app.roleData.user.channelid = app.configData.channelid;
-    app.roleData.user.goodsIndex = app.configData.goodsIndex;
     openWxLogin(app.roleData).then( mstate=> {
       app.roleData = mstate;
-      app.logData.push([Date.now(), '用户授权' + app.sysinfo.toString()]);                //用户授权时间记入日志
-      wx.navigateTo({url:'/pages/signup/signup?type=promoter'});                //进行推广合伙人注册
+      let userControl = new ACL();
+      userControl.setReadAccess(User.current(),true);
+      userControl.setReadAccess(app.configData.sjid,true);
+      userControl.setReadAccess(app.configData.channelid,true);
+      userControl.setRoleReadAccess(app.roleData.shopId,true);
+      userControl.setWriteAccess(User.current(),true);
+      userControl.setRoleWriteAccess(app.roleData.shopId,true);
+      User.current()
+        .set({sjid:app.configData.sjid,channelid:app.configData.channelid,goodsIndex:app.configData.goodsIndex})
+        .setACL(userControl)
+        .save()
+        .then(()=>{
+          app.roleData.user.sjid = app.configData.sjid;
+          app.roleData.user.channelid = app.configData.channelid;
+          app.roleData.user.goodsIndex = app.configData.goodsIndex;
+          app.logData.push([Date.now(), '用户授权' + app.sysinfo.toString()]);                //用户授权时间记入日志
+          wx.navigateTo({url:'/pages/signup/signup?type=promoter'});                //进行推广合伙人注册
+        })
     }).catch( console.error );
   },
 
