@@ -4,7 +4,7 @@ var app = getApp();
 function sumArr(arrData,arrIndex){
   let dSum = 0;
   arrIndex.forEach(ad=>{
-    dSum = dSum +arrData[ ad[2] ]
+    dSum = dSum +arrData[ ad ]
   })
   return dSum
 };
@@ -25,6 +25,7 @@ function getMonInterval(){
         staMon++;
         yearMon = staYear + (staMon>9 ? '-' : '-0') + staMon,
         result.push(yearMon);
+        endYearIndex.push(yearMon);
         dayRange[yearMon] = [new Date(yearMon + '-01 00:00:00'),new Date(staMon == 12 ? yearMon + '-31 23:59:59:999' : staYear + '-' + (staMon + 1) + '-01 00:00:00')];
       }
       staYear++;
@@ -302,7 +303,7 @@ module.exports = {
           Promise.resolve([])
         ).then(aCounts => {
           let countAll = sumArr(app.aCount[classObj], monInterval.yearMon);
-          resolve({ countAll: countAll, countYear: sumArr(app.aCount[classObj], monInterval.endYearIndex), countMon: app.aCount[classObj][monInterval.endYearMon] });
+          resolve({ countAll: countAll, countYear: sumArr(app.aCount[classObj], monInterval.endYear), countMon: app.aCount[classObj][monInterval.endYearMon] });
         })
       })
     }).catch(console.error)
