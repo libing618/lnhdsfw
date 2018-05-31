@@ -126,10 +126,6 @@ integration: function(masterClass, slaveClass, unitId) {    //整合选择数组
   }).catch(console.error);
 },
 
-classInFamily: function(pNo) {              //判断数据表是否有分类控制
-  return (typeof procedureclass[pNo].afamily != 'undefined');
-},
-
 familySel: function(pNo){              //数据表有分类控制的返回分类长度和选择记录
   let psData = {};
   if (typeof procedureclass[pNo].afamily != 'undefined') {
