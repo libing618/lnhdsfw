@@ -51,7 +51,42 @@ Page({
       scObject.fecth({keys:'fConfig'}).then(fcdata=>{
         let lcfConfig = fcdata.get('fConfig');
         if(lcfConfig.toString()!=app.configData.goods.fConfig.toString()){
-          scObject.set('fConfig',that.data.cPage[0]).save();
+          scObject.set('fConfig',that.data.cPage[0]).save().then(()=>{
+            new AV.Query('distributor').equalTo('unitId',app.roleData.shopId).ascending('updatedAt').find().then(channel=>{
+              if (channel) {
+                let fc,sChannel=new Set(),cs=new Set();
+                channel.forEach(csi=>{
+                  fc = csi.toJSON();
+                  if (that.data.cPage[0].indexOf(fc.unitId)<0){                   //是否要签约
+                    sChannel.add(csi.set('agreeState',1))                   //解约
+                  } else {
+                    if (fc.agreeState==1) {sChannel.add(csi.set('agreeState',0))}                   //重签约
+                  };
+                  if (fc.agreeState==0) {cs.add(fc.unitId)};
+                });
+                if (cs){
+                  let addcs = AV.Object.extend('distributor');
+                  function addcs(unitId){
+                    let adcs = new addcs();
+                    adcs.set('unitId',unitId);
+                    adcs.set('unitName',that.data.pageData[unitId].uName);
+                    adcs.set('shopId',app.roleData.shopId);
+                    adcs.set('shopName',app.roleData.shopName);
+                    adcs.set('shopLogo','https://e3sl2viw1q4ta7me-10007535.file.myqcloud.com/ff933806fce411614341.jpg');
+                    adcs.set('address','山西省太原市');
+                    adcs.set('agreeState',0)
+                    return adcs;
+                  }
+                  that.data.cPage[0].forEach(cUnitId=>{
+                    if(cs.indexOf(cUnitId)<0){sChannel.add(addcs(cUnitId))}
+                  })
+                };
+                AV.Object.saveAll(sChannel).then(()=>{
+                  app.logData.push([Date.now(), app.roleData.shopName+'厂家签约'])
+                }).catch(error=>{ app.logData.push([Date.now(), '厂家签约发生错误:' + error.toString()]) })
+              }
+            });
+          });
         }
       })
     }

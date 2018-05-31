@@ -1,5 +1,6 @@
 const AV = require('../libs/leancloud-storage.js');
 const { updateData,appDataExist } = require('initupdate');
+const { openWxLogin } = require('util');
 const menuKeys = ['manage', 'marketing', 'customer'];
 var app = getApp();
 function checkRole(ouRole,user){

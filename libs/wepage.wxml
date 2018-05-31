@@ -105,7 +105,7 @@
   </view>
   <view style="padding-bottom:100rpx;"></view>
   <view class="page__ft weui-footer_fixed-bottom">
-    <button class="weui-btn" type="primary" bindtap="f_tabPanelChange" id="fBack">退出</button>
+    <navigator open-type="navigateBack" delta="1">退出</navigator>
   </view>
 </view>
 </template>
