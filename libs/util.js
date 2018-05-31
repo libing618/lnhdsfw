@@ -10,6 +10,7 @@ openWxLogin: function(roleData) {            //注册登录（本机登录状态
   return new Promise((resolve, reject) => {
     wx.getSetting({
       success: ({authSetting})=> {
+console.log(authSetting)
         if (authSetting['scope.userInfo']) {
           wx.login({
             success: function (wxlogined) {

@@ -1,8 +1,34 @@
 const AV = require('../libs/leancloud-storage.js');
 const { updateData,appDataExist } = require('initupdate');
-const { openWxLogin } = require('util');
+const { openWxLogin } = require('../libs/util');
 const menuKeys = ['manage', 'marketing', 'customer'];
 var app = getApp();
+function fetchUser(roleData) {
+  return new Promise((resolve, reject) => {
+    wx.getUserInfo({        //检查客户信息
+      withCredentials: false,
+      success: function ({ userInfo }) {
+        if (userInfo) {
+          let updateInfo = false;
+          for (var iKey in userInfo) {
+            if (userInfo[iKey] != roleData.user[iKey]) {             //客户信息有变化
+              updateInfo = true;
+              roleData.user[iKey] = userInfo[iKey];
+            }
+          };
+          if (updateInfo) {
+            AV.User.become(AV.User.current().getSessionToken()).then((rLoginUser) => {
+              rLoginUser.set(userInfo).save().then(() => { resolve(roleData) });
+            })
+          } else {
+           resolve(roleData);
+          };
+        }
+      },
+      fail: () => { resolve(roleData) }
+    });
+  }).catch(console.error);
+};
 function checkRole(ouRole,user){
   let crd = false;
   switch (ouRole) {
@@ -114,16 +140,9 @@ loginAndMenu: function (lcUser,roleData) {
   }).then((getIp)=>{
     return new Promise((resolve, reject) => {
       if (roleData.user.objectId == '0') {
-        wx.getSetting({
-          success:(res)=> {
-            if (res.authSetting['scope.userInfo']) {        //用户已经同意小程序使用用户信息
-              openWxLogin(roleData).then(rlgData => {
-                resolve(true);
-              }).catch((loginErr) => { resolve(false) });  //系统登录失败
-            } else { resolve(false) }
-          },
-          fail: ()=>{resolve(false)}
-        })
+        openWxLogin(roleData).then(rlgData => {
+          resolve(true);
+        }).catch((loginErr) => { resolve(false) });  //系统登录失败
       } else {       //用户如已注册并在本机登录过,则有数据缓存，否则进行注册登录
         resolve(true)
       }

@@ -43,7 +43,7 @@ Page({
                 scope: 'scope.userInfo',
                 success() {          // 用户同意小程序使用用户信息
                   app.roleData.user.userRolName = ops.type;
-                  opepWxLogin(app.roleData).then(resLogin => {
+                  openWxLogin(app.roleData).then(resLogin => {
                     app.roleData = resLogin;
                     resolve(app.roleData.user.objectId)
                   })
