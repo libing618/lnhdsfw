@@ -27,7 +27,7 @@ Page({
     var that = this;
     if (checkRols(3,app.roleData.user)) {
       that.sMons = getMonInterval().yearMon;        //用户注册日到本月的月份信息数组
-      return new Promise.all([readRoleData('order'),[readRoleData('orderlist'),allUpdateData('unfinishedorder')]).then(()=>{
+      return new Promise.all([readRoleData('order'),readRoleData('orderlist'),allUpdateData('unfinishedorder')]).then(()=>{
         let pageData = {};
         let pageSuccess = require('../../model/procedureclass').unfinishedorder.pSuccess;
         app.mData.unfinishedorder.forEach(ufod=>{
@@ -39,7 +39,7 @@ Page({
         })
         that.setData({
           cPage: that.data.cPage,
-          pageDaga: pageData
+          pageData: pageData
         });
         that.fSum=aDataSum(that.sMons,'unfinishedorder',['amount','sale'],that.data.cPage[0]);
         that.setCanvas();
