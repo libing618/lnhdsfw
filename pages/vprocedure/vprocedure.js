@@ -7,11 +7,11 @@ Page({
   data:{
     uEV: app.roleData.user.emailVerified,
     enUpdate: false,
-    pno:'goods',
+    pNo:'goods',
     pw: app.sysinfo.pw,
     sPages: ['viewFields'],
     vData: {},
-    reqData: []
+    vFormat: []
   },
   inFamily:false,
   startTime: new Date(),
@@ -19,9 +19,8 @@ Page({
   onLoad: function(options) {
     var that = this ;
     let rtUrl = 0;
-    that.data.pno = options.pNo;
-    let pClass = require('../../model/procedureclass.js')[that.data.pno];
-    that.inFamily = (typeof pClass.afamily != 'undefined');
+    that.data.pNo = options.pNo;
+    that.inFamily = (typeof app.fData[that.data.pNo].afamily != 'undefined');
     return new Promise((resolve, reject) => {
       let nowPages = getCurrentPages();
       if (nowPages.length == 1) {
@@ -39,21 +38,21 @@ Page({
       } else { resolve(false) }
     }).then(() => {
       return new Promise((resolve, reject) => {
-        if (app.aData[that.data.pno][options.artId]){
+        if (app.aData[that.data.pNo][options.artId]){
           resolve(true)
         } else {
-          AV.Object.createWithoutData(that.data.pno,options.artId).fetch().then(getData=>{
-            app.aData[that.data.pno][options.artId] = getData.toJSON();
+          AV.Object.createWithoutData(that.data.pNo,options.artId).fetch().then(getData=>{
+            app.aData[that.data.pNo][options.artId] = getData.toJSON();
             resolve(true)
           }).catch(reject(false))
         }
       })
     }).then(canView=>{
-      that.data.vData = app.aData[that.data.pno][options.artId];
-      readShowFormat(pClass.pSuccess, that.data.vData).then(({reqData,fModal})=>{
-        that.data.reqData=reqData;
+      that.data.vData = app.aData[that.data.pNo][options.artId];
+      readShowFormat(app.fData[that.data.pNo].pSuccess, that.data.vData).then(({vFormat,fModal})=>{
+        that.data.vFormat=vFormat;
         if (fModal){that.f_modalFieldView = require('../../model/controlModal').f_modalFieldView}
-        that.data.enUpdate = typeof that.data.vData.shopId!='undefined' && typeof pClass.suRoles!='undefined';  //有本店信息且流程有上级审批的才允许修改
+        that.data.enUpdate = typeof that.data.vData.shopId!='undefined' && typeof app.fData[that.data.pNo].suRoles!='undefined';  //有本店信息且流程有上级审批的才允许修改
         that.setData(that.data);
       });
     }).catch( error=>{
@@ -64,15 +63,15 @@ Page({
 
   fEditProcedure: function(e){
     var that = this;
-    var url='/inputedit/fprocedure/fprocedure?pNo='+that.data.pno;
+    var url='/inputedit/fprocedure/fprocedure?pNo='+that.data.pNo;
     switch (e.currentTarget.id){
       case 'fModify' :
         url += '&artId='+that.data.vData.objectId;
         break;
       case 'fTemplate' :
         url += that.inFamily ? '&artId='+that.data.vData.afamily : '';
-        let newRecord = that.inFamily ? that.data.pno+that.data.vData.afamily : that.data.pno;
-        app.aData[that.data.pno][newRecord] = that.data.vData;
+        let newRecord = that.inFamily ? that.data.pNo+that.data.vData.afamily : that.data.pNo;
+        app.aData[that.data.pNo][newRecord] = that.data.vData;
         break;
     };
     wx.navigateTo({ url: url});
@@ -82,7 +81,7 @@ Page({
     var that = this;
     let browseLog=wx.getStorageSync('browseLog') || [];  //如有旧日志则拼成一个新日志数组
     let userId = app.roleData.user.objectId=='0' ? app.configData.browser : app.roleData.user.objectId;
-    browseLog.push({ userId: userId, pModel: that.data.pno, broweObject: that.data.vData.objectId, promoter:app.configData.sjid,channel:app.configData.channelid,startTime:that.startTime, stayTime:new Date()-that.startTime})
+    browseLog.push({ userId: userId, pModel: that.data.pNo, broweObject: that.data.vData.objectId, promoter:app.configData.sjid,channel:app.configData.channelid,startTime:that.startTime, stayTime:new Date()-that.startTime})
     wx.setStorage({
       key: 'browseLog',
       data: browseLog
@@ -90,11 +89,11 @@ Page({
   },
 
   onShareAppMessage: function () {
-    if (this.data.vData.objectId.indexOf(this.data.pno)<0){
+    if (this.data.vData.objectId.indexOf(this.data.pNo)<0){
       return {
         title: '扶贫济困，共享良品。',
         desc: '乐农汇',
-        path: 'pages/vprocedure/vprocedure?sjid='+app.roleData.user.objectId+'&pNo='+this.data.pno+'&artId='+this.data.vData.objectId
+        path: 'pages/vprocedure/vprocedure?sjid='+app.roleData.user.objectId+'&pNo='+this.data.pNo+'&artId='+this.data.vData.objectId
       }
     } else {
       wx.showToast({title:'本地文件不能共享！',icon:'none'})

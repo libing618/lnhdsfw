@@ -69,7 +69,11 @@ module.exports = {
         downModal(that,hidePage);
         break;
       default:                  //打开弹出页
-        that.data.sPages.push({pageName:'modalRecordView',targetId:id});
+        that.data.sPages.push({
+          pageName:'modalRecordView',
+          vFormat: app.fData[dataset.pNo].pSuccess,
+          targetId:id
+        });
         that.setData({ sPages: that.data.sPages });
         popModal(that)
         break;
@@ -84,7 +88,10 @@ module.exports = {
         downModal(that,hidePage);
         break;
       default:                  //打开弹出页
-        that.data.sPages.push({pageName:'modalFieldView', rFormat: require('procedureclass.js')[dataset.pNo].pSuccess});
+        that.data.sPages.push({
+          pageName:'modalFieldView',
+          vFormat: app.fData[dataset.pNo].pSuccess
+        });
         that.setData({ sPages: that.data.sPages });
         popModal(that)
         break;
@@ -113,7 +120,7 @@ module.exports = {
     }
   },
 
-  i_modalSelectFile: function ({ currentTarget:{id,dataset} }) {            //单项选择面板弹出页
+  i_modalSelectFile: function ({ currentTarget:{id,dataset} }) {            //文件选择面板弹出页
     var that = this;
     let hidePage = {};
     switch (id) {
@@ -147,7 +154,7 @@ module.exports = {
     let nowPage = that.data.sPages[pageNumber];
     switch (id) {
       case 'fSave':                  //确认返回数据
-        hidePage['vData.' + that.data.reqData[nowPage.n].gname] = { code: nowPage.saddv, sName: value.address1 };
+        hidePage['vData.' + that.data.iFormat[nowPage.n].gname] = { code: nowPage.saddv, sName: value.address1 };
         downModal(that,hidePage)
         break;
       case 'fBack':                  //返回
@@ -213,7 +220,7 @@ module.exports = {
         wx.canvasToTempFilePath({
           canvasId: 'cei',
           success: function(resTem){
-            hidePage['vData.' + that.data.reqData[nowPage.n].gname] = resTem.tempFilePath;
+            hidePage['vData.' + that.data.iFormat[nowPage.n].gname] = resTem.tempFilePath;
             downModal(that,hidePage);
           }
         })
@@ -284,8 +291,8 @@ module.exports = {
     let nowPage = that.data.sPages[pageNumber];
     switch (e.currentTarget.id.substring(0,3)) {
       case 'fSa':                  //确认返回数据
-        hidePage['reqData[' + nowPage.n + '].e'] = nowPage.unitArray[nowPage.sId].uName;
-        hidePage['vData.' + that.data.reqData[nowPage.n].gname] = nowPage.unitArray[nowPage.sId].objectId;
+        hidePage['iFormat[' + nowPage.n + '].e'] = nowPage.unitArray[nowPage.sId].uName;
+        hidePage['vData.' + that.data.iFormat[nowPage.n].gname] = nowPage.unitArray[nowPage.sId].objectId;
         if (nowPage.reqProIsSuperior) {
           app.roleData.uUnit.sUnit = nowPage.unitArray[nowPage.sId].objectId;
           app.roleData.sUnit = nowPage.unitArray[nowPage.sId];
@@ -304,14 +311,14 @@ module.exports = {
           sId: 0,
           markers:[],
           unitArray: [],
-          reqProIsSuperior: typeof that.data.reqData[n].indTypes == 'number',
+          reqProIsSuperior: typeof that.data.iFormat[n].indTypes == 'number',
           n: n,      //数组下标
           selIndtypes:[]
         };
         if ( newPage.reqProIsSuperior ) {
-          newPage.selIndtypes.push(that.data.reqData[n].indTypes);
+          newPage.selIndtypes.push(that.data.iFormat[n].indTypes);
           wx.showToast({title:'选择服务单位，请注意：选定后不能更改！',icon: 'none'});
-        } else {newPage.selIndtypes=that.data.reqData[n].indTypes}
+        } else {newPage.selIndtypes=that.data.iFormat[n].indTypes}
         wx.getLocation({
           type: 'gcj02',//'wgs84',
           success: function(res){
@@ -374,13 +381,13 @@ module.exports = {
               that.mapCtx.moveToLocation();
               break;
             case 'end':
-            that.mapCtx.getCenterLocation({
-              success: (res)=>{
-                showPage[spmKey + 'latitude'] = res.latitude;
-                showPage[spmKey + 'longitude'] = res.longitude;
-                that.setData(showPage);
-              }
-            });
+              that.mapCtx.getCenterLocation({
+                success: (res)=>{
+                  showPage[spmKey + 'latitude'] = res.latitude;
+                  showPage[spmKey + 'longitude'] = res.longitude;
+                  that.setData(showPage);
+                }
+              });
               break;
           }
         };

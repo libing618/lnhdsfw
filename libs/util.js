@@ -10,7 +10,6 @@ openWxLogin: function(roleData) {            //注册登录（本机登录状态
   return new Promise((resolve, reject) => {
     wx.getSetting({
       success: ({authSetting})=> {
-console.log(authSetting)
         if (authSetting['scope.userInfo']) {
           wx.login({
             success: function (wxlogined) {
@@ -59,7 +58,7 @@ readShowFormat: function(req, vData) {
   return new Promise((resolve, reject) => {
     let promArr = [];                   //定义一个Promise数组
     let setPromise = new Set();
-    var reqData=req.map(reqField=>{
+    var vFormat=req.map(reqField=>{
       switch (reqField.t) {
         case 'mapSelectUnit':
           reqField.e = app.roleData.sUnit.uName;
@@ -82,27 +81,27 @@ readShowFormat: function(req, vData) {
     })
     setPromise.forEach(nPromise=> {promArr.push(updateData(true, nPromise, unitId))})
     return Promise.all(promArr).then(()=>{
-      for (let i = 0; i < reqData.length; i++) {
-        switch (reqData[i].t) {
+      for (let i = 0; i < vFormat.length; i++) {
+        switch (vFormat[i].t) {
           case 'sObject':                    //对象选择字段
-            if (reqData[i].gname != 'goodstype') { reqData[i].slave = app.aData[reqData[i].gname][vData[reqData[i].gname]]; };
+            if (vFormat[i].gname != 'goodstype') { vFormat[i].slave = app.aData[vFormat[i].gname][vData[vFormat[i].gname]]; };
             break;
           case 'specsel':                    //规格选择字段
-            reqData[i].master = {};
-            reqData[i].slave = {};
+            vFormat[i].master = {};
+            vFormat[i].slave = {};
             vData.specs.forEach(specsId => {
-              reqData[i].master[specsId] = app.aData.specs[specsId];
-              reqData[i].slave[specsId] = app.aData.cargo[app.aData.specs[specsId].cargo];
+              vFormat[i].master[specsId] = app.aData.specs[specsId];
+              vFormat[i].slave[specsId] = app.aData.cargo[app.aData.specs[specsId].cargo];
             });
             break;
           case 'sId':
-            reqData[i].thumbnail = app.aData[reqData[i].gname][vData[reqData[i].gname]].thumbnail;
-            reqData[i].uName = app.aData[reqData[i].gname][vData[reqData[i].gname]].uName;
-            reqData[i].title = app.aData[reqData[i].gname][vData[reqData[i].gname]].title;
+            vFormat[i].thumbnail = app.aData[vFormat[i].gname][vData[vFormat[i].gname]].thumbnail;
+            vFormat[i].uName = app.aData[vFormat[i].gname][vData[vFormat[i].gname]].uName;
+            vFormat[i].title = app.aData[vFormat[i].gname][vData[vFormat[i].gname]].title;
             break;
         }
       }
-      resolve(reqData);
+      resolve(vFormat);
     });
   }).catch(console.error);
 },

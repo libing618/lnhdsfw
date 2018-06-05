@@ -1,8 +1,8 @@
-<import src="../import/impedit.wxml"/>
-<import src="../../libs/wepage.wxml" />
-<view class="page">
-  <template is="p_navBar__back" data="{{...pw,navBarTitle}}"/>
-  <view wx:if="{{sPages.length==1}}" class="page__sub" id="model-{{pNo}}">
+<import src="impedit.wxml"/>
+
+<template name="p_modalEditBox">
+  <view class="modal_box" id="fBack" bindtap="f_modalSwitchBox"></view>
+  <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
     <form bindsubmit="fSubmit">
       <view class="page__bd_spacing" id="{{targetId}}">
         <block wx:for="{{iFormat}}" wx:key="index">
@@ -22,7 +22,4 @@
       <template is="i_insdata"></template>
     </view>
   </view>
-  <view wx:else>
-    <template is="p_{{sPages[sPages.length-1].pageName}}" data="{{...sPages[sPages.length-1],showModalBox,animationData,vData,pageData,iFormat}}"/>
-  </view>
-</view>
+</template>

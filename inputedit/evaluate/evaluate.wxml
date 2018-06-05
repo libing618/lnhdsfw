@@ -2,5 +2,5 @@
 <import src="../../libs/weimport.wxml" />
 <view class="page">
   <template is="p_navBar__headTab" data="{{...pw,...ht}}"/>
-  <template is="p_{{sPages[sPages.length-1].pageName}}" data="{{showModalBox,animationData,tPage:cPage[ht.pageCk], pageData,reqData,...sPages[sPages.length-1]}}"/>
+  <template is="p_{{sPages[sPages.length-1].pageName}}" data="{{showModalBox,animationData,tPage:cPage[ht.pageCk], pageData,iFormat,...sPages[sPages.length-1]}}"/>
 </view>

@@ -53,7 +53,7 @@ initData: function(req, vData) {      //对数据录入或编辑的格式数组�
   return new Promise((resolve, reject) => {
     let promArr = [];               //定义一个Promise数组
     let setPromise = new Set();
-    var reqData=req.map(reqField=>{
+    var iFormat=req.map(reqField=>{
       switch (reqField.t) {
         case 'mapSelectUnit':
           reqField.e = vifData ? '点击选择服务单位' : app.roleData.sUnit.uName;
@@ -170,6 +170,9 @@ initData: function(req, vData) {      //对数据录入或编辑的格式数组�
           case 'sedate':
             vData[reqField.gname] = [getdate(Date.now()), getdate(Date.now() + 864000000)];
             break;
+          case 'idate':
+            vData[reqField.gname] = getdate(Date.now());
+            break;
           case 'fg' :
             vData[reqField.gname] = 0;
             break;
@@ -179,60 +182,58 @@ initData: function(req, vData) {      //对数据录入或编辑的格式数组�
     })
     setPromise.forEach(nPromise=> {promArr.push(updateData(true, nPromise, unitId))})
     return Promise.all(promArr).then(() => {
-      for (let i = 0; i < reqData.length; i++) {
-        switch (reqData[i].t) {
+      for (let i = 0; i < iFormat.length; i++) {
+        switch (iFormat[i].t) {
           case 'sObject':                    //对象选择字段
-            if (reqData[i].gname != 'goodstype') {
-              reqData[i].master = unitData('product');
-              reqData[i].slave = unitData('cargo');
-              reqData[i].objarr = app.mData.product[unitId].map(proId => {
+            if (iFormat[i].gname != 'goodstype') {
+              iFormat[i].master = unitData('product');
+              iFormat[i].slave = unitData('cargo');
+              iFormat[i].objarr = app.mData.product[unitId].map(proId => {
                 return { masterId: proId, slaveId: app.aData.product[proId].cargo }
               })
             };
             break;
           case 'specsel':                    //规格选择字段
-            reqData[i].ensel = (vData.specstype == 0);
-            reqData[i].master = {};
-            reqData[i].slave = {};
+            iFormat[i].ensel = (vData.specstype == 0);
+            iFormat[i].master = {};
+            iFormat[i].slave = {};
             vData.specs.forEach(specsId => {
-              reqData[i].master[specsId] = app.aData.specs[specsId];
-              reqData[i].slave[specsId] = app.aData.cargo[app.aData.specs[specsId].cargo];
+              iFormat[i].master[specsId] = app.aData.specs[specsId];
+              iFormat[i].slave[specsId] = app.aData.cargo[app.aData.specs[specsId].cargo];
             });
             break;
           case 'chooseAd':
             vData.address = getAddress;
             break;
           case 'sId':
-            reqData[i].maData = app.mData[reqData[i].gname][unitId].map(mId=>{
+            iFormat[i].maData = app.mData[iFormat[i].gname][unitId].map(mId=>{
               return {
-                objectId: mId, sName: app.aData[reqData[i].gname][mId].uName + ':  ' + app.aData[reqData[i].gname][mId].title }
+                objectId: mId, sName: app.aData[iFormat[i].gname][mId].uName + ':  ' + app.aData[iFormat[i].gname][mId].title }
             });
-            reqData[i].mn = vifData ? 0 : app.mData[reqData[i].gname][unitId].indexOf(vData[reqData[i].gname]);
+            iFormat[i].mn = vifData ? 0 : app.mData[iFormat[i].gname][unitId].indexOf(vData[iFormat[i].gname]);
             break;
           case 'arrplus':
-            reqData[i].sId = vData.sId ? vData.sId : app.mData.product[unitId][0];
-            reqData[i].objects = unitData('product');
+            iFormat[i].sId = vData.sId ? vData.sId : app.mData.product[unitId][0];
+            iFormat[i].objects = unitData('product');
             break;
         }
-        if (reqData[i].csc) {
-          funcArr.push('f_' + reqData[i].csc);
-          if (['aslist', 'arrsel'].indexOf(reqData[i].csc) >= 0) {
-            reqData[i].aVl = [0, 0, 0];
-            reqData[i].inclose = vifData ? true : false;
+        if (iFormat[i].csc) {
+          funcArr.push('f_' + iFormat[i].csc);
+          if (['aslist', 'arrsel'].indexOf(iFormat[i].csc) >= 0) {
+            iFormat[i].aVl = [0, 0, 0];
+            iFormat[i].inclose = vifData ? true : false;
           };
         } else {
-          if (reqData[i].t.length > 2) { funcArr.push('i_' + reqData[i].t) };             //每个输入类型定义的字段长度大于2则存在对应处理过程
+          if (iFormat[i].t.length > 2) { funcArr.push('i_' + iFormat[i].t) };             //每个输入类型定义的字段长度大于2则存在对应处理过程
         };
       };
-      resolve({ reqData, vData, funcArr });
+      resolve({ iFormat, vData, funcArr });
     });
   }).catch(console.error);
 },
 
 fSubmit: function (e) {
   var that = this;
-  let approvalID = parseInt(that.data.pNo);        //流程序号
-  var approvalClass = require('../../model/procedureclass.js')[approvalID];       //流程定义和数据结构
   var subData = e.detail.value;
   let cNumber = ['fg','dg','listsel'];       //数字类型定义
   let cObject = ['assettype','producttype','arrplus','ed'];       //对象类型定义
@@ -243,11 +244,12 @@ fSubmit: function (e) {
     };
   };
   var emptyField = '';                   //检查是否有字段输入为空
-  that.data.reqData.forEach(req=>{
+  that.data.iFormat.forEach(req=>{
     if (req.gname in subData){ that.data.vData[req.gname]=subData[req.gname]; }
     if (typeof that.data.vData[req.gname]=='undefined'){
       emptyField += '《' + req.p + '》';
     } else {
+      if (req.t=='itime') {that.data.vData[req.gname] = Number(that.data.vData[req.gname].replace(':',''))};
       if ( cNumber.indexOf(req.t)>=0 ) { that.data.vData[req.gname] = Number(that.data.vData[req.gname]); }
       if ( cObject.indexOf(req.t)>=0 && typeof that.data.vData[req.gname]=='string') {that.data.vData[req.gname] = JSON.parse(that.data.vData[req.gname])}
     }
@@ -256,7 +258,7 @@ fSubmit: function (e) {
     let filePaths = [];
     const mdtn = ['pic', 'thumb', 'vidio', 'file'];
     const mdt = ['-2', '-3', '-4', '-6'];
-    that.data.reqData.forEach(nField => {
+    that.data.iFormat.forEach(nField => {
       switch (nField.t) {
         case 'eDetail':
           for (let a = 0; a < that.data.vData[nField.gname].length; a++) {
@@ -385,10 +387,10 @@ fSubmit: function (e) {
           })
         }).then((sFiles) => {
           if (that.data.targetId == '0') {                    //新建流程的提交
-            let approvalRole = setRole(approvalClass.puRoles);
+            let approvalRole = setRole(app.fData[that.data.pNo].puRoles);
             var acl = new AV.ACL();      // 新建一个 ACL 实例
             if (approvalRole.cManagers.length==1){                  //流程无后续审批人
-              let dObject = AV.Object.extend(approvalClass.pModel);
+              let dObject = AV.Object.extend(that.data.pNo);
               let sObject = new dObject();
               that.data.vData.shopId = app.roleData.shopId;
               that.data.vData.shopName = app.roleData.shopName;
@@ -403,7 +405,7 @@ fSubmit: function (e) {
             } else {
               let nApproval = AV.Object.extend('sengpi');        //创建审批流程
               var fcApproval = new nApproval();
-              fcApproval.set('dProcedure', approvalID);                //流程类型
+              fcApproval.set('dProcedure', that.data.pNo);                //流程类型
               fcApproval.set('dResult', 0);                //流程处理结果0为提交
               fcApproval.set("shopName", app.roleData.shopName);                 //申请单位
               fcApproval.set("sponsorName", app.roleData.user.uName);         //申请人

@@ -1,7 +1,6 @@
-//交易状况及提现
-const { checkRols,updateRoleData } =  require('../../model/initForm');
+//交易状况
+const { checkRols,updateRoleData } = require('../../model/initForm');
 const { getMonInterval,countData } = require('../../model/dataAnalysis.js');
-const orderListFamily = require('../../model/procedureclass').orderlist.afamily;
 var wxCharts = require('../../libs/wxcharts-min.js');
 var app = getApp()
 Page({
@@ -12,7 +11,7 @@ Page({
   onReady: function () {
     var that = this;
     if (checkRols(8,app.roleData.user)) {
-      sumFamily('orderlist',['amount','quantity'],6).then(sf=>{
+      sumFamily('orderlist',['amount','quantity'],app.fData.orderlist.afamily.length).then(sf=>{
         that.pieData = sf;
         that.setCanvas();
       }).catch( console.error )
@@ -21,8 +20,8 @@ Page({
 
   setCanvas: function(){
     let pieData = [];
-    for (let i=0;i<orderListFamilyist.length;i++){
-      pieData.push({name:orderListFamily[i],data:this.pieData[this.data.ht.pageCk]})
+    for (let i=0;i<app.fData.orderlist.afamily.length;i++){
+      pieData.push({name:app.fData.orderlist.afamily[i],data:this.pieData[i]})
     }
     new wxCharts({
       canvasId: 'ringCanvas',

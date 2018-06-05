@@ -119,7 +119,7 @@
     </view>
     <view class="page__ac_spacing">
       <view class="drawer_attr_content">
-        <block wx:for="{{reqData}}" wx:key="index">
+        <block wx:for="{{iFormat}}" wx:key="index">
           <template is="s_{{item.t}}" data="{{...item, c:pageData[targetId][item.gname]}}"/>
         </block>
       </view>
@@ -141,7 +141,7 @@
     </view>
     <view class="page__ac_spacing">
       <view class="drawer_attr_content">
-        <block wx:for="{{reqData}}" wx:key="index">
+        <block wx:for="{{vFormat}}" wx:key="index">
           <template is="s_{{item.t}}" data="{{...item, c:pageData[targetId][item.gname]}}"/>
         </block>
       </view>
@@ -162,7 +162,7 @@
     </view>
     <view class="page__ac_spacing">
       <view class="drawer_attr_content">
-        <block wx:for="{{rFormat}}" wx:key="index">
+        <block wx:for="{{vFormat}}" wx:key="index">
           <template is="s_{{item.t}}" data="{{...item, c:pageData[targetId][item.gname]}}"/>
         </block>
       </view>
@@ -178,7 +178,7 @@
   <view class="modal_box" id="fBack" bindtap="i_modalEditAddress"></view>
   <form bindsubmit="i_modalEditAddress">
     <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
-      <view class="page__title">{{reqData[n].p}}</view>
+      <view class="page__title">{{iFormat[n].p}}</view>
       <view class="close_icon" id="fBack" bindtap="i_modalEditAddress">×</view>
       <view class="page__hd">
         <view class="page__title">选择区(县)</view>
@@ -209,7 +209,7 @@
       <view class="weui-cells weui-cells_after-title">
         <view class="weui-cell">
           <view class="weui-cell__bd">
-            <textarea class="weui-textarea" auto-height name="address1" value="{{address1 ? address1 : vData[reqData[n].gname].sName}}" />
+            <textarea class="weui-textarea" auto-height name="address1" value="{{address1 ? address1 : vData[iFormat[n].gname].sName}}" />
           </view>
         </view>
       </view>
@@ -239,7 +239,7 @@
             <view class="weui-media-box__desc">{{pageData[item].title}}</view>
           </view>
         </view>
-        <view wx:if="{{idClicked==item}}" class="weui-cell__ft" id="{{item}}" data-pNo="{{pNo}}" bingtap="f_modalFieldView">详情</view>
+        <view wx:if="{{idClicked==item}}" class="weui-cell__ft" id="{{item}}" data-pNo="{{pNo}}" bingtap="f_modalRecordView">详情</view>
       </block>
     </view>
     </view>
@@ -325,4 +325,41 @@
       <view>距离您现在的位置：{{unitArray[sId].distance}}米</view>
     </view>
   </view>
+</template>
+
+<template name="p_shareOrder">
+  <view class="modal_box" id="fBack" bindtap="i_shareOrder"></view>
+  <form bindsubmit="i_modalEditAddress">
+    <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
+      <view class="page__title">服务预约(每次一元,保留半小时)</view>
+      <view class="close_icon" id="fBack" bindtap="i_shareOrder">×</view>
+      <view class="page__ac_spacing">
+        <view class="drawer_attr_content">
+          <block wx:for="{{vFormat}}" wx:key="index">
+            <template is="s_{{item.t}}" data="{{...item, c:pageData[targetId][item.gname]}}"/>
+          </block>
+        </view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__hd">预约时间:</view>
+        <input class="weui-cell__bd" name="ordertime" value="{{c}}"/>
+        <view class="weui-cell__ft">
+          <picker mode="date" value="{{c}}" start="2015-09-01" id="pa-{{n}}" bindchange="p_shareOrder">
+          </picker>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+            <view class="weui-label">预计数量:</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input name="orderquantity" value="{{c}}" class="weui-input" placeholder="请输入{{p}}" />
+        </view>
+      </view>
+      <view class="page__ft weui-footer_fixed-bottom">
+        <button class="weui-btn" formType="submit" size="mini" id="fSave">确认预约</button>
+        <button class="weui-btn" type="primary" size="mini" bindtap="i_shareOrder" id="fBack">返回</button>
+      </view>
+    </view>
+  </form>
 </template>

@@ -21,7 +21,7 @@ Page({
     sPages: [{
       pageName: 'tabPanelChange'
     }],
-    reqData: require('../../model/procedureclass').goods.pSuccess,
+    iFormat: app.fData.goods.pSuccess,
     showModalBox: false,
     animationData: {}
   },

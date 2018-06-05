@@ -36,6 +36,7 @@ function onNet(){
 
 App({
   roleData: wx.getStorageSync('roleData') || require('globaldata.js').roleData,
+  fData: require('./model/procedureclass'),
   netState: onNet(),
   mData: wx.getStorageSync('mData') || require('globaldata.js').mData,              //读数据管理的缓存
   aData: wx.getStorageSync('aData') || require('globaldata.js').aData,              //以objectId为key的数据记录

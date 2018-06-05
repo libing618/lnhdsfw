@@ -18,7 +18,7 @@ Page({
     sPages: [{
       pageName: 'tabPanelIndex'
     }],
-    reqData: require('../../model/procedureclass').evaluates.pSuccess,
+    iFormat: app.fData.evaluates.pSuccess,
     showModalBox: false,
     animationData: {}
   },

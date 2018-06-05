@@ -13,13 +13,12 @@ Page ({
   onLoad: function (ops) {        //传入参数为pNo,不得为空
     var that = this;
     that.artid = Number(ops.artId);
-    let pClass = require('../../model/procedureclass.js')[ops.pNo];
-    that.inFamily = (typeof pClass.afamily != 'undefined');
+    that.inFamily = (typeof app.fData[ops.pNo].afamily != 'undefined');
     that.isAll = isAllData(ops.pNo);
     that.setData({
       pNo: ops.pNo,
       artId: isNaN(that.artid) ? ops.pNo : that.artid,
-      navBarTitle: isNaN(that.artid) ? pClass.pName : pClass.pName+'--'+pClass.afamily[that.artid]
+      navBarTitle: isNaN(that.artid) ? app.fData[ops.pNo].pName : app.fData[ops.pNo].pName+'--'+app.fData[ops.pNo].afamily[that.artid]
     });
     that.setPage(true);
   },

@@ -1,4 +1,4 @@
-<import src="../../../libs/weimport.wxml"/>
+<import src="../../libs/weimport.wxml"/>
 <view class="page">
   <view class="page__hd">
     <button class="weui-btn" type="primary" bindtap="makphone">打电话给客户服务人员</button>
@@ -12,6 +12,6 @@
           </block>
         </view>
     </scroll-view>
-    <template is="msgEditSend" data="{{reqData,vData}}"/>
+    <template is="msgEditSend" data="{{iFormat,vData}}"/>
   </view>
 </view>

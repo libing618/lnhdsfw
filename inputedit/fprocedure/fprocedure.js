@@ -15,7 +15,7 @@ Page({
     dObjectId: '0',             //已建数据的ID作为修改标志，0则为新建
     vData: {},
     selectd: -1,                       //详情项选中字段序号
-    reqData: [],
+    iFormat: [],
     showModalBox: false,
     animationData: {}
   },
@@ -36,23 +36,22 @@ Page({
         resolve({ pNo: options.pNo, pId: isNaN(artid) ? options.artId : artid });
       }
     }).then(ops=>{
-      var pClass = require('../../model/procedureclass.js')[ops.pNo];
       switch (typeof ops.pId){
         case 'number':           //传入参数为一位数字的代表该类型新建数据或读缓存数据
-          that.data.dObjectId = pClass.pModel + ops.pId;      //根据类型建缓存KEY
-          that.data.navBarTitle += pClass.afamily[ops.pId]
+          that.data.dObjectId = ops.pNo + ops.pId;      //根据类型建缓存KEY
+          that.data.navBarTitle += app.fData[ops.pNo].afamily[ops.pId]
           break;
         case 'string':                   //传入参数为已发布ID，重新编辑已发布的数据
           that.data.dObjectId = ops.pId;
-          that.data.navBarTitle += pClass.pName;
+          that.data.navBarTitle += app.fData[ops.pNo].pName;
           break;
         case 'undefined':               //未提交或新建的数据KEY为审批流程pModel的值
-          that.data.dObjectId = pClass.pModel;
-          that.data.navBarTitle += pClass.pName;
+          that.data.dObjectId = ops.pNo;
+          that.data.navBarTitle += app.fData[ops.pNo].pName;
           break;
       }
-      if (typeof aaData == 'undefined') { aaData = app.aData[ops.pNo][that.data.dObjectId] || {} }
-      initData(pClass.pSuccess, aaData).then(({ reqData, vData, funcArr })=>{
+      if (typeof aaData == 'undefined') { aaData = app.aData[ops.pNo][that.data.dObjectId] || {} }//require('../../test/goods0')[0]
+      initData(app.fData[ops.pNo].pSuccess, aaData).then(({ iFormat, vData, funcArr })=>{
         funcArr.forEach(functionName => {
           that[functionName] = wImpEdit[functionName];
           if (functionName == 'i_eDetail') {             //每个输入类型定义的字段长度大于2则存在对应处理过程
@@ -60,11 +59,11 @@ Page({
             that.i_insdata = wImpEdit.i_insdata;
           }
         });
-        reqData.unshift({gname:"uName", t:"h2", p:"名称" });
+        iFormat.unshift({gname:"uName", t:"h2", p:"名称" });
         that.setData({
           pNo: ops.pNo,
           navBarTitle: that.data.navBarTitle,
-          reqData: reqData,
+          iFormat: iFormat,
           vData: vData
         });
       })

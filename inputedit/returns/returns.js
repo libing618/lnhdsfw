@@ -15,7 +15,7 @@ Page({
     sPages: [{
       pageName: 'tabPanelPage'
     }],
-    reqData: require('../../model/procedureclass').orderlist.pSuccess,
+    iFormat: app.fData.orderlist.pSuccess,
     showModalBox: false,
     animationData: {}
   },
@@ -28,7 +28,7 @@ Page({
       that.sMons = getMonInterval().yearMon;        //用户注册日到本月的月份信息数组
       return new Promise.all([readRoleData('cargoSupplies'),allUpdateData('returns')]).then(()=>{
         let pageData = {};
-        let pageSuccess = require('../../model/procedureclass').returns.pSuccess;
+        let pageSuccess = app.fData.returns.pSuccess;
         app.mData.returns.forEach(ufod=>{
           if (app.mData.cargoSupplies.indexOf(ufod)>=0){
             let pck = 0;

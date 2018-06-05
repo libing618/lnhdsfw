@@ -20,7 +20,7 @@ Page({
     sPages: [{
       pageName: 'tabPanelChange'
     }],
-    reqData: require('../../model/procedureclass').manufactor.pSuccess,
+    iFormat: app.fData.manufactor.pSuccess,
     showModalBox: false,
     animationData: {}
   },

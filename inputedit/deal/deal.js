@@ -16,7 +16,7 @@ Page({
     sPages: [{
       pageName: 'tabPanelPage'
     }],
-    reqData: require('../../model/procedureclass').order.pSuccess,
+    iFormat: app.fData.order.pSuccess,
     showModalBox: false,
     animationData: {}
   },
@@ -29,7 +29,7 @@ Page({
       that.sMons = getMonInterval().yearMon;        //用户注册日到本月的月份信息数组
       return new Promise.all([readRoleData('order'),readRoleData('orderlist'),allUpdateData('unfinishedorder')]).then(()=>{
         let pageData = {};
-        let pageSuccess = require('../../model/procedureclass').unfinishedorder.pSuccess;
+        let pageSuccess = app.fData.unfinishedorder.pSuccess;
         app.mData.unfinishedorder.forEach(ufod=>{
           pageData[ufod] = {uName:app.aData.order[ufod].uName,thumbnail:app.aData.order[ufod].thumbnail};
           if (app.mData.orderlist.indexOf(ufod)>=0){

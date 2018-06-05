@@ -10,7 +10,7 @@ const vdSet = function (sname, sVal) {
 };
 const rdSet = function (n, rdg, rdn) {
   let reqdataset = {};
-  reqdataset['reqData[' + n + '].' + rdg] = rdn;
+  reqdataset['iFormat[' + n + '].' + rdg] = rdn;
   return reqdataset;
 };
 const mgrids = ['产品', '图像', '音频', '视频', '位置', '文件', '大标题', '中标题', '小标题', '正文'];
@@ -29,23 +29,51 @@ module.exports = {
 
   f_idsel: function (e) {                         //选择ID
     let n = parseInt(e.currentTarget.id.substring(3))      //数组下标
-    let sIdValue = this.data.reqData[n].maData[Number(e.detail.value)].objectId;
-    let rvdSet = vdSet(this.data.reqData[n].gname, sIdValue);
-    rvdSet['reqData[' + n + '].mn'] = Number(e.detail.value);
-    let sIdNumber = -1, sIdName = 's_' + this.data.reqData[n].gname;
-    for (let i=0;i<this.data.reqData.length;i++){
-      if (this.data.reqData[i].gname==sIdName){
+    let sIdValue = this.data.iFormat[n].maData[Number(e.detail.value)].objectId;
+    let rvdSet = vdSet(this.data.iFormat[n].gname, sIdValue);
+    rvdSet['iFormat[' + n + '].mn'] = Number(e.detail.value);
+    let sIdNumber = -1, sIdName = this.data.iFormat[n].gname;
+    for (let i=0;i<this.data.iFormat.length;i++){
+      if (this.data.iFormat[i].gname==sIdName){
         sIdNumber = i;
         break;
       }
     }
     if (sIdNumber>=0){
-      if (this.data.reqData[n].sId != sIdValue){
-        rvdSet['reqData[' + sIdNumber + '].sId'] = sIdValue;
-        rvdSet['reqData[' + sIdNumber + '].aVl'] = [0, 0, 0];
+      if (this.data.iFormat[n].sId != sIdValue){
+        rvdSet['iFormat[' + sIdNumber + '].sId'] = sIdValue;
+        rvdSet['iFormat[' + sIdNumber + '].aVl'] = [0, 0, 0];
         rvdSet['vData.' + sIdName] = { code: 0, sName: '点此处进行选择' };
       }
     this.setData(rvdSet);
+    }
+  },
+
+  f_idate: function (e) {                         //日期选择
+    var that = this;
+    let n = parseInt(e.currentTarget.id.substring(3));      //数组下标
+    var id = e.currentTarget.id.substring(0, 2);
+    switch (id) {
+      case 'se':
+        that.setData(rdSet(n, 'inclose', !that.data.iFormat[n].inclose));
+        break;
+      case 'pa':
+        that.setData( vdSet( that.data.iFormat[n].gname, new Date(e.detail.value) ) );
+        break;
+    }
+  },
+
+  f_itime: function (e) {                         //时间选择
+    var that = this;
+    let n = parseInt(e.currentTarget.id.substring(3));      //数组下标
+    var id = e.currentTarget.id.substring(0, 2);
+    switch (id) {
+      case 'se':
+        that.setData(rdSet(n, 'inclose', !that.data.iFormat[n].inclose));
+        break;
+      case 'pa':
+        that.setData(vdSet(that.data.iFormat[n].gname, e.detail.value));
+        break;
     }
   },
 
@@ -53,10 +81,10 @@ module.exports = {
     var that = this;
     let n = parseInt(e.currentTarget.id.substring(3))      //数组下标
     var id = e.currentTarget.id.substring(0, 2);
-    let fName = that.data.reqData[n].gname;
+    let fName = that.data.iFormat[n].gname;
     switch (id) {
       case 'se':                                   //按下载ICON打开选择框
-        that.setData(rdSet(n, 'inclose', !that.data.reqData[n].inclose));
+        that.setData(rdSet(n, 'inclose', !that.data.iFormat[n].inclose));
         break;
       case 'su':                                   //按确定ICON确认选择
         that.data.vData[fName].code.push(Number(e.currentTarget.dataset.ca));
@@ -65,8 +93,8 @@ module.exports = {
         break;
       case 'pa':
         let val = e.detail.value;
-        if (that.data.reqData[n].aVl[0] == val[0]) {
-          if (that.data.reqData[n].aVl[1] != val[1]) { val[2] = 0 }
+        if (that.data.iFormat[n].aVl[0] == val[0]) {
+          if (that.data.iFormat[n].aVl[1] != val[1]) { val[2] = 0 }
         } else { val[1] = 0; val[2] = 0 }
         that.setData(rdSet(n, 'aVl', val));
         break;
@@ -82,14 +110,14 @@ module.exports = {
   f_number: function (e) {
     let n = parseInt(e.currentTarget.id.substring(3));      //数组下标
     let vdSet = {};
-    vdSet['vData.' + this.data.reqData[n].gname] = isNaN(Number(e.detail.value)) ? 0 : parseInt(Number(e.detail.value));      //不能输入非数字,转换为整数
+    vdSet['vData.' + this.data.iFormat[n].gname] = isNaN(Number(e.detail.value)) ? 0 : parseInt(Number(e.detail.value));      //不能输入非数字,转换为整数
     this.setData(vdSet);
   },
 
   f_digit: function (e) {
     let n = parseInt(e.currentTarget.id.substring(3));      //数组下标
     let vdSet = {};
-    vdSet['vData.' + this.data.reqData[n].gname] = isNaN(Number(e.detail.value)) ? '0.00' : parseFloat(Number(e.detail.value).toFixed(2));      //不能输入非数字,转换为浮点数保留两位小数
+    vdSet['vData.' + this.data.iFormat[n].gname] = isNaN(Number(e.detail.value)) ? '0.00' : parseFloat(Number(e.detail.value).toFixed(2));      //不能输入非数字,转换为浮点数保留两位小数
     this.setData(vdSet);
   },
 
@@ -98,11 +126,11 @@ module.exports = {
     let inmcost = Number(e.detail.value);
     let vdSet = {};
     if (isNaN(inmcost)){
-      vdSet['vData.'+this.data.reqData[n].gname] = 0;      //不能输入非数字
+      vdSet['vData.'+this.data.iFormat[n].gname] = 0;      //不能输入非数字
     } else {
-      vdSet['vData.'+this.data.reqData[n].gname] = inmcost>30 ? 30 : inmcost ;      //不能超过30%
+      vdSet['vData.'+this.data.iFormat[n].gname] = inmcost>30 ? 30 : inmcost ;      //不能超过30%
     }
-    this.data.vData[this.data.reqData[n].gname] = isNaN(inmcost) ? 0 : (inmcost > 30 ? 30 : inmcost)
+    this.data.vData[this.data.iFormat[n].gname] = isNaN(inmcost) ? 0 : (inmcost > 30 ? 30 : inmcost)
     vdSet['vData.mCost'] = 87 - (this.data.vData.channel ? this.data.vData.channel : 0) - (this.data.vData.extension ? this.data.vData.extension :0);
     this.setData( vdSet );
   },
@@ -112,7 +140,7 @@ module.exports = {
     let inNumber = Number(e.detail.value);
     let vdSet = {};
     if (isNaN(inNumber)){ inNumber = 0 };      //不能输入非数字
-    vdSet['vData.'+this.data.reqData[n].gname] = inNumber ;
+    vdSet['vData.'+this.data.iFormat[n].gname] = inNumber ;
     vdSet.vData.canSupply = inNumber;
     this.setData( vdSet );
   },
@@ -123,17 +151,17 @@ module.exports = {
     var id = e.currentTarget.id.substring(0, 2);
     switch (id) {
       case 'se':
-        that.setData(rdSet(n, 'inclose', !that.data.reqData[n].inclose));
+        that.setData(rdSet(n, 'inclose', !that.data.iFormat[n].inclose));
         break;
       case 'ac':
-        if (!that.data.reqData[n].inclose) {
-          that.setData(vdSet(that.data.reqData[n].gname, e.currentTarget.dataset.ca))
+        if (!that.data.iFormat[n].inclose) {
+          that.setData(vdSet(that.data.iFormat[n].gname, e.currentTarget.dataset.ca))
         }
         that.setData(rdSet(n, 'inclose', true));
         break;
       case 'pa':
         let aval = e.detail.value;
-        if (that.data.reqData[n].osv[0] != aval[0]) { aval[1] = 0 };
+        if (that.data.iFormat[n].osv[0] != aval[0]) { aval[1] = 0 };
         that.setData(rdSet(n, 'osv', aval));
         break;
     }
@@ -145,18 +173,18 @@ module.exports = {
     var id = e.currentTarget.id.substring(0, 2);
     switch (id) {
       case 'se':
-        that.setData(rdSet(n, 'inclose', !that.data.reqData[n].inclose));
+        that.setData(rdSet(n, 'inclose', !that.data.iFormat[n].inclose));
         break;
       case 'ac':
-        if (!that.data.reqData[n].inclose) {
-          that.setData(vdSet(that.data.reqData[n].gname, { code: e.currentTarget.dataset.ca, sName:e.currentTarget.dataset.sa }))
+        if (!that.data.iFormat[n].inclose) {
+          that.setData(vdSet(that.data.iFormat[n].gname, { code: e.currentTarget.dataset.ca, sName:e.currentTarget.dataset.sa }))
         }
         that.setData(rdSet(n, 'inclose', true));
         break;
       case 'pa':
         let aval = e.detail.value;
-        if (that.data.reqData[n].aVl[0] == aval[0]) {
-          if (that.data.reqData[n].aVl[1] != aval[1]) { aval[2] = 0; }
+        if (that.data.iFormat[n].aVl[0] == aval[0]) {
+          if (that.data.iFormat[n].aVl[1] != aval[1]) { aval[2] = 0; }
         } else { aval[1] = 0; aval[2] = 0; }
         that.setData(rdSet(n, 'aVl', aval));
         break;
@@ -165,7 +193,7 @@ module.exports = {
 
   i_listsel: function (e) {                         //选择类型
     let n = parseInt(e.currentTarget.id.substring(3))      //数组下标
-    this.setData(vdSet(this.data.reqData[n].gname, Number(e.detail.value)))
+    this.setData(vdSet(this.data.iFormat[n].gname, Number(e.detail.value)))
   },
 
   i_sedate: function (e) {                         //选择开始和结束日期
@@ -175,13 +203,13 @@ module.exports = {
     let rSet = {};
     switch (id) {
       case 'ac':
-        rSet = vdSet(that.data.reqData[n].gname, e.currentTarget.dataset.ei ? [that.data.vData[that.data.reqData[n].gname][0], e.detail.value] : [e.detail.value, that.data.vData[that.data.reqData[n].gname][1]]);
+        rSet = vdSet(that.data.iFormat[n].gname, e.currentTarget.dataset.ei ? [that.data.vData[that.data.iFormat[n].gname][0], e.detail.value] : [e.detail.value, that.data.vData[that.data.iFormat[n].gname][1]]);
         break;
       case 'ds':                             //选择开始日期
-        rSet['reqData[' + n + '].endif'] = false;
+        rSet['iFormat[' + n + '].endif'] = false;
         break;
       case 'de':                           //选择结束日期
-        rSet['reqData[' + n + '].endif'] = true;
+        rSet['iFormat[' + n + '].endif'] = true;
         break;
     }
     that.setData(rSet);
@@ -191,7 +219,7 @@ module.exports = {
     var that = this;
     let n = parseInt(e.currentTarget.id.substring(3));      //数组下标
     var id = e.currentTarget.id.substring(0, 2);
-    let fName = that.data.reqData[n].gname;
+    let fName = that.data.iFormat[n].gname;
     switch (id) {
       case 'sc':
         wx.scanCode({
@@ -210,10 +238,10 @@ module.exports = {
     var that = this;
     let n = parseInt(e.currentTarget.id.substring(3));      //数组下标
     var id = e.currentTarget.id.substring(0, 2);
-    let fName = that.data.reqData[n].gname;
+    let fName = that.data.iFormat[n].gname;
     switch (id) {
       case 'su':                                   //按下载ICON打开输入框
-        that.setData(rdSet(n, 'inclose', !that.data.reqData[n].inclose));
+        that.setData(rdSet(n, 'inclose', !that.data.iFormat[n].inclose));
         break;
       case 'ai':
         that.setData(rdSet(n, 'iValue', e.detail.value));
@@ -231,21 +259,6 @@ module.exports = {
       }
   },
 
-  i_thumb: function (e) {                         //编辑缩略图
-    var that = this;
-    let n = parseInt(e.currentTarget.id.substring(3))      //数组下标
-    wx.chooseImage({
-      count: 1,                                     // 最多可以选择的图片张数，默认9
-      sizeType: ['compressed'],         // original 原图，compressed 压缩图，默认二者都有
-      sourceType: ['album', 'camera'],             // album 从相册选图，camera 使用相机，默认二者都有
-      success: function (restem) {                     // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-        that.setData(vdSet(that.data.reqData[n].gname, restem.tempFilePaths[0]));
-        wx.navigateTo({ url: '/pages/ceimage/ceimage?reqName=' + that.data.reqData[n].gname })
-      },
-      fail: function () { wx.showToast({ title: '选取照片失败！' }) }
-    })
-  },
-
   i_pics: function (e) {                         //选择图片组
     var that = this;
     let n = parseInt(e.currentTarget.id.substring(3))      //数组下标
@@ -254,7 +267,7 @@ module.exports = {
       sizeType: ['compressed'],         // original 原图，compressed 压缩图，默认二者都有
       sourceType: ['album', 'camera'],             // album 从相册选图，camera 使用相机，默认二者都有
       success: function (restem) {                     // 返回选定照片的本地文件路径列表
-        that.setData(vdSet(that.data.reqData[n].gname, restem.tempFilePaths));
+        that.setData(vdSet(that.data.iFormat[n].gname, restem.tempFilePaths));
       },
       fail: function () { wx.showToast({ title: '选取照片失败！' }) }
     })
@@ -271,7 +284,7 @@ module.exports = {
         new AV.File('file-name', {
           blob: { uri: res.tempFilePaths[0], },
         }).save().then(file => {
-          that.setData(vdSet(that.data.reqData[n].gname, file.url()));
+          that.setData(vdSet(that.data.iFormat[n].gname, file.url()));
         }).catch(console.error);
       }
     });
@@ -282,7 +295,7 @@ module.exports = {
     let n = parseInt(e.currentTarget.id.substring(3))      //数组下标
     wx.chooseLocation({
       success: function (res) {
-        QQMapWX.reverseGeocoder({
+        QQMapWX.reverseGeocoder({                    //解析地理位置
           location: { latitude: res.latitude, longitude: res.longitude },
           success: function ({ result: { ad_info, address } }) {
             let setAd = {};
@@ -303,7 +316,7 @@ module.exports = {
       maxDuration: 60,
       camera: 'back',
       success: function (res) {
-        let vdv = vdSet(that.data.reqData[n].gname, res.tempFilePath);
+        let vdv = vdSet(that.data.iFormat[n].gname, res.tempFilePath);
         that.setData(vdv);
       },
       fail: function () { wx.showToast({ title: '选取视频失败！' }) }
@@ -316,12 +329,12 @@ module.exports = {
     var id = e.currentTarget.id.substring(0, 2);
     switch (id) {
       case 'ac':
-        that.setData(rdSet(n, 'inclose', !that.data.reqData[n].inclose));
-        that.setData(vdSet(that.data.reqData[n].gname, ''));
+        that.setData(rdSet(n, 'inclose', !that.data.iFormat[n].inclose));
+        that.setData(vdSet(that.data.iFormat[n].gname, ''));
         break;
       case 'pa':
         let aval = e.detail.value;
-        if (that.data.reqData[n].provalue[0] != aval[0]) { aval[1] = 0; }
+        if (that.data.iFormat[n].provalue[0] != aval[0]) { aval[1] = 0; }
         that.setData(rdSet(n, 'provalue', aval));
         break;
     }
