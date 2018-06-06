@@ -84,6 +84,20 @@
   </view>
 </template>
 
+<template name="i_content">
+  <view hidden="true"><input name="{{gname}}" value="{{c}}"/></view>
+  <view class="weui-cell">
+    <view class="weui-cell__hd">材料(包装)</view>
+    <view class="weui-cell__bd">内含数量</view>
+    <view class="weui-cell__ft">单位</view>
+  </view>
+  <view class="weui-cell" wx:for="{{c}}" wx:key="index" bindtap="i_modalContent">
+    <view class="weui-cell__hd">{{item.material}}</view>
+    <view class="weui-cell__bd">{{item.dOutput}}</view>
+    <view class="weui-cell__ft">{{item.dUnit}}</view>
+  </view>
+</template>
+
 <template name="i_cutImageThumbnail">
   <view class="weui-article__-2" id="ac-{{n}}" bindtap="i_cutImageThumbnail">
     <view hidden="{{c}}">{{p}}:</view>

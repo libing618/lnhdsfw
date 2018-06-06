@@ -23,3 +23,27 @@
     </view>
   </view>
 </template>
+
+<template name="p_modalContent">
+  <view class="modal_box" id="fBack" bindtap="f_modalContent"></view>
+  <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
+    <form bindsubmit="fSubmit">
+      <view class="page__bd_spacing" id="{{targetId}}">
+        <template is="i_sId" data="{{gname:'material', p:'材料(包装)', t:'sId',csc:'idsel',c:content.material}}"></template>
+        <template is="i_dg" data="{{gname:'dOutput', p:'内含数量', t:'dg',csc:'number',c:content.dOutput }}"></template>
+        <template is="i_h4" data="{{gname:'dUnit', p:'单位', t:'dg',c:content.dUnit}}"></template>
+      </view>
+      <view style="padding-bottom:100rpx;"></view>
+      <view class="page__ft weui-footer_fixed-bottom" id="{{dObjectId}}">
+        <button class="weui-btn" style="display:{{enMenu=='none' && uEV ? 'inline-block' : 'none'}}" type="primary" size="mini" formType="submit" id="fSave">提交</button>
+        <button class="weui-btn" style="display:{{enMenu=='none' && targetId=='0' ? 'inline-block' : 'none'}}" type="primary" size="mini" formType="submit" id="fStorage">保存</button>
+        <button class="weui-btn" style="display:{{ enMenu }}" type="warn" size="mini" formType="submit" id="fdeldata">删除</button>
+        <button class="weui-btn" style="display:{{ enMenu }}" type="default" size="mini" formType="submit" id="fupdate">替换</button>
+        <button class="weui-btn" style="display:{{ enMenu }}" type="primary" size="mini" formType="submit" id="fenins">插入</button>
+      </view>
+    </form>
+    <view hidden="{{enIns}}">
+      <template is="i_insdata"></template>
+    </view>
+  </view>
+</template>
