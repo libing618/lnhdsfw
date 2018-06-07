@@ -29,6 +29,31 @@ function fetchUser(roleData) {
     });
   }).catch(console.error);
 };
+function orderData(userId) {                 //读用户购物车和订单表
+  return new AV.Query('xs_cart')
+  .equalTo('user', userId)
+  .include('standard')
+  .limit(1000)
+  .find().then(carts=> {
+    if(carts){
+      let aSum = 0,goods;
+      let goodsList = carts.map( cart=>{
+        goods = cart.get('standard').toJSON();
+        return {goods:goods,quantity:cart.get('quantity'),price:goods.price} ;
+      });
+    } else { return {} } ;
+  }).then(carts=>{
+    return new AV.Query('xs_order')
+    .equalTo('user', userId)
+    .include('standard')
+    .limit(1000)
+    .find().then(orders=> {
+      if (orders){
+        return {carts,orders:orders.map(order=>{ return order.toJSON()})};
+      } else { return {carts,orders:{}} }
+    })
+  }).catch(console.error)
+};
 function checkRole(ouRole,user){
   let crd = false;
   switch (ouRole) {
@@ -141,9 +166,14 @@ loginAndMenu: function (lcUser,roleData) {
     return new Promise((resolve, reject) => {
       if (roleData.user.objectId == '0') {
         openWxLogin(roleData).then(rlgData => {
+          roleData = rlgData;
           resolve(true);
         }).catch((loginErr) => { resolve(false) });  //系统登录失败
       } else {       //用户如已注册并在本机登录过,则有数据缓存，否则进行注册登录
+        orderData(roleData.user.objectId).then(ocdata=>{
+          roleData.carts = ocdata.carts;
+          roleData.orders = ocdata.orders;
+        })
         resolve(true)
       }
     })
