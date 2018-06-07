@@ -32,10 +32,10 @@ Page({
     return new Promise((resolve, reject) => {
       if (nowPages.length==1) {
         rtUrl = '/pages/home/home';
-        let proGoodsUpdate = app.configData.goods.updatedAt;
+        let proGoodsUpdate = app.configData.units.updatedAt;
         initConfig(app.configData).then(icData => {
           app.configData = icData;
-          if (app.configData.goods.updatedAt != proGoodsUpdate) { app.mData.pAt.goods = [new Date(0).toISOString(), new Date(0).toISOString()] };   //店铺签约厂家有变化则重新读商品数据
+          if (app.configData.units.updatedAt != proGoodsUpdate) { app.mData.pAt.goods = [new Date(0).toISOString(), new Date(0).toISOString()] };   //店铺签约厂家有变化则重新读商品数据
           loginAndMenu(AV.User.current(), app.roleData).then(rData => {
             app.roleData = rData;
             if (app.roleData.user.objectId == '0') {

@@ -1,6 +1,6 @@
 const { User,ACL } = require('../../libs/leancloud-storage.js');
 const { openWxLogin } = require('../../libs/util');
-const { readAllData, initConfig, loginAndMenu,initLogStg,setTiringRoom,shareMessage } = require('../../model/initForm.js');
+const { readAllData, initConfig,fetchCargoStock, loginAndMenu,initLogStg,setTiringRoom,shareMessage } = require('../../model/initForm.js');
 const { integration,tabClick } = require('../../model/initupdate');
 var app = getApp()
 Page({
@@ -25,10 +25,10 @@ Page({
     var that = this ;
     return new Promise((resolve, reject) => {
       if (app.configData.path == 'pages/home/home') {         //判断本次登录本页是否首页
-        let proGoodsUpdate = app.configData.goods.updatedAt ;
+        let proGoodsUpdate = app.configData.units.updatedAt ;
         initConfig(app.configData).then(icData=>{    //系统初妈化
           app.configData = icData;
-          if (app.configData.goods.updatedAt != proGoodsUpdate) { app.mData.pAt.goods = [new Date(0).toISOString(), new Date(0).toISOString()] };   //店铺签约厂家有变化则重新读商品数据
+          if (app.configData.units.updatedAt != proGoodsUpdate) { app.mData.pAt.goods = [new Date(0).toISOString(), new Date(0).toISOString()] };   //店铺签约厂家有变化则重新读商品数据
           loginAndMenu(User.current(),app.roleData).then(rData=>{    //用户登录及读菜单权限
             app.roleData = rData;
             if (app.roleData.user.objectId!=='0'){            //用户已注册
@@ -39,7 +39,7 @@ Page({
               app.imLogin();
             }
             initLogStg('home');
-            resolve(true);
+            fetchCargoStock().then(()=>{resolve(true)});
           });
         })
       } else { resolve(false) }
@@ -60,7 +60,20 @@ Page({
     this.setData({
       signuped: app.roleData.user.mobilePhoneVerified,
       tiringRoom: app.configData.tiringRoom
-    })
+    });
+    if (app.roleData.orders && !app.configData.tiringRoom){
+      wx.showTabBarRedDot({index:3});
+      wx.setTabBarBadge({
+        index: 3,
+        text: ''+app.roleData.orders.length
+      })
+    } else {
+      wx.hideTabBarRedDot({index:3});
+      wx.setTabBarBadge({
+        index: 3,
+        text: ''
+      })
+    }
   },
 
   setPage: function(iu){
@@ -84,13 +97,13 @@ Page({
       userControl.setWriteAccess(User.current(),true);
       userControl.setRoleWriteAccess(app.roleData.shopId,true);
       User.current()
-        .set({sjid:app.configData.sjid,channelid:app.configData.channelid,goodsIndex:app.configData.goodsIndex})
+        .set({sjid:app.configData.sjid,channelid:app.configData.channelid,goodsIndex:app.configData.unitsIndex})
         .setACL(userControl)
         .save()
         .then(()=>{
           app.roleData.user.sjid = app.configData.sjid;
           app.roleData.user.channelid = app.configData.channelid;
-          app.roleData.user.goodsIndex = app.configData.goodsIndex;
+          app.roleData.user.goodsIndex = app.configData.unitsIndex;
           app.logData.push([Date.now(), '用户授权' + app.sysinfo.toString()]);                //用户授权时间记入日志
           wx.navigateTo({url:'/pages/signup/signup?type=promoter'});                //进行推广合伙人注册
         })

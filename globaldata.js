@@ -28,8 +28,8 @@ module.exports={
     shopName: '山西乐农汇电子商务有限公司'
   },
   configData:{
-    articles: { cfield: 'afamily', fConfig: [0, 1, 3] },
-    goods: { updatedAt: new Date(0).toISOString() },
+    cargostock: { updatedAt: new Date(0).toISOString() },
+    units: { updatedAt: new Date(0).toISOString() },
     sjid: '59f08fbb67f356004449a4a4',
     channelid: "59f08fbb67f356004449a4a4",
     tiringRoom: false

@@ -6,7 +6,7 @@ var app = getApp();
 Page({
   data:{
     pw: app.sysinfo.pw，
-    tPage: app.configData.goods.fConfig,
+    tPage: app.configData.units.fConfig,
     pageData: app.aData.manufactor,
     idClicked: '0'
   },
@@ -16,7 +16,7 @@ Page({
       updateData(true,'manufactor').then(isupdated=>{
         if (isupdated) {
           that.setData({
-            cPage: app.configData.goods.fConfig,
+            cPage: app.configData.units.fConfig,
             pageData: app.aData.manufactor
           })
         }

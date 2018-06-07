@@ -15,7 +15,7 @@ Page({
       fLength: 2,
       pageCk: 0
     },
-    cPage: [app.configData.goods.fConfig,[]],
+    cPage: [app.configData.units.fConfig,[]],
     pageData: app.aData.manufactor,
     sPages: [{
       pageName: 'tabPanelChange'
@@ -29,10 +29,10 @@ Page({
     if (checkRols(5,app.roleData.user)) {
       updateData(true,'manufactor').then(isupdated=>{
         let mfData = app.mData.manufactor.filter(manufactorId=>{
-          return (app.configData.goods.fConfig.indexOf(manufactorId)<0)
+          return (app.configData.units.fConfig.indexOf(manufactorId)<0)
         })
         that.setData({
-          cPage: [app.configData.goods.fConfig,mfData],
+          cPage: [app.configData.units.fConfig,mfData],
           pageData: app.aData.manufactor
         })
       }).catch(console.error);
@@ -45,12 +45,12 @@ Page({
 
   f_tabPanelChange:function({currentTarget:{id}}){
     var that = this;
-    app.configData.goods.fConfig = that.data.cPage[0];
+    app.configData.units.fConfig = that.data.cPage[0];
     if (id=='fSave'){
-      let scObject = AV.Object.createWithoutData('shopConfig',app.configData.goods.objectId)
+      let scObject = AV.Object.createWithoutData('shopConfig',app.configData.units.objectId)
       scObject.fecth({keys:'fConfig'}).then(fcdata=>{
         let lcfConfig = fcdata.get('fConfig');
-        if(lcfConfig.toString()!=app.configData.goods.fConfig.toString()){
+        if(lcfConfig.toString()!=app.configData.units.fConfig.toString()){
           scObject.set('fConfig',that.data.cPage[0]).save().then(()=>{
             new AV.Query('distributor').equalTo('unitId',app.roleData.shopId).ascending('updatedAt').find().then(channel=>{
               if (channel) {

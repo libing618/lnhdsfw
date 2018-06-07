@@ -54,6 +54,25 @@ function orderData(userId) {                 //读用户购物车和订单表
     })
   }).catch(console.error)
 };
+function fetchCargoStock() {    //同步成品库存数据
+  return new Promise((resolve, reject) => {
+    var reqCloud = 'select * from cargostock where unitId in ' app.configData.units.reqUnits;                                      //进行数据库初始化操作
+    reqCloud+='and updatedAt>date("'+app.configData.cargostock.updatedAt+'") ';          //查询本地最新时间后修改的记录
+    reqCloud+='limit 1000 ';                      //取最大数量
+    reqCloud+='order by -updatedAt';           //按更新时间降序排列
+    new AV.Query.doCloudQuery(reqCloud).then(({results}) => {
+      if (results) {
+        app.configData.cargostock.updatedAt = cqRes.results[0].updatedAt.toISOString(); //更新本地最后更新时间
+        results.forEach(cStock=>{
+          app.configData.cargostock[cStock.id] = [cStock.get('cargoStock'),cStock.get('canSupply')]; //库存,可供销售
+        });
+        resolve(fetchCargoStock())
+      } else { resolve(false) };               //数据更新状态
+    });
+  }).catch(error => {
+    if (!app.netState) { wx.showToast({ title: '请检查网络！' }) }
+  });
+};
 function checkRole(ouRole,user){
   let crd = false;
   switch (ouRole) {
@@ -87,6 +106,8 @@ function exitPage(){
 };
 
 module.exports = {
+orderData: orderData,
+fetchCargoStock: fetchCargoStock,
 checkRole: checkRole,
 setTiringRoom: function(goTiringRoom){
   if (goTiringRoom && typeof goTiringRoom == 'boolean') {
@@ -146,6 +167,11 @@ initConfig: function(configData) {
         cData = conData.toJSON();
         configData[cData.cName] = { objectId:cData.objectId,cfield: cData.cfield, fConfig: cData.fConfig, updatedAt: cData.updatedAt }
       });
+      configData.units.reqUnits = '( ';
+      let fcLength = configData.units.fConfig.length-1;
+      for(let i=0;i<=fcLength;i++){
+        configData.units.reqUnits +=  '"'+configData.units.fConfig[i] + (i == fcLength ? '") ' : '",')
+      };
       return new AV.Query('_User').select(['goodsIndex','channelid']).get(configData.sjid);
     }).then(sjData => {
       if (sjData.get('goodsIndex')) { configData.goodsIndex = sjData.get('goodsIndex') };
@@ -269,13 +295,7 @@ readAllData: function (isDown, pNo) {    //更新页面显示数据,isDown下拉
     } else {
       updAt = app.mData.pAt[pNo]
     }
-    reqCloud += app.configData[pNo].cfield + ' in (';
-    let fConfig = app.configData[pNo].fConfig;
-    let dataIsInt = typeof fConfig[0] == 'number';
-    let fcLength = fConfig.length-1;
-    for(let i=0;i<=fcLength;i++){
-      reqCloud += dataIsInt ? ( fConfig[i] + (i == fcLength ? ') ' : ',') ) : ( '"'+fConfig[i] + (i == fcLength ? '") ' : '",') )
-    };
+    reqCloud += 'unitId in ' + app.configData.units.reqUnits;
     umdata = app.mData[pNo] || [];
     if (isDown) {
       reqCloud+='and updatedAt>date("'+updAt[1]+'") ';          //查询本地最新时间后修改的记录
