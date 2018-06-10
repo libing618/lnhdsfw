@@ -38,8 +38,8 @@ Page({
               };
               app.imLogin();
             }
-            initLogStg('home');
-            fetchCargoStock().then(()=>{resolve(true)});
+
+            resolve(true);
           });
         })
       } else { resolve(false) }
@@ -52,6 +52,7 @@ Page({
           pageData: app.aData.goods
         });
       })
+      initLogStg('home');
       if (firstVer) { setTiringRoom(app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom);}
     }).catch(console.error)
   },
@@ -61,19 +62,7 @@ Page({
       signuped: app.roleData.user.mobilePhoneVerified,
       tiringRoom: app.configData.tiringRoom
     });
-    if (app.roleData.orders && !app.configData.tiringRoom){
-      wx.showTabBarRedDot({index:3});
-      wx.setTabBarBadge({
-        index: 3,
-        text: ''+app.roleData.orders.length
-      })
-    } else {
-      wx.hideTabBarRedDot({index:3});
-      wx.setTabBarBadge({
-        index: 3,
-        text: ''
-      })
-    }
+    if (app.roleData.orders || app.roleData.carts){fetchCargoStock()}
   },
 
   setPage: function(iu){

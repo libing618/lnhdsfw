@@ -1,5 +1,4 @@
 const AV = require('../libs/leancloud-storage.js');
-const procedureclass = require('procedureclass.js');
 const initTime = new Date(0).toISOString();
 var app = getApp();
 function isAllData(cName){
@@ -22,7 +21,7 @@ function appDataExist(dKey0, dKey1) {              //检查app.aData是否存在
 function updateData(isDown, pNo, uId) {    //更新页面显示数据,isDown下拉刷新,pNo类定义序号, uId单位Id
   return new Promise((resolve, reject) => {
     let isAll = isAllData(pNo);            //是否读所有数据
-    let inFamily = typeof procedureclass[pNo].afamily != 'undefined';            //是否有分类数组
+    let inFamily = typeof app.fData[pNo].afamily != 'undefined';            //是否有分类数组
     var umdata = [], updAt;
     var readProcedure = new AV.Query(pNo);                                      //进行数据库初始化操作
     if (isAll) {
@@ -114,6 +113,7 @@ integration: function(masterClass, slaveClass, unitId) {    //整合选择数组
         if (notEnd) {
           return allslave();
         } else {
+          let masterArr = [];
           app.mData[masterClass][unitId].forEach(masterId => {
             if (typeof app.aData[masterClass][masterId] != 'undefined') {
               app.aData[masterClass][masterId][slaveClass] = app.mData[slaveClass][unitId].filter(slaveId => { return app.aData[slaveClass][slaveId][masterClass] == masterId });
@@ -128,10 +128,10 @@ integration: function(masterClass, slaveClass, unitId) {    //整合选择数组
 
 familySel: function(pNo){              //数据表有分类控制的返回分类长度和选择记录
   let psData = {};
-  if (typeof procedureclass[pNo].afamily != 'undefined') {
-    psData.fLength = procedureclass[pNo].afamily.length;
+  if (typeof app.fData[pNo].afamily != 'undefined') {
+    psData.fLength = app.fData[pNo].afamily.length;
     psData.pageCk = app.mData['pCk'+pNo];
-    psData.tabs = procedureclass[pNo].afamily;
+    psData.tabs = app.fData[pNo].afamily;
   };
   return psData;
 }

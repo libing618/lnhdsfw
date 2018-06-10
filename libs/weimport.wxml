@@ -99,8 +99,22 @@
   }
 </wxs>
   <view class="weui-cell">{{p}}:</view>
-  <view class="weui-cells">
-    <block wx:for="{{c}}" wx:key="{{index}}" wx:for-item="specsId">
+  <view wx:if="{{c==0}}" class="weui-cells" hover-class="weui-cell_active" id="goods" bingtap="f_modalFieldView">
+    <block wx:for="{{droneId}}" wx:key="{{index}}" wx:for-item="specsId">
+      <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active" id="{{specsId}}" data-pNo="{{gname}}" bingtap="f_modalFieldView">
+        <view class="weui-media-box__hd_in-appmsg">
+          <image class="weui-media-box__thumb" src="{{master[specsId].thumbnail}}" background-size="cover"></image>
+        </view>
+        <view wx:if="{{slave[specsId] && master[specsId]}}"class="weui-media-box__bd_in-appmsg">
+          <view class="weui-media-box__title">{{slave[specsId].uName}}/{{master[specsId].package}}份装/{{master[specsId].price}}元</view>
+          <view class="weui-media-box__desc">{{master[specsId].title}}</view>
+          <view class="weui-media-box__desc">已售{{sstock.scale(slave[specsId],master[specsId].package)}},库存{{sstock.csupply(slave[specsId],maste[specsId].package)}}</view>
+        </view>
+      </view>
+    </block>
+  </view>
+  <view wx:if="{{c==1}}" class="weui-cells" >
+    <block wx:for="{{droneId}}" wx:key="{{index}}" wx:for-item="specsId">
       <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active" id="{{specsId}}" data-pNo="{{gname}}" bingtap="f_modalFieldView">
         <view class="weui-media-box__hd_in-appmsg">
           <image class="weui-media-box__thumb" src="{{master[specsId].thumbnail}}" background-size="cover"></image>

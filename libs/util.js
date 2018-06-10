@@ -18,14 +18,13 @@ openWxLogin: function(roleData) {            //注册登录（本机登录状态
                   withCredentials: true,
                   success: function (wxuserinfo) {
                     if (wxuserinfo) {
-                      AV.Cloud.run('wxLogin' + wxappNumber, { code: wxlogined.code, encryptedData: wxuserinfo.encryptedData, iv: wxuserinfo.iv }).then(function (wxuid) {
-                        let signuser = {};
-                        signuser['uid'+ wxappNumber] = wxuid.oId;
-                        AV.User.loginWithAuthDataAndUnionId(signuser,'weapp_union', wxuid.uId, {
-                          unionIdPlatform: 'weixin', // 指定为 weixin 即可通过 unionid 与其他 weixin 平台的帐号打通
-                          asMainAccount: true,
-                        }).then((statuswx) => {    //用户在云端注册登录
-                          if (statuswx.createdAt != statuswx.updatedAt) {
+                      AV.Cloud.run('wxLogin' + wxappNumber, { code: wxlogined.code, encryptedData: wxuserinfo.encryptedData, iv: wxuserinfo.iv }).then(wxuid=>{
+                        AV.User.loginWithAuthDataAndUnionId(
+                          { openid: wxuid.oId,access_token: wxuid.session, expires_in: wxappNumber},
+                          'weixin', wxuid.uId,
+                          { unionIdPlatform: 'weixin',asMainAccount: true}
+                        ).then((statuswx) => {    //用户在云端注册登录
+                          if (statuswx.nickName && statuswx['wxapp'+wxappNumber]) {
                             roleData.user = statuswx.toJSON();
                             resolve(roleData);                        //客户已注册在本机初次登录成功
                           } else {                         //客户在本机授权登录则保存信息
@@ -52,7 +51,6 @@ openWxLogin: function(roleData) {            //注册登录（本机登录状态
     })
   });
 },
-
 readShowFormat: function(req, vData) {
   var unitId = vData.unitId;
   return new Promise((resolve, reject) => {
@@ -81,26 +79,31 @@ readShowFormat: function(req, vData) {
     })
     setPromise.forEach(nPromise=> {promArr.push(updateData(true, nPromise, unitId))})
     return Promise.all(promArr).then(()=>{
-      for (let i = 0; i < vFormat.length; i++) {
-        switch (vFormat[i].t) {
+      vFormat.forEach((vF,i,vFormat)=> {
+        switch (vF.t) {
           case 'sObject':                    //对象选择字段
-            if (vFormat[i].gname != 'goodstype') { vFormat[i].slave = app.aData[vFormat[i].gname][vData[vFormat[i].gname]]; };
+            if (vF.gname != 'goodstype') {
+              vFormat[i].slave = app.aData[vF.gname][vData[vF.gname]];
+            };
             break;
           case 'specsel':                    //规格选择字段
             vFormat[i].master = {};
             vFormat[i].slave = {};
+            vData.specs = app.mData.specs[unitId].filter(specsId=>{
+              return app.aData.specs[specsId].goods=vData.objectId});
             vData.specs.forEach(specsId => {
               vFormat[i].master[specsId] = app.aData.specs[specsId];
-              vFormat[i].slave[specsId] = app.aData.cargo[app.aData.specs[specsId].cargo];
+              vFormat[i].slave[specsId] = app.aData.cargo[app.aData.specs[specsId].cargo[0]];
             });
+            vFormat[i].droneId = vData.specs;
             break;
           case 'sId':
-            vFormat[i].thumbnail = app.aData[vFormat[i].gname][vData[vFormat[i].gname]].thumbnail;
-            vFormat[i].uName = app.aData[vFormat[i].gname][vData[vFormat[i].gname]].uName;
-            vFormat[i].title = app.aData[vFormat[i].gname][vData[vFormat[i].gname]].title;
+            vFormat[i].thumbnail = app.aData[vF.gname][vData[vF.gname]].thumbnail;
+            vFormat[i].uName = app.aData[vF.gname][vData[vF.gname]].uName;
+            vFormat[i].title = app.aData[vF.gname][vData[vF.gname]].title;
             break;
         }
-      }
+      });
       resolve(vFormat);
     });
   }).catch(console.error);

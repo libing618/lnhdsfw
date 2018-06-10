@@ -36,11 +36,7 @@ function orderData(userId) {                 //读用户购物车和订单表
   .limit(1000)
   .find().then(carts=> {
     if(carts){
-      let aSum = 0,goods;
-      let goodsList = carts.map( cart=>{
-        goods = cart.get('standard').toJSON();
-        return {goods:goods,quantity:cart.get('quantity'),price:goods.price} ;
-      });
+      return carts.map( cart=>{ return cart.toJSON() } );
     } else { return {} } ;
   }).then(carts=>{
     return new AV.Query('xs_order')
@@ -53,25 +49,6 @@ function orderData(userId) {                 //读用户购物车和订单表
       } else { return {carts,orders:{}} }
     })
   }).catch(console.error)
-};
-function fetchCargoStock() {    //同步成品库存数据
-  return new Promise((resolve, reject) => {
-    var reqCloud = 'select * from cargostock where unitId in ' app.configData.units.reqUnits;                                      //进行数据库初始化操作
-    reqCloud+='and updatedAt>date("'+app.configData.cargostock.updatedAt+'") ';          //查询本地最新时间后修改的记录
-    reqCloud+='limit 1000 ';                      //取最大数量
-    reqCloud+='order by -updatedAt';           //按更新时间降序排列
-    new AV.Query.doCloudQuery(reqCloud).then(({results}) => {
-      if (results) {
-        app.configData.cargostock.updatedAt = cqRes.results[0].updatedAt.toISOString(); //更新本地最后更新时间
-        results.forEach(cStock=>{
-          app.configData.cargostock[cStock.id] = [cStock.get('cargoStock'),cStock.get('canSupply')]; //库存,可供销售
-        });
-        resolve(fetchCargoStock())
-      } else { resolve(false) };               //数据更新状态
-    });
-  }).catch(error => {
-    if (!app.netState) { wx.showToast({ title: '请检查网络！' }) }
-  });
 };
 function checkRole(ouRole,user){
   let crd = false;
@@ -107,8 +84,43 @@ function exitPage(){
 
 module.exports = {
 orderData: orderData,
-fetchCargoStock: fetchCargoStock,
 checkRole: checkRole,
+
+fetchCargoStock: function(pNo) {    //同步购物车和订单中的成品库存数据
+  let fCargo = new Set(),fcupdated = false;
+  if (app.roleData.orders){
+    app.roleData.orders.forEach(order=>{order.specs.forEach(spec=>{ fCargo.add(spec.cargo) }) })
+  };
+  if (app.roleData.carts){
+    app.roleData.carts.forEach(cart=>{cart.specs.forEach(spec=>{ fCargo.add(spec.cargo) }) })
+  };
+  let fCargoStock = (cargoId) =>{
+    return AV.Object.createWithoutData('cargo',cargoId).fetch().then(cStock=>{
+      if (app.aData.cargo[cStock.id]) {
+        if (cStock.get('canSupply')!=app.aData.cargo[cStock.id].canSupply){fcupdated=true}
+      } else {
+        fcupdated=true;
+      }
+      app.aData.cargo[cStock.id] = cStock.toJSON();
+    });
+  };
+  return Promise.all( fCargo.map(fcgId=>{return fCargoStock(fcgId)}) ).then(() => {
+    if (fcupdated && !app.configData.tiringRoom){
+      wx.showTabBarRedDot({index:2});
+      wx.setTabBarBadge({
+        index: 2,
+        text: ''+app.roleData.carts.length
+      })
+    } else {
+      wx.hideTabBarRedDot({index:2});
+      wx.setTabBarBadge({
+        index: 2,
+        text: ''
+      })
+    }
+  }).catch(console.error)
+},
+
 setTiringRoom: function(goTiringRoom){
   if (goTiringRoom && typeof goTiringRoom == 'boolean') {
     wx.setTabBarItem({
@@ -234,6 +246,7 @@ checkRols: function(ouRole,user){
 
 initLogStg: (pName)=>{
   let initlog = {};
+  let mReqACL = new AV.ACL();
   initlog.startTime = new Date();
   initlog.broweObject = pName;          //登录页名称
   initlog.promoter = app.configData.sjid;
@@ -258,17 +271,16 @@ initLogStg: (pName)=>{
       };
     } else {                               //已注册用户
       initlog.userId=app.roleData.user.objectId;
-      let mReqACL = new AV.ACL();
       mReqACL.setReadAccess(app.roleData.user.objectId,true);
-      mReqACL.setReadAccess(app.configData.sjid,true);
-      mReqACL.setReadAccess(app.configData.channelid,true);
       mReqACL.setWriteAccess(app.roleData.user.objectId,true);
-      mReqACL.setRoleReadAccess(app.roleData.shopId,true);
-      app.configData.reqRole = mReqACL;
       initlog.pModel = 'signupUser';
       resolve(false)
     }
   }).then(nBrower=>{
+    mReqACL.setReadAccess(app.configData.sjid, true);
+    mReqACL.setReadAccess(app.configData.channelid, true);
+    mReqACL.setRoleReadAccess(app.roleData.shopId, true);
+    app.configData.reqRole = mReqACL;
     if (nBrower){
       app.configData.browser = app.sysinfo.brand + app.sysinfo.model + app.roleData.ipAddress;
       initlog.userId = app.configData.browser

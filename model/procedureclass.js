@@ -84,6 +84,7 @@ module.exports = {
     {gname:"product", p:'产品', t:"sId", csc:"idsel" },
     {gname:"title", p:'成品简介',t:"h4" },
     {gname:"thumbnail", p:'图片简介',t: "thumb" },
+    {gname:"content", p:'内含物', t:"content", csc:"arrsel" },
     {gname:"s_product", p:'外观尺寸重量', t:"arrplus", csc:"arrsel" },
     {gname:"retail_price", p:'零售价', t:"dg",itype:"digit",csc:"digit" }
   ],
@@ -96,7 +97,7 @@ module.exports = {
     {gname:"title", p:'简介',t:"h2" },
     {gname:"tvidio", p:'',t: "vidio" },
     {gname:"desc", p:'',t:"p" },
-    {gname:"specs", p:'规格',t:"specsel",csc:"specsel" },
+    {gname:"specstype", p:'规格',t:"specsel",csc:"specsel" },
     {gname:"details", p:'详情',t:"eDetail" }
   ],
   "pBewrite": "产品条线提出商品设置或修改申请，由产品条线负责人进行审批。"

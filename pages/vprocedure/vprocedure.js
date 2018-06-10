@@ -32,12 +32,12 @@ Page({
           loginAndMenu(AV.User.current(), app.roleData).then(rData => {
             app.roleData = rData;
             initLogStg(options.pNo);
-            resolve(true);
+            resolve( fetchCargoStock(that.data.pNo) );
           });
         })
-      } else { resolve(false) }
+      } else { resolve( fetchCargoStock(that.data.pNo) ) }
     }).then(() => {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {     //检查并同步数据
         if (app.aData[that.data.pNo][options.artId]){
           resolve(true)
         } else {

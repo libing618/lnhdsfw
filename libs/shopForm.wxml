@@ -2,15 +2,15 @@
 <import src="weimport.wxml" />
 
 <template name="p_goodsOrder">
-  <view class="modal_box" id="fBack" bindtap="i_shareOrder"></view>
+  <view class="modal_box" id="fBack" bindtap="i_goodsOrder"></view>
   <form bindsubmit="i_modalEditAddress">
     <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
-      <view class="page__title">服务预约(每次一元,保留半小时)</view>
+      <view class="page__title">{{vData.uName}}</view>
       <view class="close_icon" id="fBack" bindtap="i_shareOrder">×</view>
       <view class="page__ac_spacing">
         <view class="drawer_attr_content">
           <block wx:for="{{vFormat}}" wx:key="index">
-            <template is="s_{{item.t}}" data="{{...item, c:pageData[targetId][item.gname]}}"/>
+            <template is="s_{{item.t}}" data="{{...item, c:vData[item.gname]}}"/>
           </block>
         </view>
       </view>

@@ -255,8 +255,8 @@ App({
         }
       })
     };
-    let browseLog = wx.getStorageSync('browseLog');
-    if (browseLog){
+    let browseLog = wx.getStorageSync('browseLog') || [];
+    if (browseLog.length>0){
       let browse = AV.Object.extend('browseLog');
       let browseArr = browseLog.map(broweData=>{
         let nBrowse = new browse

@@ -28,7 +28,6 @@ module.exports={
     shopName: '山西乐农汇电子商务有限公司'
   },
   configData:{
-    cargostock: { updatedAt: new Date(0).toISOString() },
     units: { updatedAt: new Date(0).toISOString() },
     sjid: '59f08fbb67f356004449a4a4',
     channelid: "59f08fbb67f356004449a4a4",
