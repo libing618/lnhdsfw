@@ -3,23 +3,15 @@
 
 <template name="p_goodsOrder">
   <view class="modal_box" id="fBack" bindtap="i_goodsOrder"></view>
-  <form bindsubmit="i_modalEditAddress">
+  <form bindsubmit="i_goodsOrder">
     <view animation="{{animationData}}" class="modal_attr_box" wx:if="{{showModalBox}}">
       <view class="page__title">{{vData.uName}}</view>
-      <view class="close_icon" id="fBack" bindtap="i_shareOrder">×</view>
+      <view class="close_icon" id="fBack" bindtap="i_goodsOrder">×</view>
       <view class="page__ac_spacing">
-        <view class="drawer_attr_content">
+        <view class="drawer_attr_content" wx:for="{{mPage}}" wx:key="index" wx:for-item="specsId">
           <block wx:for="{{vFormat}}" wx:key="index">
-            <template is="s_{{item.t}}" data="{{...item, c:vData[item.gname]}}"/>
+            <template is="s_{{item.t}}" data="{{...item, c:pageData[specsId][item.gname]}}"/>
           </block>
-        </view>
-      </view>
-      <view class="weui-cell">
-        <view class="weui-cell__hd">预约时间:</view>
-        <input class="weui-cell__bd" name="ordertime" value="{{c}}"/>
-        <view class="weui-cell__ft">
-          <picker mode="date" value="{{c}}" start="2015-09-01" id="pa-{{n}}" bindchange="p_shareOrder">
-          </picker>
         </view>
       </view>
       <view class="weui-cell weui-cell_input">
@@ -29,10 +21,20 @@
         <view class="weui-cell__bd">
           <input name="orderquantity" value="{{c}}" class="weui-input" placeholder="请输入{{p}}" />
         </view>
+        <view class="weui-cell__ft">{{amount}}元</view>
       </view>
       <view class="page__ft weui-footer_fixed-bottom">
-        <button class="weui-btn" formType="submit" size="mini" id="fSave">确认预约</button>
-        <button class="weui-btn" type="primary" size="mini" bindtap="i_shareOrder" id="fBack">返回</button>
+        <navigator class="button-group" url="/pages/rcustomer/rcustomer">
+          <image src="../../images/icon_phonelogin.png" class="button-image" />
+          <text class="button-text">联系客服</text>
+        </navigator>
+        <navigator class="button-group" url="/pages/shops/cart/cart">
+          <image src="../../images/icon_cart.png" class="button-image" />
+          <text class="button-text">购物车</text>
+        </navigator>
+        <button class="weui-btn" formType="submit" size="mini" id="fBuy">确定购买</button>
+        <button class="weui-btn" formType="submit" size="mini" id="fGive">确定赠送</button>
+        <button class="weui-btn" type="primary" size="mini" bindtap="i_goodsOrder" id="fBack">返回</button>
       </view>
     </view>
   </form>

@@ -1,5 +1,7 @@
 <import src="../../libs/weimport.wxml" />
 <import src="../../libs/wedetail.wxml" />
+<import src="../../libs/wepage.wxml" />
+<import src="../../libs/shopForm.wxml" />
 <view class="page">
   <view class="navigationBar" style="padding-top:{{pw.statusBar}}px;">
     <view class="navigationBar__column" style="height:{{pw.capsule}}px;">
@@ -15,43 +17,8 @@
         <template is="s_{{item.t}}" data="{{...item, c:vData[item.gname]}}"></template>
       </block>
     </view>
-    <view wx:if="{{pNo=='goods'}}">
-      <view class="page__ft weui-footer_fixed-bottom">
-        <navigator class="button-group" url="/pages/rcustomer/rcustomer">
-          <image src="../../../../images/icon_phonelogin.png" class="button-image" />
-          <text class="button-text">联系客服</text>
-        </navigator>
-        <navigator class="button-group" url="/pages/shops/cart/cart">
-          <image src="../../../../images/icon_cart.png" class="button-image" />
-          <text class="button-text">购物车</text>
-        </navigator>
-        <button class="buy" bindtap="showModal">购买</button>
-        <button class="give" bindtap="giveshowModal">赠送</button>
-      </view>
-      <view wx:if="{{buyshowModalStatus}}" class="buy_screen">
-        <view class="buy_attr_box">
-          <view class="close_icon" bindtap="hideModal">×</view>
-          <view class="buy_attr_content" >
-            <view class="buy_amount">{{amount}}元</view>
-            <view class='buy_standard' wx:for="{{standard}}" bindtap="buyprice" wx:key="" data-index="{{index}}">
-              <scroll-view class="{{highlight[index]}}">{{item.standard}}</scroll-view>
-            </view>
-          </view>
-          <button class="buy_btn" bindtap="buy">确定购买</button>
-        </view>
-      </view>
-      <view wx:if="{{giveshowModalStatus}}" class="drawer_screen">
-        <view class="drawer_attr_box">
-          <view class="close_icon" bindtap="hideModal">×</view>
-          <view class="drawer_attr_content" >
-            <view class="drawer_amount">{{amount}}元</view>
-            <view class='drawer_standard' wx:for="{{standard}}" bindtap="giveprice" wx:key="" data-index="{{index}}">
-              <scroll-view class="{{highlight[index]}}">{{item.standard}}</scroll-view>
-            </view>
-          </view>
-          <button class="drawer_btn" bindtap="give">确定赠送</button>
-        </view>
-      </view>
+    <view wx:if="{{pNo=='goods' && sPages.length>1}}">
+      <template is="p_{{sPages[sPages.length-1].pageName}}" data="{{showModalBox,animationData,...sPages[sPages.length-1]}}"/>
     </view>
     <view wx:else>
       <view wx:if="{{uEV}}" class="page__ft weui-footer_fixed-bottom">

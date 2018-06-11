@@ -88,13 +88,19 @@ readShowFormat: function(req, vData) {
             break;
           case 'specsel':                    //规格选择字段
             vFormat[i].master = {};
-            vFormat[i].slave = {};
             vData.specs = app.mData.specs[unitId].filter(specsId=>{
               return app.aData.specs[specsId].goods=vData.objectId});
             vData.specs.forEach(specsId => {
+              app.aData.specs[specsId].canSupply = parseInt(app.aData.cargo[app.aData.specs[specsId].cargo[0]].canSupply/app.aData.specs[specsId].package);
               vFormat[i].master[specsId] = app.aData.specs[specsId];
-              vFormat[i].slave[specsId] = app.aData.cargo[app.aData.specs[specsId].cargo[0]];
+              vFormat[i].master[specsId].cargo = app.aData.cargo[app.aData.specs[specsId].cargo[0]];
             });
+            if (vData[vF.gname]==0){
+              vFormat[i].minPrice = 0;
+              vFormat[i].maxPrice = 0;
+            } else {
+
+            }
             vFormat[i].droneId = vData.specs;
             break;
           case 'sId':

@@ -393,6 +393,57 @@ module.exports = {
         };
         break;
     }
-  }
+  },
 
+  i_goodsOrder: function ({ currentTarget:{id,dataset} }) {            //单项选择面板弹出页
+    var that = this;
+    let hidePage = {};
+    switch (id) {
+      case 'fBack':                  //返回
+        downModal(that,hidePage);
+        break;
+      case 'fBuy':                  //确定购买
+        let nowPage = that.data.sPages[that.data.sPages.length-1];
+        if (that.data.selectd<0){
+          hidePage['vData.'+nowPage.gname] =  { pNo: nowPage.pNo, ...that.data.pageData[that.data.idClicked] };
+        } else {
+          hidePage['vData.'+nowPage.gname+'['+that.data.selectd+']'] =  { pNo: nowPage.pNo, ...that.data.pageData[that.data.idClicked] };
+        }
+        downModal(that,hidePage);
+        break;
+      case 'fGive':                  //确定赠送
+        let nowPage = that.data.sPages[that.data.sPages.length-1];
+        if (that.data.selectd<0){
+          hidePage['vData.'+nowPage.gname] =  { pNo: nowPage.pNo, ...that.data.pageData[that.data.idClicked] };
+        } else {
+          hidePage['vData.'+nowPage.gname+'['+that.data.selectd+']'] =  { pNo: nowPage.pNo, ...that.data.pageData[that.data.idClicked] };
+        }
+        downModal(that,hidePage);
+        break;
+      case 'goods':                  //弹出套餐购买框
+        let nowPage = that.data.sPages[that.data.sPages.length-1];
+        if (that.data.selectd<0){
+          hidePage['vData.'+nowPage.gname] =  { pNo: nowPage.pNo, ...that.data.pageData[that.data.idClicked] };
+        } else {
+          hidePage['vData.'+nowPage.gname+'['+that.data.selectd+']'] =  { pNo: nowPage.pNo, ...that.data.pageData[that.data.idClicked] };
+        }
+        downModal(that,hidePage);
+        break;
+      default:                                    //弹出单品购买框
+        if (that.data.vFormat.specsel.master[id].canSupply>0){
+          let newPage = {
+            pageName: 'goodsOrder',
+            vData: that.data.vData,
+            vFormat: app.fData.specs,
+            mPage: [id],
+            pageData: [0, 0]
+          };
+          newPage.n = parseInt(id.substring(3))      //数组下标;
+          that.data.sPages.push(newPage);
+          that.setData({sPages: that.data.sPages});
+          popModal(that);
+        }
+        break;
+    }
+  }
 }

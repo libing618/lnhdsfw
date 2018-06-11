@@ -11,7 +11,9 @@ Page({
     pw: app.sysinfo.pw,
     sPages: ['viewFields'],
     vData: {},
-    vFormat: []
+    vFormat: [],
+    showModalBox: false,
+    animationData: {}
   },
   inFamily:false,
   startTime: new Date(),
@@ -32,10 +34,10 @@ Page({
           loginAndMenu(AV.User.current(), app.roleData).then(rData => {
             app.roleData = rData;
             initLogStg(options.pNo);
-            resolve( fetchCargoStock(that.data.pNo) );
+            resolve( true );
           });
         })
-      } else { resolve( fetchCargoStock(that.data.pNo) ) }
+      } else { resolve(false) ) }
     }).then(() => {
       return new Promise((resolve, reject) => {     //检查并同步数据
         if (app.aData[that.data.pNo][options.artId]){
@@ -51,7 +53,7 @@ Page({
       that.data.vData = app.aData[that.data.pNo][options.artId];
       readShowFormat(app.fData[that.data.pNo].pSuccess, that.data.vData).then(({vFormat,fModal})=>{
         that.data.vFormat=vFormat;
-        if (fModal){that.f_modalFieldView = require('../../model/controlModal').f_modalFieldView}
+        if (fModal){that.i_goodsOrder = require('../../model/controlModal').i_goodsOrder}
         that.data.enUpdate = typeof that.data.vData.shopId!='undefined' && typeof app.fData[that.data.pNo].suRoles!='undefined';  //有本店信息且流程有上级审批的才允许修改
         that.setData(that.data);
       });

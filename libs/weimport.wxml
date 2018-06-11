@@ -99,9 +99,9 @@
   }
 </wxs>
   <view class="weui-cell">{{p}}:</view>
-  <view wx:if="{{c==0}}" class="weui-cells" hover-class="weui-cell_active" id="goods" bingtap="f_modalFieldView">
+  <view wx:if="{{c==0}}" class="weui-cells">
     <block wx:for="{{droneId}}" wx:key="{{index}}" wx:for-item="specsId">
-      <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active" id="{{specsId}}" data-pNo="{{gname}}" bingtap="f_modalFieldView">
+      <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active" id="{{specsId}}" data-pNo="{{gname}}" bingtap="i_goodsOrder">
         <view class="weui-media-box__hd_in-appmsg">
           <image class="weui-media-box__thumb" src="{{master[specsId].thumbnail}}" background-size="cover"></image>
         </view>
@@ -113,9 +113,9 @@
       </view>
     </block>
   </view>
-  <view wx:if="{{c==1}}" class="weui-cells" >
+  <view wx:if="{{c==1}}" class="weui-cells"  hover-class="weui-cell_active" id="goods" bingtap="i_goodsOrder">
     <block wx:for="{{droneId}}" wx:key="{{index}}" wx:for-item="specsId">
-      <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active" id="{{specsId}}" data-pNo="{{gname}}" bingtap="f_modalFieldView">
+      <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
         <view class="weui-media-box__hd_in-appmsg">
           <image class="weui-media-box__thumb" src="{{master[specsId].thumbnail}}" background-size="cover"></image>
         </view>
