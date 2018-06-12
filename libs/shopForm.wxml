@@ -16,12 +16,16 @@
       </view>
       <view class="weui-cell weui-cell_input">
         <view class="weui-cell__hd">
-            <view class="weui-label">预计数量:</view>
+          <text id="oMinus" catchtap="i_goodsOrder">-</text>
+          <view class="weui-label">数量:</view>
         </view>
         <view class="weui-cell__bd">
-          <input name="orderquantity" value="{{c}}" class="weui-input" placeholder="请输入{{p}}" />
+          <input type="number" name="orderquantity" value="{{quantity}}" class="weui-input" placeholder="请输入{{p}}" />
+          <input disabled="{{false}}" type="number" name="orderamount" value="{{quantity*price}}" class="weui-input" />
         </view>
-        <view class="weui-cell__ft">{{amount}}元</view>
+        <view class="weui-cell__ft">
+          <text id="oPlus" catchtap="i_goodsOrder">-</text>
+        </view>
       </view>
       <view class="page__ft weui-footer_fixed-bottom">
         <navigator class="button-group" url="/pages/rcustomer/rcustomer">

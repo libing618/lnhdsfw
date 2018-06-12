@@ -86,34 +86,22 @@
 </template>
 
 <template name="s_specsel">
-<wxs module="sstock">
-  module.exports = {
-    scale: function(spec,pkn){
-      var sc = (spec.payment+spec.delivering+spec.delivered)/pkn;
-      return sc.toFixed(0)
-    },
-    csupply: function(spec,pkn){
-      var cs = spec.canSupply/pkn-0.5;
-      return cs.toFixed(0)
-    }
-  }
-</wxs>
-  <view class="weui-cell">{{p}}:</view>
+  <view class="weui-cell">{{showprice}}</view>
   <view wx:if="{{c==0}}" class="weui-cells">
     <block wx:for="{{droneId}}" wx:key="{{index}}" wx:for-item="specsId">
-      <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active" id="{{specsId}}" data-pNo="{{gname}}" bingtap="i_goodsOrder">
+      <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active" id="{{specsId}}" data-n="{{n}}" bingtap="i_goodsOrder">
         <view class="weui-media-box__hd_in-appmsg">
           <image class="weui-media-box__thumb" src="{{master[specsId].thumbnail}}" background-size="cover"></image>
         </view>
         <view wx:if="{{slave[specsId] && master[specsId]}}"class="weui-media-box__bd_in-appmsg">
           <view class="weui-media-box__title">{{slave[specsId].uName}}/{{master[specsId].package}}份装/{{master[specsId].price}}元</view>
           <view class="weui-media-box__desc">{{master[specsId].title}}</view>
-          <view class="weui-media-box__desc">已售{{sstock.scale(slave[specsId],master[specsId].package)}},库存{{sstock.csupply(slave[specsId],maste[specsId].package)}}</view>
+          <view class="weui-media-box__desc">已售{{master[specsId].delivered}},库存{{maste[specsId].canSupply}}</view>
         </view>
       </view>
     </block>
   </view>
-  <view wx:if="{{c==1}}" class="weui-cells"  hover-class="weui-cell_active" id="goods" bingtap="i_goodsOrder">
+  <view wx:if="{{c==1}}" class="weui-cells"  hover-class="weui-cell_active" id="goods" data-n="{{n}}" bingtap="i_goodsOrder">
     <block wx:for="{{droneId}}" wx:key="{{index}}" wx:for-item="specsId">
       <view class="weui-media-box weui-media-box_appmsg" hover="true" hover-class="weui-cell_active">
         <view class="weui-media-box__hd_in-appmsg">
@@ -122,7 +110,7 @@
         <view wx:if="{{slave[specsId] && master[specsId]}}"class="weui-media-box__bd_in-appmsg">
           <view class="weui-media-box__title">{{slave[specsId].uName}}/{{master[specsId].package}}份装/{{master[specsId].price}}元</view>
           <view class="weui-media-box__desc">{{master[specsId].title}}</view>
-          <view class="weui-media-box__desc">已售{{sstock.scale(slave[specsId],master[specsId].package)}},库存{{sstock.csupply(slave[specsId],maste[specsId].package)}}</view>
+          <view class="weui-media-box__desc">已售{{master[specsId].delivered}},库存{{maste[specsId].canSupply}}</view>
         </view>
       </view>
     </block>

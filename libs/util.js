@@ -86,22 +86,31 @@ readShowFormat: function(req, vData) {
               vFormat[i].slave = app.aData[vF.gname][vData[vF.gname]];
             };
             break;
-          case 'specsel':                    //规格选择字段
+          case 'specsel':                    //规格格式对象内容包含成品字段
             vFormat[i].master = {};
             vData.specs = app.mData.specs[unitId].filter(specsId=>{
               return app.aData.specs[specsId].goods=vData.objectId});
+            if (vData[vF.gname]==0){
+              let minPrice = 9999999;
+              let maxPrice = 0;
+            } else {
+              let sumPrice = 0;
+              vFormat[i].canSupply = 0;
+            };
             vData.specs.forEach(specsId => {
               app.aData.specs[specsId].canSupply = parseInt(app.aData.cargo[app.aData.specs[specsId].cargo[0]].canSupply/app.aData.specs[specsId].package);
               vFormat[i].master[specsId] = app.aData.specs[specsId];
               vFormat[i].master[specsId].cargo = app.aData.cargo[app.aData.specs[specsId].cargo[0]];
+              if (vData[vF.gname]==0){
+                minPrice = minPrice>vFormat[i].master[specsId].price ? vFormat[i].master[specsId].price : minPrice;
+                maxPrice = maxPrice<vFormat[i].master[specsId].price ? vFormat[i].master[specsId].price : maxPrice;
+              } else {
+                sumPrice += vFormat[i].master[specsId].price;
+                vFormat[i].canSupply = vFormat[i].canSupply>vFormat[i].master[specsId].canSupply ? vFormat[i].master[specsId].canSupply : vFormat[i].canSupply;
+              };
             });
-            if (vData[vF.gname]==0){
-              vFormat[i].minPrice = 0;
-              vFormat[i].maxPrice = 0;
-            } else {
-
-            }
             vFormat[i].droneId = vData.specs;
+            vFormat[i].showprice = (vData[vF.gname]==0) ? '价格:'+minPrice+'--'+maxPrice : '原价:'+sumPrice+' 优惠价:'+vData.price;
             break;
           case 'sId':
             vFormat[i].thumbnail = app.aData[vF.gname][vData[vF.gname]].thumbnail;
