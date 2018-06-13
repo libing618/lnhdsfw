@@ -39,7 +39,7 @@ function orderData(userId) {                 //读用户购物车和订单表
       return carts.map( cart=>{ return cart.toJSON() } );
     } else { return {} } ;
   }).then(carts=>{
-    return new AV.Query('xs_order')
+    return new AV.Query('Order')
     .equalTo('user', userId)
     .include('standard')
     .limit(1000)

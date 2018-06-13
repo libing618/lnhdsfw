@@ -395,31 +395,75 @@ module.exports = {
     }
   },
 
-  i_goodsOrder: function ({ currentTarget:{id,dataset} }) {            //单项选择面板弹出页
+  i_goodsOrder: function ({ currentTarget:{id,dataset},detail:{value} }) {            //单项选择面板弹出页
     var that = this;
-    let hidePage = {};
-    let nPage = that.data.sPages.length-1      //当前页序号;
-    let nowPage = that.data.sPages[nPage];
+    let n;
+    let hidePage = {}, showPage = {}, pageNumber = that.data.sPages.length - 1;
+    let spmKey = 'sPages[' + pageNumber +'].';
+    let nowPage = that.data.sPages[pageNumber];
+    function fSuccess(pNo){
+      let succset = new pNo;
+      succset.set({
+        goods: that.data.vData,
+        specs: nowPage.pageData,
+        quantity: value.orderquantity,
+        amount: value.orderamount,
+        isgive: valuse.isgive,
+        receiveAddress: value.receiveAddress,
+        unitId: that.data.vData.unitId
+      });
+      succset.save().then(()=>{
+
+      }).catch(console.error);
+    };
+    function checkSave(pNo){
+      if (value.isgive) {                  //确定赠送
+        value.receiveAddress = '';
+        fSuccess(pNo);
+      } else {
+        if (value.receiveAddress){
+          fSuccess(pNo);
+        } else {
+          wx.showToast({tiele:'请输入地址！'});
+          wx.navigateTo({url:'/shops/address/add/add'})
+        }
+      }
+    }
     switch (id) {
       case 'fBack':                  //返回
         downModal(that,hidePage);
         break;
       case 'oPlus':                  //+
-        if (nowPage.quantity<nowPage.maxSupply){that.setData({'sPages['+nPage+'].quantity':nowPage.quantity+1}) };
+        if (nowPage.quantity<nowPage.maxSupply){
+          showPage[spmKey+'quantity'] = nowPage.quantity+1;
+        } else {showPage[spmKey+'quantity'] = nowPage.maxSupply};
+        that.setData(showPage);
         break;
-      case 'oMinus':                  //+
-        if (nowPage.quantity>0){that.setData({'sPages['+nPage+'].quantity':nowPage.quantity-1}) };
+      case 'oMinus':                  //-
+        if (nowPage.quantity>0){
+          showPage[spmKey+'quantity'] = nowPage.quantity-1;
+        } else {showPage[spmKey+'quantity'] = 1};
+        that.setData(showPage);
+        break;
+      case 'oInput':                  //+
+        switch (value.orderquantity) {
+          case value.orderquantity<1:
+            showPage[spmKey+'quantity'] = 1;
+            break;
+          case value.orderquantity>nowPage.maxSupply:
+            showPage[spmKey+'quantity'] = nowPage.maxSupply;
+            break;
+          default:
+            showPage[spmKey+'quantity'] = parseInt(value.orderquantity);
+            break;
+        }
+        that.setData(showPage);
         break;
       case 'fBuy':                  //确定购买
-        let nowPage = that.data.sPages[that.data.sPages.length-1];
-        if (that.data.selectd<0){
-          hidePage['vData.'+nowPage.gname] =  { pNo: nowPage.pNo, ...that.data.pageData[that.data.idClicked] };
-        } else {
-          hidePage['vData.'+nowPage.gname+'['+that.data.selectd+']'] =  { pNo: nowPage.pNo, ...that.data.pageData[that.data.idClicked] };
-        }
+        AV.Object.extend('order')
         downModal(that,hidePage);
         break;
-      case 'fGive':                  //确定赠送
+      case 'fCart':
 
         if (that.data.selectd<0){
           hidePage['vData.'+nowPage.gname] =  { pNo: nowPage.pNo, ...that.data.pageData[that.data.idClicked] };
@@ -429,7 +473,7 @@ module.exports = {
         downModal(that,hidePage);
         break;
       case 'goods':                  //弹出套餐购买框
-        let n = parseInt(dataset.n)      //数组下标;
+        n = parseInt(dataset.n)      //数组下标;
         if (that.data.vFormat[n].canSupply>0){
           let newPage = {
             pageName: 'goodsOrder',
@@ -449,7 +493,7 @@ module.exports = {
       } else {wx.showToast({title:'库存不足！'})}
         break;
       default:                                    //弹出单品购买框
-        let n = parseInt(dataset.n)      //数组下标;
+        n = parseInt(dataset.n)      //数组下标;
         if (that.data.vFormat[n].master[id].canSupply>0){
           let newPage = {
             pageName: 'goodsOrder',

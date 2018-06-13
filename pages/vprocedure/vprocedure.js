@@ -37,7 +37,7 @@ Page({
             resolve( true );
           });
         })
-      } else { resolve(false) ) }
+      } else { resolve(false) }
     }).then(() => {
       return new Promise((resolve, reject) => {     //检查并同步数据
         if (app.aData[that.data.pNo][options.artId]){
