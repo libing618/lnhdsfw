@@ -7,7 +7,7 @@ Page({
     navBarTitle: '编辑--',              //申请项目名称
     pw: app.sysinfo.pw,
     sPages: [{
-      pageName: 'editFields'
+      pageName: 'tabPanelIndex'
     }],
     enMenu: 'none',                  //‘插入、删除、替换’菜单栏关闭
     enIns: true,                  //插入grid菜单组关闭

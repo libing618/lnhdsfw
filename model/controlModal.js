@@ -401,7 +401,7 @@ module.exports = {
     let hidePage = {}, showPage = {}, pageNumber = that.data.sPages.length - 1;
     let spmKey = 'sPages[' + pageNumber +'].';
     let nowPage = that.data.sPages[pageNumber];
-    function fSuccess(pNo){
+    function fSuccess(pNo){                 //写入购物车或订单数据库
       let succset = new pNo;
       succset.set({
         goods: that.data.vData,
@@ -409,11 +409,11 @@ module.exports = {
         quantity: value.orderquantity,
         amount: value.orderamount,
         isgive: valuse.isgive,
-        receiveAddress: value.receiveAddress,
+        receiveAddress: app.configData.receiveAddress,
         unitId: that.data.vData.unitId
       });
       succset.save().then(()=>{
-
+        wx.showToast({tiele:'您已成功下单'});
       }).catch(console.error);
     };
     function checkSave(pNo){
@@ -460,16 +460,11 @@ module.exports = {
         that.setData(showPage);
         break;
       case 'fBuy':                  //确定购买
-        AV.Object.extend('order')
+        checkSave(AV.Object.extend('order'));
         downModal(that,hidePage);
         break;
       case 'fCart':
-
-        if (that.data.selectd<0){
-          hidePage['vData.'+nowPage.gname] =  { pNo: nowPage.pNo, ...that.data.pageData[that.data.idClicked] };
-        } else {
-          hidePage['vData.'+nowPage.gname+'['+that.data.selectd+']'] =  { pNo: nowPage.pNo, ...that.data.pageData[that.data.idClicked] };
-        }
+        checkSave(AV.Object.extend('carts'));
         downModal(that,hidePage);
         break;
       case 'goods':                  //弹出套餐购买框
@@ -484,6 +479,7 @@ module.exports = {
             pageData: that.data.vFormat[n].master,
             price: that.data.vData.price,
             quantity: 1,
+            receiveAddress: app.configData.receiveAddress,
             maxSupply: that.data.vFormat[n].canSupply
           };
           newPage.n = parseInt(id.substring(3))      //数组下标;
@@ -503,6 +499,7 @@ module.exports = {
             mPage: [id],
             pageData: that.data.vFormat[n].master,
             price: that.data.vFormat[n].master[id].price,
+            receiveAddress: app.configData.receiveAddress,
             quantity: 1,
             maxSupply: that.data.vFormat[n].master[id].canSupply
           };

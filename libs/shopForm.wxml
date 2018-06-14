@@ -14,6 +14,17 @@
           </block>
         </view>
       </view>
+      <view class="weui-cell">
+        <view wx:if="{{receiveAddress}}">
+          <navigator class="weui-cell__hd" url="/shops/address/list/list">更改收货地址</navigator>
+        </view>
+        <view wx:else>
+          <navigator class="weui-cell__hd" url="/shops/address/add/add">录入收货地址</navigator>
+        </view>
+        <view class="weui-cell__bd weui-cell_switch">
+          <switch type="checkbox" checked="{{isgive}}"/>购买礼品券赠送亲友
+        </view>
+      </view>
       <view class="weui-cell weui-cell_input">
         <view class="weui-cell__hd">
           <text id="oMinus" catchtap="i_goodsOrder">-</text>
@@ -32,12 +43,8 @@
           <image src="../../images/icon_phonelogin.png" class="button-image" />
           <text class="button-text">联系客服</text>
         </navigator>
-        <navigator class="button-group" url="/pages/shops/cart/cart">
-          <image src="../../images/icon_cart.png" class="button-image" />
-          <text class="button-text">购物车</text>
-        </navigator>
-        <button class="weui-btn" formType="submit" size="mini" id="fBuy">确定购买</button>
-        <button class="weui-btn" formType="submit" size="mini" id="fGive">确定赠送</button>
+        <button class="weui-btn" formType="submit" size="mini" id="fBuy">直接购买</button>
+        <button class="weui-btn" formType="submit" size="mini" id="fCart">购物车</button>
         <button class="weui-btn" type="primary" size="mini" bindtap="i_goodsOrder" id="fBack">返回</button>
       </view>
     </view>
