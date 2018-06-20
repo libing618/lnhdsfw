@@ -2,7 +2,7 @@
 <import src="../../libs/weimport.wxml"/>
 <import src="../../libs/wepage.wxml" />
 <view class="page">
-  <template is="p_navBar__back" data="{{...pw,navBarTitle:'超过两日未发货'}}"/>
+  <template is="p_navBar__back" data="{{statusBar,navBarTitle:'超过两日未发货'}}"/>
   <view class="page__bd">
   <block wx:for="{{tPage}}" wx:key="{{index}}" wx:for-item="uu" wx:for-index="i">
     <view class="weui-cell weui-cell_access" hover-class="weui-cell_active" id="{{uu.objectId}}" bindtap="indexClick">

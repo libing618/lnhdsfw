@@ -12,7 +12,7 @@ Page({
   data:{
     sysheight:app.sysinfo.windowHeight-60,
     syswidth:app.sysinfo.windowWidth-10,
-    pw: app.sysinfo.pw,
+    statusBar: app.sysinfo.statusBarHeight,
     user: app.roleData.user,
     enMultimedia: true,
     announcement: false,

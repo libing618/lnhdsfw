@@ -9,7 +9,7 @@ Page({
       fLength: 3,
       pageCk: 0
     },
-    pw: app.sysinfo.pw,
+    statusBar: app.sysinfo.statusBarHeight,
     cPage: [[],[],[]],
     pageData: {},
     sPages: [{

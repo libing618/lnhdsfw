@@ -8,7 +8,7 @@ Page({
     uEV: app.roleData.user.emailVerified,
     enUpdate: false,
     pNo:'goods',
-    pw: app.sysinfo.pw,
+    statusBar: app.sysinfo.statusBarHeight,
     sPages: ['viewFields'],
     vData: {},
     vFormat: [],

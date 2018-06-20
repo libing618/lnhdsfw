@@ -5,7 +5,7 @@ const { updateData } = require('../../model/initupdate');
 var app = getApp();
 Page({
   data:{
-    pw: app.sysinfo.pw，
+    statusBar: app.sysinfo.statusBarHeight，
     tPage: app.configData.units.fConfig,
     pageData: app.aData.manufactor,
     idClicked: '0'

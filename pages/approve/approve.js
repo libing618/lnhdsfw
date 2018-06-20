@@ -4,7 +4,7 @@ const { readShowFormat } = require('../../libs/util');
 var app=getApp()
 Page({
   data:{
-    pw: app.sysinfo.pw,
+    statusBar: app.sysinfo.statusBarHeight,
     biType: [
       { gname:"unitName", p:'申请单位', t:"h3" },
       { gname:"sponsorName", p:'发起人姓名', t:"h3" }

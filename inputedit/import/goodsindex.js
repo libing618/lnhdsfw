@@ -7,7 +7,7 @@ var app = getApp()
 Page({
   data:{
     pNo: 'goods',
-    pw: app.sysinfo.pw,
+    statusBar: app.sysinfo.statusBarHeight,
     ht:{
       navTabs: ['推荐排名','尚未推荐'],
       modalBtn: ['移出','推荐'],

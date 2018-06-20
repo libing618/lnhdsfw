@@ -1,7 +1,7 @@
 <import src="../../libs/wepage.wxml" />
 <import src="../../libs/weimport.wxml" />
 <view class="page">
-  <template is="p_navBar__headTab" data="{{...pw,...ht}}"/>
+  <template is="p_navBar__headTab" data="{{statusBar,...ht}}"/>
   <view wx:if="{{sPages.length<2}}" style="display:block;padding:1px;">
     <view hide="{{ht.pageCk==1}}" style="display:block;padding:1px;">
       <canvas canvas-id="areaCanvas"  class="weui-canvas"> </canvas>

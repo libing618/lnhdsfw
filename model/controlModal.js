@@ -8,7 +8,7 @@ function popModal(that){
       delay: 0
     })
   }
-  that.animation.height(app.sysinfo.pw.cwHeight).translateY(app.sysinfo.pw.cwHeight).step();
+  that.animation.height(app.sysinfo.windowHeight).translateY(app.sysinfo.windowHeight).step();
   that.setData({ animationData: that.animation.export() });
   setTimeout(function () {
     that.animation.translateY(0).step()
@@ -19,7 +19,7 @@ function popModal(that){
   }, 200)
 };
 function downModal(that,hidePage){
-  that.animation.translateY(-app.sysinfo.pw.cwHeight).step();
+  that.animation.translateY(-app.sysinfo.windowHeight).step();
   that.setData({ animationData: that.animation.export() });
   setTimeout(function () {
     let sPages = that.data.sPages;
@@ -253,7 +253,7 @@ module.exports = {
                   wx.showToast({ title: '照片尺寸太小！' })
                 } else {
                   let xMaxScall = app.sysinfo.windowWidth/res.width;
-                  let yMaxScall = (app.sysinfo.pw.cwHeight-260)/res.height;
+                  let yMaxScall = (app.sysinfo.windowHeight-260)/res.height;
                   let imageScall = xMaxScall>yMaxScall ? yMaxScall : xMaxScall;
                   let cutScallMax = xMaxScall>yMaxScall ? res.height/225 : res.width/300;
                   let newPage = {

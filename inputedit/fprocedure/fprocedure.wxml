@@ -1,7 +1,7 @@
 <import src="../import/impedit.wxml"/>
 <import src="../../libs/wepage.wxml" />
 <view class="page">
-  <template is="p_navBar__back" data="{{...pw,navBarTitle}}"/>
+  <template is="p_navBar__back" data="{{statusBar,navBarTitle}}"/>
   <view wx:if="{{sPages.length==1}}" class="page__sub" id="model-{{pNo}}">
     <form bindsubmit="fSubmit">
       <view class="page__bd_spacing" id="{{targetId}}">

@@ -1,6 +1,6 @@
 <import src="../../libs/wepage.wxml" />
 <view class="page">
-  <template is="p_navBar__headTab" data="{{...pw,...ht}}"/>
+  <template is="p_navBar__headTab" data="{{statusBar,...ht}}"/>
   <view class="page__sub">
     <view wx:if="{{ht.pageCk==0}}">
       <view class="page__hd">

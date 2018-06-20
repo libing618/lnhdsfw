@@ -3,7 +3,7 @@ const AV = require('../../libs/leancloud-storage.js');
 var app = getApp()
 Page({
   data: {
-    pw: app.sysinfo.pw,
+    statusBar: app.sysinfo.statusBarHeight,
     ht:{
       navTabs: ['事业合伙人','渠道合伙人'],
       fLength: 2,

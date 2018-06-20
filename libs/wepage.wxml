@@ -2,18 +2,18 @@
 <import src="weimport.wxml" />
 
 <template name="p_navBar__switchTab">
-<view class="navigationBar" style="padding-top:{{statusBar}}px;">
-  <view class="navigationBar__column" style="height:{{capsule}}px;">
+<view class="navigationBar" style="padding-top:{{statusBar+10}}px;">
+  <view class="navigationBar__column" style="height:32px;">
     <template is="navBarLogo"/>
     <view class="weui-cell__bd">{{navBarTitle ? navBarTitle : '扶贫济困，共享良品'}}</view>
   </view>
 </view>
-<view style="padding-top:{{statusBar+capsule}}px;"></view>
+<view style="padding-top:{{statusBar+42}}px;"></view>
 </template>
 
 <template name="p_navBar__seach">
-<view class="navigationBar" style="padding-top:{{statusBar}}px;">
-  <view class="navigationBar__column" style="height:{{capsule}}px;">
+<view class="navigationBar" style="padding-top:{{statusBar+10}}px;">
+  <view class="navigationBar__column" style="height:32px;">
     <form bindsubmit="fSearch">
       <view class="navigationBar__column">
         <template is="navBarLogo"/>
@@ -27,32 +27,32 @@
     </form>
   </view>
 </view>
-<view style="padding-top:{{statusBar+capsule}}px;"></view>
+<view style="padding-top:{{statusBar+42}}px;"></view>
 </template>
 
 <template name="p_navBar__headTab">
-<view class="navigationBar" style="padding-top:{{statusBar}}px;">
-  <view class="navigationBar__column" style="height:{{capsule}}px;">
+<view class="navigationBar" style="padding-top:{{statusBar+10}}px;">
+  <view class="navigationBar__column" style="height:32px;">
     <template is="navBackIcon"/>
     <block wx:for="{{navTabs}}" wx:key="{{index}}">
       <view id="{{index}}" class="navigationBar__item {{ pageCk==index ? 'weui-bar__item_on' : ''}}" bindtap="hTabClick">
         <view class="navigationBar__title">{{item}}</view>
       </view>
     </block>
-    <view class="weui-navbar__slider" style="top:{{capsule}}px;left:{{230/fLength}}rpx; transform: translateX(0px); -webkit-transform: translateX({{pageCk*460/fLength}}rpx)"></view>
+    <view class="weui-navbar__slider" style="top:32px;left:{{230/fLength}}rpx; transform: translateX(0px); -webkit-transform: translateX({{pageCk*460/fLength}}rpx)"></view>
   </view>
 </view>
-<view style="padding-top:{{statusBar+capsule}}px;"></view>
+<view style="padding-top:{{statusBar+42}}px;"></view>
 </template>
 
 <template name="p_navBar__back">
-<view class="navigationBar" style="padding-top:{{statusBar}}px;">
-  <view class="navigationBar__column" style="height:{{capsule}}px;">
+<view class="navigationBar" style="padding-top:{{statusBar+10}}px;">
+  <view class="navigationBar__column" style="height:32px;">
     <template is="navBackIcon" data="{{rtUrl}}"/>
     <view class="weui-cell__bd">{{navBarTitle ? navBarTitle : '扶贫济困，共享良品'}}</view>
   </view>
 </view>
-<view style="padding-top:{{statusBar+capsule}}px;"></view>
+<view style="padding-top:{{statusBar+42}}px;"></view>
 </template>
 
 <template name="p_tabPanelChange">

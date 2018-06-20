@@ -5,7 +5,7 @@ var app = getApp()
 Page({
   data: {
     navBarTitle: '编辑--',              //申请项目名称
-    pw: app.sysinfo.pw,
+    statusBar: app.sysinfo.statusBarHeight,
     sPages: [{
       pageName: 'tabPanelIndex'
     }],

@@ -11,7 +11,7 @@ Page({
       fLength: 2,
       pageCk: 0
     },
-    pw: app.sysinfo.pw,
+    statusBar: app.sysinfo.statusBarHeight,
     pNo: 'evaluates',
     cPage: [[],[]],
     pageData: {},

@@ -6,7 +6,7 @@ var app = getApp()
 Page({
   data:{
     user: app.roleData.user,
-    pw: app.sysinfo.pw,
+    statusBar: app.sysinfo.statusBarHeight,
     sysheight: app.sysinfo.windowHeight-260,
     swcheck: true,
     iName: app.roleData.user.uName,

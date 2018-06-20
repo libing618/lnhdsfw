@@ -3,14 +3,14 @@
 <import src="../../libs/wepage.wxml" />
 <import src="../../libs/shopForm.wxml" />
 <view class="page">
-  <view class="navigationBar" style="padding-top:{{pw.statusBar}}px;">
-    <view class="navigationBar__column" style="height:{{pw.capsule}}px;">
+  <view class="navigationBar" style="padding-top:{{statusBar+10}}px;">
+    <view class="navigationBar__column" style="height:32px;">
       <template is="navBackIcon"/>
       <view class="weui-cell__bd">{{vData.uName}}</view>
       <view wx:if="{{pNo=='goods'}}" class="navigationBar__price">￥{{vData.price}}</view>
     </view>
   </view>
-  <view style="padding-top:{{pw.statusBar+pw.capsule}}px;"></view>
+  <view style="padding-top:{{statusBar+42}}px;"></view>
   <view class="page__sub" id="approval-{{pNo}}">
     <view class="page__bd page__ac_spacing">
       <block wx:for="{{vFormat}}" wx:key="index">

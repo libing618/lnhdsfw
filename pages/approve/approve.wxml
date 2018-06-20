@@ -8,7 +8,7 @@
   module.exports.fsName=fsName;
 </wxs>
 <view class="page">
-  <template is="p_navBar__back" data="{{...pw,navBarTitle:'流程审批'}}"/>
+  <template is="p_navBar__back" data="{{statusBar,navBarTitle:'流程审批'}}"/>
   <view class="page__hd">
     <view class="weui-cells__title">{{pBewrite}}</view>
   </view>

@@ -1,5 +1,7 @@
 <import src="../../libs/weimport.wxml"/>
+<import src="../../libs/wepage.wxml" />
 <view class="page">
+  <template is="p_navBar__back" data="{{statusBar,navBarTitle:'联系客户服务人员'}}"/>
   <view class="page__hd">
     <button class="weui-btn" type="primary" bindtap="makphone">打电话给客户服务人员</button>
   </view>

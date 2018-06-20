@@ -1,7 +1,7 @@
 <import src="../../libs/weimport.wxml"/>
 <import src="../../libs/wepage.wxml" />
 <view class="page">
-  <template is="p_navBar__back" data="{{...pw,navBarTitle}}"/>
+  <template is="p_navBar__back" data="{{statusBar,navBarTitle}}"/>
   <view class="page__bd" id="{{artId}}">
     <template is="tabPanel" data="{{ tPage: mPage , pageData , pNo }}"/>
   </view>

@@ -8,7 +8,7 @@ var app = getApp()
 Page({
   data:{
     pNo: 'manufactor',
-    pw: app.sysinfo.pw,
+    statusBar: app.sysinfo.statusBarHeight,
     ht:{
       navTabs: ['已签约厂家','未签约厂家'],
       modalBtn: ['解约','签约'],

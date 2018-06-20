@@ -7,7 +7,7 @@ Page({
   data: {
     autoplay: true,
     tiringRoom: app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom,
-    pw: app.sysinfo.pw,
+    statusBar: app.sysinfo.statusBarHeight,
     user: app.roleData.user,
     mSwiper: app.mData.articles[0],
     mPage: [app.mData.articles[1],app.mData.articles[3]],

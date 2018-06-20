@@ -1,7 +1,7 @@
 <import src="../../libs/weimport.wxml" />
 <import src="../../libs/wepage.wxml" />
 <view class="page">
-  <template is="p_navBar__switchTab" data="{{...pw,navBarTitle:tiringRoom ? '乐农汇的服务管理' : '购物车及订单管理'}}"/>
+  <template is="p_navBar__switchTab" data="{{statusBar,navBarTitle:tiringRoom ? '乐农汇的服务管理' : '购物车及订单管理'}}"/>
   <view class="page__main">
     <view wx:if="{{tiringRoom}}">
       <view class="page__hd">

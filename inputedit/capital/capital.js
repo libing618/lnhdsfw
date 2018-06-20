@@ -5,7 +5,7 @@ var wxCharts = require('../../libs/wxcharts-min.js');
 var app = getApp()
 Page({
   data:{
-    pw: app.sysinfo.pw
+    statusBar: app.sysinfo.statusBarHeight
   },
   pieSumData: [],
   onReady: function () {

@@ -3,6 +3,7 @@ Page({
   data: {
     sysheight:app.sysinfo.windowHeight-60,
     syswidth:app.sysinfo.windowWidth-10,
+    statusBar: app.sysinfo.statusBarHeight,
     messages: []
   },
 

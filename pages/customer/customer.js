@@ -8,7 +8,7 @@ Page({
     tiringRoom: app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom,
     mPage: app.mData.orderlist[app.roleData.shopId],
     pNo: "orderlist",                       //订单信息
-    pw: app.sysinfo.pw,
+    statusBar: app.sysinfo.statusBarHeight,
     pageData: {},
     idClicked: '0',
     grids: []

@@ -10,7 +10,7 @@ Page({
   data:{
     tiringRoom: app.roleData.user.mobilePhoneVerified && app.configData.tiringRoom,
     pNo: 'goods',                       //流程
-    pw: app.sysinfo.pw,
+    statusBar: app.sysinfo.statusBarHeight,
     pMasterNo: -1,
     goodsIndex: app.configData.goodsIndex,
     droneId: droneId,

@@ -19,30 +19,15 @@ const realtime = new Realtime({
   plugins: [TypedMessagesPlugin],                    // 注册富媒体消息插件
   pushOfflineMessages: true                          //使用离线消息通知方式
 });
-function onNet(){
-  return new Promise((resolve, reject) => {
-    wx.getNetworkType({
-      success: function (res) {
-        if (res.networkType == 'none') {
-          resolve(false);
-          wx.showToast({ title: '请检查网络！' });
-        } else {
-          resolve(true);
-        }
-      }
-    });
-  })
-};
 
 App({
-  roleData: wx.getStorageSync('roleData') || require('globaldata.js').roleData,
+  roleData: require('globaldata.js').roleData,
   fData: require('./model/procedureclass'),
-  netState: onNet(),
-  mData: wx.getStorageSync('mData') || require('globaldata.js').mData,              //读数据管理的缓存
-  aData: wx.getStorageSync('aData') || require('globaldata.js').aData,              //以objectId为key的数据记录
-  aCount : wx.getStorageSync('aCount') || require('globaldata.js').aData,
-  configData: wx.getStorageSync('configData') || require('globaldata.js').configData,
-  procedures: wx.getStorageSync('procedures') || {},              //读流程的缓存
+  mData: require('globaldata.js').mData,              //读数据管理的缓存
+  aData: require('globaldata.js').aData,              //以objectId为key的数据记录
+  aCount : require('globaldata.js').aData,
+  configData: require('globaldata.js').configData,
+  procedures: {},              //读流程的缓存
   logData: [],                         //操作记录
   fwClient: {},                        //实时通信客户端实例
   fwCs: [],                           //客户端的对话实例
@@ -177,9 +162,17 @@ App({
 
   onLaunch: function ({ path, query, scene, shareTicket, referrerInfo }) {
     var that = this;            //调用应用实例的方法获取全局数据
+    ['roleData', 'configData','proSceneQuery','mData', 'aData', 'aCount', 'procedures'].forEach(dataName=>{
+      wx.getStorage({
+        key: dataName,
+        success: function (res) {
+          if (res.data) {that[dataName] = res.data};
+        }
+      })
+    });
     that.configData.scene = scene;
     that.configData.path = path;
-    let configQuery = query ? query : wx.getStorageSync('proSceneQuery').query;
+    let configQuery = query ? query : that.proSceneQuery.query;
     if (configQuery) {
       for (let qKey in query) { that.configData[qKey] = query[qKey]; }
     };
@@ -193,19 +186,24 @@ App({
         that.sysinfo = res;
         let sdkvc = res.SDKVersion.split('.');
         let sdkVersion = parseFloat(sdkvc[0] + '.' + sdkvc[1] + sdkvc[2]);
-        if (sdkVersion < 1.9) {
+        if (sdkVersion < 2.1) {
           wx.showModal({
             title: '提示',
             content: '当前微信版本过低，无法正常使用，请升级到最新微信版本后重试。',
             compressed(res) { setTimeout(function () { wx.navigateBack({ delta: 1 }) }, 2000); }
           })
-        } else {
-          that.sysinfo.pw={
-            statusBar: res.statusBarHeight,
-            capsule: res.screenHeight - res.windowHeight-8,
-            cwHeight: res.windowHeight - res.statusBarHeight
-          }
         };
+      }
+    });
+    wx.getNetworkType({
+      success: function (res) {
+        if (res.networkType == 'none') {
+          that.netState = false;
+          wx.showToast({ title: '请检查网络！' });
+        } else {
+          that.netState = true;
+          AV.Cloud.run('writers', ).then(myip => { that.sysinfo.userip = myip; })
+        }
       }
     });
     wx.onNetworkStatusChange(res => {

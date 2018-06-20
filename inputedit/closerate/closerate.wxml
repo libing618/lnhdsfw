@@ -1,6 +1,6 @@
 <import src="../../libs/wepage.wxml" />
 <view class="page">
-  <template is="p_navBar__back" data="{{...pw,navBarTitle:'访问购买率分析'}}"/>
+  <template is="p_navBar__back" data="{{statusBar,navBarTitle:'访问购买率分析'}}"/>
   <view style="display:block;padding:1px;">
     <canvas canvas-id="lineCanvas" class="weui-canvas"> </canvas>
   </view>
