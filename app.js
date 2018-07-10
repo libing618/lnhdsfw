@@ -202,7 +202,7 @@ App({
           wx.showToast({ title: '请检查网络！' });
         } else {
           that.netState = true;
-          AV.Cloud.run('writers', ).then(myip => { that.sysinfo.userip = myip; })
+          AV.Cloud.run('getIP', ).then(myip => { that.sysinfo.userip = myip; })
         }
       }
     });

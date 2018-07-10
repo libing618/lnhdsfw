@@ -5,6 +5,7 @@ function formatNumber(n) {
   n = n.toString()
   return n[1] ? n : '0' + n
 };
+var app = getApp()
 module.exports = {
 openWxLogin: function(roleData) {            //注册登录（本机登录状态）
   return new Promise((resolve, reject) => {
